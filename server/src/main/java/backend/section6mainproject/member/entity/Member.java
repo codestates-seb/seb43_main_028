@@ -21,15 +21,19 @@ public class Member extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
+
     @Column(length = 50, nullable = false, updatable = false, unique = true)
     private String email;
 
     private String password;
-    @Column(length = 50, unique = true)
+
+    @Column(length = 50, unique = true, nullable = false)
     private String nickname;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 30, nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private WalkLogPublicSetting defaultWalkLogPublicSetting = WalkLogPublicSetting.PRIVATE;
