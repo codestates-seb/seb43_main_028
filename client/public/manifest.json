@@ -1,0 +1,28 @@
+{
+  "name": "걸어볼래",
+  "short_name": "걸어볼래",
+  "start_url": "https://pwa-test-gutter-ball-lay.vercel.app/",
+  "display": "standalone",
+  "background_color": "#F8F7DA",
+  "theme_color": "#8C383A",
+  "description": "걸어볼래 PWA",
+  "scope": "/",
+  "dir": "auto",
+  "categories": [],
+  "screenshots": [],
+  "shortcuts": [],
+  "icons": [
+    {
+      "src": "icons/logo-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/logo-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}
