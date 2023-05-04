@@ -2,12 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="theme-color" content="#8C383A" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <link rel="manifest" href="/manifest.json" />
+    <title>걸어볼래 PWA</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then(registration => {
+            console.log('Service worker registration succeeded:', registration)
+          })
+          .catch(err => {
+            console.log('Service worker registration failed:', error)
+          })
+      } else {
+        console.log('Service workers are not supported.')
+      }
+    </script>
   </body>
 </html>
