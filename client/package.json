@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.0.0",
+    "jotai": "^2.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.11.1",
     "vite": "^4.3.4"
   },
