@@ -29,4 +29,12 @@ public class MemberService {
            throw new RuntimeException("이미 존재하는 회원의 아이디입니다.");
        }
     }
+    public Member findVerifiedMember(long memberId) {
+        Optional<Member> optionalMember =
+                memberRepository.findById(memberId);
+        Member findMember =
+                optionalMember.orElseThrow(() ->
+                        new RuntimeException("이미 존재하는 회원의 아이디입니다"));
+        return findMember;
+    }
 }
