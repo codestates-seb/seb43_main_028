@@ -15,7 +15,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class WalkLogController {
 
-    private final static String WALKLOG_DEFULT_URL = "/walk-logs";
+    private final static String WALK_LOG_DEFAULT_URL = "/walk-logs";
 
     private final WalkLogService walkLogService;
     @PostMapping
@@ -26,7 +26,7 @@ public class WalkLogController {
         Long walkLogId = createdWalkLog.getWalkLogId();
         URI location = UriComponentsBuilder
                 .newInstance()
-                .path(WALKLOG_DEFULT_URL + "/" + walkLogId)
+                .path(WALK_LOG_DEFAULT_URL + "/" + walkLogId)
                 .buildAndExpand(walkLogId)
                 .toUri();
         return ResponseEntity.created(location).build();
