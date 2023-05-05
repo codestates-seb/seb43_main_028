@@ -27,7 +27,7 @@ public class WalkLogService {
 
         WalkLog walkLog =
                 findWalkLogById.orElseThrow(() ->
-                        new RuntimeException("이미 존재하는 회원의 아이디입니다"));
+                        new RuntimeException("이미 존재하는 WalkLog 입니다."));
         return walkLog;
     }
 }
