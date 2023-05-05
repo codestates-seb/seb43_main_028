@@ -1,0 +1,35 @@
+import { createBrowserRouter } from 'react-router-dom'
+import App from '../App'
+import {
+  Home,
+  Feed,
+  Mypage,
+  AfterWalk,
+  OnWalk,
+  HistoryDetail,
+  HistoryList,
+  SignIn,
+  SignUp,
+  NotFound,
+} from '../pages'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <NotFound />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'feed', element: <Feed /> },
+      { path: 'mypage', element: <Mypage /> },
+      { path: 'afterwalk', element: <AfterWalk /> },
+      { path: 'onwalk', element: <OnWalk /> },
+      { path: 'history/:id', element: <HistoryDetail /> },
+      { path: 'history', element: <HistoryList /> },
+      { path: 'signin', element: <SignIn /> },
+      { path: 'signup', element: <SignUp /> },
+    ],
+  },
+])
+
+export default router
