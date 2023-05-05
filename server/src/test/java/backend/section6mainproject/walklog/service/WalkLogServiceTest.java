@@ -11,8 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class WalkLogServiceTest {
@@ -32,18 +32,19 @@ public class WalkLogServiceTest {
         Long memberId = 1L;
         Member member = new Member();
         member.setMemberId(memberId);
-        Mockito.when(memberService.findVerifiedMember(memberId)).thenReturn(member);
-        Mockito.when(walkLogRepository.save(Mockito.any(WalkLog.class))).thenAnswer(invocation -> {
-            WalkLog walkLog = (WalkLog) invocation.getArguments()[0];
-            walkLog.setWalkLogId(1L);
-            return walkLog;
-        });
-
+        member.setEmail("admin1@gmail.com");
+        member.setPassword("12345");
+        member.setNickname("거터볼래1");
+        member.setIntroduction("안녕하세요1");
+        WalkLog walkLog = new WalkLog();
+        walkLog.setMember(member);
+        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(member);
+        given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(walkLog);
         // when
-        WalkLog walkLog = walkLogService.createWalkLog(memberId);
+        WalkLog createdWalkLog = walkLogService.createWalkLog(memberId);
 
         // then
-        assertNotNull(walkLog);
-        assertEquals(member, walkLog.getMember());
+        assertNotNull(createdWalkLog);
+        assertEquals(member, createdWalkLog.getMember());
     }
 }
