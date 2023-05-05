@@ -1,6 +1,6 @@
 import Home from './Home'
 import Feed from './Feed'
-import Mypage from './Mypage'
+import MyPage from './MyPage'
 import AfterWalk from './AfterWalk'
 import OnWalk from './OnWalk'
 import HistoryDetail from './HistoryDetail'
@@ -12,7 +12,7 @@ import NotFound from './NotFound'
 export {
   Home,
   Feed,
-  Mypage,
+  MyPage,
   AfterWalk,
   OnWalk,
   HistoryDetail,

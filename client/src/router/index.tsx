@@ -3,7 +3,7 @@ import App from '../App'
 import {
   Home,
   Feed,
-  Mypage,
+  MyPage,
   AfterWalk,
   OnWalk,
   HistoryDetail,
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: 'feed', element: <Feed /> },
-      { path: 'mypage', element: <Mypage /> },
+      { path: 'mypage', element: <MyPage /> },
       { path: 'afterwalk', element: <AfterWalk /> },
       { path: 'onwalk', element: <OnWalk /> },
       { path: 'history/:id', element: <HistoryDetail /> },
