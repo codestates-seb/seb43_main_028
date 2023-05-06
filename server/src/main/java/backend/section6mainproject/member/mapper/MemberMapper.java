@@ -6,7 +6,8 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
-    Member MemberPostDtoToMember(MemberDto.Post post);
-    Member MemberPatchDtoToMember(MemberDto.Patch patch);
-    MemberDto.Response MemberToMemberResponseDto(Member member);
+    //기존에 대문자로 되어있는 첫글자들을 소문자로 수정
+    Member memberPostDtoToMember(MemberDto.Post post);
+    Member memberPatchDtoToMember(MemberDto.Patch patch);
+    MemberDto.Response memberToMemberResponseDto(Member member);
 }
