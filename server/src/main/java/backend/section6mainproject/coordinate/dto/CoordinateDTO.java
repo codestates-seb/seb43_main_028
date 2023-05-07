@@ -21,6 +21,7 @@ public class CoordinateDTO {
     @Getter
     @AllArgsConstructor
     public static class Sub {
+        private long coordinateId;
         private Double lat;
         private Double lng;
         private LocalDateTime createdAt;
