@@ -37,7 +37,7 @@ public class WalkLogDto {
         private LocalDateTime endTime;
 
         private String message;
-        private WalkLogDto.MemberResponse member; //member도 객체 전달용 responseDto를 만들어서 전달하자!
+        private WalkLogDto.MemberResponse member;
 
         private WalkLogPublicSetting walkLogPublicSetting;
         private List<CoordinateResponse> coordinates;
@@ -49,13 +49,8 @@ public class WalkLogDto {
     @Setter
     @NoArgsConstructor
     public static class MemberResponse {
-
         private Long memberId;
-        private String email;
         private String nickname;
-        private Member.MemberStatus memberStatus;
-        private WalkLogPublicSetting defaultWalkLogPublicSetting;
-        private String introduction;
 
     }
 
