@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 
-@Mapper(componentModel = "spring",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface WalkLogMapper {
     WalkLog walkLogPatchDtoToWalkLog(WalkLogDto.Patch walkLogPatchDto);
 
