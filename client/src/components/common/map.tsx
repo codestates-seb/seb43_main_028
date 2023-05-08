@@ -6,8 +6,39 @@ const containerStyle = {
   height: '340px',
 }
 
+type LatLng = { lat: number; lng: number }
+
 function Map() {
   const [apiKey, setApiKey] = useState('')
+  const [currentLocation, setCurrentLocation] = useState<LatLng | undefined>(undefined)
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      console.log('geolocation 실행')
+      // 기기의 현재 위치를 탐색하는 브라우저 api 사용
+      navigator.geolocation.watchPosition(
+        position => {
+          // 좌표를 담아둘 객체 정의
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          }
+          // 현재 위치 갱신
+          setCurrentLocation(location)
+        },
+        err => {
+          console.log(err)
+        },
+        {
+          enableHighAccuracy: false,
+          maximumAge: 0,
+          timeout: 5000, // 5초마다 위치 정보 갱신 시도
+        }
+      )
+    } else {
+      console.log('Geolocation is not supported')
+    }
+  }, [currentLocation])
 
   useEffect(() => {
     const { VITE_GOOGLE_MAPS_API_KEY } = import.meta.env
@@ -16,11 +47,7 @@ function Map() {
 
   return (
     <LoadScript googleMapsApiKey={apiKey} onLoad={() => console.log('Loaded!')}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        zoom={14}
-        center={{ lat: 37.5662952, lng: 126.9779451 }}
-      />
+      <GoogleMap mapContainerStyle={containerStyle} zoom={14} center={currentLocation} />
     </LoadScript>
   )
 }
