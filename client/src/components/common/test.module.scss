@@ -1,0 +1,17 @@
+body {
+  height: 100%;
+}
+
+.btn {
+  background-color: lightgray;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
