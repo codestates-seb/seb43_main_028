@@ -32,7 +32,6 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-@Transactional
 public class AWSS3StorageService implements StorageService {
     @Value("${aws-s3.access-key}")
     private String accessKey;
