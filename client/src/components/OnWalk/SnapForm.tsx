@@ -1,6 +1,23 @@
 import styles from './SnapForm.module.scss'
 import ImgInput from './ImgInput'
 
+interface HeaderProps {
+  onCancel: React.MouseEventHandler<HTMLButtonElement>
+}
+
+function Header({ onCancel }: HeaderProps) {
+  return (
+    <div className={styles.header}>
+      <h1>순간기록 남기기</h1>
+      <div className={styles.btnBox}>
+        <button type='button' onClick={onCancel}>
+          취소
+        </button>
+        <button type='submit'>완료</button>
+      </div>
+    </div>
+  )
+}
 export default function SnapForm() {
   const handleSubmit = () => {
     console.log('순간기록 전송')
@@ -14,15 +31,7 @@ export default function SnapForm() {
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <div>
-          <div className={styles.header}>
-            <h1>순간기록 남기기</h1>
-            <div className={styles.btnBox}>
-              <button type='button' onClick={handleCancel}>
-                취소
-              </button>
-              <button type='submit'>완료</button>
-            </div>
-          </div>
+          <Header onCancel={handleCancel} />
           <ImgInput />
         </div>
         <label htmlFor='text'>
