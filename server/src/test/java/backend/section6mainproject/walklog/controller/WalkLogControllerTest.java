@@ -17,11 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,19 +47,7 @@ public class WalkLogControllerTest {
         post.setMemberId(1L);
         String content = objectMapper.writeValueAsString(post);
 
-        Long memberId = 1L;
-        Member member = new Member();
-        member.setMemberId(memberId);
-        member.setEmail("admin1@gmail.com");
-        member.setPassword("12345");
-        member.setNickname("거터볼래1");
-        member.setIntroduction("안녕하세요1");
-        //온전한 WalkLog 객체
-        Long walkLogId = 1L;
-        WalkLog walkLog = new WalkLog();
-        walkLog.setMember(member);
-        walkLog.setWalkLogId(walkLogId);
-        walkLog.setMessage("안녕하십니까");
+        WalkLog walkLog = createWalkLog();
 
 
         given(walkLogService.createWalkLog(Mockito.anyLong())).willReturn(walkLog);
@@ -81,11 +67,7 @@ public class WalkLogControllerTest {
                 .andExpect(header().string("Location", is(startsWith("/walk-logs"))));
     }
 
-    @Test
-    void patchWalkLogTest() throws Exception {
-        //given
-        ObjectMapper objectMapper = new ObjectMapper();
-        //온전한 WalkLog객체를 위해 온전한 Member 객체가 1개 필요
+    private WalkLog createWalkLog() {
         Long memberId = 1L;
         Member member = new Member();
         member.setMemberId(memberId);
@@ -99,6 +81,14 @@ public class WalkLogControllerTest {
         walkLog.setMember(member);
         walkLog.setWalkLogId(walkLogId);
         walkLog.setMessage("안녕하십니까");
+        return walkLog;
+    }
+
+    @Test
+    void patchWalkLogTest() throws Exception {
+        //given
+        ObjectMapper objectMapper = new ObjectMapper();
+        WalkLog walkLog = createWalkLog();
 
         //WalkLogDto.Patch 객체가 1개 필요
         WalkLogDTO.Patch patchWalkLogDto = new WalkLogDTO.Patch();
@@ -106,8 +96,8 @@ public class WalkLogControllerTest {
         patchWalkLogDto.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
         //updated된 WalkLog 객체
         WalkLog updatedWalkLog = new WalkLog();
-        updatedWalkLog.setMember(member);
-        updatedWalkLog.setWalkLogId(walkLogId);
+        updatedWalkLog.setMember(walkLog.getMember());
+        updatedWalkLog.setWalkLogId(walkLog.getWalkLogId());
         updatedWalkLog.setMessage("안녕하십니끄아악!");
         updatedWalkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
         //Json 데이터 생성
@@ -117,7 +107,7 @@ public class WalkLogControllerTest {
         //when
         //patchWalkLog메서드를 수행 했을 때
         ResultActions perform = mockMvc.perform(
-                patch("/walk-logs/" + walkLogId)
+                patch("/walk-logs/" + walkLog.getWalkLogId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(jsonPatchWalkLogDto));
@@ -129,6 +119,28 @@ public class WalkLogControllerTest {
         //WalkLogDto.Patch객체로 전달받은 데이터들이 변경되었는지확인
                 .andExpect(jsonPath("$.message").value(updatedWalkLog.getMessage()));
 //                .andExpect(jsonPath("$.walkLogPublicSetting").value(response.getWalkLogPublicSetting())); enum이라 에러가 발생하는듯함
+    }
+
+    @Test
+    void getWalkLogTest() throws Exception {
+        //given
+        WalkLog walkLog = createWalkLog();
+        //walkLogId를 http메서드로 요청보내고
+        //요청을 통해서 잘 조회되는지 확인
+        given(walkLogService.findWalkLog(Mockito.anyLong())).willReturn(walkLog);
+        //when
+        ResultActions perform = mockMvc.perform(
+                get("/walk-logs/" + walkLog.getWalkLogId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+        //then
+        perform.andExpect(status().isOk())
+                .andExpect(jsonPath("$.walkLogId").value(walkLog.getWalkLogId()))
+//                .andExpect(jsonPath("$.endTime").value(equalTo(walkLog.getEndTime()))) jsonPath에서 시간뒤에 00이더 붙음
+                .andExpect(jsonPath("$.message").value(walkLog.getMessage()))
+                .andExpect(jsonPath("$.memberId").value(walkLog.getMember().getMemberId()))
+                .andExpect(jsonPath("$.nickname").value(walkLog.getMember().getNickname()));
+
     }
 
 }
