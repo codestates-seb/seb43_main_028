@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react'
-import Camera from './Camera'
 import styles from './ImgInput.module.scss'
 
 export default function ImgInput() {
@@ -40,7 +39,7 @@ export default function ImgInput() {
         </button>
       )}
       <button type='button' className={styles.cameraBtn}>
-        <Camera />
+        <div>카메라</div>
         <input
           id='photo'
           type='file'
