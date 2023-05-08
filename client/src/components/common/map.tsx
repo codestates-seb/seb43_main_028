@@ -8,6 +8,7 @@ const containerStyle = {
 
 type LatLng = { lat: number; lng: number }
 
+// test
 function Map() {
   const [apiKey, setApiKey] = useState('')
   const [currentLocation, setCurrentLocation] = useState<LatLng | undefined>(undefined)
@@ -58,9 +59,23 @@ function Map() {
   }, [])
 
   return (
-    <LoadScript googleMapsApiKey={apiKey} onLoad={() => console.log('Loaded!')}>
-      <GoogleMap mapContainerStyle={containerStyle} zoom={14} center={currentLocation} />
-    </LoadScript>
+    <>
+      <LoadScript googleMapsApiKey={apiKey} onLoad={() => console.log('Loaded!')}>
+        <GoogleMap mapContainerStyle={containerStyle} zoom={14} center={currentLocation} />
+      </LoadScript>
+      <ul>
+        {locations.length >= 1
+          ? locations.map(location => {
+              return (
+                <li key={Math.random()}>
+                  <div>{location.lat.toFixed(4)}</div>
+                  <div>{location.lng.toFixed(4)}</div>
+                </li>
+              )
+            })
+          : null}
+      </ul>
+    </>
   )
 }
 
