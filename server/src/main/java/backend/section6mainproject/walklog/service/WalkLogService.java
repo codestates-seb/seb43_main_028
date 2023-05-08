@@ -24,12 +24,23 @@ public class WalkLogService {
         walkLog.setMember(findVerifiedMember);
         return walkLogRepository.save(walkLog);
     }
+    public WalkLog updateWalkLog(WalkLog walkLog){
+        WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
+
+        Optional.ofNullable(walkLog.getWalkLogPublicSetting())
+                .ifPresent(walkLogPublicSetting -> findWalkLog.setWalkLogPublicSetting(walkLogPublicSetting));
+        Optional.ofNullable(walkLog.getMessage())
+                .ifPresent(message -> findWalkLog.setMessage(message));
+
+        return walkLogRepository.save(findWalkLog);
+    }
+
     public WalkLog findVerifiedWalkLog(long walkLogId) {
         Optional<WalkLog> findWalkLogById = walkLogRepository.findById(walkLogId);
 
         WalkLog walkLog =
                 findWalkLogById.orElseThrow(() ->
-                        new RuntimeException("이미 존재하는 WalkLog 입니다."));
+                        new RuntimeException("WalkLog를 찾을 수 없습니다")); //잘못된 문구 수정
         return walkLog;
     }
 }
