@@ -4,6 +4,7 @@ package backend.section6mainproject.coordinate.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 public class CoordinateDTO {
     @Getter
     public static class Pub {
+        @Setter
         private Long walkLogId;
         @NotNull
         private Double lat;

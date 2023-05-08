@@ -21,6 +21,7 @@ public class CoordinateController {
     @MessageMapping("/walk-logs")
     public void publishCoordinate(@Valid @Payload CoordinateDTO.Pub pub) {
         long walkLogId = Long.parseLong(SimpAttributesContextHolder.getAttributes().getAttribute("walkLogId").toString());
+        pub.setWalkLogId(walkLogId);
         Coordinate coordinate = coordinateService.createCoordinate(mapper.coordinatePubDTOToCoordinate(pub));
         messagingTemplate.convertAndSend("/sub/" + coordinate.getWalkLog().getWalkLogId(), mapper.coordinateToCoordinateSubDTO(coordinate));
     }
