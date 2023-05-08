@@ -1,18 +1,18 @@
 package backend.section6mainproject.member.controller;
 
-import backend.section6mainproject.member.dto.MemberDto;
+import backend.section6mainproject.member.dto.MemberDTO;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
+import backend.section6mainproject.member.service.MemberServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 
 @RestController
@@ -29,7 +29,7 @@ public class MemberController {
     }
 
     @PostMapping("/sign")
-    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberPostDto) {
+    public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post memberPostDto) {
         Member member = mapper.memberPostDtoToMember(memberPostDto);
         Member createdMember = memberService.createMember(member);
         Long memberId = createdMember.getMemberId();
@@ -40,5 +40,17 @@ public class MemberController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@PathVariable("member-id") @Positive Long memberId,
+                                      @RequestBody MemberDTO.Patch patch) {
+        patch.setMemberId(memberId);
+
+        Member member = mapper.memberPatchDtoToMember(patch);
+        Member updatedMember = memberService.updateMember(member);
+
+        MemberDTO.Response response = mapper.memberToMemberResponseDto(updatedMember);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
