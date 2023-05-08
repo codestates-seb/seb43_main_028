@@ -1,10 +1,8 @@
 package backend.section6mainproject.content.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -58,20 +56,25 @@ public class AWSS3StorageService implements StorageService {
     }
     @Override
     public String store(MultipartFile image) {
+        return store(image, this.bucket);
+    }
+    @Override
+    public String store(MultipartFile image, String bucket) {
+        if(!image.getContentType().startsWith("image")) return null;
         UUID uuid = UUID.randomUUID();
         String uploadImageName = uuid + "_" + image.getOriginalFilename();
         try {
             InputStream inputStream = image.getInputStream();
-            String uploadedFileName = uploadToS3(inputStream, uploadImageName, image.getContentType(), image.getSize());
+            String uploadedFileName = uploadToS3(inputStream, uploadImageName, image.getContentType(), image.getSize(), bucket);
             return uploadedFileName;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String uploadToS3(InputStream is, String key, String contentType, long contentLength) {
+    private String uploadToS3(InputStream is, String key, String contentType, long contentLength, String bucket) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
-                .bucket(bucket)
+                .bucket(Optional.ofNullable(bucket).orElse(this.bucket))
                 .key(key)
                 .contentType(contentType)
                 .contentLength(contentLength)
@@ -90,41 +93,54 @@ public class AWSS3StorageService implements StorageService {
         }
         return null;
     }
+    @Override
     public void delete(String key) {
-        try {
-            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest
-                    .builder()
-                    .bucket(bucket)
-                    .key(key)
-                    .build();
-            this.s3Client.deleteObject(deleteObjectRequest);
-            log.info("{}, deletion complete", key);
-        } catch (AwsServiceException e) {
-            log.error("# AWS S3 error", e);
-        } catch (SdkClientException e) {
-            log.error("# AWS S3 error", e);
+        delete(key, this.bucket);
+    }
+    @Override
+    public void delete(String key, String bucket) {
+        if(key != null){
+            try {
+                DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest
+                        .builder()
+                        .bucket(Optional.ofNullable(bucket).orElse(this.bucket))
+                        .key(key)
+                        .build();
+                this.s3Client.deleteObject(deleteObjectRequest);
+                log.info("{}, deletion complete", key);
+            } catch (AwsServiceException e) {
+                log.error("# AWS S3 error", e);
+            } catch (SdkClientException e) {
+                log.error("# AWS S3 error", e);
+            }
         }
     }
 
     @Override
     public String signBucket(String keyName) {
-        try {
-            GetObjectRequest request = GetObjectRequest.builder()
-                    .bucket(bucket)
-                    .key(keyName)
-                    .build();
-            GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-                    .getObjectRequest(request)
-                    .signatureDuration(Duration.ofMinutes(10))
-                    .build();
+        return signBucket(keyName, this.bucket);
+    }
+    @Override
+    public String signBucket(String keyName, String bucket) {
+        if(keyName != null){
+            try {
+                GetObjectRequest request = GetObjectRequest.builder()
+                        .bucket(bucket)
+                        .key(keyName)
+                        .build();
+                GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                        .getObjectRequest(request)
+                        .signatureDuration(Duration.ofMinutes(10))
+                        .build();
 
-            PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(presignRequest);
-            URL url = presignedGetObjectRequest.url();
-            log.info("pre-signed url : {}", url);
-            return url.toString();
+                PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(presignRequest);
+                URL url = presignedGetObjectRequest.url();
+                log.info("pre-signed url : {}", url);
+                return url.toString();
 
-        } catch (S3Exception e) {
-            log.error("# AWS S3 error", e);
+            } catch (S3Exception e) {
+                log.error("# AWS S3 error", e);
+            }
         }
         return null;
     }
