@@ -20,7 +20,8 @@ public class WalkLogContentServiceImpl implements WalkLogContentService {
     @Override
     public WalkLogContent createWalkLogContent(WalkLogContent walkLogContent, MultipartFile contentImage) {
         walkLogService.findVerifiedWalkLog(walkLogContent.getWalkLog().getWalkLogId());
-
+        String imageFileName = storageService.store(contentImage);
+        walkLogContent.setImageFileName(imageFileName);
         return walkLogContentRepository.save(walkLogContent);
     }
 }
