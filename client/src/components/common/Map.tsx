@@ -1,7 +1,7 @@
 import { GoogleMap, LoadScript } from '@react-google-maps/api'
 import { useState, useEffect } from 'react'
 
-// 파일 이름 변경
+// 좌표 테스트
 
 const containerStyle = {
   width: '340px',
