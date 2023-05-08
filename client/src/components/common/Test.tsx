@@ -22,7 +22,7 @@ function Test() {
   }
 
   // 데이터 전달 방식
-  const dummyData = {
+  const modalData = {
     title: '삭제하시겠습니까?',
     options: [
       { label: 'yes', handleClick: handleDelete, handleKeyDown, id: Math.random() },
@@ -35,7 +35,7 @@ function Test() {
       <button className={styles.btn} type='button' onClick={handleOpenModal}>
         modal lets go
       </button>
-      {isOpen && <Modal onClose={handleCloseModal} dummyData={dummyData} />}
+      {isOpen && <Modal onClose={handleCloseModal} modalData={modalData} />}
     </div>
   )
 }

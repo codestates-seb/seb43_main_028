@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './modal.module.scss'
 
 type Option = {
@@ -9,14 +8,14 @@ type Option = {
 }
 
 type Props = {
-  dummyData: {
+  modalData: {
     title: string
     options: Option[]
   }
   onClose: () => void
 }
 
-function Modal({ dummyData, onClose }: Props): JSX.Element {
+function Modal({ modalData, onClose }: Props): JSX.Element {
   const handleBackgroundClick = (
     event: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -41,13 +40,13 @@ function Modal({ dummyData, onClose }: Props): JSX.Element {
       />
       <div className={styles.modal}>
         <div className={styles.modalTop}>
-          <div>{dummyData.title}</div>
+          <div>{modalData.title}</div>
           <button className={styles.xBtn} type='button' onClick={handleBackgroundClick}>
             𝖷
           </button>
         </div>
         <ul className={styles.optionsContainer}>
-          {dummyData.options.map(option => {
+          {modalData.options.map(option => {
             return (
               <li
                 role='presentation'
