@@ -1,0 +1,24 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  .btnBox {
+    display: flex;
+    gap: 24px;
+  }
+}
+
+.textInput {
+  border: none;
+  background-color: #f3f4f6;
+  border-radius: 12px;
+  min-height: 240;
+  width: 100%;
+}
