@@ -4,6 +4,7 @@ import backend.section6mainproject.audit.Auditable;
 import backend.section6mainproject.content.entity.WalkLogContent;
 import backend.section6mainproject.coordinate.entity.Coordinate;
 import backend.section6mainproject.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,10 @@ public class WalkLog extends Auditable {
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private WalkLogPublicSetting walkLogPublicSetting = WalkLogPublicSetting.PRIVATE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private WalkLogStatus walkLogStatus = WalkLogStatus.RECORDING;
     @OneToMany(mappedBy = "walkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Coordinate> coordinates = new ArrayList<>();
     @OneToMany(mappedBy = "walkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -52,4 +57,8 @@ public class WalkLog extends Auditable {
     public enum WalkLogPublicSetting {
         PUBLIC, PRIVATE
     }
+    public enum WalkLogStatus{
+        RECORDING,STOP
+    }
+
 }
