@@ -11,8 +11,10 @@ type LatLng = { lat: number; lng: number }
 function Map() {
   const [apiKey, setApiKey] = useState('')
   const [currentLocation, setCurrentLocation] = useState<LatLng | undefined>(undefined)
+  const [locations, setLocations] = useState<LatLng[]>([])
 
   useEffect(() => {
+    let prevLocation: LatLng | undefined // 이전 위치
     if (navigator.geolocation) {
       console.log('geolocation 실행')
       // 기기의 현재 위치를 탐색하는 브라우저 api 사용
@@ -25,6 +27,16 @@ function Map() {
           }
           // 현재 위치 갱신
           setCurrentLocation(location)
+          // 직전 좌표가 없으면 현재 watchPosition으로 받은 location을 locations 배열에 추가
+          if (!prevLocation) {
+            setLocations([location])
+            prevLocation = location
+          }
+          // 직전 좌표가 있으면 locations 배열에 현재 위치 추가
+          if (currentLocation && prevLocation) {
+            setLocations(prevLocations => [...prevLocations, location])
+            prevLocation = location
+          }
         },
         err => {
           console.log(err)
@@ -38,7 +50,7 @@ function Map() {
     } else {
       console.log('Geolocation is not supported')
     }
-  }, [currentLocation])
+  }, [currentLocation, locations])
 
   useEffect(() => {
     const { VITE_GOOGLE_MAPS_API_KEY } = import.meta.env
