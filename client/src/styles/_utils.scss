@@ -1,0 +1,21 @@
+@mixin font($style: normal, $weight: 400, $size: 1.6rem, $color: C.$gray900) {
+  font-style: $style;
+  font-weight: $weight;
+  font-size: $size;
+  color: $color;
+}
+
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex-c($direction: row, $justify: center, $align: center) {
+  @include flexbox;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
