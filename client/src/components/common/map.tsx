@@ -1,1 +1,5 @@
-// 컴포넌트 이름 변경
+function Map() {
+  return <div>Map Test</div>
+}
+
+export default Map
