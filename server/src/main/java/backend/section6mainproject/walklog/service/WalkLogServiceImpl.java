@@ -1,7 +1,7 @@
 package backend.section6mainproject.walklog.service;
 
 import backend.section6mainproject.member.entity.Member;
-import backend.section6mainproject.member.service.MemberService;
+import backend.section6mainproject.member.service.MemberServiceImpl;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,12 @@ import java.util.Optional;
 public class WalkLogServiceImpl implements WalkLogService {
 
     private final WalkLogRepository walkLogRepository;
-    private final MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
 
     @Override
     public WalkLog createWalkLog(Long memberId){
         WalkLog walkLog = new WalkLog();
-        Member findVerifiedMember = memberService.findVerifiedMember(memberId);
+        Member findVerifiedMember = memberServiceImpl.findVerifiedMember(memberId);
         walkLog.setMember(findVerifiedMember);
         return walkLogRepository.save(walkLog);
     }
