@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  margin: 24px 0;
+  gap: 16px;
+  align-items: center;
+}
+
+.previewBox {
+  background-color: #f3f4f6;
+  color: #808080;
+  border-radius: 12px;
+  text-align: center;
+  padding: 31px 28px;
+}
+
+.cameraBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #000000;
+}
