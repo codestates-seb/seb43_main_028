@@ -1,7 +1,7 @@
 package backend.section6mainproject.walklog.service;
 
 import backend.section6mainproject.member.entity.Member;
-import backend.section6mainproject.member.service.MemberService;
+import backend.section6mainproject.member.service.MemberServiceImpl;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class WalkLogServiceImplTest {
     private WalkLogRepository walkLogRepository;
 
     @Mock
-    private MemberService memberService;
+    private MemberServiceImpl memberServiceImpl;
 
     @InjectMocks
     private WalkLogService walkLogService;
@@ -41,7 +41,7 @@ public class WalkLogServiceImplTest {
         member.setIntroduction("안녕하세요1");
         WalkLog walkLog = new WalkLog();
         walkLog.setMember(member);
-        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(member);
+        given(memberServiceImpl.findVerifiedMember(Mockito.anyLong())).willReturn(member);
         given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(walkLog);
         // when
         WalkLog createdWalkLog = walkLogService.createWalkLog(memberId);
