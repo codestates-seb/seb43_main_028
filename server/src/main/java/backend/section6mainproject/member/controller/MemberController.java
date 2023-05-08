@@ -30,7 +30,7 @@ public class MemberController {
 
     @PostMapping("/sign")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberPostDto) {
-        Member member = mapper.MemberPostDtoToMember(memberPostDto);
+        Member member = mapper.memberPostDtoToMember(memberPostDto);
         Member createdMember = memberService.createMember(member);
         Long memberId = createdMember.getMemberId();
         URI location = UriComponentsBuilder

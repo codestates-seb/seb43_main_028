@@ -34,7 +34,7 @@ public class MemberService {
                 memberRepository.findById(memberId);
         Member findMember =
                 optionalMember.orElseThrow(() ->
-                        new RuntimeException("이미 존재하는 회원의 아이디입니다"));
+                        new RuntimeException("회원이 존재하지 않습니다")); //잘못된 오류문구 수정
         return findMember;
     }
 }
