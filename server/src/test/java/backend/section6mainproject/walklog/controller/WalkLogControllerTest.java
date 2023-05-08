@@ -1,13 +1,10 @@
 package backend.section6mainproject.walklog.controller;
 
 import backend.section6mainproject.member.entity.Member;
-import backend.section6mainproject.walklog.dto.WalkLogDto;
+import backend.section6mainproject.walklog.dto.WalkLogDTO;
 
 import backend.section6mainproject.walklog.entity.WalkLog;
-import backend.section6mainproject.walklog.mapper.WalkLogMapper;
-import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import backend.section6mainproject.walklog.service.WalkLogService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -48,7 +45,7 @@ public class WalkLogControllerTest {
     @Test
     void postWalkLogTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        WalkLogDto.Post post = new WalkLogDto.Post();
+        WalkLogDTO.Post post = new WalkLogDTO.Post();
         post.setMemberId(1L);
         String content = objectMapper.writeValueAsString(post);
 
@@ -104,7 +101,7 @@ public class WalkLogControllerTest {
         walkLog.setMessage("안녕하십니까");
 
         //WalkLogDto.Patch 객체가 1개 필요
-        WalkLogDto.Patch patchWalkLogDto = new WalkLogDto.Patch();
+        WalkLogDTO.Patch patchWalkLogDto = new WalkLogDTO.Patch();
         patchWalkLogDto.setMessage("안녕하십니끄아악!");
         patchWalkLogDto.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
         //updated된 WalkLog 객체

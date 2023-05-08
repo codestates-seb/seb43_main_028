@@ -11,7 +11,7 @@ import java.util.List;
 
 import static backend.section6mainproject.walklog.entity.WalkLog.*;
 
-public class WalkLogDto {
+public class WalkLogDTO {
     @Getter
     @Setter
     @NoArgsConstructor
@@ -36,7 +36,7 @@ public class WalkLogDto {
         private LocalDateTime endTime;
 
         private String message;
-        private WalkLogDto.MemberResponse member;
+        private WalkLogDTO.MemberResponse member;
 
         private WalkLogPublicSetting walkLogPublicSetting;
         private List<CoordinateResponse> coordinates;

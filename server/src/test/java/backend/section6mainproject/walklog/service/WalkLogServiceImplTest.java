@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class WalkLogServiceTest {
+public class WalkLogServiceImplTest {
 
     @Mock
     private WalkLogRepository walkLogRepository;
