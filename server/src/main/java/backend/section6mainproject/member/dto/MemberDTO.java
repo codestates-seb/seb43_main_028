@@ -47,6 +47,10 @@ public class MemberDTO {
         private String nickname;
         private String introduction;
         private String defaultWalkLogPublicSetting;
-        private List<WalkLogDTO.Response> walkLogs;
+        private String imageUrl;
+        private int totalWalkLog;
+        private int totalWalkLogContent;
+        //추후 프론트측에서 필요한 속성 정할 예정
+        //private List<WalkLogDTO.Response> walkLogs;
     }
 }

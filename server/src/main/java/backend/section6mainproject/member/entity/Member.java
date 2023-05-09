@@ -41,6 +41,8 @@ public class Member extends Auditable {
     @Column(length = 500)
     private String introduction;
 
+    private String profileImage;
+
     @OneToMany(mappedBy = "member")
     private List<WalkLog> walkLogs = new ArrayList<>();
 
