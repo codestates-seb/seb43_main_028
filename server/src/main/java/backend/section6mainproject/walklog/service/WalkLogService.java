@@ -10,5 +10,6 @@ public interface WalkLogService {
     WalkLog findWalkLog(Long walkLogId);
     void deleteWalkLog(Long walkLogId);
     WalkLog findVerifiedWalkLog(Long walkLogId);
+    WalkLog exitWalkLog(WalkLog walkLog);
 
 }
