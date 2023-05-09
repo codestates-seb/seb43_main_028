@@ -17,16 +17,12 @@ function Test() {
     console.log('handle delete')
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    console.log(e)
-  }
-
   // 데이터 전달 방식
   const modalData = {
     title: '삭제하시겠습니까?',
     options: [
-      { label: 'yes', handleClick: handleDelete, handleKeyDown, id: Math.random() },
-      { label: 'no', handleClick: handleCloseModal, handleKeyDown, id: Math.random() },
+      { label: 'yes', handleClick: handleDelete, id: Math.random() },
+      { label: 'no', handleClick: handleCloseModal, id: Math.random() },
     ],
   }
 

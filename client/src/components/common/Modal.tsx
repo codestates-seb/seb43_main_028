@@ -3,7 +3,6 @@ import styles from './modal.module.scss'
 type Option = {
   label: string
   handleClick: () => void
-  handleKeyDown: (e: React.KeyboardEvent<Element>) => void
   id: number
 }
 
@@ -48,13 +47,10 @@ function Modal({ modalData, onClose }: Props): JSX.Element {
         <ul className={styles.optionsContainer}>
           {modalData.options.map(option => {
             return (
-              <li
-                role='presentation'
-                key={option.id}
-                onClick={option.handleClick}
-                onKeyDown={e => option.handleKeyDown(e)}
-              >
-                {option.label}
+              <li key={option.id}>
+                <button type='button' onClick={option.handleClick}>
+                  {option.label}
+                </button>
               </li>
             )
           })}
