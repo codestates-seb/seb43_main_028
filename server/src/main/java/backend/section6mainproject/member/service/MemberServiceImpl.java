@@ -56,4 +56,11 @@ public class MemberServiceImpl implements MemberService{
 
         return memberRepository.save(updatedMember);
     }
+
+    @Override
+    public void deleteMember(Long memberId) {
+        Member findMember = findVerifiedMember(memberId);
+        findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
+        memberRepository.save(findMember);
+    }
 }
