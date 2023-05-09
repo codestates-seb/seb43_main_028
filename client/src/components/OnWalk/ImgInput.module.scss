@@ -14,9 +14,14 @@
   text-align: center;
   width: 100px;
   height: 100px;
+  overflow: hidden;
   p {
     @include T.gray600-regular-12;
     padding: 31px 28px;
+  }
+  img {
+    object-fit: cover;
+    border-radius: 12px;
   }
 }
 
@@ -25,4 +30,8 @@
   height: 48px;
   border-radius: 50%;
   border: 1px solid C.$gray900;
+}
+
+.album {
+  display: none;
 }

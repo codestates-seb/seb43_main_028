@@ -48,7 +48,7 @@ export default function ImgInput() {
         label: '앨범에서 가져오기',
         handleClick: () => {
           setModal(false)
-          console.log('모달', modal)
+          inputRef.current?.click()
         },
       },
     ],
@@ -80,7 +80,7 @@ export default function ImgInput() {
           setModal(true)
         }}
       >
-        카메라
+        카메라 아이콘
       </button>
       {modal && (
         <Modal
@@ -90,14 +90,16 @@ export default function ImgInput() {
           }}
         />
       )}
-      {!modal && camera && <Camera />}
-      {/* <input
-          id='photo'
-          type='file'
-          ref={inputRef}
-          onChange={handleChange}
-          accept='image/png, image/jpeg'
-        /> */}
+      {!modal && camera && <Camera setCamera={setCamera} />}
+
+      <input
+        id='photo'
+        type='file'
+        ref={inputRef}
+        onChange={handleChange}
+        accept='image/png, image/jpeg'
+        className={styles.album}
+      />
     </div>
   )
 }

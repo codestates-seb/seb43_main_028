@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './Camera.module.scss'
 
-function Camera() {
+interface CameraProps {
+  setCamera: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function Camera({ setCamera }: CameraProps) {
   const [hasPhoto, setHasPhoto] = useState(false)
-  const [cameraOn, setCameraOn] = useState(true)
 
   const photoRef = useRef<HTMLCanvasElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -23,7 +26,7 @@ function Camera() {
   }
 
   const handleCancel = () => {
-    setCameraOn(false)
+    setCamera(false)
   }
 
   const takePhoto = () => {
@@ -63,7 +66,7 @@ function Camera() {
   }, [photoRef])
 
   return (
-    <div className={cameraOn ? styles.container : styles.off}>
+    <div className={styles.container}>
       <div className={hasPhoto ? styles.hidden : ''}>
         <video ref={videoRef} autoPlay playsInline className={styles.camera}>
           <track kind='captions' />
