@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
+    'react/require-default-props': 'off',
     'no-shadow': 'off',
     'jsx-a11y/label-has-associated-control': [
       2,
