@@ -51,12 +51,12 @@ public class MemberServiceImpl implements MemberService{
                 optionalMember.orElseThrow(() ->
                         new RuntimeException("회원이 존재하지 않습니다"));
         findMember.getWalkLogs().stream().forEach(walkLog -> walkLog.getWalkLogId());
+        distinguishQuittedMember(findMember);
         return findMember;
     }
     @Override
     public Member updateMember(Member member, MultipartFile profileImage) {
         Member findMember = findVerifiedMember(member.getMemberId());
-        distinguishQuittedMember(findMember);
         //기존 회원의 프로필이미지가 있다면 삭제
         storageService.delete(findMember.getProfileImage());
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
@@ -71,7 +71,6 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void deleteMember(Long memberId) {
         Member findMember = findVerifiedMember(memberId);
-        distinguishQuittedMember(findMember);
         findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
         memberRepository.save(findMember);
     }
@@ -79,11 +78,10 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Member findMember(Long memberId) {
         Member member = findVerifiedMember(memberId);
-        distinguishQuittedMember(member);
         return member;
     }
 
-    private static void distinguishQuittedMember(Member member) {
+    private void distinguishQuittedMember(Member member) {
         if(member.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
             throw new RuntimeException("본 회원님은 이전에 탈퇴하셨습니다.");
         }
