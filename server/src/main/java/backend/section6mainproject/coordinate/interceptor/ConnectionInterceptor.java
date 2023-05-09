@@ -24,9 +24,14 @@ public class ConnectionInterceptor implements HandshakeInterceptor {
         Long memberId = 1L;
         Member findMember = memberServiceImpl.findVerifiedMember(memberId);
         List<WalkLog> walkLogs = findMember.getWalkLogs();
-
-        // 기록 상태를 나타내는 상태값 구현후 변경 예정, 임시로 마지막 walkLog의 Id를 가져오게 했다.
-        Long walkLogId = walkLogs.get(walkLogs.size() - 1).getWalkLogId();
+        Long walkLogId = null;
+        for (int i = walkLogs.size() - 1; i >= 0; i--) {
+            if(walkLogs.get(i).getWalkLogStatus() == WalkLog.WalkLogStatus.RECORDING) {
+                walkLogId = walkLogs.get(i).getWalkLogId();
+                break;
+            }
+        }
+        if(walkLogId == null) throw new RuntimeException("WalkLog is not recording");
         attributes.put("walkLogId", walkLogId);
         return true;
     }
