@@ -2,6 +2,8 @@ package backend.section6mainproject;
 
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.repository.MemberRepository;
+import backend.section6mainproject.walklog.entity.WalkLog;
+import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,7 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class TestDataInit {
     private final MemberRepository memberRepository;
+    private final WalkLogRepository walkLogRepository;
 
     @PostConstruct
     public void init() {
@@ -20,5 +23,9 @@ public class TestDataInit {
         firstMember.setNickname("거터볼래");
         firstMember.setIntroduction("안녕하세요");
         memberRepository.save(firstMember);
+        WalkLog walkLog = new WalkLog();
+        walkLog.setMember(firstMember);
+        walkLog.setMessage("안녕하십니까");
+        walkLogRepository.save(walkLog);
     }
 }
