@@ -1,22 +1,27 @@
 package backend.section6mainproject.member.service;
 
+import backend.section6mainproject.helper.image.StorageService;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.utils.CustomBeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 @Transactional
 @Service
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
+    private final StorageService storageService;
     private final CustomBeanUtils<Member> beanUtils;
 
-    public MemberServiceImpl(MemberRepository memberRepository, CustomBeanUtils<Member> beanUtils) {
+    public MemberServiceImpl(MemberRepository memberRepository, StorageService storageService, CustomBeanUtils<Member> beanUtils) {
         this.memberRepository = memberRepository;
+        this.storageService = storageService;
         this.beanUtils = beanUtils;
     }
+
     @Override
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
@@ -49,10 +54,15 @@ public class MemberServiceImpl implements MemberService{
         return findMember;
     }
     @Override
-    public Member updateMember(Member member) {
+    public Member updateMember(Member member, MultipartFile profileImage) {
         Member findMember = findVerifiedMember(member.getMemberId());
-
+        //기존 회원의 프로필이미지가 있다면 삭제
+        storageService.delete(findMember.getProfileImage());
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
+
+        String profile = storageService.store(profileImage, "profile");
+
+        updatedMember.setProfileImage(profile);
 
         return memberRepository.save(updatedMember);
     }
