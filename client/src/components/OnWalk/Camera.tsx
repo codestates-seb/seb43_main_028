@@ -45,12 +45,6 @@ function Camera() {
   useEffect(() => {
     getVideo()
 
-    console.log('window', window.innerWidth, window.innerHeight)
-    console.log('document', document.body.clientWidth, document.body.clientHeight)
-    console.log('videoref', videoRef.current.offsetWidth, videoRef.current.offsetHeight)
-    console.log('screen', screen.width, screen.height)
-    console.log('screenavail', screen.availWidth, screen.availHeight)
-
     return () => {
       if (videoRef.current?.srcObject instanceof MediaStream) {
         console.log('이전 미디어 스트림 삭제') // 이전 미디어 스트림 삭제
