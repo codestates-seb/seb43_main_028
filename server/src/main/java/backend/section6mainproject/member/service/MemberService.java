@@ -10,4 +10,6 @@ public interface MemberService {
     Member findVerifiedMember(long memberId);
 
     void deleteMember(Long memberId);
+
+    Member findMember(Long memberId);
 }
