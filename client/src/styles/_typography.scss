@@ -5,6 +5,10 @@
   @include U.font($weight: 700, $size: 1.8rem, $color: C.$babygreen);
 }
 
+@mixin white-bold-18 {
+  @include U.font($weight: 700, $size: 1.8rem, $color: C.$white);
+}
+
 @mixin gray900-bold-20 {
   @include U.font($weight: 700, $size: 2rem, $color: C.$gray900);
 }
@@ -28,6 +32,9 @@
   @include U.font($weight: 400, $size: 1.6rem, $color: C.$gray900);
 }
 
+@mixin gray600-regular-16 {
+  @include U.font($weight: 400, $size: 1.6rem, $color: C.$gray600);
+}
 @mixin gray600-regular-12 {
   @include U.font($weight: 400, $size: 1.2rem, $color: C.$gray600);
 }
