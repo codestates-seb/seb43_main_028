@@ -8,4 +8,6 @@ public interface MemberService {
     Member updateMember(Member member);
 
     Member findVerifiedMember(long memberId);
+
+    void deleteMember(Long memberId);
 }
