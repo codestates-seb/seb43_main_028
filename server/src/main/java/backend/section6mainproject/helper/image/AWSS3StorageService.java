@@ -1,4 +1,4 @@
-package backend.section6mainproject.content.service;
+package backend.section6mainproject.helper.image;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,27 +54,24 @@ public class AWSS3StorageService implements StorageService {
                 .region(clientRegion)
                 .build();
     }
+
     @Override
-    public String store(MultipartFile image) {
-        return store(image, this.bucket);
-    }
-    @Override
-    public String store(MultipartFile image, String bucket) {
+    public String store(MultipartFile image, String directory) {
         if(!image.getContentType().startsWith("image")) return null;
         UUID uuid = UUID.randomUUID();
-        String uploadImageName = uuid + "_" + image.getOriginalFilename();
+        String uploadImageName = directory + "/" + uuid + "_" + image.getOriginalFilename();
         try {
             InputStream inputStream = image.getInputStream();
-            String uploadedFileName = uploadToS3(inputStream, uploadImageName, image.getContentType(), image.getSize(), bucket);
+            String uploadedFileName = uploadToS3(inputStream, uploadImageName, image.getContentType(), image.getSize());
             return uploadedFileName;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String uploadToS3(InputStream is, String key, String contentType, long contentLength, String bucket) {
+    private String uploadToS3(InputStream is, String key, String contentType, long contentLength) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
-                .bucket(Optional.ofNullable(bucket).orElse(this.bucket))
+                .bucket(this.bucket)
                 .key(key)
                 .contentType(contentType)
                 .contentLength(contentLength)
@@ -93,17 +90,14 @@ public class AWSS3StorageService implements StorageService {
         }
         return null;
     }
+
     @Override
     public void delete(String key) {
-        delete(key, this.bucket);
-    }
-    @Override
-    public void delete(String key, String bucket) {
         if(key != null){
             try {
                 DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest
                         .builder()
-                        .bucket(Optional.ofNullable(bucket).orElse(this.bucket))
+                        .bucket(this.bucket)
                         .key(key)
                         .build();
                 this.s3Client.deleteObject(deleteObjectRequest);
@@ -116,17 +110,14 @@ public class AWSS3StorageService implements StorageService {
         }
     }
 
+
     @Override
-    public String signBucket(String keyName) {
-        return signBucket(keyName, this.bucket);
-    }
-    @Override
-    public String signBucket(String keyName, String bucket) {
-        if(keyName != null){
+    public String signBucket(String key) {
+        if(key != null){
             try {
                 GetObjectRequest request = GetObjectRequest.builder()
-                        .bucket(bucket)
-                        .key(keyName)
+                        .bucket(this.bucket)
+                        .key(key)
                         .build();
                 GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
                         .getObjectRequest(request)
