@@ -39,7 +39,14 @@ function Camera() {
   }
 
   const cancelPhoto = () => {
-    console.log('재촬영')
+    if (photoRef.current) {
+      const photo = photoRef.current
+      const context = photo.getContext('2d')
+
+      context?.clearRect(0, 0, photo.width, photo.height)
+
+      setHasPhoto(false)
+    }
   }
 
   useEffect(() => {
@@ -76,7 +83,7 @@ function Camera() {
       </div>
       <div className={hasPhoto ? '' : styles.hidden}>
         <canvas ref={photoRef} className={styles.photo} />
-        <button type='button' onClick={cancelPhoto}>
+        <button type='button' onClick={cancelPhoto} className={styles.cancelBtn}>
           X
         </button>
       </div>
