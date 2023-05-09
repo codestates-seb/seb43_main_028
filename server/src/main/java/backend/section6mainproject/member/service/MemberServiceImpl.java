@@ -63,4 +63,11 @@ public class MemberServiceImpl implements MemberService{
         findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
         memberRepository.save(findMember);
     }
+
+    @Override
+    public Member findMember(Long memberId) {
+        Member member = findVerifiedMember(memberId);
+        return member;
+    }
+
 }
