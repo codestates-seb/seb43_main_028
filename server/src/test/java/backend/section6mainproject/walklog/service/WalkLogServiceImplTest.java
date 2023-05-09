@@ -1,7 +1,7 @@
 package backend.section6mainproject.walklog.service;
 
 import backend.section6mainproject.member.entity.Member;
-import backend.section6mainproject.member.service.MemberServiceImpl;
+import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import org.junit.jupiter.api.Test;
@@ -24,10 +24,10 @@ public class WalkLogServiceImplTest {
     private WalkLogRepository walkLogRepository;
 
     @Mock
-    private MemberServiceImpl memberServiceImpl;
+    private MemberService memberService;
 
     @InjectMocks
-    private WalkLogService walkLogService;
+    private WalkLogServiceImpl walkLogServiceImpl;
 
     @Test
     public void testCreateWalkLog() {
@@ -41,10 +41,10 @@ public class WalkLogServiceImplTest {
         member.setIntroduction("안녕하세요1");
         WalkLog walkLog = new WalkLog();
         walkLog.setMember(member);
-        given(memberServiceImpl.findVerifiedMember(Mockito.anyLong())).willReturn(member);
+        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(member);
         given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(walkLog);
         // when
-        WalkLog createdWalkLog = walkLogService.createWalkLog(memberId);
+        WalkLog createdWalkLog = walkLogServiceImpl.createWalkLog(memberId);
 
         // then
         assertNotNull(createdWalkLog);
@@ -80,7 +80,7 @@ public class WalkLogServiceImplTest {
         given(walkLogRepository.save(walkLog)).willReturn(walkLog);
 
         //when
-        WalkLog updatedWalkLog = walkLogService.updateWalkLog(patchWalkLog);
+        WalkLog updatedWalkLog = walkLogServiceImpl.updateWalkLog(patchWalkLog);
 
         //then
         assertThat(updatedWalkLog).isNotNull();
@@ -99,7 +99,7 @@ public class WalkLogServiceImplTest {
 
         //when
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            walkLogService.updateWalkLog(walkLog);
+            walkLogServiceImpl.updateWalkLog(walkLog);
         });
         //then
         assertThat(exception.getMessage()).isEqualTo("WalkLog를 찾을 수 없습니다");

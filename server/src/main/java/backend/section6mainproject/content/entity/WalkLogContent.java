@@ -18,6 +18,7 @@ public class WalkLogContent extends Auditable {
     private Long walkLogContentId;
     @Column(length = 1000)
     private String text;
+    private String imageFileName;
     @ManyToOne
     @JoinColumn(name = "WALK_LOG_ID")
     private WalkLog walkLog;
