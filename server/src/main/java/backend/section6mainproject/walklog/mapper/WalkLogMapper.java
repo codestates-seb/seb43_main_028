@@ -14,6 +14,7 @@ public interface WalkLogMapper {
 
     WalkLogDTO.Response walkLogToWalkLogResponseDto(WalkLog walkLog);
 
+
     WalkLogDTO.MemberResponse memberToWalkLogMemberResponseDto(Member member);
 
     WalkLogDTO.ContentResponse walkLogContentToWalkLogContentResponseDto(WalkLogContent walkLogContent);
