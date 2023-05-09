@@ -2,6 +2,7 @@ package backend.section6mainproject.walklog.dto;
 
 
 
+import backend.section6mainproject.content.dto.WalkLogContentDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,7 +41,7 @@ public class WalkLogDTO {
 
         private WalkLogPublicSetting walkLogPublicSetting;
         private List<CoordinateResponse> coordinates;
-        private List<ContentResponse> walkLogContents;
+        private List<WalkLogContentDTO.Response> walkLogContents;
     }
 //패스워드와 나머지 객체들은 반환할 필요가 없어서 제거하고 Dto생성
 
