@@ -1,14 +1,17 @@
 package backend.section6mainproject.member.controller;
 
+import backend.section6mainproject.content.dto.WalkLogContentDTO;
 import backend.section6mainproject.member.dto.MemberDTO;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.member.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -42,13 +45,14 @@ public class MemberController {
         return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/{member-id}")
+    @PatchMapping(path = "/{member-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity patchMember(@PathVariable("member-id") @Positive Long memberId,
-                                      @RequestBody @Valid MemberDTO.Patch patch) {
+                                      @Valid @RequestPart MemberDTO.Patch patch,
+                                      @RequestPart MultipartFile profileImage) {
         patch.setMemberId(memberId);
 
         Member member = mapper.memberPatchDtoToMember(patch);
-        Member updatedMember = memberService.updateMember(member);
+        Member updatedMember = memberService.updateMember(member, profileImage);
 
         MemberDTO.Response response = mapper.memberToMemberResponseDto(updatedMember);
         return new ResponseEntity<>(response, HttpStatus.OK);
