@@ -119,7 +119,7 @@ public class WalkLogServiceImplTest {
         WalkLog expectedWalkLog = new WalkLog();
         expectedWalkLog.setWalkLogId(1L);
 
-        given(walkLogRepository.findById(1L)).willReturn(Optional.of(expectedWalkLog));
+        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(expectedWalkLog));
 
         WalkLog actualWalkLog = walkLogService.findWalkLog(1L);
 
