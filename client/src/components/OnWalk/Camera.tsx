@@ -3,9 +3,10 @@ import styles from './Camera.module.scss'
 
 interface CameraProps {
   setCamera: React.Dispatch<React.SetStateAction<boolean>>
+  setPreview: React.Dispatch<React.SetStateAction<string>>
 }
 
-function Camera({ setCamera }: CameraProps) {
+function Camera({ setCamera, setPreview }: CameraProps) {
   const [hasPhoto, setHasPhoto] = useState(false)
 
   const photoRef = useRef<HTMLCanvasElement>(null)
@@ -52,6 +53,14 @@ function Camera({ setCamera }: CameraProps) {
     }
   }
 
+  const savePhoto = () => {
+    if (photoRef.current) {
+      const url = photoRef.current.toDataURL()
+      setPreview(url)
+      setCamera(false)
+    }
+  }
+
   useEffect(() => {
     getVideo()
 
@@ -87,6 +96,9 @@ function Camera({ setCamera }: CameraProps) {
         <canvas ref={photoRef} className={styles.photo} />
         <button type='button' onClick={cancelPhoto} className={styles.cancelBtn}>
           X
+        </button>
+        <button type='button' onClick={savePhoto} className={styles.saveBtn}>
+          SAVE
         </button>
       </div>
     </div>

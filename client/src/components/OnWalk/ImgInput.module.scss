@@ -25,6 +25,18 @@
   }
 }
 
+.previewClearBtn {
+  @include T.gray900-bold-10;
+  background-color: C.$gray200;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  position: absolute;
+  top: 12%;
+  left: 25%;
+}
+
 .cameraBtn {
   width: 48px;
   height: 48px;

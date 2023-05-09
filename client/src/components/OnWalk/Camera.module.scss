@@ -47,3 +47,12 @@
   position: fixed;
   top: 10%;
 }
+
+.saveBtn {
+  @extend .shotBtn;
+  width: 60px;
+  height: 60px;
+  color: white;
+  border: 5px solid white;
+  font-weight: 900;
+}

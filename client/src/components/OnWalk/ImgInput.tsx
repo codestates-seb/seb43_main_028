@@ -4,7 +4,7 @@ import Modal from '../common/Modal'
 import Camera from './Camera'
 
 export default function ImgInput() {
-  const [preview, setPreview] = useState<string | undefined>('')
+  const [preview, setPreview] = useState<string>('')
   const [imgFile, setImgFile] = useState<File | undefined>()
   const [modal, setModal] = useState<boolean>(false)
   const [camera, setCamera] = useState<boolean>(false)
@@ -18,6 +18,11 @@ export default function ImgInput() {
     if (!inputRef.current) return
     inputRef.current.value = ''
     setImgFile(undefined)
+    setPreview('')
+  }
+
+  const handleModal = () => {
+    setModal(!modal)
   }
 
   useEffect(() => {
@@ -57,8 +62,13 @@ export default function ImgInput() {
   return (
     <div className={styles.container}>
       <div className={styles.previewBox}>
-        {imgFile ? (
-          <img src={preview} alt='이미지 미리보기' />
+        {preview ? (
+          <>
+            <img src={preview} alt='이미지 미리보기' />
+            <button type='button' onClick={handleClear} className={styles.previewClearBtn}>
+              X
+            </button>
+          </>
         ) : (
           <p>
             No
@@ -68,29 +78,11 @@ export default function ImgInput() {
         )}
       </div>
 
-      {imgFile && (
-        <button type='button' onClick={handleClear}>
-          X
-        </button>
-      )}
-      <button
-        type='button'
-        className={styles.cameraBtn}
-        onClick={() => {
-          setModal(true)
-        }}
-      >
+      <button type='button' className={styles.cameraBtn} onClick={handleModal}>
         카메라 아이콘
       </button>
-      {modal && (
-        <Modal
-          modalData={modalData}
-          onClose={() => {
-            setModal(false)
-          }}
-        />
-      )}
-      {!modal && camera && <Camera setCamera={setCamera} />}
+      {modal && <Modal modalData={modalData} onClose={handleModal} />}
+      {!modal && camera && <Camera setCamera={setCamera} setPreview={setPreview} />}
 
       <input
         id='photo'
