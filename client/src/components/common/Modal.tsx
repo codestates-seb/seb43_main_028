@@ -15,7 +15,7 @@ type Props = {
 }
 
 function Modal({ modalData, onClose }: Props): JSX.Element {
-  const handleBackgroundClick = (
+  const handleClose = (
     event: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
     // event.target -> 실제로 클릭된 요소
@@ -34,13 +34,13 @@ function Modal({ modalData, onClose }: Props): JSX.Element {
       <div
         role='presentation'
         className={styles.modalBackground}
-        onClick={handleBackgroundClick}
+        onClick={handleClose}
         onKeyDown={e => handleKeyDown(e)}
       />
       <div className={styles.modal}>
         <div className={styles.modalTop}>
           <div>{modalData.title}</div>
-          <button className={styles.xBtn} type='button' onClick={handleBackgroundClick}>
+          <button className={styles.xBtn} type='button' onClick={handleClose}>
             𝖷
           </button>
         </div>
