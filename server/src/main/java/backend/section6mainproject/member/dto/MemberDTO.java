@@ -36,7 +36,7 @@ public class MemberDTO {
         private String nickname;
         @NotSpace(message = "자기소개문구는 공백일 수 없습니다.")
         private String introduction;
-        @NotSpace(message = "걷기 기록의 공개설정여부를 설정해주세요.")
+
         private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting;
     }
     @Getter
