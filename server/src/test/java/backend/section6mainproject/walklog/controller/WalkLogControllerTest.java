@@ -17,8 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.*;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,8 +62,7 @@ public class WalkLogControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(content)
-                );
-
+                                );
         // then
         actions
                 .andExpect(status().isCreated())
@@ -126,6 +128,20 @@ public class WalkLogControllerTest {
 
     }
 
+    @Test
+    void deleteWalkLogTest() throws Exception {
+        //WalkLogRepository에 저장되어있던 1번 데이터가 WalkLogService.deleteWalkLog에 의해서 삭제되어야함
+        //given
+        doNothing().when(walkLogService).deleteWalkLog(Mockito.anyLong());
+        //when
+        ResultActions perform = mockMvc.perform(
+                        delete("/walk-logs/1"))
+                .andExpect(status().isNoContent());
+        //then
+        verify(walkLogService, times(1)).deleteWalkLog(Mockito.anyLong());
+
+    }
+
     private WalkLog createWalkLog() {
         Long memberId = 1L;
         Member member = new Member();
@@ -142,4 +158,6 @@ public class WalkLogControllerTest {
         walkLog.setMessage("안녕하십니까");
         return walkLog;
     }
+
+
 }
