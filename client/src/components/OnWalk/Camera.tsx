@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './Camera.module.scss'
 
 function Camera() {
+  const [hasPhoto, setHasPhoto] = useState(false)
+
   const photoRef = useRef<HTMLCanvasElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -19,16 +21,35 @@ function Camera() {
       .catch(err => console.error(err))
   }
 
-  const takePhoto = () => {
-    console.log('촬영')
-  }
-
   const handleCancel = () => {
     console.log('카메라 취소 입력폼 돌아가기')
   }
 
+  const takePhoto = () => {
+    if (photoRef.current && videoRef.current) {
+      const photo = photoRef.current
+      photo.width = videoRef.current.offsetWidth
+      photo.height = videoRef.current.offsetHeight
+
+      const context = photo.getContext('2d')
+      console.log(context)
+      context.drawImage(videoRef.current, 0, 0, photo.width, photo.height)
+      setHasPhoto(true)
+    }
+  }
+
+  const cancelPhoto = () => {
+    console.log('재촬영')
+  }
+
   useEffect(() => {
     getVideo()
+
+    console.log('window', window.innerWidth, window.innerHeight)
+    console.log('document', document.body.clientWidth, document.body.clientHeight)
+    console.log('videoref', videoRef.current.offsetWidth, videoRef.current.offsetHeight)
+    console.log('screen', screen.width, screen.height)
+    console.log('screenavail', screen.availWidth, screen.availHeight)
 
     return () => {
       if (videoRef.current?.srcObject instanceof MediaStream) {
@@ -42,13 +63,26 @@ function Camera() {
   }, [photoRef])
 
   return (
-    <div>
-      <video ref={videoRef} autoPlay playsInline className={styles.camera}>
-        <track kind='captions' />
-      </video>
-      <div>
-        <button type='button' onClick={takePhoto} className={styles.shotBtn} aria-label='shotBtn' />
-        <button type='button' onClick={handleCancel} className={styles.cancelBtn}>
+    <div className={styles.container}>
+      <div className={hasPhoto ? styles.hidden : ''}>
+        <video ref={videoRef} autoPlay playsInline className={styles.camera}>
+          <track kind='captions' />
+        </video>
+        <div>
+          <button
+            type='button'
+            onClick={takePhoto}
+            className={styles.shotBtn}
+            aria-label='shotBtn'
+          />
+          <button type='button' onClick={handleCancel} className={styles.cancelBtn}>
+            X
+          </button>
+        </div>
+      </div>
+      <div className={hasPhoto ? '' : styles.hidden}>
+        <canvas ref={photoRef} className={styles.photo} />
+        <button type='button' onClick={cancelPhoto}>
           X
         </button>
       </div>

@@ -1,23 +1,38 @@
+.container {
+  background-color: black;
+  height: 100vh;
+}
+
 .camera {
   position: fixed;
-  height: 100vh;
+  top: 10%;
   width: 100vw;
-  object-fit: cover;
+  height: calc(100vw * 4 / 3);
+  object-fit: fill;
+}
+
+.hidden {
+  display: none;
 }
 
 .cancelBtn {
   position: fixed;
-  top: 5%;
   left: 90%;
   font-size: 20px;
   font-weight: 900;
+  color: white;
 }
 
 .shotBtn {
   position: fixed;
   bottom: 5%;
-  left: 50%;
+  left: 45%;
   right: 50%;
   border: 3rem solid white;
   border-radius: 50%;
+}
+
+.photo {
+  position: fixed;
+  top: 10%;
 }
