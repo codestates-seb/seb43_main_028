@@ -51,6 +51,7 @@ public class MemberServiceImpl implements MemberService{
                 optionalMember.orElseThrow(() ->
                         new RuntimeException("회원이 존재하지 않습니다"));
         findMember.getWalkLogs().stream().forEach(walkLog -> walkLog.getWalkLogId());
+        distinguishQuittedMember(findMember);
         return findMember;
     }
     @Override
@@ -78,6 +79,12 @@ public class MemberServiceImpl implements MemberService{
     public Member findMember(Long memberId) {
         Member member = findVerifiedMember(memberId);
         return member;
+    }
+
+    private void distinguishQuittedMember(Member member) {
+        if(member.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
+            throw new RuntimeException("본 회원님은 이전에 탈퇴하셨습니다.");
+        }
     }
 
 }
