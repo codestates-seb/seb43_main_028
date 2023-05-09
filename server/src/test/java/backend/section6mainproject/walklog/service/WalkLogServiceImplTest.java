@@ -73,7 +73,7 @@ public class WalkLogServiceImplTest {
         given(walkLogRepository.save(walkLog)).willReturn(walkLog);
 
         //when
-        WalkLog updatedWalkLog = walkLogServiceImpl.updateWalkLog(patchWalkLog);
+        WalkLog updatedWalkLog = walkLogService.updateWalkLog(patchWalkLog);
 
         //then
         assertThat(updatedWalkLog).isNotNull();
@@ -108,7 +108,7 @@ public class WalkLogServiceImplTest {
 
         //when
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            walkLogServiceImpl.updateWalkLog(walkLog);
+            walkLogService.updateWalkLog(walkLog);
         });
         //then
         assertThat(exception.getMessage()).isEqualTo("WalkLog를 찾을 수 없습니다");

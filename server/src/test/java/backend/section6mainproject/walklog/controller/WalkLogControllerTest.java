@@ -67,23 +67,6 @@ public class WalkLogControllerTest {
                 .andExpect(header().string("Location", is(startsWith("/walk-logs"))));
     }
 
-    private WalkLog createWalkLog() {
-        Long memberId = 1L;
-        Member member = new Member();
-        member.setMemberId(memberId);
-        member.setEmail("admin1@gmail.com");
-        member.setPassword("12345");
-        member.setNickname("거터볼래1");
-        member.setIntroduction("안녕하세요1");
-        //온전한 WalkLog 객체
-        Long walkLogId = 1L;
-        WalkLog walkLog = new WalkLog();
-        walkLog.setMember(member);
-        walkLog.setWalkLogId(walkLogId);
-        walkLog.setMessage("안녕하십니까");
-        return walkLog;
-    }
-
     @Test
     void patchWalkLogTest() throws Exception {
         //given
@@ -143,4 +126,20 @@ public class WalkLogControllerTest {
 
     }
 
+    private WalkLog createWalkLog() {
+        Long memberId = 1L;
+        Member member = new Member();
+        member.setMemberId(memberId);
+        member.setEmail("admin1@gmail.com");
+        member.setPassword("12345");
+        member.setNickname("거터볼래1");
+        member.setIntroduction("안녕하세요1");
+        //온전한 WalkLog 객체
+        Long walkLogId = 1L;
+        WalkLog walkLog = new WalkLog();
+        walkLog.setMember(member);
+        walkLog.setWalkLogId(walkLogId);
+        walkLog.setMessage("안녕하십니까");
+        return walkLog;
+    }
 }
