@@ -2,7 +2,7 @@ package backend.section6mainproject.content.service;
 
 import backend.section6mainproject.content.entity.WalkLogContent;
 import backend.section6mainproject.content.repository.WalkLogContentRepository;
-import backend.section6mainproject.walklog.entity.WalkLog;
+import backend.section6mainproject.helper.image.StorageService;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ public class WalkLogContentServiceImpl implements WalkLogContentService {
     @Override
     public WalkLogContent createWalkLogContent(WalkLogContent walkLogContent, MultipartFile contentImage) {
         walkLogService.findVerifiedWalkLog(walkLogContent.getWalkLog().getWalkLogId());
-        String imageFileName = storageService.store(contentImage);
-        walkLogContent.setImageFileName(imageFileName);
+        String imageKey = storageService.store(contentImage, "content");
+        walkLogContent.setImageKey(imageKey);
         return walkLogContentRepository.save(walkLogContent);
     }
 }
