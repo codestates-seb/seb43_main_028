@@ -32,8 +32,7 @@ function Camera() {
       photo.height = videoRef.current.offsetHeight
 
       const context = photo.getContext('2d')
-      console.log(context)
-      context.drawImage(videoRef.current, 0, 0, photo.width, photo.height)
+      context?.drawImage(videoRef.current, 0, 0, photo.width, photo.height)
       setHasPhoto(true)
     }
   }
@@ -54,7 +53,6 @@ function Camera() {
 
     return () => {
       if (videoRef.current?.srcObject instanceof MediaStream) {
-        console.log('이전 미디어 스트림 삭제') // 이전 미디어 스트림 삭제
         const videoTrack = videoRef.current.srcObject?.getTracks()
         videoTrack?.forEach((track: MediaStreamTrack) => {
           track.stop()
@@ -74,7 +72,7 @@ function Camera() {
             type='button'
             onClick={takePhoto}
             className={styles.shotBtn}
-            aria-label='shotBtn'
+            aria-label='shot button'
           />
           <button type='button' onClick={handleCancel} className={styles.cancelBtn}>
             X
