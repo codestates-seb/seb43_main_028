@@ -41,6 +41,12 @@ public class WalkLogServiceImpl implements WalkLogService {
         return findVerifiedWalkLog(walkLogId);
     }
     @Override
+    public void deleteWalkLog(Long walkLogId){
+        WalkLog findWalkLog = findVerifiedWalkLog(walkLogId);
+        walkLogRepository.delete(findWalkLog);
+    }
+
+    @Override
     public WalkLog findVerifiedWalkLog(Long walkLogId) {
         Optional<WalkLog> findWalkLogById = walkLogRepository.findById(walkLogId);
 
