@@ -8,6 +8,7 @@ public interface WalkLogService {
     WalkLog updateWalkLog(WalkLog walkLog);
 
     WalkLog findWalkLog(Long walkLogId);
+    void deleteWalkLog(Long walkLogId);
     WalkLog findVerifiedWalkLog(Long walkLogId);
 
 }

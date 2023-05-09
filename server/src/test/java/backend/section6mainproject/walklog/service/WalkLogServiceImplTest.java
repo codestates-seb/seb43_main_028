@@ -17,9 +17,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class WalkLogServiceImplTest {
@@ -124,5 +125,19 @@ public class WalkLogServiceImplTest {
         WalkLog actualWalkLog = walkLogService.findWalkLog(1L);
 
         Assertions.assertEquals(expectedWalkLog, actualWalkLog);
+    }
+    @Test
+    public void testDeleteWalkLog() {
+        // Given
+        WalkLog walkLog = createWalkLog();
+
+        // When
+        when(walkLogRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(walkLog));
+        doNothing().when(walkLogRepository).delete(walkLog);
+        walkLogService.deleteWalkLog(1L);
+
+        // Then
+        verify(walkLogRepository, times(1)).delete(walkLog);
+
     }
 }
