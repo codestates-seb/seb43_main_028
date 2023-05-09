@@ -117,7 +117,7 @@ public class WalkLogServiceImplTest {
         WalkLog expectedWalkLog = new WalkLog();
         expectedWalkLog.setWalkLogId(1L);
 
-        when(walkLogRepository.findById(1L)).thenReturn(Optional.of(expectedWalkLog));
+        given(walkLogRepository.findById(1L)).willReturn(Optional.of(expectedWalkLog));
 
         WalkLog actualWalkLog = walkLogService.findWalkLog(1L);
 
