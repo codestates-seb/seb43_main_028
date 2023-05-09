@@ -13,6 +13,8 @@ import {
   NotFound,
 } from '../pages'
 
+import Test from '../components/common/Test'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -28,6 +30,7 @@ const router = createBrowserRouter([
       { path: 'history', element: <HistoryList /> },
       { path: 'signin', element: <SignIn /> },
       { path: 'signup', element: <SignUp /> },
+      { path: 'test', element: <Test /> },
     ],
   },
 ])
