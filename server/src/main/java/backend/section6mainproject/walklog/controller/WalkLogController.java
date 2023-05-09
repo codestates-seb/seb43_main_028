@@ -53,4 +53,11 @@ public class WalkLogController {
         WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDto(walkLog);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    @DeleteMapping("/{walk-log-id}")
+    public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
+        walkLogService.deleteWalkLog(walkLogId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
 }
