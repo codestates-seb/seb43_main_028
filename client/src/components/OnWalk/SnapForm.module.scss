@@ -1,18 +1,30 @@
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+@use '../../styles/color' as C;
+
 .container {
   padding: 20px;
+  background-color: C.$white;
+  height: 100vh;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
+  @include U.flex-c(row, space-between);
   h1 {
-    font-size: 2rem;
-    font-weight: 600;
+    @include T.gray900-bold-20;
   }
   .btnBox {
     display: flex;
     gap: 24px;
   }
+}
+
+.cancelBtn {
+  @include T.gray600-regular-16;
+}
+
+.completeBtn {
+  @include T.gray900-bold-16;
 }
 
 .textInput {

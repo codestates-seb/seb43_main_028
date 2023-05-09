@@ -1,21 +1,28 @@
+@use '../../styles/typography' as T;
+@use '../../styles/color' as C;
+@use '../../styles/utils' as F;
+
 .container {
-  display: flex;
+  @include F.flex-c(row, flex-start, center);
   margin: 24px 0;
   gap: 16px;
-  align-items: center;
 }
 
 .previewBox {
-  background-color: #f3f4f6;
-  color: #808080;
+  background-color: C.$gray100;
   border-radius: 12px;
   text-align: center;
-  padding: 31px 28px;
+  width: 100px;
+  height: 100px;
+  p {
+    @include T.gray600-regular-12;
+    padding: 31px 28px;
+  }
 }
 
 .cameraBtn {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 1px solid #000000;
+  border: 1px solid C.$gray900;
 }

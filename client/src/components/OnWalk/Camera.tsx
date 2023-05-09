@@ -3,6 +3,7 @@ import styles from './Camera.module.scss'
 
 function Camera() {
   const [hasPhoto, setHasPhoto] = useState(false)
+  const [cameraOn, setCameraOn] = useState(true)
 
   const photoRef = useRef<HTMLCanvasElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -22,7 +23,7 @@ function Camera() {
   }
 
   const handleCancel = () => {
-    console.log('카메라 취소 입력폼 돌아가기')
+    setCameraOn(false)
   }
 
   const takePhoto = () => {
@@ -62,7 +63,7 @@ function Camera() {
   }, [photoRef])
 
   return (
-    <div className={styles.container}>
+    <div className={cameraOn ? styles.container : styles.off}>
       <div className={hasPhoto ? styles.hidden : ''}>
         <video ref={videoRef} autoPlay playsInline className={styles.camera}>
           <track kind='captions' />

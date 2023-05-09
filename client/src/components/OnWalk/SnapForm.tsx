@@ -10,10 +10,12 @@ function Header({ onCancel }: HeaderProps) {
     <div className={styles.header}>
       <h1>순간기록 남기기</h1>
       <div className={styles.btnBox}>
-        <button type='button' onClick={onCancel}>
+        <button type='button' onClick={onCancel} className={styles.cancelBtn}>
           취소
         </button>
-        <button type='submit'>완료</button>
+        <button type='submit' className={styles.completeBtn}>
+          완료
+        </button>
       </div>
     </div>
   )
