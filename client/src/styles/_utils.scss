@@ -19,3 +19,8 @@
   justify-content: $justify;
   align-items: $align;
 }
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
