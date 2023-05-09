@@ -34,6 +34,7 @@ public class WalkLogServiceImplTest {
     private WalkLogServiceImpl walkLogService;
 
 
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -47,6 +48,7 @@ public class WalkLogServiceImplTest {
         given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(walkLog);
         // when
         WalkLog createdWalkLog = walkLogService.createWalkLog(walkLog.getMember().getMemberId());
+
 
         // then
         assertNotNull(createdWalkLog);
@@ -71,7 +73,7 @@ public class WalkLogServiceImplTest {
         given(walkLogRepository.save(walkLog)).willReturn(walkLog);
 
         //when
-        WalkLog updatedWalkLog = walkLogService.updateWalkLog(patchWalkLog);
+        WalkLog updatedWalkLog = walkLogServiceImpl.updateWalkLog(patchWalkLog);
 
         //then
         assertThat(updatedWalkLog).isNotNull();
@@ -106,7 +108,7 @@ public class WalkLogServiceImplTest {
 
         //when
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            walkLogService.updateWalkLog(walkLog);
+            walkLogServiceImpl.updateWalkLog(walkLog);
         });
         //then
         assertThat(exception.getMessage()).isEqualTo("WalkLog를 찾을 수 없습니다");
