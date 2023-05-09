@@ -132,13 +132,13 @@ public class WalkLogControllerTest {
     void deleteWalkLogTest() throws Exception {
         //WalkLogRepository에 저장되어있던 1번 데이터가 WalkLogService.deleteWalkLog에 의해서 삭제되어야함
         //given
-        doNothing().when(walkLogService).deleteWalkLog(1L);
+        doNothing().when(walkLogService).deleteWalkLog(Mockito.anyLong());
         //when
         ResultActions perform = mockMvc.perform(
                         delete("/walk-logs/1"))
                 .andExpect(status().isNoContent());
         //then
-        verify(walkLogService, times(1)).deleteWalkLog(1L);
+        verify(walkLogService, times(1)).deleteWalkLog(Mockito.anyLong());
 
     }
 

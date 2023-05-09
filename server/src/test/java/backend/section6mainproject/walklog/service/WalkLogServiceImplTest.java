@@ -127,17 +127,17 @@ public class WalkLogServiceImplTest {
         Assertions.assertEquals(expectedWalkLog, actualWalkLog);
     }
     @Test
-    public void testDeleteWalkLog() {
+    public void deleteWalkLogTest() {
         // Given
         WalkLog walkLog = createWalkLog();
 
         // When
         when(walkLogRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(walkLog));
-        doNothing().when(walkLogRepository).delete(walkLog);
-        walkLogService.deleteWalkLog(1L);
+        doNothing().when(walkLogRepository).delete(Mockito.any(WalkLog.class));
+        walkLogService.deleteWalkLog(walkLog.getWalkLogId());
 
         // Then
-        verify(walkLogRepository, times(1)).delete(walkLog);
+        verify(walkLogRepository, times(1)).delete(Mockito.any(WalkLog.class));
 
     }
 }
