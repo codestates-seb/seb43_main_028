@@ -1,4 +1,5 @@
 @use './reset';
+@use './color' as C;
 
 html {
   font: 400 62.5%/1.5 Pretendard Variable, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
@@ -7,6 +8,8 @@ html {
 
 body {
   font-size: 1.6rem;
+  color: C.$gray900;
+  background: C.$gray100;
 }
 
 #root {
