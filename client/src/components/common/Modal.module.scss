@@ -1,0 +1,78 @@
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation-duration: 0.3s;
+  animation-name: fadein;
+  animation-timing-function: linear;
+}
+
+.modal {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  padding: 40px 20px 40px 20px;
+  height: fit-content;
+  background-color: white;
+  z-index: 1001;
+  animation-duration: 0.3s;
+  animation-name: slidein;
+}
+
+.modalTop {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  > div {
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+}
+
+.optionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-size: 1.8rem;
+  > li {
+    width: fit-content;
+  }
+}
+
+.xBtn {
+  font-size: 1.2rem;
+  font-weight: 1000;
+  background-color: #dbdbdb;
+  width: 24px;
+  height: 28px;
+  padding: 5px 5px 5px 5px;
+  border-radius: 50%;
+}
+
+@keyframes slidein {
+  from {
+    bottom: -300%;
+  }
+  to {
+    bottom: 0;
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
