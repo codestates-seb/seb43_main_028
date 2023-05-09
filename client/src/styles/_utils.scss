@@ -5,16 +5,12 @@
   color: $color;
 }
 
-@mixin flexbox() {
+@mixin flex-c($direction: row, $justify: center, $align: center) {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-}
-
-@mixin flex-c($direction: row, $justify: center, $align: center) {
-  @include flexbox;
   flex-direction: $direction;
   justify-content: $justify;
   align-items: $align;
