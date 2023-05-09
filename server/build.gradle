@@ -29,6 +29,9 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// https://mvnrepository.com/artifact/software.amazon.awssdk/s3
+	implementation 'software.amazon.awssdk:s3:2.20.17'
 }
 
 tasks.named('test') {

@@ -2,7 +2,7 @@ package backend.section6mainproject.coordinate;
 
 import backend.section6mainproject.coordinate.interceptor.ConnectionInterceptor;
 import backend.section6mainproject.coordinate.interceptor.SubscribeInterceptor;
-import backend.section6mainproject.member.service.MemberService;
+import backend.section6mainproject.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -15,7 +15,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
 public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
-    private final MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/sub");
@@ -30,7 +30,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws/walk-logs")
-                .addInterceptors(new ConnectionInterceptor(memberService))
+                .addInterceptors(new ConnectionInterceptor(memberServiceImpl))
                 .setAllowedOrigins("*");
     }
 
