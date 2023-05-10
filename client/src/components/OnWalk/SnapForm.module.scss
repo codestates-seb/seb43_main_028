@@ -1,0 +1,37 @@
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+@use '../../styles/color' as C;
+
+.container {
+  padding: 20px;
+  background-color: C.$white;
+  height: 100vh;
+}
+
+.header {
+  @include U.flex-c(row, space-between);
+  h1 {
+    @include T.gray900-bold-20;
+  }
+  .btnBox {
+    @include U.flex-c(row);
+    gap: 24px;
+  }
+}
+
+.cancelBtn {
+  @include T.gray600-regular-16;
+}
+
+.completeBtn {
+  @include T.gray900-bold-16;
+}
+
+.textInput {
+  border: none;
+  background-color: #f3f4f6;
+  border-radius: 12px;
+  min-height: 240;
+  width: 100%;
+  padding: 20px;
+}
