@@ -17,6 +17,22 @@ function Map() {
   const [currentLocation, setCurrentLocation] = useState<LatLng | undefined>(undefined)
   const [locations, setLocations] = useState<LatLng[]>([])
   const [isLoadMap, setIsLoadMap] = useState(false)
+  const [distance, setDistance] = useState(0)
+
+  function getDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+    function deg2rad(deg: number): number {
+      return deg * (Math.PI / 180)
+    }
+    const R = 6371 // Radius of the earth in km
+    const dLat = deg2rad(lat2 - lat1) // deg2rad below
+    const dLon = deg2rad(lng2 - lng1)
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    const d = (R * c) / 1000 // Distance in m
+    return d
+  }
 
   useEffect(() => {
     let prevLocation: LatLng | undefined // 이전 위치
@@ -40,8 +56,20 @@ function Map() {
           }
           // 직전 좌표가 있으면 locations 배열에 현재 위치 추가
           if (currentLocation && prevLocation) {
-            setLocations(prevLocations => [...prevLocations, location])
-            prevLocation = location
+            // 직전 좌표가 존재하면 현재 좌표와 직전 좌표의 거리를 계산
+            const distanceFromLastPosition = getDistance(
+              currentLocation.lat,
+              currentLocation.lng,
+              prevLocation.lat,
+              prevLocation.lng
+            )
+
+            // distance 상태를 갱신
+            setDistance(distanceFromLastPosition)
+            if (distanceFromLastPosition >= 5) {
+              setLocations(prevLocations => [...prevLocations, location])
+              prevLocation = location
+            }
           }
         },
         err => {
@@ -127,6 +155,11 @@ function Map() {
             ? `Lat: ${currentLocation.lat.toFixed(6)}, Lng: ${currentLocation.lng.toFixed(6)}`
             : '-'}
         </div>
+      </div>
+      <div className={styles.distanceBox}>
+        <div>직전 좌표와의 거리: </div>
+        <div>{distance.toFixed(2)}</div>
+        <div>m</div>
       </div>
       <div className={styles.locationInfoBox}>
         <div>좌표 리스트</div>
