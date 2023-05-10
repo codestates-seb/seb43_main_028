@@ -160,6 +160,7 @@ function Map() {
               ],
               mapTypeControl: false, // 지도 위성 끄기
               streetViewControl: false, // 사람 모양 끄기
+              gestureHandling: 'greedy', // 한 손 가락으로 지도 핸들링
             }}
           >
             {currentLocation && <Marker position={currentLocation} />}
