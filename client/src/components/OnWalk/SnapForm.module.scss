@@ -14,7 +14,7 @@
     @include T.gray900-bold-20;
   }
   .btnBox {
-    display: flex;
+    @include U.flex-c(row);
     gap: 24px;
   }
 }

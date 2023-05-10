@@ -15,8 +15,8 @@ function Camera({ setCamera, setPreview }: CameraProps) {
   const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({
-        video: { facingMode: 'user' },
-        // 후면 카메라 video: { facingMode: { exact: "environment" } }
+        video: { facingMode: { exact: 'environment' } },
+        // 전면 카메라 video: { facingMode: 'user' },
       })
       .then(stream => {
         if (videoRef.current) {
