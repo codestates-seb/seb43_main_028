@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Home() {
-  return <div>Home</div>
+  return <Link to='/maptest'>link to maptest</Link>
 }
