@@ -1,5 +1,7 @@
 package backend.section6mainproject.walklog.service;
 
+import backend.section6mainproject.exception.BusinessLogicException;
+import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.utils.CustomBeanUtils;
@@ -59,7 +61,7 @@ public class WalkLogServiceImpl implements WalkLogService {
 
         WalkLog walkLog =
                 findWalkLogById.orElseThrow(() ->
-                        new RuntimeException("WalkLog를 찾을 수 없습니다")); //잘못된 문구 수정
+                        new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND)); //잘못된 문구 수정
         return walkLog;
     }
 }

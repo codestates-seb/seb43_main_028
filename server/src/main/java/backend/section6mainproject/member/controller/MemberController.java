@@ -33,9 +33,7 @@ public class MemberController {
 
     @PostMapping("/sign")
     public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post memberPostDto) {
-        Member member = mapper.memberPostDtoToMember(memberPostDto);
-        Member createdMember = memberService.createMember(member);
-        Long memberId = createdMember.getMemberId();
+        Long memberId = memberService.createMember(mapper.memberPostDtoToMember(memberPostDto));
         URI location = UriComponentsBuilder
                 .newInstance()
                 .path(MEMBER_DEFAULT_URL + "/" + memberId)
@@ -51,10 +49,8 @@ public class MemberController {
                                       @RequestPart MultipartFile profileImage) {
         patch.setMemberId(memberId);
 
-        Member member = mapper.memberPatchDtoToMember(patch);
-        Member updatedMember = memberService.updateMember(member, profileImage);
+        MemberDTO.Response response = mapper.memberToMemberResponseDto(memberService.updateMember(mapper.memberPatchDtoToMember(patch), profileImage));
 
-        MemberDTO.Response response = mapper.memberToMemberResponseDto(updatedMember);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -62,8 +58,7 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") @Positive Long memberId) {
-        Member member = memberService.findMember(memberId);
-        return new ResponseEntity<>(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.memberToMemberResponseDto(memberService.findMember(memberId)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
