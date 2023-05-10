@@ -20,6 +20,7 @@ function Map() {
   const [distance, setDistance] = useState(0)
 
   console.log(locations)
+  console.log(currentLocation)
 
   useEffect(() => {
     setIsLoadMap(true)
