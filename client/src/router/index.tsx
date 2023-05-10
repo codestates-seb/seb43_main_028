@@ -14,6 +14,7 @@ import {
 } from '../pages'
 
 import Test from '../components/common/Test'
+import Map from '../components/common/Map'
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: 'signin', element: <SignIn /> },
       { path: 'signup', element: <SignUp /> },
       { path: 'test', element: <Test /> },
+      { path: 'maptest', element: <Map /> },
     ],
   },
 ])
