@@ -19,6 +19,28 @@ function Map() {
   const [isLoadMap, setIsLoadMap] = useState(false)
   const [distance, setDistance] = useState(0)
 
+  console.log(locations)
+
+  useEffect(() => {
+    setIsLoadMap(true)
+    setApiKey(import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '')
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        if (position) {
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          }
+          setCurrentLocation(location)
+        }
+      },
+      function (error) {
+        alert(`Error occurred. Error code: ${error.code}`)
+      },
+      { timeout: 5000 }
+    )
+  }, [])
+
   function getDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
     function deg2rad(deg: number): number {
       return deg * (Math.PI / 180)
@@ -34,9 +56,9 @@ function Map() {
     return d
   }
 
-  useEffect(() => {
+  function watchLocation() {
     let prevLocation: LatLng | undefined // 이전 위치
-    setIsLoadMap(true)
+
     if (navigator.geolocation) {
       console.log('geolocation 실행')
       // 기기의 현재 위치를 탐색하는 브라우저 api 사용
@@ -85,11 +107,7 @@ function Map() {
       console.log('Geolocation is not supported')
     }
     // vercel에서 설정한 환경 변수를 가져옴
-    setApiKey(import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '')
-    return () => {
-      setIsLoadMap(false)
-    }
-  }, [currentLocation, locations])
+  }
 
   return (
     <>
@@ -157,7 +175,11 @@ function Map() {
           </GoogleMap>
         </LoadScript>
       ) : null}
-
+      <div className={styles.btnBox}>
+        <button type='button' className={styles.btn} onClick={watchLocation}>
+          watchPosition
+        </button>
+      </div>
       <div className={styles.distanceBox}>
         <div>현재 좌표: </div>
         <div>
