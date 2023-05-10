@@ -1,5 +1,6 @@
-import { GoogleMap, LoadScript } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import { useState, useEffect } from 'react'
+import styles from './Map.module.scss'
 
 // 좌표 테스트
 
@@ -19,6 +20,7 @@ function Map() {
 
   useEffect(() => {
     let prevLocation: LatLng | undefined // 이전 위치
+    setIsLoadMap(true)
     if (navigator.geolocation) {
       console.log('geolocation 실행')
       // 기기의 현재 위치를 탐색하는 브라우저 api 사용
@@ -65,22 +67,28 @@ function Map() {
     <>
       {isLoadMap ? (
         <LoadScript googleMapsApiKey={apiKey} onLoad={() => console.log('Loaded!')}>
-          <GoogleMap mapContainerStyle={containerStyle} zoom={14} center={currentLocation} />
+          <GoogleMap mapContainerStyle={containerStyle} zoom={14} center={currentLocation}>
+            {currentLocation && <Marker position={currentLocation} />}
+          </GoogleMap>
         </LoadScript>
       ) : null}
 
-      <ul>
-        {locations.length >= 1
-          ? locations.map(location => {
-              return (
-                <li key={Math.random()}>
-                  <div>{location.lat.toFixed(4)}</div>
-                  <div>{location.lng.toFixed(4)}</div>
-                </li>
-              )
-            })
-          : null}
-      </ul>
+      <div className={styles.distanceBox}>
+        <div>현재 좌표: </div>
+        <div>
+          {currentLocation
+            ? `Lat: ${currentLocation.lat.toFixed(6)}, Lng: ${currentLocation.lng.toFixed(6)}`
+            : '-'}
+        </div>
+      </div>
+      <div className={styles.locationInfoBox}>
+        <div>좌표 리스트</div>
+        {locations.map(location => {
+          return (
+            <p key={Math.random()}>{`${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`}</p>
+          )
+        })}
+      </div>
     </>
   )
 }
