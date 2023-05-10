@@ -2,22 +2,20 @@ package backend.section6mainproject.walklog.service;
 
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.service.MemberService;
+import backend.section6mainproject.utils.CustomBeanUtils;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -30,17 +28,13 @@ public class WalkLogServiceImplTest {
 
     @Mock
     private MemberService memberService;
+    @Mock
+    private CustomBeanUtils<WalkLog> beanUtils;
+
 
     @InjectMocks
     private WalkLogServiceImpl walkLogService;
 
-
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-        walkLogService = new WalkLogServiceImpl(walkLogRepository, memberService);
-    }
     @Test
     public void testCreateWalkLog() {
         // given
@@ -70,11 +64,12 @@ public class WalkLogServiceImplTest {
         patchWalkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
         patchWalkLog.setWalkLogId(1L);
 
-        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
-        given(walkLogRepository.save(walkLog)).willReturn(walkLog);
+        given(walkLogRepository.findById(eq(1L))).willReturn(Optional.of(walkLog));
+        given(beanUtils.copyNonNullProperties(Mockito.any(WalkLog.class),Mockito.any(WalkLog.class))).willReturn(Mockito.any(WalkLog.class));
+        given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(eq(patchWalkLog));
 
         //when
-        WalkLog updatedWalkLog = walkLogService.updateWalkLog(patchWalkLog);
+        WalkLog updatedWalkLog = walkLogService.updateWalkLog(eq(patchWalkLog));
 
         //then
         assertThat(updatedWalkLog).isNotNull();
