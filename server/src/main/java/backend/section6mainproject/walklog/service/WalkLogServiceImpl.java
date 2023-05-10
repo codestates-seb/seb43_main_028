@@ -2,6 +2,7 @@ package backend.section6mainproject.walklog.service;
 
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.service.MemberService;
+import backend.section6mainproject.utils.CustomBeanUtils;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class WalkLogServiceImpl implements WalkLogService {
 
     private final WalkLogRepository walkLogRepository;
     private final MemberService memberService;
+    private final CustomBeanUtils<WalkLog> beanUtils;
 
     @Override
     public WalkLog createWalkLog(Long memberId){
@@ -29,12 +31,9 @@ public class WalkLogServiceImpl implements WalkLogService {
     public WalkLog updateWalkLog(WalkLog walkLog){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
 
-        Optional.ofNullable(walkLog.getWalkLogPublicSetting())
-                .ifPresent(walkLogPublicSetting -> findWalkLog.setWalkLogPublicSetting(walkLogPublicSetting));
-        Optional.ofNullable(walkLog.getMessage())
-                .ifPresent(message -> findWalkLog.setMessage(message));
+        WalkLog updatedWalkLog = beanUtils.copyNonNullProperties(walkLog, findWalkLog);
 
-        return walkLogRepository.save(findWalkLog);
+        return walkLogRepository.save(updatedWalkLog);
     }
     @Override
     public WalkLog findWalkLog(Long walkLogId){
@@ -44,6 +43,14 @@ public class WalkLogServiceImpl implements WalkLogService {
     public void deleteWalkLog(Long walkLogId){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLogId);
         walkLogRepository.delete(findWalkLog);
+    }
+
+    public WalkLog exitWalkLog(WalkLog walkLog){
+        WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
+
+        WalkLog updatedWalkLog = beanUtils.copyNonNullProperties(walkLog, findWalkLog);
+
+        return walkLogRepository.save(updatedWalkLog);
     }
 
     @Override
