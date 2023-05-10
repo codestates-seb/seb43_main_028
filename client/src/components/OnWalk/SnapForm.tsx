@@ -2,7 +2,7 @@ import styles from './SnapForm.module.scss'
 import ImgInput from './ImgInput'
 
 interface HeaderProps {
-  onCancel: React.MouseEventHandler<HTMLButtonElement>
+  onCancel: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 function Header({ onCancel }: HeaderProps) {
@@ -21,7 +21,8 @@ function Header({ onCancel }: HeaderProps) {
   )
 }
 export default function SnapForm() {
-  const handleSubmit = () => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     console.log('순간기록 전송')
   }
 
