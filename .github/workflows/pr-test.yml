@@ -18,6 +18,13 @@ jobs:
         with:
           java-version: 11
           distribution: 'temurin'
+      - name: Set yml file
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./server/src/main/resources/application.yml
+        env:
+          aws-s3.access-key: ${{ secrets.AWS_S3_ACCESS_KEY }}
+          aws-s3.secret-access-key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY }}
 
       # Gradle wrapper 파일 실행 권한주기
       - name: Grant execute permission for gradlew
