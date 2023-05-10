@@ -1,5 +1,7 @@
 package backend.section6mainproject.member.service;
 
+import backend.section6mainproject.exception.BusinessLogicException;
+import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.helper.image.StorageService;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.repository.MemberRepository;
@@ -23,19 +25,19 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Member createMember(Member member) {
+    public Long createMember(Member member) {
         verifyExistsEmail(member.getEmail());
 
         //추후 패스워드 암호화 및 User Role 관련해서 작업필요
 
         Member savedMember = memberRepository.save(member);
-        return savedMember;
+        return savedMember.getMemberId();
     }
 
     private void verifyExistsEmail(String email) {
        Optional<Member> findMember = memberRepository.findByEmail(email);
        if(findMember.isPresent()) {
-           throw new RuntimeException("이미 존재하는 회원의 아이디입니다.");
+           throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
        }
     }
 
@@ -49,7 +51,7 @@ public class MemberServiceImpl implements MemberService{
                 memberRepository.findById(memberId);
         Member findMember =
                 optionalMember.orElseThrow(() ->
-                        new RuntimeException("회원이 존재하지 않습니다"));
+                        new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         findMember.getWalkLogs().stream().forEach(walkLog -> walkLog.getWalkLogId());
         distinguishQuittedMember(findMember);
         return findMember;
@@ -83,7 +85,7 @@ public class MemberServiceImpl implements MemberService{
 
     private void distinguishQuittedMember(Member member) {
         if(member.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
-            throw new RuntimeException("본 회원님은 이전에 탈퇴하셨습니다.");
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
     }
 

@@ -1,5 +1,7 @@
 package backend.section6mainproject.coordinate.interceptor;
 
+import backend.section6mainproject.exception.BusinessLogicException;
+import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.service.MemberServiceImpl;
 import backend.section6mainproject.walklog.entity.WalkLog;
@@ -31,7 +33,7 @@ public class ConnectionInterceptor implements HandshakeInterceptor {
                 break;
             }
         }
-        if(walkLogId == null) throw new RuntimeException("WalkLog is not recording");
+        if(walkLogId == null) throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND);//인증 구현 후 ExceptionCode에 추가예정 "WalkLog is not recording"
         attributes.put("walkLogId", walkLogId);
         return true;
     }
