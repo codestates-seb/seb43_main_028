@@ -89,7 +89,7 @@ function Map() {
     return () => {
       setIsLoadMap(false)
     }
-  }, [currentLocation])
+  }, [currentLocation, locations])
 
   return (
     <>
