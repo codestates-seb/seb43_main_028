@@ -2,7 +2,7 @@ import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api'
 import { useState, useEffect } from 'react'
 import styles from './Map.module.scss'
 
-// 좌표 테스트
+// 좌표 테스트 ing
 
 const containerStyle = {
   width: '340px',
