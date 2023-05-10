@@ -1,4 +1,4 @@
-import SpriteSVG from '../../assets/sprite.svg'
+import SpriteIcon from '../../assets/sprite-icon.svg'
 
 type IconName =
   | 'camera-color'
@@ -22,7 +22,7 @@ interface IconProps {
 export default function Icon({ name, size = 24 }: IconProps) {
   return (
     <svg width={size} height={size}>
-      <use href={`${SpriteSVG}#${name}`} />
+      <use href={`${SpriteIcon}#${name}`} />
     </svg>
   )
 }
