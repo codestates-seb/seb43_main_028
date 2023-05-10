@@ -18,35 +18,33 @@ function Map() {
   const [locations, setLocations] = useState<LatLng[]>([])
   const [isLoadMap, setIsLoadMap] = useState(false)
   const [distance, setDistance] = useState(0)
-
-  console.log(locations)
-  console.log(currentLocation)
+  console.log('currentLocation: ', currentLocation)
 
   useEffect(() => {
     setIsLoadMap(true)
     setApiKey(import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '')
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        if (position) {
-          const location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }
-          setCurrentLocation(location)
-        }
-      },
-      function (error) {
-        alert(`Error occurred. Error code: ${error.code}`)
-      },
-      { timeout: 5000 }
-    )
+    // navigator.geolocation.getCurrentPosition(
+    //   position => {
+    //     if (position) {
+    //       const location = {
+    //         lat: position.coords.latitude,
+    //         lng: position.coords.longitude,
+    //       }
+    //       setCurrentLocation(location)
+    //     }
+    //   },
+    //   function (error) {
+    //     alert(`Error occurred. Error code: ${error.code}`)
+    //   },
+    //   { timeout: 5000 }
+    // )
     return () => {
       setIsLoadMap(false)
     }
   }, [])
 
   function getDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-    console.log(lat1, lng1, lat2, lng2)
+    console.log('getDistance 실행')
     function deg2rad(deg: number): number {
       return deg * (Math.PI / 180)
     }
@@ -58,7 +56,6 @@ function Map() {
       Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     const d = R * c * 1000 // Distance in m
-    console.log('d :', d)
     return d
   }
 
@@ -66,42 +63,48 @@ function Map() {
     let prevLocation: LatLng | undefined // 이전 위치
 
     if (navigator.geolocation) {
-      console.log('geolocation 실행')
       // 기기의 현재 위치를 탐색하는 브라우저 api 사용
       navigator.geolocation.watchPosition(
         position => {
+          console.log('watchPosition 실행')
           // 좌표를 담아둘 객체 정의
           const location = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           }
+          console.log('location: ', location)
           // 현재 위치 갱신
-          setCurrentLocation(location)
+          setCurrentLocation(() => location) // state
           // 직전 좌표가 없으면 현재 watchPosition으로 받은 location을 locations 배열에 추가
           if (!prevLocation) {
             setLocations([location])
             prevLocation = location
+            console.log('prevLocation: ', prevLocation)
           }
           // 직전 좌표가 있으면 locations 배열에 현재 위치 추가
-          if (currentLocation && prevLocation) {
+          console.log('location: ', location, 'prevLocation: ', prevLocation)
+          if (location && prevLocation) {
+            console.log('if문 안으로 들어옴')
             // 직전 좌표가 존재하면 현재 좌표와 직전 좌표의 거리를 계산
             const distanceFromLastPosition = getDistance(
-              currentLocation.lat,
-              currentLocation.lng,
+              location.lat,
+              location.lng,
               prevLocation.lat,
               prevLocation.lng
             )
 
+            console.log('distanceFromLastPosition: ', distanceFromLastPosition)
             // distance 상태를 갱신
             setDistance(distanceFromLastPosition)
             if (distanceFromLastPosition >= 5) {
               setLocations(prevLocations => [...prevLocations, location])
               prevLocation = location
+              setDistance(0)
             }
           }
         },
         err => {
-          console.log(err)
+          console.log('watchPosition Error :', err)
         },
         {
           enableHighAccuracy: true,
@@ -112,7 +115,6 @@ function Map() {
     } else {
       console.log('Geolocation is not supported')
     }
-    // vercel에서 설정한 환경 변수를 가져옴
   }
 
   return (
