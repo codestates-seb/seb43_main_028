@@ -3,6 +3,7 @@ package backend.section6mainproject.walklog.dto;
 
 
 
+import backend.section6mainproject.content.dto.WalkLogContentDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateDTO;
 
 import lombok.Getter;
@@ -25,7 +26,25 @@ public class WalkLogDTO {
     @Getter
     @Setter
     @NoArgsConstructor
+    public static class Created {
+        private Long walkLogId;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class EndPost {
+        private Long walkLogId;
+        private String message;
+        private String walkLogPublicSetting;
+    }
+
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
     public static class Patch{
+        private Long walkLogId;
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
@@ -45,21 +64,10 @@ public class WalkLogDTO {
 
         private WalkLogPublicSetting walkLogPublicSetting;
         private List<CoordinateDTO.Sub> coordinates;
-        private List<ContentResponse> walkLogContents;
+        private List<WalkLogContentDTO.Response> walkLogContents;
 
     }
 //패스워드와 나머지 객체들은 반환할 필요가 없어서 제거하고 Dto생성
 
 
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    public static class ContentResponse {
-        //순환참조 방지를 위해 Dto를 따로 만들었습니다.
-
-        private Long walkLogContentId;
-
-        private String text;
-    }
 }
