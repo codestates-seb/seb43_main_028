@@ -37,7 +37,7 @@ public class WalkLogServiceImplTest {
     private WalkLogServiceImpl walkLogService;
 
     @Test
-    public void testCreateWalkLog() {
+    public void createWalkLogTest() {
         // given
         WalkLog walkLog = createWalkLog();
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(walkLog.getMember());
@@ -52,7 +52,7 @@ public class WalkLogServiceImplTest {
     }
 
     @Test
-    public void testUpdateWalkLog(){
+    public void updateWalkLogTest(){
 
         // given
         //WalkLog객체 추가
@@ -78,25 +78,8 @@ public class WalkLogServiceImplTest {
         assertThat(patchWalkLog.getMessage()).isEqualTo(updatedWalkLog.getMessage());
         assertThat(patchWalkLog.getWalkLogPublicSetting()).isEqualTo(updatedWalkLog.getWalkLogPublicSetting());
     }
-
-    private static WalkLog createWalkLog() {
-        Long memberId = 1L;
-        Member member = new Member();
-        member.setMemberId(memberId);
-        member.setEmail("admin1@gmail.com");
-        member.setPassword("12345");
-        member.setNickname("거터볼래1");
-        member.setIntroduction("안녕하세요1");
-        //WalkLog 객체 추가
-        WalkLog walkLog = new WalkLog();
-        walkLog.setMember(member);
-        walkLog.setWalkLogId(1L);
-        walkLog.setMessage("안녕하십니까");
-        return walkLog;
-    }
-
     @Test
-    public void shouldThrowExceptionWhenWalkLogNotFound() {
+    public void shouldThrowExceptionWhenWalkLogNotFoundTest() {
         //given
         WalkLog walkLog = new WalkLog();
         walkLog.setWalkLogId(1L);
@@ -112,6 +95,37 @@ public class WalkLogServiceImplTest {
     }
 
     @Test
+    public void exitWalkLogTest(){
+
+        // given
+        //WalkLog객체 추가
+        WalkLog walkLog = createWalkLog();
+
+        //수정용 WalkLog객체 생성
+        WalkLog patchWalkLog = new WalkLog();
+
+        patchWalkLog.setMessage("안녕하십니끄아악!");
+        patchWalkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        patchWalkLog.setWalkLogId(1L);
+
+        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
+        given(beanUtils.copyNonNullProperties(Mockito.any(WalkLog.class),Mockito.any(WalkLog.class))).willReturn(new WalkLog());
+        given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(patchWalkLog);
+
+        //when
+        patchWalkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        WalkLog updatedWalkLog = walkLogService.exitWalkLog(patchWalkLog);
+
+        //then
+        assertThat(updatedWalkLog).isNotNull();
+        assertThat(updatedWalkLog.getWalkLogId()).isEqualTo(walkLog.getWalkLogId());
+        assertThat(patchWalkLog.getMessage()).isEqualTo(updatedWalkLog.getMessage());
+        assertThat(patchWalkLog.getWalkLogPublicSetting()).isEqualTo(updatedWalkLog.getWalkLogPublicSetting());
+        assertThat(updatedWalkLog.getWalkLogStatus()).isEqualTo(WalkLog.WalkLogStatus.STOP);
+    }
+
+
+    @Test
     public void findWalkLogTest(){
         WalkLog expectedWalkLog = new WalkLog();
         expectedWalkLog.setWalkLogId(1L);
@@ -122,6 +136,7 @@ public class WalkLogServiceImplTest {
 
         Assertions.assertEquals(expectedWalkLog, actualWalkLog);
     }
+
     @Test
     public void deleteWalkLogTest() {
         // Given
@@ -135,5 +150,20 @@ public class WalkLogServiceImplTest {
         // Then
         verify(walkLogRepository, times(1)).delete(Mockito.any(WalkLog.class));
 
+    }
+    private static WalkLog createWalkLog() {
+        Long memberId = 1L;
+        Member member = new Member();
+        member.setMemberId(memberId);
+        member.setEmail("admin1@gmail.com");
+        member.setPassword("12345");
+        member.setNickname("거터볼래1");
+        member.setIntroduction("안녕하세요1");
+        //WalkLog 객체 추가
+        WalkLog walkLog = new WalkLog();
+        walkLog.setMember(member);
+        walkLog.setWalkLogId(1L);
+        walkLog.setMessage("안녕하십니까");
+        return walkLog;
     }
 }

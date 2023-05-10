@@ -105,6 +105,42 @@ public class WalkLogControllerTest {
                 .andExpect(jsonPath("$.message").value(updatedWalkLog.getMessage()));
 //                .andExpect(jsonPath("$.walkLogPublicSetting").value(response.getWalkLogPublicSetting())); enum이라 에러가 발생하는듯함
     }
+    @Test
+    void endWalkLogTest() throws Exception {
+        //given
+        ObjectMapper objectMapper = new ObjectMapper();
+        WalkLog walkLog = createWalkLog();
+
+        //WalkLogDto.Patch 객체가 1개 필요
+        WalkLogDTO.EndPost endPostDTO = new WalkLogDTO.EndPost();
+        endPostDTO.setMessage("안녕하십니끄아악!");
+        endPostDTO.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        //updated된 WalkLog 객체
+        WalkLog finishedWalkLog = new WalkLog();
+        finishedWalkLog.setMember(walkLog.getMember());
+        finishedWalkLog.setWalkLogId(walkLog.getWalkLogId());
+        finishedWalkLog.setMessage("안녕하십니끄아악!");
+        finishedWalkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        //Json 데이터 생성
+        String jasonEndWalkLogDTO = objectMapper.writeValueAsString(endPostDTO);
+        //walkLogService.updateWalkLog메서드 로직 Mock수행
+        given(walkLogService.exitWalkLog(Mockito.any(WalkLog.class))).willReturn(finishedWalkLog);
+        //when
+        //patchWalkLog메서드를 수행 했을 때
+        ResultActions perform = mockMvc.perform(
+                post("/walk-logs/" + walkLog.getWalkLogId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(jasonEndWalkLogDTO));
+
+        //then
+        perform
+        //예상되는 결과는 status가 isok
+                .andExpect(status().isOk())
+        //WalkLogDto.Patch객체로 전달받은 데이터들이 변경되었는지확인
+                .andExpect(jsonPath("$.message").value(finishedWalkLog.getMessage()))
+                .andExpect(jsonPath("$.walkLogPublicSetting").value(String.valueOf(finishedWalkLog.getWalkLogPublicSetting())));
+    }
 
     @Test
     void getWalkLogTest() throws Exception {
