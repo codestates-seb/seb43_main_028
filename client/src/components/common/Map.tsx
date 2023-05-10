@@ -1,4 +1,4 @@
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api'
 import { useState, useEffect } from 'react'
 import styles from './Map.module.scss'
 
@@ -144,6 +144,16 @@ function Map() {
             }}
           >
             {currentLocation && <Marker position={currentLocation} />}
+            {locations.length > 1 && (
+              <Polyline
+                path={locations}
+                options={{
+                  strokeColor: '#55de50',
+                  strokeOpacity: 1,
+                  strokeWeight: 6,
+                }}
+              />
+            )}
           </GoogleMap>
         </LoadScript>
       ) : null}
