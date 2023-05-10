@@ -4,7 +4,7 @@ import backend.section6mainproject.member.entity.Member;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
-    Member createMember(Member member);
+    Long createMember(Member member);
 
     Member updateMember(Member member, MultipartFile profileImage);
 
