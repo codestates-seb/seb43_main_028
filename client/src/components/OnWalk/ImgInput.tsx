@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import styles from './ImgInput.module.scss'
 import Modal from '../common/Modal'
 import Camera from './Camera'
+import Icon from '../common/Icon'
 
 export default function ImgInput() {
   const [preview, setPreview] = useState<string>('')
@@ -79,7 +80,7 @@ export default function ImgInput() {
       </div>
 
       <button type='button' className={styles.cameraBtn} onClick={handleModal}>
-        카메라 아이콘
+        <Icon name='camera-oval' size={48} />
       </button>
       {modal && <Modal modalData={modalData} onClose={handleModal} />}
       {!modal && camera && <Camera setCamera={setCamera} setPreview={setPreview} />}
