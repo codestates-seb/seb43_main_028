@@ -11,6 +11,8 @@ type IconName =
   | 'refresh'
   | 'time-gray'
   | 'trash-gray'
+  | 'no-image'
+  | 'arrow-right'
 
 interface IconProps {
   name: IconName
