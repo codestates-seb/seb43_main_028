@@ -15,6 +15,7 @@ function Map() {
   const [apiKey, setApiKey] = useState('')
   const [currentLocation, setCurrentLocation] = useState<LatLng | undefined>(undefined)
   const [locations, setLocations] = useState<LatLng[]>([])
+  const [isLoadMap, setIsLoadMap] = useState(false)
 
   useEffect(() => {
     let prevLocation: LatLng | undefined // 이전 위치
@@ -53,18 +54,21 @@ function Map() {
     } else {
       console.log('Geolocation is not supported')
     }
-  }, [currentLocation, locations])
-
-  useEffect(() => {
-    const { VITE_GOOGLE_MAPS_API_KEY } = import.meta.env
-    setApiKey(VITE_GOOGLE_MAPS_API_KEY)
-  }, [])
+    // vercel에서 설정한 환경 변수를 가져옴
+    setApiKey(import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '')
+    return () => {
+      setIsLoadMap(false)
+    }
+  }, [currentLocation])
 
   return (
     <>
-      <LoadScript googleMapsApiKey={apiKey} onLoad={() => console.log('Loaded!')}>
-        <GoogleMap mapContainerStyle={containerStyle} zoom={14} center={currentLocation} />
-      </LoadScript>
+      {isLoadMap ? (
+        <LoadScript googleMapsApiKey={apiKey} onLoad={() => console.log('Loaded!')}>
+          <GoogleMap mapContainerStyle={containerStyle} zoom={14} center={currentLocation} />
+        </LoadScript>
+      ) : null}
+
       <ul>
         {locations.length >= 1
           ? locations.map(location => {
