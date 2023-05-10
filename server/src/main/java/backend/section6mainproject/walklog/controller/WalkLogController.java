@@ -24,33 +24,41 @@ public class WalkLogController {
     private final WalkLogMapper walkLogMapper;
     @PostMapping
     public ResponseEntity postWalkLog(@RequestBody WalkLogDTO.Post walkLogPostDTO){
-
+        //멤버 인증 로직을 한 다음 멤버를 가져오는 로직(추후 작성예정)
         Long memberId = walkLogPostDTO.getMemberId();
-        WalkLog createdWalkLog = walkLogService.createWalkLog(memberId);
-        Long walkLogId = createdWalkLog.getWalkLogId();
+        WalkLogDTO.Created created = walkLogMapper.walkLogToWalkLogCreatedDTO(walkLogService.createWalkLog(memberId));
         URI location = UriComponentsBuilder
                 .newInstance()
-                .path(WALK_LOG_DEFAULT_URL + "/" + walkLogId)
-                .buildAndExpand(walkLogId)
+                .path(WALK_LOG_DEFAULT_URL + "/" + created)
+                .buildAndExpand(created)
                 .toUri();
         return ResponseEntity.created(location).build();
+    }
+    @PostMapping("/{walk-log-id}")
+    public ResponseEntity endWalkLog(@PathVariable("walk-log-id") @Positive Long walkLogId,
+            @RequestBody WalkLogDTO.EndPost walkLogEndPostDTO){
+        //멤버 인증 로직은 추후에 반영
+        walkLogEndPostDTO.setWalkLogId(walkLogId);
+
+        WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDTO(
+                walkLogService.exitWalkLog(
+                walkLogMapper.walkLogEndPostDTOtoWalkLog(walkLogEndPostDTO)));
+        return new ResponseEntity(response,HttpStatus.OK);
     }
 
     @PatchMapping("/{walk-log-id}")
     public ResponseEntity patchWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId,
                                        @RequestBody WalkLogDTO.Patch walkLogPatchDTO){
-        WalkLog walkLog = walkLogMapper.walkLogPatchDtoToWalkLog(walkLogPatchDTO);
-        walkLog.setWalkLogId(walkLogId);
-        WalkLog updatedWalkLog = walkLogService.updateWalkLog(walkLog);
-        WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDto(updatedWalkLog);
+        walkLogPatchDTO.setWalkLogId(walkLogId);
+        WalkLog updatedWalkLog = walkLogService.updateWalkLog(walkLogMapper.walkLogPatchDTOToWalkLog(walkLogPatchDTO));
+        WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDTO(updatedWalkLog);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
     @GetMapping("/{walk-log-id}")
     public ResponseEntity getWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
-        WalkLog walkLog = walkLogService.findWalkLog(walkLogId);
-        WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDto(walkLog);
+        WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDTO(walkLogService.findWalkLog(walkLogId));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping("/{walk-log-id}")
