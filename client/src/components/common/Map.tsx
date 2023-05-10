@@ -40,9 +40,13 @@ function Map() {
       },
       { timeout: 5000 }
     )
+    return () => {
+      setIsLoadMap(false)
+    }
   }, [])
 
   function getDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+    console.log(lat1, lng1, lat2, lng2)
     function deg2rad(deg: number): number {
       return deg * (Math.PI / 180)
     }
@@ -53,7 +57,8 @@ function Map() {
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    const d = (R * c) / 1000 // Distance in m
+    const d = R * c * 1000 // Distance in m
+    console.log('d :', d)
     return d
   }
 
@@ -99,7 +104,7 @@ function Map() {
           console.log(err)
         },
         {
-          enableHighAccuracy: false,
+          enableHighAccuracy: true,
           maximumAge: 0,
           timeout: 5000, // 5초마다 위치 정보 갱신 시도
         }
@@ -192,7 +197,7 @@ function Map() {
       </div>
       <div className={styles.distanceBox}>
         <div>직전 좌표와의 거리: </div>
-        <div>{distance.toFixed(2)}</div>
+        <div>{distance.toFixed(8)}</div>
         <div>m</div>
       </div>
       <div className={styles.locationInfoBox}>
