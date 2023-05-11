@@ -1,17 +1,26 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styles from './SignUp.module.scss'
+import { signUp } from '../apis/user'
 
 function Form() {
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  console.log(email, password)
+  const navigate = useNavigate()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(e)
+    signUp({ displayName, email, password }).then(res => {
+      if (res === 'success') {
+        navigate('/signin')
+      } else if (res === '409-fail') {
+        alert('This email has already been registered.')
+      } else {
+        alert('Sorry, you failed to sign up.')
+      }
+    })
   }
 
   return (
