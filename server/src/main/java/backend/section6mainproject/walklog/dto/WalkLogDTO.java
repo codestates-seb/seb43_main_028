@@ -36,7 +36,7 @@ public class WalkLogDTO {
     public static class EndPost {
         private Long walkLogId;
         private String message;
-        private String walkLogPublicSetting;
+        private WalkLogPublicSetting walkLogPublicSetting;
     }
 
 
