@@ -2,9 +2,26 @@
 import { useState } from 'react'
 import styles from './HistoryList.module.scss'
 import History from '../components/HistoryList/History'
+import Calendar from '../components/HistoryList/Calendar'
+
+interface ItemITF {
+  id: number
+  snapTime: string
+  imageUrl: string
+  text: string
+}
+
+interface DataITF {
+  id: number
+  mapImg: string
+  createdAt: string
+  time: string
+  message: string
+  walkLogContents: ItemITF[]
+}
 
 //  historylist?page=1&size=10&sortBy=questionId
-const Data = [
+const Data: DataITF[] = [
   {
     id: 0,
     mapImg: 'https://developers.kakaomobility.com/_nuxt/img/img_api4.507c175.png',
@@ -97,6 +114,7 @@ const Data = [
 
 export default function HistoryList() {
   const [calendar, setCalendar] = useState(false)
+  const [data, setData] = useState<DataITF[]>(Data)
 
   const handleCalendar = () => {
     setCalendar(!calendar)
@@ -120,7 +138,7 @@ export default function HistoryList() {
           월별 보기
         </button>
       </div>
-      {calendar && <div>달력</div>}
+      {calendar && <Calendar data={data[0].createdAt} />}
       {Data.map(item => {
         return <History key={item.id} data={item} />
       })}
