@@ -1,4 +1,3 @@
-// import Icon from '../components/common/Icon'
 import { useState } from 'react'
 import styles from './HistoryList.module.scss'
 import History from '../components/HistoryList/History'
@@ -20,7 +19,6 @@ interface DataITF {
   walkLogContents: ItemITF[]
 }
 
-//  historylist?page=1&size=10&sortBy=questionId
 const Data: DataITF[] = [
   {
     id: 0,
@@ -113,7 +111,7 @@ const Data: DataITF[] = [
 ]
 
 export default function HistoryList() {
-  const [calendar, setCalendar] = useState(false)
+  const [calendar, setCalendar] = useState<boolean>(false)
   const [data, setData] = useState<DataITF[]>(Data)
 
   const handleCalendar = () => {
