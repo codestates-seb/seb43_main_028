@@ -130,14 +130,14 @@ public class WalkLogServiceImplTest {
         WalkLog walkLog = new WalkLog();
         walkLog.setWalkLogId(1L);
 
-        given(walkLogRepository.findById(1L)).willReturn(Optional.of(walkLog));
+        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
 
         //when
         RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
             walkLogService.updateWalkLog(walkLog);
         });
         //then
-        assertThat(exception.getMessage()).isEqualTo("Recording Now");
+        assertThat(exception.getMessage()).isEqualTo("WalkLog Can Not Change");
     }
 
     @Test
@@ -147,14 +147,14 @@ public class WalkLogServiceImplTest {
         walkLog.setWalkLogId(1L);
         walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
 
-        given(walkLogRepository.findById(1L)).willReturn(Optional.of(walkLog));
+        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
 
         //when
         RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
             walkLogService.exitWalkLog(walkLog);
         });
         //then
-        assertThat(exception.getMessage()).isEqualTo("Not Recording Now");
+        assertThat(exception.getMessage()).isEqualTo("WalkLog Can Not Exit");
     }
 
     @Test
