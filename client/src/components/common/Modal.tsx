@@ -1,4 +1,4 @@
-import styles from './modal.module.scss'
+import styles from './Modal.module.scss'
 
 type Option = {
   label: string
@@ -25,18 +25,10 @@ function Modal({ modalData, onClose }: Props): JSX.Element {
       onClose()
     }
   }
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    console.log(e)
-  }
 
   return (
     <>
-      <div
-        role='presentation'
-        className={styles.modalBackground}
-        onClick={handleClose}
-        onKeyDown={e => handleKeyDown(e)}
-      />
+      <div role='presentation' className={styles.modalBackground} onClick={handleClose} />
       <div className={styles.modal}>
         <div className={styles.modalTop}>
           <div>{modalData.title}</div>
