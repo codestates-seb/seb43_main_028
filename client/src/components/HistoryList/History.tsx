@@ -24,6 +24,10 @@ type HistoryItemProps = {
 export default function History({ data }: HistoryItemProps) {
   const [moreContent, setMore] = useState(false)
   const { mapImg, createdAt, time, message, walkLogContents } = data
+  const date = new Date(createdAt)
+  const Year = date.getFullYear()
+  const Month = date.getMonth()
+  const Day = date.getDate()
   const moreContents = walkLogContents.slice(1)
 
   const handleMore = () => {
@@ -35,7 +39,9 @@ export default function History({ data }: HistoryItemProps) {
       <div className={styles.mapTimeBox}>
         <img src={mapImg} className={styles.map} alt='지도 이미지' />
         <div>
-          <p className={styles.date}>{createdAt}</p>
+          <p className={styles.date}>
+            {Year}년 {Month}월 {Day}일
+          </p>
           <p className={styles.time}>{time}</p>
         </div>
       </div>

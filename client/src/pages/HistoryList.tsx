@@ -3,11 +3,12 @@ import { useState } from 'react'
 import styles from './HistoryList.module.scss'
 import History from '../components/HistoryList/History'
 
+//  historylist?page=1&size=10&sortBy=questionId
 const Data = [
   {
     id: 0,
     mapImg: 'https://developers.kakaomobility.com/_nuxt/img/img_api4.507c175.png',
-    createdAt: '2023년 5월 1일',
+    createdAt: '2023-05-01',
     time: '1시간 20분',
     message:
       '한 줄 메시지 입니다. 넘어가면 두 줄이 됩니다. 두 줄에서 3줄로 넘어가지 않습니다. 엄청 길어지면 어떻게 해야할까요? 점점점으로 표시해야겠죠?',
@@ -36,7 +37,7 @@ const Data = [
   {
     id: 1,
     mapImg: 'https://developers.kakaomobility.com/_nuxt/img/img_api4.507c175.png',
-    createdAt: '2023년 5월 3일',
+    createdAt: '2023-05-03',
     time: '2시간',
     message:
       'Its our time 우린 달라, 특별한 게 좋아 Oh, what a good time 난 잘 살아, 내 걱정은 낭비야 니가 보낸 DM을 읽고 나서 답이 없는 게 내 답이야(Thats my style)',
@@ -65,7 +66,7 @@ const Data = [
   {
     id: 2,
     mapImg: 'https://developers.kakaomobility.com/_nuxt/img/img_api4.507c175.png',
-    createdAt: '2023년 5월 11일',
+    createdAt: '2023-05-11',
     time: '2시간',
     message:
       'Its our time 우린 달라, 특별한 게 좋아 Oh, what a good time 난 잘 살아, 내 걱정은 낭비야 니가 보낸 DM을 읽고 나서 답이 없는 게 내 답이야(Thats my style)',
