@@ -33,10 +33,14 @@ public class WalkLogServiceImpl implements WalkLogService {
     public WalkLog updateWalkLog(WalkLog walkLog){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
 
+        if(!findWalkLog.getWalkLogStatus().equals(WalkLog.WalkLogStatus.STOP))
+            throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_STOP);
+
         WalkLog updatedWalkLog = beanUtils.copyNonNullProperties(walkLog, findWalkLog);
 
         return walkLogRepository.save(updatedWalkLog);
     }
+    @Override
     public WalkLog exitWalkLog(WalkLog walkLog){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
         if(!findWalkLog.getWalkLogStatus().equals(WalkLog.WalkLogStatus.RECORDING))

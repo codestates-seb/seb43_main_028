@@ -57,13 +57,14 @@ public class WalkLogServiceImplTest {
         // given
         //WalkLog객체 추가
         WalkLog walkLog = createWalkLog();
-
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
         //수정용 WalkLog객체 생성
         WalkLog patchWalkLog = new WalkLog();
 
         patchWalkLog.setMessage("안녕하십니끄아악!");
         patchWalkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
         patchWalkLog.setWalkLogId(1L);
+        patchWalkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
 
         given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
         given(beanUtils.copyNonNullProperties(Mockito.any(WalkLog.class),Mockito.any(WalkLog.class))).willReturn(new WalkLog());
@@ -123,7 +124,38 @@ public class WalkLogServiceImplTest {
         assertThat(patchWalkLog.getWalkLogPublicSetting()).isEqualTo(updatedWalkLog.getWalkLogPublicSetting());
         assertThat(updatedWalkLog.getWalkLogStatus()).isEqualTo(WalkLog.WalkLogStatus.STOP);
     }
+    @Test
+    public void shouldThrowExceptionWhenWalkLogRecordingTest() {
+        //given
+        WalkLog walkLog = new WalkLog();
+        walkLog.setWalkLogId(1L);
 
+        given(walkLogRepository.findById(1L)).willReturn(Optional.of(walkLog));
+
+        //when
+        RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
+            walkLogService.updateWalkLog(walkLog);
+        });
+        //then
+        assertThat(exception.getMessage()).isEqualTo("Recording Now");
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenWalkLogNotRecordingTest() {
+        //given
+        WalkLog walkLog = new WalkLog();
+        walkLog.setWalkLogId(1L);
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+
+        given(walkLogRepository.findById(1L)).willReturn(Optional.of(walkLog));
+
+        //when
+        RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
+            walkLogService.exitWalkLog(walkLog);
+        });
+        //then
+        assertThat(exception.getMessage()).isEqualTo("Not Recording Now");
+    }
 
     @Test
     public void findWalkLogTest(){
