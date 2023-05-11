@@ -19,6 +19,13 @@ type Props = {
 function Modal({ modalData, onClose }: Props) {
   const { title, options } = modalData
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  })
+
   return (
     <>
       <div role='presentation' className={styles.modalBackground} onClick={onClose} />
