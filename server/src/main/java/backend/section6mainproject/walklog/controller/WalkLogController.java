@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/walk-logs")
@@ -60,6 +61,12 @@ public class WalkLogController {
     public ResponseEntity getWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
         WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDTO(walkLogService.findWalkLog(walkLogId));
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @GetMapping
+    public ResponseEntity getAllWalkLog(){
+        //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심
+        List<WalkLog> allWalkLog = walkLogService.findAllWalkLog();
+        return new ResponseEntity<>(allWalkLog, HttpStatus.OK);
     }
     @DeleteMapping("/{walk-log-id}")
     public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +41,11 @@ public class WalkLogServiceImpl implements WalkLogService {
     @Override
     public WalkLog findWalkLog(Long walkLogId){
         return findVerifiedWalkLog(walkLogId);
+    }
+    @Override
+    public List<WalkLog> findAllWalkLog(){
+        List<WalkLog> allByWalkLogPublicSetting = walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        return allByWalkLogPublicSetting;
     }
     @Override
     public void deleteWalkLog(Long walkLogId){
