@@ -6,15 +6,30 @@ type SignUpPropsType = {
   password: string
 }
 
+type SignInPropsType = {
+  email: FormDataEntryValue | null
+  password: FormDataEntryValue | null
+  autoLogin: boolean
+}
+
 export const signUp = async ({ displayName, email, password }: SignUpPropsType) => {
   try {
     await axios.post('/members/sign', { displayName, email, password })
     return 'success'
   } catch (error: unknown) {
-    if ((error as AxiosError)?.response?.status === 409) {
-      return '409-fail'
-    } else {
-      return 'fail'
-    }
+    return (error as AxiosError)?.response?.status === 409 ? '409-fail' : 'fail'
+  }
+}
+
+export const signIn = async ({ email, password, autoLogin = true }: SignInPropsType) => {
+  try {
+    const response = await axios.post('/members/login', { email, password, autoLogin })
+    const { authorization } = response.headers
+
+    axios.defaults.headers.common.Authorization = authorization
+
+    return 'success'
+  } catch (error) {
+    return 'fail'
   }
 }
