@@ -1,3 +1,5 @@
-export default function Signin() {
+import styles from './Signin.module.scss'
+
+export default function SignIn() {
   return <div>Signin</div>
 }
