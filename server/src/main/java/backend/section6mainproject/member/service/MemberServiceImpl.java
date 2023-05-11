@@ -1,11 +1,13 @@
 package backend.section6mainproject.member.service;
 
+import backend.section6mainproject.auth.utils.CustomAuthorityUtils;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.helper.image.StorageService;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.utils.CustomBeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,21 +19,31 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final StorageService storageService;
     private final CustomBeanUtils<Member> beanUtils;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
 
-    public MemberServiceImpl(MemberRepository memberRepository, StorageService storageService, CustomBeanUtils<Member> beanUtils) {
+    public MemberServiceImpl(MemberRepository memberRepository, StorageService storageService, CustomBeanUtils<Member> beanUtils, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils) {
         this.memberRepository = memberRepository;
         this.storageService = storageService;
         this.beanUtils = beanUtils;
+        this.passwordEncoder = passwordEncoder;
+        this.authorityUtils = authorityUtils;
     }
 
     @Override
     public Long createMember(Member member) {
         verifyExistsEmail(member.getEmail());
 
-        //추후 패스워드 암호화 및 User Role 관련해서 작업필요
+        encodeMemberCredential(member);
+        member.setRoles(authorityUtils.getRoles());
 
         Member savedMember = memberRepository.save(member);
         return savedMember.getMemberId();
+    }
+
+    private void encodeMemberCredential(Member member) {
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
     }
 
     private void verifyExistsEmail(String email) {
@@ -61,6 +73,8 @@ public class MemberServiceImpl implements MemberService{
         Member findMember = findVerifiedMember(member.getMemberId());
         //기존 회원의 프로필이미지가 있다면 삭제
         storageService.delete(findMember.getProfileImage());
+        encodeMemberCredential(member);
+
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
 
         String profile = storageService.store(profileImage, "profile");

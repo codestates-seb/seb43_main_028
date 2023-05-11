@@ -42,6 +42,8 @@ public class Member extends Auditable {
     private String introduction;
 
     private String profileImage;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<WalkLog> walkLogs = new ArrayList<>();
