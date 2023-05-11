@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
-import styles from './test.module.scss'
+import styles from './Test.module.scss'
 
 function Test() {
   const [isOpen, setIsOpen] = useState(false)
