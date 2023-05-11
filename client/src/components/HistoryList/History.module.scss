@@ -29,6 +29,16 @@
 
 .message {
   @include T.gray900-bold-16;
+  width: 100%;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 24px;
+  max-height: 48px;
 }
 
 .time {
