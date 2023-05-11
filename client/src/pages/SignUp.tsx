@@ -76,8 +76,8 @@ function Form() {
 
 function SignUp() {
   return (
-    <div className={styles.entireContainer}>
-      <div className={styles.container}>
+    <div className={styles.container}>
+      <div className={styles.formBox}>
         <Form />
       </div>
     </div>
