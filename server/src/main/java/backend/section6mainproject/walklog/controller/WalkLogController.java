@@ -5,6 +5,7 @@ import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.mapper.WalkLogMapper;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +26,10 @@ public class WalkLogController {
     private final WalkLogMapper walkLogMapper;
     @PostMapping
     public ResponseEntity postWalkLog(@RequestBody WalkLogDTO.Post walkLogPostDTO){
-        //멤버 인증 로직을 한 다음 멤버를 가져오는 로직(추후 작성예정)
         Long memberId = walkLogPostDTO.getMemberId();
         WalkLogDTO.Created created = walkLogMapper.walkLogToWalkLogCreatedDTO(walkLogService.createWalkLog(memberId));
-        URI location = UriComponentsBuilder
-                .newInstance()
-                .path(WALK_LOG_DEFAULT_URL + "/" + created)
-                .buildAndExpand(created)
-                .toUri();
-        return ResponseEntity.created(location).build();
+        //walkLogId값을 리스폰스바디로 반환하도록 변경
+        return new ResponseEntity(created, HttpStatus.CREATED);
     }
     @PostMapping("/{walk-log-id}")
     public ResponseEntity endWalkLog(@PathVariable("walk-log-id") @Positive Long walkLogId,
@@ -64,10 +60,10 @@ public class WalkLogController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity getAllWalkLog(){
+    public ResponseEntity getWalkLogs(){
         //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심
-        List<WalkLog> allWalkLog = walkLogService.findAllWalkLog();
-        return new ResponseEntity<>(allWalkLog, HttpStatus.OK);
+        Page<WalkLog> walkLogs = walkLogService.findWalkLogs();
+        return new ResponseEntity<>(walkLogs, HttpStatus.OK);
     }
     @DeleteMapping("/{walk-log-id}")
     public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
