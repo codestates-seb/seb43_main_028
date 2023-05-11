@@ -26,6 +26,7 @@ public class WalkLog extends Auditable {
     private LocalDateTime endTime = LocalDateTime.now();
     @Column(length = 50)
     private String message;
+    private String mapImage;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
