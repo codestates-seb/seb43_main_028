@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './HistoryList.module.scss'
 import History from '../components/HistoryList/History'
-import Calendar from '../components/HistoryList/Calendar'
+import Calendar from '../components/HistoryList/Calendar/Calendar'
 
 interface ItemITF {
   id: number

@@ -1,0 +1,20 @@
+@use '../../../styles/color' as C;
+@use '../../../styles/utils' as U;
+@use '../../../styles/typography' as T;
+
+.container {
+  width: 100vw;
+  background-color: C.$white;
+  padding: 20px;
+  margin: 10px 0;
+  @include U.flex-c(row, center, center);
+  position: relative;
+  left: -20px;
+  z-index: 999;
+  table {
+    flex-grow: 1;
+  }
+  td {
+    text-align: center;
+  }
+}

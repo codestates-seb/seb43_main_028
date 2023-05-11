@@ -1,0 +1,13 @@
+.day {
+  @include T.gray900-bold-16;
+}
+
+.saturday {
+  @extend .day;
+  color: blue;
+}
+
+.sunday {
+  @extend .day;
+  color: red;
+}
