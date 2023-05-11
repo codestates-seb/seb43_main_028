@@ -34,7 +34,21 @@ public class WalkLogServiceImpl implements WalkLogService {
     public WalkLog updateWalkLog(WalkLog walkLog){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
 
+        if(!findWalkLog.getWalkLogStatus().equals(WalkLog.WalkLogStatus.STOP))
+            throw new BusinessLogicException(ExceptionCode.CAN_NOT_CHANGE_WALK_LOG);
+
         WalkLog updatedWalkLog = beanUtils.copyNonNullProperties(walkLog, findWalkLog);
+
+        return walkLogRepository.save(updatedWalkLog);
+    }
+    @Override
+    public WalkLog exitWalkLog(WalkLog walkLog){
+        WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
+        if(!findWalkLog.getWalkLogStatus().equals(WalkLog.WalkLogStatus.RECORDING))
+            throw new BusinessLogicException(ExceptionCode.CAN_NOT_EXIT_WALK_LOG);
+
+        WalkLog updatedWalkLog = beanUtils.copyNonNullProperties(walkLog, findWalkLog);
+        updatedWalkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
 
         return walkLogRepository.save(updatedWalkLog);
     }
@@ -42,6 +56,7 @@ public class WalkLogServiceImpl implements WalkLogService {
     public WalkLog findWalkLog(Long walkLogId){
         return findVerifiedWalkLog(walkLogId);
     }
+
     @Override
     public List<WalkLog> findAllWalkLog(){
         List<WalkLog> allByWalkLogPublicSetting = walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
@@ -51,14 +66,6 @@ public class WalkLogServiceImpl implements WalkLogService {
     public void deleteWalkLog(Long walkLogId){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLogId);
         walkLogRepository.delete(findWalkLog);
-    }
-
-    public WalkLog exitWalkLog(WalkLog walkLog){
-        WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
-
-        WalkLog updatedWalkLog = beanUtils.copyNonNullProperties(walkLog, findWalkLog);
-
-        return walkLogRepository.save(updatedWalkLog);
     }
 
     @Override

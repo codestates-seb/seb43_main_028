@@ -38,6 +38,7 @@ public class WalkLogController {
     @PostMapping("/{walk-log-id}")
     public ResponseEntity endWalkLog(@PathVariable("walk-log-id") @Positive Long walkLogId,
             @RequestBody WalkLogDTO.EndPost walkLogEndPostDTO){
+        //현재 걷기 도중인
         //멤버 인증 로직은 추후에 반영
         walkLogEndPostDTO.setWalkLogId(walkLogId);
 

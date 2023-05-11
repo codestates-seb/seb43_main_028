@@ -37,7 +37,7 @@ public class WalkLogServiceImplTest {
     private WalkLogServiceImpl walkLogService;
 
     @Test
-    public void testCreateWalkLog() {
+    public void createWalkLogTest() {
         // given
         WalkLog walkLog = createWalkLog();
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(walkLog.getMember());
@@ -52,7 +52,51 @@ public class WalkLogServiceImplTest {
     }
 
     @Test
-    public void testUpdateWalkLog(){
+    public void updateWalkLogTest(){
+
+        // given
+        //WalkLog객체 추가
+        WalkLog walkLog = createWalkLog();
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        //수정용 WalkLog객체 생성
+        WalkLog patchWalkLog = new WalkLog();
+
+        patchWalkLog.setMessage("안녕하십니끄아악!");
+        patchWalkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        patchWalkLog.setWalkLogId(1L);
+        patchWalkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+
+        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
+        given(beanUtils.copyNonNullProperties(Mockito.any(WalkLog.class),Mockito.any(WalkLog.class))).willReturn(new WalkLog());
+        given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(patchWalkLog);
+
+        //when
+        WalkLog updatedWalkLog = walkLogService.updateWalkLog(patchWalkLog);
+
+        //then
+        assertThat(updatedWalkLog).isNotNull();
+        assertThat(updatedWalkLog.getWalkLogId()).isEqualTo(walkLog.getWalkLogId());
+        assertThat(patchWalkLog.getMessage()).isEqualTo(updatedWalkLog.getMessage());
+        assertThat(patchWalkLog.getWalkLogPublicSetting()).isEqualTo(updatedWalkLog.getWalkLogPublicSetting());
+    }
+    @Test
+    public void shouldThrowExceptionWhenWalkLogNotFoundTest() {
+        //given
+        WalkLog walkLog = new WalkLog();
+        walkLog.setWalkLogId(1L);
+
+        given(walkLogRepository.findById(1L)).willReturn(Optional.empty());
+
+        //when
+        RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
+            walkLogService.updateWalkLog(walkLog);
+        });
+        //then
+        assertThat(exception.getMessage()).isEqualTo("WalkLog Not Found");
+    }
+
+    @Test
+    public void exitWalkLogTest(){
 
         // given
         //WalkLog객체 추가
@@ -70,15 +114,75 @@ public class WalkLogServiceImplTest {
         given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(patchWalkLog);
 
         //when
-        WalkLog updatedWalkLog = walkLogService.updateWalkLog(patchWalkLog);
+        patchWalkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        WalkLog updatedWalkLog = walkLogService.exitWalkLog(patchWalkLog);
 
         //then
         assertThat(updatedWalkLog).isNotNull();
         assertThat(updatedWalkLog.getWalkLogId()).isEqualTo(walkLog.getWalkLogId());
         assertThat(patchWalkLog.getMessage()).isEqualTo(updatedWalkLog.getMessage());
         assertThat(patchWalkLog.getWalkLogPublicSetting()).isEqualTo(updatedWalkLog.getWalkLogPublicSetting());
+        assertThat(updatedWalkLog.getWalkLogStatus()).isEqualTo(WalkLog.WalkLogStatus.STOP);
+    }
+    @Test
+    public void shouldThrowExceptionWhenWalkLogRecordingTest() {
+        //given
+        WalkLog walkLog = new WalkLog();
+        walkLog.setWalkLogId(1L);
+
+        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
+
+        //when
+        RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
+            walkLogService.updateWalkLog(walkLog);
+        });
+        //then
+        assertThat(exception.getMessage()).isEqualTo("WalkLog Can Not Change");
     }
 
+    @Test
+    public void shouldThrowExceptionWhenWalkLogNotRecordingTest() {
+        //given
+        WalkLog walkLog = new WalkLog();
+        walkLog.setWalkLogId(1L);
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+
+        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
+
+        //when
+        RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
+            walkLogService.exitWalkLog(walkLog);
+        });
+        //then
+        assertThat(exception.getMessage()).isEqualTo("WalkLog Can Not Exit");
+    }
+
+    @Test
+    public void findWalkLogTest(){
+        WalkLog expectedWalkLog = new WalkLog();
+        expectedWalkLog.setWalkLogId(1L);
+
+        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(expectedWalkLog));
+
+        WalkLog actualWalkLog = walkLogService.findWalkLog(1L);
+
+        Assertions.assertEquals(expectedWalkLog, actualWalkLog);
+    }
+
+    @Test
+    public void deleteWalkLogTest() {
+        // Given
+        WalkLog walkLog = createWalkLog();
+
+        // When
+        when(walkLogRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(walkLog));
+        doNothing().when(walkLogRepository).delete(Mockito.any(WalkLog.class));
+        walkLogService.deleteWalkLog(walkLog.getWalkLogId());
+
+        // Then
+        verify(walkLogRepository, times(1)).delete(Mockito.any(WalkLog.class));
+
+    }
     private static WalkLog createWalkLog() {
         Long memberId = 1L;
         Member member = new Member();
@@ -93,47 +197,5 @@ public class WalkLogServiceImplTest {
         walkLog.setWalkLogId(1L);
         walkLog.setMessage("안녕하십니까");
         return walkLog;
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenWalkLogNotFound() {
-        //given
-        WalkLog walkLog = new WalkLog();
-        walkLog.setWalkLogId(1L);
-
-        given(walkLogRepository.findById(1L)).willReturn(Optional.empty());
-
-        //when
-        RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
-            walkLogService.updateWalkLog(walkLog);
-        });
-        //then
-        assertThat(exception.getMessage()).isEqualTo("WalkLog Not Found");
-    }
-
-    @Test
-    public void findWalkLogTest(){
-        WalkLog expectedWalkLog = new WalkLog();
-        expectedWalkLog.setWalkLogId(1L);
-
-        given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(expectedWalkLog));
-
-        WalkLog actualWalkLog = walkLogService.findWalkLog(1L);
-
-        Assertions.assertEquals(expectedWalkLog, actualWalkLog);
-    }
-    @Test
-    public void deleteWalkLogTest() {
-        // Given
-        WalkLog walkLog = createWalkLog();
-
-        // When
-        when(walkLogRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(walkLog));
-        doNothing().when(walkLogRepository).delete(Mockito.any(WalkLog.class));
-        walkLogService.deleteWalkLog(walkLog.getWalkLogId());
-
-        // Then
-        verify(walkLogRepository, times(1)).delete(Mockito.any(WalkLog.class));
-
     }
 }
