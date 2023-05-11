@@ -1,5 +1,6 @@
 package backend.section6mainproject.walklog.controller;
 
+import backend.section6mainproject.dto.MultiResponseDto;
 import backend.section6mainproject.walklog.dto.WalkLogDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.mapper.WalkLogMapper;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WalkLogController {
 
-    private final static String WALK_LOG_DEFAULT_URL = "/walk-logs";
+    private final static Integer PAGE_SIZE = 10;
 
     private final WalkLogService walkLogService;
     private final WalkLogMapper walkLogMapper;
@@ -28,7 +29,6 @@ public class WalkLogController {
     public ResponseEntity postWalkLog(@RequestBody WalkLogDTO.Post walkLogPostDTO){
         Long memberId = walkLogPostDTO.getMemberId();
         WalkLogDTO.Created created = walkLogMapper.walkLogToWalkLogCreatedDTO(walkLogService.createWalkLog(memberId));
-        //walkLogId값을 리스폰스바디로 반환하도록 변경
         return new ResponseEntity(created, HttpStatus.CREATED);
     }
     @PostMapping("/{walk-log-id}")
@@ -60,10 +60,11 @@ public class WalkLogController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity getWalkLogs(){
+    public ResponseEntity getWalkLogs(@Positive @RequestParam int page){
         //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심
-        Page<WalkLog> walkLogs = walkLogService.findWalkLogs();
-        return new ResponseEntity<>(walkLogs, HttpStatus.OK);
+        Page<WalkLog> walkLogs = walkLogService.findWalkLogs( page - 1, PAGE_SIZE);
+        List<WalkLogDTO.Response> responses = walkLogMapper.walkLogsToWalkLogResponseDTOs(walkLogs.toList());
+        return new ResponseEntity<>(new MultiResponseDto<>(responses,walkLogs), HttpStatus.OK);
     }
     @DeleteMapping("/{walk-log-id}")
     public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){

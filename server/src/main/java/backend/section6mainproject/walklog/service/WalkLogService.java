@@ -1,6 +1,7 @@
 package backend.section6mainproject.walklog.service;
 
 import backend.section6mainproject.walklog.entity.WalkLog;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -11,8 +12,9 @@ public interface WalkLogService {
 
     void deleteWalkLog(Long walkLogId);
     WalkLog findWalkLog(Long walkLogId);
-    List<WalkLog> findAllWalkLog();
+    Page<WalkLog> findWalkLogs(int page, int size);
     WalkLog findVerifiedWalkLog(Long walkLogId);
     WalkLog exitWalkLog(WalkLog walkLog);
+
 
 }

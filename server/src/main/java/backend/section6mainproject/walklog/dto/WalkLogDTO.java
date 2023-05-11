@@ -55,6 +55,7 @@ public class WalkLogDTO {
     public static class Response{
 
         private Long walkLogId;
+        private LocalDateTime createdAt;
         private LocalDateTime endTime;
 
         private String message;

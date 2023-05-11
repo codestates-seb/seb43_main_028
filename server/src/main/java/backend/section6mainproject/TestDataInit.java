@@ -29,6 +29,7 @@ public class TestDataInit {
         WalkLog walkLog = new WalkLog();
         walkLog.setMember(firstMember);
         walkLog.setMessage("안녕하십니까");
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
         walkLogRepository.save(walkLog);
         WalkLogContent walkLogContent = new WalkLogContent();
         walkLogContent.setWalkLog(walkLog);

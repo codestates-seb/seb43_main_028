@@ -66,7 +66,7 @@ public class WalkLogControllerTest {
         // then
         actions
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", is(startsWith("/walk-logs"))));
+                .andExpect(jsonPath("$.walkLogId").value(walkLog.getWalkLogId()));
     }
 
     @Test

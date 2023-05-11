@@ -7,6 +7,8 @@ import backend.section6mainproject.walklog.entity.WalkLog;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 
 @Mapper(componentModel = "spring",uses = {CoordinateMapper.class, WalkLogContentMapper.class})
 public interface WalkLogMapper {
@@ -19,5 +21,6 @@ public interface WalkLogMapper {
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentsToWalkLogContentResponseDTOs")
     WalkLogDTO.Response walkLogToWalkLogResponseDTO(WalkLog walkLog);
     WalkLogDTO.Created walkLogToWalkLogCreatedDTO(WalkLog walkLog);
+    List<WalkLogDTO.Response> walkLogsToWalkLogResponseDTOs(List<WalkLog> walkLogs);
 
 }
