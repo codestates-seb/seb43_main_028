@@ -8,9 +8,14 @@ import backend.section6mainproject.utils.CustomBeanUtils;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +30,11 @@ public class WalkLogServiceImpl implements WalkLogService {
 
     @Override
     public WalkLog createWalkLog(Long memberId){
+        Optional<WalkLog> first = findWalkLogByMemberId(memberId).stream()
+                .filter(walkLog -> walkLog.getWalkLogStatus().equals(WalkLog.WalkLogStatus.RECORDING))
+                .findFirst();
+        if(first.isPresent())
+            throw new BusinessLogicException(ExceptionCode.WALK_LOG_ALREADY_RECORDING);
         WalkLog walkLog = new WalkLog();
         Member findVerifiedMember = memberService.findVerifiedMember(memberId);
         walkLog.setMember(findVerifiedMember);
@@ -46,8 +56,8 @@ public class WalkLogServiceImpl implements WalkLogService {
         WalkLog findWalkLog = findVerifiedWalkLog(walkLog.getWalkLogId());
         if(!findWalkLog.getWalkLogStatus().equals(WalkLog.WalkLogStatus.RECORDING))
             throw new BusinessLogicException(ExceptionCode.CAN_NOT_EXIT_WALK_LOG);
-
         WalkLog updatedWalkLog = beanUtils.copyNonNullProperties(walkLog, findWalkLog);
+        updatedWalkLog.setEndTime(LocalDateTime.now());
         updatedWalkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
 
         return walkLogRepository.save(updatedWalkLog);
@@ -58,9 +68,15 @@ public class WalkLogServiceImpl implements WalkLogService {
     }
 
     @Override
-    public List<WalkLog> findAllWalkLog(){
-        List<WalkLog> allByWalkLogPublicSetting = walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        return allByWalkLogPublicSetting;
+    public Page<WalkLog> findWalkLogs(int page, int size){
+        Optional<List<WalkLog>> allByWalkLogPublicSetting = walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        List<WalkLog> walkLogs = allByWalkLogPublicSetting.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND));
+        PageRequest pageRequest = PageRequest.of(page, size);
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), walkLogs.size());
+        return new PageImpl<>(walkLogs.subList(start, end), pageRequest, walkLogs.size());
+
     }
     @Override
     public void deleteWalkLog(Long walkLogId){
@@ -71,10 +87,11 @@ public class WalkLogServiceImpl implements WalkLogService {
     @Override
     public WalkLog findVerifiedWalkLog(Long walkLogId) {
         Optional<WalkLog> findWalkLogById = walkLogRepository.findById(walkLogId);
-
-        WalkLog walkLog =
-                findWalkLogById.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND)); //잘못된 문구 수정
-        return walkLog;
+        return findWalkLogById.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND));
+    }
+    private List<WalkLog> findWalkLogByMemberId(Long memberId){
+        Optional<List<WalkLog>> walkLogsByMemberId = walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(memberId);
+        return walkLogsByMemberId.orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND));
     }
 }
