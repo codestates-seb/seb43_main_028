@@ -1,11 +1,8 @@
 package backend.section6mainproject.member.controller;
 
-import backend.section6mainproject.content.dto.WalkLogContentDTO;
 import backend.section6mainproject.member.dto.MemberDTO;
-import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
-import backend.section6mainproject.member.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +29,9 @@ public class MemberController {
     }
 
     @PostMapping("/sign")
-    public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post memberPostDto) {
-        Long memberId = memberService.createMember(mapper.memberPostDtoToMember(memberPostDto));
+    public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post post) {
+        MemberDTO.PostRequest postRequest = mapper.memberPostDTOToPostRequest(post);
+        Long memberId = memberService.createMember(postRequest);
         URI location = UriComponentsBuilder
                 .newInstance()
                 .path(MEMBER_DEFAULT_URL + "/" + memberId)
@@ -48,8 +46,9 @@ public class MemberController {
                                       @Valid @RequestPart MemberDTO.Patch patch,
                                       @RequestPart MultipartFile profileImage) {
         patch.setMemberId(memberId);
+        MemberDTO.PatchRequest patchRequest = mapper.memberPatchDTOToPatchRequest(patch);
 
-        MemberDTO.Response response = mapper.memberToMemberResponseDto(memberService.updateMember(mapper.memberPatchDtoToMember(patch), profileImage));
+        MemberDTO.ProfileResponse response = memberService.updateMember(patchRequest, profileImage);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -58,7 +57,7 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") @Positive Long memberId) {
-        return new ResponseEntity<>(mapper.memberToMemberResponseDto(memberService.findMember(memberId)), HttpStatus.OK);
+        return new ResponseEntity<>(memberService.findMember(memberId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
