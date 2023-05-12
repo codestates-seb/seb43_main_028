@@ -74,13 +74,13 @@ public class WalkLogServiceImpl implements WalkLogService {
 
         }
         if (day == 0){
-            LocalDate parse = LocalDate.parse(year+"-"+month+1);
+            LocalDate parse = LocalDate.of(year,month,day);
             LocalDateTime start = LocalDateTime.of(parse.withDayOfMonth(1), LocalTime.of(0,0,0));
             LocalDateTime end = LocalDateTime.of(parse.withDayOfMonth(parse.lengthOfMonth()), LocalTime.of(23,59,59));
             return walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetween(pageRequest, WalkLog.WalkLogPublicSetting.PUBLIC,start,end);
         }
             if(year >= 2000 && year <= 9999 || month >=1 && month <=12 || day >= 1 && day <= 31){
-                LocalDate parse = LocalDate.parse(year+"-"+month+day);
+                LocalDate parse = LocalDate.of(year,month,day);
                 LocalDateTime start = LocalDateTime.of(parse, LocalTime.of(0,0,0));
                 LocalDateTime end = LocalDateTime.of(parse, LocalTime.of(23,59,59));
                 return walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetween(pageRequest,
@@ -101,7 +101,7 @@ public class WalkLogServiceImpl implements WalkLogService {
 
         }
         if (day == 0){
-            LocalDate parse = LocalDate.parse(year+"-"+month+1);
+            LocalDate parse = LocalDate.of(year,month,day);
             LocalDateTime start = LocalDateTime.of(parse.withDayOfMonth(1), LocalTime.of(0,0,0));
             LocalDateTime end = LocalDateTime.of(parse.withDayOfMonth(parse.lengthOfMonth()), LocalTime.of(23,59,59));
             return walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetweenAndMember_MemberId(pageRequest,
@@ -111,7 +111,7 @@ public class WalkLogServiceImpl implements WalkLogService {
                     memberId);
         }
             if(year >= 2000 && year <= 9999 || month >=1 && month <=12 || day >= 1 && day <= 31){
-                LocalDate parse = LocalDate.parse(year+"-"+month+day);
+                LocalDate parse = LocalDate.of(year,month,day);
                 LocalDateTime start = LocalDateTime.of(parse, LocalTime.of(0,0,0));
                 LocalDateTime end = LocalDateTime.of(parse, LocalTime.of(23,59,59));
                 return walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetweenAndMember_MemberId(pageRequest,
