@@ -1,5 +1,9 @@
 import axios, { AxiosError } from 'axios'
-import { saveRefreshTokenToLocalStorage } from '../utils/refreshTokenHandler'
+import {
+  saveRefreshTokenToLocalStorage,
+  getRefreshTokenFromLocalStorage,
+  removeRefreshTokenFromLocalStorage,
+} from '../utils/refreshTokenHandler'
 
 type SignUpPropsType = {
   nickname: string
@@ -59,9 +63,23 @@ export const getCurrentUserInfo = async (url: string): Promise<UserInfoType> => 
         'ngrok-skip-browser-warning': '69420',
       },
     })
-    console.log(response.data)
     return response.data
   } catch (error) {
     throw new Error('Failed to fetch user info')
+  }
+}
+
+export const refreshAccessToken = async () => {
+  try {
+    const { headers } = await axios.get('/auth/refresh', {
+      headers: {
+        Refresh: getRefreshTokenFromLocalStorage(),
+      },
+    })
+    axios.defaults.headers.common.Authorization = headers.authorization
+    return 'success'
+  } catch (error) {
+    removeRefreshTokenFromLocalStorage()
+    return 'fail'
   }
 }

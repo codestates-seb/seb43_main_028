@@ -12,5 +12,8 @@ export const userAtom = atom<object>({
   totalWalkLogContent: 0,
 })
 
+// member id
+export const idAtom = atom<number>(0)
+
 // 로그인 여부
 export const isLoginAtom = atom<boolean>(false)

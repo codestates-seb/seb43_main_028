@@ -5,7 +5,6 @@ import { userAtom } from '../store/authAtom'
 export default function Home() {
   // userData는 배열의 형태
   const [userData, setUserData] = useAtom(userAtom)
-  console.log(userData)
 
   return (
     <div>
