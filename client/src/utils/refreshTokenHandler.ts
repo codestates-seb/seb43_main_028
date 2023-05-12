@@ -1,6 +1,6 @@
 const isBrowser = () => typeof window !== 'undefined'
 
-const saveRefreshTokenToLocalStorage = (refreshToken: string) => {
+export const saveRefreshTokenToLocalStorage = (refreshToken: string) => {
   if (isBrowser()) {
     try {
       localStorage.setItem('refreshToken', refreshToken)
@@ -10,4 +10,24 @@ const saveRefreshTokenToLocalStorage = (refreshToken: string) => {
   }
 }
 
-export default saveRefreshTokenToLocalStorage
+export const getRefreshTokenFromLocalStorage = () => {
+  if (isBrowser()) {
+    try {
+      return localStorage.getItem('refreshToken') || ''
+    } catch (error) {
+      console.error('Error getting refreshToken from local storage:', error)
+      return ''
+    }
+  }
+  return ''
+}
+
+export const removeRefreshTokenFromLocalStorage = () => {
+  if (isBrowser()) {
+    try {
+      localStorage.removeItem('refreshToken')
+    } catch (error) {
+      console.error('Error removing refreshToken from local storage:', error)
+    }
+  }
+}

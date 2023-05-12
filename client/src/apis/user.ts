@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import saveRefreshTokenToLocalStorage from '../utils/refreshTokenHandler'
+import { saveRefreshTokenToLocalStorage } from '../utils/refreshTokenHandler'
 
 type SignUpPropsType = {
   nickname: string
