@@ -5,7 +5,7 @@
 .container {
   width: 100vw;
   background-color: C.$white;
-  padding: 20px;
+  padding: 20px 10px;
   margin: 10px 0;
   @include U.flex-c(row, center, center);
   position: relative;
@@ -15,6 +15,34 @@
     flex-grow: 1;
   }
   td {
+    width: 50px;
+    height: 50px;
     text-align: center;
   }
+}
+
+.date {
+  position: relative;
+}
+
+.today {
+  @include T.gray600-regular-10;
+  position: absolute;
+  bottom: -7%;
+  left: 30%;
+}
+
+.dot {
+  position: absolute;
+  left: 48%;
+  bottom: 0%;
+  width: 5px;
+  height: 5px;
+  border: 3px solid C.$babygreen;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.nonDot {
+  height: 11px;
 }

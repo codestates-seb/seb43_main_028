@@ -26,7 +26,7 @@ export default function History({ data }: HistoryItemProps) {
   const { mapImg, createdAt, time, message, walkLogContents } = data
   const date = new Date(createdAt)
   const Year = date.getFullYear()
-  const Month = date.getMonth()
+  const Month = date.getMonth() + 1
   const Day = date.getDate()
   const moreContents = walkLogContents.slice(1)
 

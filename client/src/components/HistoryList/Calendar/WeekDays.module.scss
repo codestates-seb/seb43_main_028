@@ -1,3 +1,5 @@
+@use '../../../styles/typography' as T;
+
 .day {
   @include T.gray900-bold-16;
 }
