@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './SignUp.module.scss'
-import { signUp } from '../apis/user'
+import { getCurrentUserInfo, signUp } from '../apis/user'
 
 function Form() {
-  const [displayName, setDisplayName] = useState('')
+  const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -12,7 +12,7 @@ function Form() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    signUp({ displayName, email, password }).then(res => {
+    signUp({ nickname, email, password }).then(res => {
       if (res === 'success') {
         navigate('/signin')
       } else if (res === '409-fail') {
@@ -21,6 +21,9 @@ function Form() {
         alert('Sorry, you failed to sign up.')
       }
     })
+  }
+  const getUserInfo = () => {
+    console.log(getCurrentUserInfo())
   }
 
   return (
@@ -31,8 +34,8 @@ function Form() {
           className={styles.input}
           type='text'
           name='displayName'
-          value={displayName}
-          onChange={e => setDisplayName(e.target.value)}
+          value={nickname}
+          onChange={e => setNickname(e.target.value)}
           required
         />
       </label>

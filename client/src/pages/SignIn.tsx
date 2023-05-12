@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './SignIn.module.scss'
-import { signIn } from '../apis/user'
+import { signIn, getCurrentUserInfo } from '../apis/user'
 
 function SignIn() {
   const navigate = useNavigate()
@@ -16,6 +16,8 @@ function SignIn() {
     const loginRes = await signIn({ email, password, autoLogin: true })
 
     if (loginRes === 'success') {
+      const userInfoRes = await getCurrentUserInfo()
+      // 전역 상태에 userInfoRes 저장
       navigate('/')
       return
     }
