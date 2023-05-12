@@ -12,8 +12,20 @@ type SignInPropsType = {
   autoLogin: boolean
 }
 
+type UserInfoType = {
+  defaultWalkLogPublicSetting: string
+  email: string | null
+  imageUrl: string | null
+  introduction: string | null
+  memberId: number
+  nickname: string | null
+  totalWalkLog: number
+  totalWalkLogContent: number
+}
+
 // GET 요청만 되고,
 // POST, PATCH, DELETE 요청은 403 forbidden (Invalid CORS Request)
+// 백엔드 서버에서 프론트 배포 서버만 허용해줬던 origin을 *(모두)로 변경
 
 export const signUp = async ({ nickname, email, password }: SignUpPropsType) => {
   try {
@@ -29,26 +41,25 @@ export const signIn = async ({ email, password, autoLogin = true }: SignInPropsT
   try {
     const response = await axios.post('/api/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
-
     axios.defaults.headers.common.Authorization = authorization
-
-    return 'success'
+    return response.data.memberId
   } catch (error) {
     return 'fail'
   }
 }
 
-export const getCurrentUserInfo = async () => {
-  axios('/api/members/2', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-    },
-  })
-    .then(response => {
-      console.log(response.data)
-      return response.data
+export const getCurrentUserInfo = async (url: string): Promise<UserInfoType> => {
+  try {
+    const response = await axios(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
     })
-    .catch(err => 'fail')
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    throw new Error('Failed to fetch user info')
+  }
 }

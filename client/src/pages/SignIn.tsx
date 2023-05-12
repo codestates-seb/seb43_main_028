@@ -1,9 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom'
-import styles from './SignIn.module.scss'
+import { useAtom } from 'jotai'
 import { signIn, getCurrentUserInfo } from '../apis/user'
+import styles from './SignIn.module.scss'
+import userAtom from '../store/userAtom'
 
 function SignIn() {
   const navigate = useNavigate()
+  const [, setUserAtom] = useAtom(userAtom)
 
   const logInSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -13,11 +16,12 @@ function SignIn() {
     const email = formData.get('email')
     const password = formData.get('password')
 
-    const loginRes = await signIn({ email, password, autoLogin: true })
+    const memberId = await signIn({ email, password, autoLogin: true })
 
-    if (loginRes === 'success') {
-      const userInfoRes = await getCurrentUserInfo()
+    if (memberId) {
+      const userInfoRes = await getCurrentUserInfo(`/api/members/${memberId}`)
       // 전역 상태에 userInfoRes 저장
+      setUserAtom(userInfoRes)
       navigate('/')
       return
     }

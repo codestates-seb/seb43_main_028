@@ -22,9 +22,6 @@ function Form() {
       }
     })
   }
-  const getUserInfo = () => {
-    console.log(getCurrentUserInfo())
-  }
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
