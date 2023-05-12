@@ -3,8 +3,8 @@
 @use '../../styles/typography' as T;
 
 .container {
+  margin: 10px 20px;
   background-color: C.$white;
-  margin: 10px 0;
   @include U.flex-c(column, flex-start, flex-start);
   gap: 10px;
   padding: 10px 20px;

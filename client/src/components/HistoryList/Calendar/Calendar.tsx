@@ -40,6 +40,10 @@ function getCalendarRows(year: number, month: number): (0 | Date)[][] {
     .fill(0)
     .map((_, i) => [...allDates].splice(i * 7, 7))
 
+  for (let i = 0; i < endBlankCount; i += 1) {
+    rows[rows.length - 1].push(0)
+  }
+
   return rows
 }
 
@@ -91,18 +95,18 @@ export default function Calendar({ data }: CalendarProps) {
             return (
               <tr key={key[idx]}>
                 {row.map((date, index) => {
-                  if (date === 0) return <td key={key[index]} />
+                  if (date === 0) return <td key={key[index]} className={styles.date} />
 
                   return (
                     <td key={date.getDate()} className={styles.date}>
                       {date.getDate()}
+                      {today === date.toDateString() && <div className={styles.today} />}
                       {Dates.map(historyDate => {
                         if (historyDate === date.toDateString()) {
                           return <div key={historyDate} className={styles.dot} />
                         }
                         return ''
                       })}
-                      {today === date.toDateString() && <div className={styles.today} />}
                     </td>
                   )
                 })}

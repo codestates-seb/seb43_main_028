@@ -1,13 +1,8 @@
 @use '../styles/color' as C;
 @use '../styles/typography' as T;
 
-.container {
-  padding: 20px;
-  position: relative;
-}
-
 .toggleBox {
-  width: 100%;
+  margin: 20px;
   display: flex;
   border-radius: 8px;
   overflow: hidden;
@@ -19,8 +14,6 @@
 }
 
 .btn {
-  width: 80px;
-  height: 50px;
   background-color: C.$white;
 }
 
