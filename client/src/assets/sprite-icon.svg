@@ -61,20 +61,21 @@
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="arrow-right">
     <path d="M9 6L15 12L9 18" stroke="#212121"/>
   </symbol>
-  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 14" id="arrow-left">
-    <path d="M7 1L1 7L7 13" stroke="#212121"/>
+  <symbol width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="arrow-left">
+    <path d="M15 6L9 12L15 18" stroke="#212121"/>
   </symbol>
-  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 16" id="three-dot" >
-    <g clip-path="url(#clip0_562_2520)">
-    <circle cx="2" cy="2" r="2" fill="#808080"/>
-    <circle cx="2" cy="8" r="2" fill="#808080"/>
-    <circle cx="2" cy="14" r="2" fill="#808080"/>
+  <symbol width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="three-dot">
+    <g clip-path="url(#clip0_562_2519)">
+    <circle cx="12" cy="6" r="2" fill="#808080"/>
+    <circle cx="12" cy="12" r="2" fill="#808080"/>
+    <circle cx="12" cy="18" r="2" fill="#808080"/>
     </g>
     <defs>
-    <clipPath id="clip0_562_2520">
-    <rect width="4" height="16" fill="white"/>
+    <clipPath id="clip0_562_2519">
+    <rect width="4" height="16" fill="white" transform="translate(10 4)"/>
     </clipPath>
     </defs>
   </symbol>
+
 
 </svg>
