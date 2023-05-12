@@ -5,7 +5,7 @@ import YearMonth from './YearMonth'
 
 interface ItemITF {
   id: number
-  snapTime: string
+  createdAt: string
   imageUrl: string
   text: string
 }
@@ -13,8 +13,8 @@ interface ItemITF {
 interface DataITF {
   id: number
   mapImg: string
-  createdAt: string
-  time: string
+  startAt: string
+  endAt: string
   message: string
   walkLogContents: ItemITF[]
 }
@@ -49,7 +49,7 @@ export default function Calendar({ data }: CalendarProps) {
   const [month, setMonth] = useState(now.getMonth() + 1)
 
   const Dates = data?.reduce((acc: string[], cur) => {
-    const strDate = new Date(cur.createdAt).toDateString()
+    const strDate = new Date(cur.startAt).toDateString()
     return acc.includes(strDate) ? acc : [...acc, strDate]
   }, [])
 
@@ -102,7 +102,7 @@ export default function Calendar({ data }: CalendarProps) {
                         }
                         return ''
                       })}
-                      {today === date.toDateString() && <div className={styles.today}>today</div>}
+                      {today === date.toDateString() && <div className={styles.today} />}
                     </td>
                   )
                 })}

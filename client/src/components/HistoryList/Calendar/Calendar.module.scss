@@ -1,6 +1,5 @@
 @use '../../../styles/color' as C;
 @use '../../../styles/utils' as U;
-@use '../../../styles/typography' as T;
 
 .container {
   width: 100vw;
@@ -26,18 +25,18 @@
 }
 
 .today {
-  @include T.gray600-regular-10;
   position: absolute;
-  bottom: -7%;
   left: 30%;
+  border: 1px solid C.$gray900;
+  width: 40%;
 }
 
 .dot {
   position: absolute;
-  left: 48%;
+  left: 44%;
   bottom: 0%;
-  width: 5px;
-  height: 5px;
+  width: 6%;
+  height: 6%;
   border: 3px solid C.$babygreen;
   border-radius: 50%;
   text-align: center;
