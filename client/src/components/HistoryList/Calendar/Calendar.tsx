@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import styles from './Calendar.module.scss'
 import WeekDays from './WeekDays'
 import YearMonth from './YearMonth'
@@ -44,8 +45,9 @@ function getCalendarRows(year: number, month: number): (0 | Date)[][] {
 
 export default function Calendar({ data }: CalendarProps) {
   const now = new Date()
-  const Year = now.getFullYear()
-  const Month = now.getMonth() + 1
+  const [year, setYear] = useState(now.getFullYear())
+  const [month, setMonth] = useState(now.getMonth() + 1)
+
   const Dates = data?.reduce((acc: string[], cur) => {
     const strDate = new Date(cur.createdAt).toDateString()
     return acc.includes(strDate) ? acc : [...acc, strDate]
@@ -53,13 +55,37 @@ export default function Calendar({ data }: CalendarProps) {
 
   const key = [999, 998, 997, 996, 995, 994, 993]
 
+  const handlePrevMonth = () => {
+    if (month <= 1) {
+      setYear(year - 1)
+      setMonth(12)
+    } else {
+      setMonth(month - 1)
+    }
+  }
+  const handleNextMonth = () => {
+    if (month >= 12) {
+      setYear(year + 1)
+      setMonth(1)
+    } else {
+      setMonth(month + 1)
+    }
+  }
+
+  useState(() => {}, [month, year])
+
   return (
     <div className={styles.container}>
       <table className={styles.table}>
-        <YearMonth year={Year} month={Month} />
+        <YearMonth
+          year={year}
+          month={month}
+          prevMonth={handlePrevMonth}
+          nextMonth={handleNextMonth}
+        />
         <WeekDays />
         <tbody>
-          {getCalendarRows(Year, Month).map((row, idx) => {
+          {getCalendarRows(year, month).map((row, idx) => {
             const today = new Date().toDateString()
 
             return (
