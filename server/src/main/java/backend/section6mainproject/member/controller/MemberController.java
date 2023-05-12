@@ -31,7 +31,8 @@ public class MemberController {
     @PostMapping("/sign")
     public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post post) {
         MemberDTO.PostRequestForService postRequestForService = mapper.memberPostRequestToService(post);
-        Long memberId = memberService.createMember(postRequestForService);
+        MemberDTO.Created memberIdResponse = memberService.createMember(postRequestForService);
+        Long memberId = memberIdResponse.getMemberId();
         URI location = UriComponentsBuilder
                 .newInstance()
                 .path(MEMBER_DEFAULT_URL + "/" + memberId)
@@ -46,9 +47,9 @@ public class MemberController {
                                       @Valid @RequestPart MemberDTO.Patch patch,
                                       @RequestPart MultipartFile profileImage) {
         patch.setMemberId(memberId);
-        MemberDTO.PatchRequestForService patchRequestForService = mapper.memberPatchRequestToService(patch);
+        MemberDTO.PatchRequestForService patchRequestForService = mapper.memberPatchRequestToService(patch, profileImage);
 
-        MemberDTO.ProfileResponseForController preResponse = memberService.updateMember(patchRequestForService, profileImage);
+        MemberDTO.ProfileResponseForController preResponse = memberService.updateMember(patchRequestForService);
 
         MemberDTO.ProfileResponseForClient response = mapper.memberProfileResponseToClient(preResponse);
 

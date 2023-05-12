@@ -5,6 +5,7 @@ import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -70,6 +71,14 @@ public class MemberDTO {
         private String introduction;
 
         private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting;
+
+        private MultipartFile profileImage;
+    }
+
+    @Getter
+    @Setter
+    public static class Created {
+        private Long memberId;
     }
 
     @Getter

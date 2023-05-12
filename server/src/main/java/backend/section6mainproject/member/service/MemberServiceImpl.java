@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Long createMember(MemberDTO.PostRequestForService postRequestForService) {
+    public MemberDTO.Created createMember(MemberDTO.PostRequestForService postRequestForService) {
         //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 postRequest를 Member 엔티티로 변환한다.
         Member member = mapper.memberPostRequestToMember(postRequestForService);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
@@ -45,7 +45,9 @@ public class MemberServiceImpl implements MemberService{
         member.setRoles(authorityUtils.getRoles());
 
         Member savedMember = memberRepository.save(member);
-        return savedMember.getMemberId();
+        MemberDTO.Created memberIdResponse = mapper.makeMemberIdAfterPostMember(savedMember);
+
+        return memberIdResponse;
     }
 
     private void encodeMemberCredential(Member member) {
@@ -76,7 +78,7 @@ public class MemberServiceImpl implements MemberService{
         return findMember;
     }
     @Override
-    public MemberDTO.ProfileResponseForController updateMember(MemberDTO.PatchRequestForService patchRequestForService, MultipartFile profileImage) {
+    public MemberDTO.ProfileResponseForController updateMember(MemberDTO.PatchRequestForService patchRequestForService) {
         //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 patchRequest를 Member 엔티티로 변환한다.
         Member member = mapper.memberPatchRequestToMember(patchRequestForService);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
@@ -87,7 +89,7 @@ public class MemberServiceImpl implements MemberService{
 
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
 
-        String profile = storageService.store(profileImage, "profile");
+        String profile = storageService.store(patchRequestForService.getProfileImage(), "profile");
 
         updatedMember.setProfileImage(profile);
         memberRepository.save(updatedMember);
