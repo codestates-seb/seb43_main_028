@@ -1,6 +1,7 @@
 package backend.section6mainproject.coordinate.controller;
 
-import backend.section6mainproject.coordinate.dto.CoordinateDTO;
+import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
+import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.coordinate.entity.Coordinate;
 import backend.section6mainproject.coordinate.mapper.CoordinateMapper;
 import backend.section6mainproject.coordinate.service.CoordinateService;
@@ -19,11 +20,11 @@ public class CoordinateController {
     private final SimpMessagingTemplate messagingTemplate;
     private final CoordinateMapper mapper;
     @MessageMapping("/walk-logs")
-    public void publishCoordinate(@Valid @Payload CoordinateDTO.Pub pub) {
+    public void publishCoordinate(@Valid @Payload CoordinateControllerDTO.Pub pub) {
         long walkLogId = Long.parseLong(SimpAttributesContextHolder.getAttributes().getAttribute("walkLogId").toString());
         pub.setWalkLogId(walkLogId);
-        Coordinate coordinate = coordinateService.createCoordinate(mapper.coordinatePubDTOToCoordinate(pub));
-        messagingTemplate.convertAndSend("/sub/" + coordinate.getWalkLog().getWalkLogId(), mapper.coordinateToCoordinateSubDTO(coordinate));
+        CoordinateServiceDTO.CreateReturn coordinate = coordinateService.createCoordinate(mapper.controllerPubDTOTOServiceCreateParamDTO(pub));
+        messagingTemplate.convertAndSend("/sub/" + coordinate.getWalkLogId(), mapper.serviceCreateReturnDTOToControllerSubDTO(coordinate));
     }
 
 }

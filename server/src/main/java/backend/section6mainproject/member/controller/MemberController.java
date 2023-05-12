@@ -5,7 +5,6 @@ import backend.section6mainproject.member.dto.MemberDTO;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
-import backend.section6mainproject.member.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -1,17 +1,16 @@
 package backend.section6mainproject.coordinate.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-public class CoordinateDTO {
+public class CoordinateServiceDTO {
     @Getter
-    public static class Pub {
+    @Setter
+    public static class CreateParam {
         @Setter
         private Long walkLogId;
         @NotNull
@@ -22,8 +21,9 @@ public class CoordinateDTO {
 
     @Getter
     @AllArgsConstructor
-    public static class Sub {
+    public static class CreateReturn {
         private long coordinateId;
+        private long walkLogId;
         private Double lat;
         private Double lng;
         private LocalDateTime createdAt;
