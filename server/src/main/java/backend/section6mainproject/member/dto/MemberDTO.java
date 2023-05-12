@@ -82,6 +82,12 @@ public class MemberDTO {
     }
 
     @Getter
+    @Setter
+    public static class CreatedIdForClient {
+        private Long memberId;
+    }
+
+    @Getter
     @AllArgsConstructor
     public static class ProfileResponseForController {
         private Long memberId;

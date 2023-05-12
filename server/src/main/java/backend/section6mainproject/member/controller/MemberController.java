@@ -32,14 +32,16 @@ public class MemberController {
     public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post post) {
         MemberDTO.PostRequestForService postRequestForService = mapper.memberPostRequestToService(post);
         MemberDTO.Created memberIdResponse = memberService.createMember(postRequestForService);
-        Long memberId = memberIdResponse.getMemberId();
-        URI location = UriComponentsBuilder
+
+        MemberDTO.CreatedIdForClient response = mapper.makeMemberIdForClient(memberIdResponse);
+
+        /*URI location = UriComponentsBuilder
                 .newInstance()
                 .path(MEMBER_DEFAULT_URL + "/" + memberId)
                 .buildAndExpand(memberId)
-                .toUri();
+                .toUri();*/
 
-        return new ResponseEntity(memberId, HttpStatus.CREATED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @PatchMapping(path = "/{member-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})

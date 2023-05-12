@@ -21,6 +21,8 @@ public interface MemberMapper {
     MemberDTO.ProfileResponseForController memberToMemberResponseDto(Member member); // 서비스 계층에서 API계층으로 넘길때 사용됨
     MemberDTO.ProfileResponseForClient memberProfileResponseToClient(MemberDTO.ProfileResponseForController profileResponseForController); //API계층에서 클라이언트로 넘길때 사용됨
 
+    MemberDTO.CreatedIdForClient makeMemberIdForClient(MemberDTO.Created memberId);
+
     MemberDTO.Created makeMemberIdAfterPostMember(Member member);
 
 }
