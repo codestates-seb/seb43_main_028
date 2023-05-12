@@ -5,13 +5,13 @@ import backend.section6mainproject.member.entity.Member;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
-    Long createMember(MemberDTO.PostRequest postRequest);
+    Long createMember(MemberDTO.PostRequestForService postRequestForService);
 
-    MemberDTO.ProfileResponse updateMember(MemberDTO.PatchRequest patchRequest, MultipartFile profileImage);
+    MemberDTO.ProfileResponseForController updateMember(MemberDTO.PatchRequestForService patchRequestForService, MultipartFile profileImage);
 
     Member findVerifiedMember(long memberId); //사용처를 모두 확인한 결과 Service 계층에서만 사용되므로 리턴타입은 Member 엔티티 그대로 두겠음
 
     void deleteMember(Long memberId);
 
-    MemberDTO.ProfileResponse findMember(Long memberId);
+    MemberDTO.ProfileResponseForController findMember(Long memberId);
 }

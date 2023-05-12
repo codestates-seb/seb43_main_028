@@ -30,15 +30,15 @@ public class MemberController {
 
     @PostMapping("/sign")
     public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post post) {
-        MemberDTO.PostRequest postRequest = mapper.memberPostDTOToPostRequest(post);
-        Long memberId = memberService.createMember(postRequest);
+        MemberDTO.PostRequestForService postRequestForService = mapper.memberPostRequestToService(post);
+        Long memberId = memberService.createMember(postRequestForService);
         URI location = UriComponentsBuilder
                 .newInstance()
                 .path(MEMBER_DEFAULT_URL + "/" + memberId)
                 .buildAndExpand(memberId)
                 .toUri();
 
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity(memberId, HttpStatus.CREATED);
     }
 
     @PatchMapping(path = "/{member-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -46,9 +46,11 @@ public class MemberController {
                                       @Valid @RequestPart MemberDTO.Patch patch,
                                       @RequestPart MultipartFile profileImage) {
         patch.setMemberId(memberId);
-        MemberDTO.PatchRequest patchRequest = mapper.memberPatchDTOToPatchRequest(patch);
+        MemberDTO.PatchRequestForService patchRequestForService = mapper.memberPatchRequestToService(patch);
 
-        MemberDTO.ProfileResponse response = memberService.updateMember(patchRequest, profileImage);
+        MemberDTO.ProfileResponseForController preResponse = memberService.updateMember(patchRequestForService, profileImage);
+
+        MemberDTO.ProfileResponseForClient response = mapper.memberProfileResponseToClient(preResponse);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -57,7 +59,9 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") @Positive Long memberId) {
-        return new ResponseEntity<>(memberService.findMember(memberId), HttpStatus.OK);
+       MemberDTO.ProfileResponseForClient response = mapper.memberProfileResponseToClient(memberService.findMember(memberId));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")

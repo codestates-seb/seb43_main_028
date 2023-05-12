@@ -1,6 +1,5 @@
 package backend.section6mainproject.member.dto;
 
-import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.validator.NotSpace;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.AllArgsConstructor;
@@ -30,20 +29,6 @@ public class MemberDTO {
 
     @Getter
     @Setter
-    public static class PostRequest {
-        @Email
-        @NotBlank(message = "이메일을 입력해주세요.")
-        private String email;
-
-        @NotBlank(message = "비밀번호를 입력해주세요.")
-        private String password;
-
-        @NotBlank(message = "닉네임을 입력해주세요.")
-        private String nickname;
-    }
-
-    @Getter
-    @Setter
     public static class Patch {
         private Long memberId;
         @NotSpace(message = "비밀번호를 변경해주십시오.")
@@ -58,7 +43,21 @@ public class MemberDTO {
 
     @Getter
     @Setter
-    public static class PatchRequest {
+    public static class PostRequestForService {
+        @Email
+        @NotBlank(message = "이메일을 입력해주세요.")
+        private String email;
+
+        @NotBlank(message = "비밀번호를 입력해주세요.")
+        private String password;
+
+        @NotBlank(message = "닉네임을 입력해주세요.")
+        private String nickname;
+    }
+
+    @Getter
+    @Setter
+    public static class PatchRequestForService {
         private Long memberId;
 
         @NotSpace(message = "비밀번호를 변경해주십시오.")
@@ -75,7 +74,22 @@ public class MemberDTO {
 
     @Getter
     @AllArgsConstructor
-    public static class ProfileResponse {
+    public static class ProfileResponseForController {
+        private Long memberId;
+        private String email;
+        private String nickname;
+        private String introduction;
+        private String defaultWalkLogPublicSetting;
+        private String imageUrl;
+        private int totalWalkLog;
+        private int totalWalkLogContent;
+        //추후 프론트측에서 필요한 속성 정할 예정
+        //private List<WalkLogDTO.Response> walkLogs;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class ProfileResponseForClient {
         private Long memberId;
         private String email;
         private String nickname;

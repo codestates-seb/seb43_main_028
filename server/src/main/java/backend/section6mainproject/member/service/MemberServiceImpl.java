@@ -35,9 +35,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Long createMember(MemberDTO.PostRequest postRequest) {
+    public Long createMember(MemberDTO.PostRequestForService postRequestForService) {
         //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 postRequest를 Member 엔티티로 변환한다.
-        Member member = mapper.memberPostRequestToMember(postRequest);
+        Member member = mapper.memberPostRequestToMember(postRequestForService);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         verifyExistsEmail(member.getEmail());
 
@@ -76,9 +76,9 @@ public class MemberServiceImpl implements MemberService{
         return findMember;
     }
     @Override
-    public MemberDTO.ProfileResponse updateMember(MemberDTO.PatchRequest patchRequest, MultipartFile profileImage) {
+    public MemberDTO.ProfileResponseForController updateMember(MemberDTO.PatchRequestForService patchRequestForService, MultipartFile profileImage) {
         //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 patchRequest를 Member 엔티티로 변환한다.
-        Member member = mapper.memberPatchRequestToMember(patchRequest);
+        Member member = mapper.memberPatchRequestToMember(patchRequestForService);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         Member findMember = findVerifiedMember(member.getMemberId());
         //기존 회원의 프로필이미지가 있다면 삭제
@@ -103,7 +103,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberDTO.ProfileResponse findMember(Long memberId) {
+    public MemberDTO.ProfileResponseForController findMember(Long memberId) {
         Member invokedMember = findVerifiedMember(memberId);
         return mapper.memberToMemberResponseDto(invokedMember);
     }
