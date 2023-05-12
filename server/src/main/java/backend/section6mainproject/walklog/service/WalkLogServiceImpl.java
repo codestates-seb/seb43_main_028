@@ -74,6 +74,7 @@ public class WalkLogServiceImpl implements WalkLogService {
 
         }
         if (day == 0){
+            day++;
             LocalDate parse = LocalDate.of(year,month,day);
             LocalDateTime start = LocalDateTime.of(parse.withDayOfMonth(1), LocalTime.of(0,0,0));
             LocalDateTime end = LocalDateTime.of(parse.withDayOfMonth(parse.lengthOfMonth()), LocalTime.of(23,59,59));
@@ -101,6 +102,7 @@ public class WalkLogServiceImpl implements WalkLogService {
 
         }
         if (day == 0){
+            day++;
             LocalDate parse = LocalDate.of(year,month,day);
             LocalDateTime start = LocalDateTime.of(parse.withDayOfMonth(1), LocalTime.of(0,0,0));
             LocalDateTime end = LocalDateTime.of(parse.withDayOfMonth(parse.lengthOfMonth()), LocalTime.of(23,59,59));
