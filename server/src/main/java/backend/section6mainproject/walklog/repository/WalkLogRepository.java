@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface WalkLogRepository extends JpaRepository<WalkLog, Long> {
-    Optional<Page<WalkLog>> findAllByWalkLogPublicSetting(Pageable pageable, WalkLog.WalkLogPublicSetting walkLogPublicSetting);
+    Page<WalkLog> findAllByWalkLogPublicSetting(Pageable pageable, WalkLog.WalkLogPublicSetting walkLogPublicSetting);
     Optional<List<WalkLog>> findAllByMember_MemberIdOrderByWalkLogIdDesc(Long memberId);
 
    Page<WalkLog> findAllByWalkLogPublicSettingAndCreatedAtBetween(Pageable pageable,

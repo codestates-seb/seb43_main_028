@@ -70,9 +70,8 @@ public class WalkLogServiceImpl implements WalkLogService {
     public Page<WalkLog> findWalkLogs(int page, int size, String date){
         PageRequest pageRequest = PageRequest.of(page - 1, size,Sort.by("walkLogId").descending());
         if(date.equals("2000-01-01")) {
-            Optional<Page<WalkLog>> response = walkLogRepository.findAllByWalkLogPublicSetting(pageRequest, WalkLog.WalkLogPublicSetting.PUBLIC);
-            return response.orElseThrow(() ->
-                    new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND));
+            return walkLogRepository.findAllByWalkLogPublicSetting(pageRequest, WalkLog.WalkLogPublicSetting.PUBLIC);
+
         }
         if (date.substring(date.length()-2).equals("00")){
             date = date.substring(0,date.length()-2) + "01";
