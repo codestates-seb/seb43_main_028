@@ -30,20 +30,15 @@ public class TestDataInit {
         firstMember.setNickname("거터볼래");
         firstMember.setIntroduction("안녕하세요");
         memberRepository.save(firstMember);
-//달력테스트를 위해 추가했습니다.
-        ArrayList<WalkLog> walkLogs = new ArrayList<>();
-        for(int i=0;i<9;i++) {
-            WalkLog walkLog = new WalkLog();
-            walkLog.setMember(firstMember);
-            walkLog.setMessage("안녕하십니까" + (i+1));
-            walkLog.setCreatedAt(LocalDateTime.of(LocalDate.parse("2023-0" + (i+1) + "-01"), LocalTime.now()));
-            walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
-            walkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-            walkLogs.add(walkLog);
-        }
-        walkLogRepository.saveAll(walkLogs);
+
+        WalkLog walkLog = new WalkLog();
+        walkLog.setMember(firstMember);
+        walkLog.setMessage("안녕하십니까");
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        walkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+
         WalkLogContent walkLogContent = new WalkLogContent();
-        walkLogContent.setWalkLog(walkLogs.get(0));
+        walkLogContent.setWalkLog(walkLog);
         walkLogContent.setText("첫번째 걷기 기록중 글 기록");
         walkLogContentRepository.save(walkLogContent);
 

@@ -18,6 +18,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
@@ -38,10 +44,6 @@ public class WalkLogControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private WalkLogService walkLogService;
-
-
-
-
 
     @Test
     void postWalkLogTest() throws Exception {
@@ -163,6 +165,28 @@ public class WalkLogControllerTest {
                 .andExpect(jsonPath("$.nickname").value(walkLog.getMember().getNickname()));
 
     }
+    @Test
+    void getAllWalkLogsTest(){
+        //전체 조회
+        //given
+        //walkLog 2개가 주어졌을 때
+        List<WalkLog> walkLogListWithDifferentDates = createWalkLogListWithDifferentDates();
+        //when
+        //파라미터에 따로 date 값을 안넣고 요청을 보냈을 시
+        //then
+        // 두 데이터 값이 온전히 조회가 되는지
+
+
+    }
+
+    @Test
+    void getWalkLogsByMonthTest(){
+        //특정 월 조회
+    }
+    @Test
+    void getWalkLogsByDayTest(){
+        //특정 일 조회
+    }
 
     @Test
     void deleteWalkLogTest() throws Exception {
@@ -193,6 +217,35 @@ public class WalkLogControllerTest {
         walkLog.setWalkLogId(walkLogId);
         walkLog.setMessage("안녕하십니까");
         return walkLog;
+    }
+    private List<WalkLog> createWalkLogListWithDifferentDates(){
+        ArrayList<WalkLog> walkLogs = new ArrayList<>();
+        Long memberId = 1L;
+        Member member = new Member();
+        member.setMemberId(memberId);
+        member.setEmail("admin1@gmail.com");
+        member.setPassword("12345");
+        member.setNickname("거터볼래1");
+        member.setIntroduction("안녕하세요1");
+        //온전한 WalkLog 객체
+        Long walkLogId = 1L;
+        WalkLog walkLog = new WalkLog();
+        walkLog.setMember(member);
+        walkLog.setWalkLogId(walkLogId);
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        walkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        walkLog.setCreatedAt(LocalDateTime.of(LocalDate.parse("2023-0" + (5) + "-01"), LocalTime.now()));
+        walkLogs.add(walkLog);
+
+        Long walkLogId2 = 2L;
+        WalkLog walkLog2 = new WalkLog();
+        walkLog.setMember(member);
+        walkLog.setWalkLogId(walkLogId2);
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        walkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        walkLog.setCreatedAt(LocalDateTime.of(LocalDate.parse("2023-0" + (4) + "-01"), LocalTime.now()));
+        walkLogs.add(walkLog2);
+        return walkLogs;
     }
 
 

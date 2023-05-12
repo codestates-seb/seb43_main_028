@@ -72,12 +72,12 @@ public class WalkLogDTO {
     @Setter
     @NoArgsConstructor
     public static class SimpleResponse{
-        private Long walkLogId; // 이름이 조금 변경되도 괜찮은지?
+        private Long walkLogId;
         private String mapImage; // 구현예정
         private LocalDateTime startedAt;
         private LocalDateTime endAt;
         private String message;
-        private List<WalkLogContentDTO.Response> walkLogContents; //좌표 관련된 정보는 필요 없으신지? //Response내부에도 질문있음
+        private List<WalkLogContentDTO.Response> walkLogContents;
 
     }
 }
