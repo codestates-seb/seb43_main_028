@@ -2,10 +2,11 @@ import { useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './History.module.scss'
 import HistoryItem from './HistoryItem'
+import { getHourMinuteDiff } from '../../utils/ date'
 
 interface ItemITF {
   id: number
-  snapTime: string
+  createdAt: string
   imageUrl: string
   text: string
 }
@@ -14,8 +15,8 @@ type HistoryItemProps = {
   data: {
     id: number
     mapImg: string
-    createdAt: string
-    time: string
+    startAt: string
+    endAt: string
     message: string
     walkLogContents: ItemITF[]
   }
@@ -23,11 +24,13 @@ type HistoryItemProps = {
 
 export default function History({ data }: HistoryItemProps) {
   const [moreContent, setMore] = useState(false)
-  const { mapImg, createdAt, time, message, walkLogContents } = data
-  const date = new Date(createdAt)
+  const { mapImg, startAt, endAt, message, walkLogContents } = data
+  const date = new Date(startAt)
   const Year = date.getFullYear()
   const Month = date.getMonth() + 1
   const Day = date.getDate()
+  const timeDiff = new Date(endAt).getTime() - new Date(startAt).getTime()
+  const time = getHourMinuteDiff(timeDiff)
   const moreContents = walkLogContents.slice(1)
 
   const handleMore = () => {
@@ -46,7 +49,7 @@ export default function History({ data }: HistoryItemProps) {
         </div>
       </div>
       <p className={styles.message}>{message}</p>
-      <HistoryItem item={walkLogContents[0]} />
+      <HistoryItem item={walkLogContents[0]} startAt={startAt} />
       {!moreContent && (
         <button type='button' className={styles.moreBtn} onClick={handleMore}>
           <Icon name='three-dot' size={24} /> {walkLogContents.length - 1} more
@@ -54,7 +57,7 @@ export default function History({ data }: HistoryItemProps) {
       )}
       {moreContent &&
         moreContents.map(item => {
-          return <HistoryItem key={item.id} item={item} />
+          return <HistoryItem key={item.id} item={item} startAt={startAt} />
         })}
       <button type='button' className={styles.detailBtn}>
         자세히 보기
