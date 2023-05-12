@@ -71,7 +71,7 @@ export const getCurrentUserInfo = async (url: string): Promise<UserInfoType> => 
 
 export const refreshAccessToken = async () => {
   try {
-    const { headers } = await axios.get('/auth/refresh', {
+    const { headers } = await axios.get('/members/refresh', {
       headers: {
         Refresh: getRefreshTokenFromLocalStorage(),
       },

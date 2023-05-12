@@ -26,7 +26,7 @@ function App() {
       }
 
       if (!getRefreshTokenFromLocalStorage()) {
-        console.log('refresh token 만료')
+        console.log('refresh token 만료. 재로그인이 필요합니다.')
         return 'fail'
       }
 
