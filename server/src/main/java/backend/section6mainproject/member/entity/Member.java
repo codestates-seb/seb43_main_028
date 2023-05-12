@@ -41,7 +41,9 @@ public class Member extends Auditable {
     @Column(length = 500)
     private String introduction;
 
-    private String profileImage;
+    private String profileImage; //"directory/algorithm"등의 이미지이름 (+ 임시주소) == signBucket에서 처리
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<WalkLog> walkLogs = new ArrayList<>();

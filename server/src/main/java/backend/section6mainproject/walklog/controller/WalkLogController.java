@@ -65,6 +65,7 @@ public class WalkLogController {
                                       @RequestParam(value = "month",required = false,defaultValue = "99") int month,
                                       @RequestParam(value = "year",required = false,defaultValue = "9999") int year){
         //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심//RequestParam의 경우에는 String로 들어오는 만큼 dto에서 유효성 검사를 철저하게 만들것
+        //RequestParam ModelAttribute 로 처리하는 방법 고민해보기
         Page<WalkLog> walkLogs = walkLogService.findWalkLogs(page,size,year,month,day);
         List<WalkLogDTO.SimpleResponse> response = walkLogMapper.walkLogsToWalkLogSimpleResponseDTOs(walkLogs.toList());
         return new ResponseEntity<>(new MultiResponseDto<>(response,walkLogs), HttpStatus.OK);

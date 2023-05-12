@@ -1,11 +1,15 @@
 package backend.section6mainproject.member.service;
 
+import backend.section6mainproject.auth.utils.CustomAuthorityUtils;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.helper.image.StorageService;
+import backend.section6mainproject.member.dto.MemberDTO;
 import backend.section6mainproject.member.entity.Member;
+import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.utils.CustomBeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,21 +21,38 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final StorageService storageService;
     private final CustomBeanUtils<Member> beanUtils;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
+    private final MemberMapper mapper;
 
-    public MemberServiceImpl(MemberRepository memberRepository, StorageService storageService, CustomBeanUtils<Member> beanUtils) {
+    public MemberServiceImpl(MemberRepository memberRepository, StorageService storageService, CustomBeanUtils<Member> beanUtils, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils, MemberMapper mapper) {
         this.memberRepository = memberRepository;
         this.storageService = storageService;
         this.beanUtils = beanUtils;
+        this.passwordEncoder = passwordEncoder;
+        this.authorityUtils = authorityUtils;
+        this.mapper = mapper;
     }
 
     @Override
-    public Long createMember(Member member) {
+    public MemberDTO.Created createMember(MemberDTO.PostRequestForService postRequestForService) {
+        //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 postRequest를 Member 엔티티로 변환한다.
+        Member member = mapper.memberPostRequestToMember(postRequestForService);
+        //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         verifyExistsEmail(member.getEmail());
 
-        //추후 패스워드 암호화 및 User Role 관련해서 작업필요
+        encodeMemberCredential(member);
+        member.setRoles(authorityUtils.getRoles());
 
         Member savedMember = memberRepository.save(member);
-        return savedMember.getMemberId();
+        MemberDTO.Created memberIdResponse = mapper.makeMemberIdAfterPostMember(savedMember);
+
+        return memberIdResponse;
+    }
+
+    private void encodeMemberCredential(Member member) {
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
     }
 
     private void verifyExistsEmail(String email) {
@@ -57,17 +78,23 @@ public class MemberServiceImpl implements MemberService{
         return findMember;
     }
     @Override
-    public Member updateMember(Member member, MultipartFile profileImage) {
+    public MemberDTO.ProfileResponseForController updateMember(MemberDTO.PatchRequestForService patchRequestForService) {
+        //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 patchRequest를 Member 엔티티로 변환한다.
+        Member member = mapper.memberPatchRequestToMember(patchRequestForService);
+        //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         Member findMember = findVerifiedMember(member.getMemberId());
         //기존 회원의 프로필이미지가 있다면 삭제
         storageService.delete(findMember.getProfileImage());
+        encodeMemberCredential(member);
+
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
 
-        String profile = storageService.store(profileImage, "profile");
+        String profile = storageService.store(patchRequestForService.getProfileImage(), "profile");
 
         updatedMember.setProfileImage(profile);
-
-        return memberRepository.save(updatedMember);
+        memberRepository.save(updatedMember);
+        //컨트롤러로 다시 던지기 전에 mapper로 변환해서 응답용DTO를 전달해준다.
+        return mapper.memberToMemberResponseDto(updatedMember);
     }
 
     @Override
@@ -78,9 +105,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Member findMember(Long memberId) {
-        Member member = findVerifiedMember(memberId);
-        return member;
+    public MemberDTO.ProfileResponseForController findMember(Long memberId) {
+        Member invokedMember = findVerifiedMember(memberId);
+        return mapper.memberToMemberResponseDto(invokedMember);
     }
 
     private void distinguishQuittedMember(Member member) {
