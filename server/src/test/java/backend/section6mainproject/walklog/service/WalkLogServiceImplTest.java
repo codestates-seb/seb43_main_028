@@ -55,6 +55,25 @@ public class WalkLogServiceImplTest {
     }
 
     @Test
+    public void shouldThrowExceptionWhenWalkLogAlreadyRecordingTest() {
+        //given
+        WalkLog walkLog = new WalkLog();
+        Long memberId = 1L;
+        walkLog.setWalkLogId(memberId);
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.RECORDING);
+        ArrayList<WalkLog> walkLogs = new ArrayList<>();
+        walkLogs.add(walkLog);
+
+        given(walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(Mockito.anyLong())).willReturn(Optional.of(walkLogs));
+        //when
+        RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
+            walkLogService.createWalkLog(memberId);
+        });
+        //then
+        assertThat(exception.getMessage()).isEqualTo("WalkLog already recording");
+    }
+
+    @Test
     public void updateWalkLogTest(){
 
         // given

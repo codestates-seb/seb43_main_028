@@ -12,7 +12,7 @@ public interface WalkLogService {
 
     void deleteWalkLog(Long walkLogId);
     WalkLog findWalkLog(Long walkLogId);
-    Page<WalkLog> findWalkLogs(int page, int size);
+    Page<WalkLog> findWalkLogs(int page, int size, String date);
     WalkLog findVerifiedWalkLog(Long walkLogId);
     WalkLog exitWalkLog(WalkLog walkLog);
 

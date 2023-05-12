@@ -52,11 +52,11 @@ public class WalkLogDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class Response{
+    public static class DetailResponse {
 
         private Long walkLogId;
         private LocalDateTime createdAt;
-        private LocalDateTime endTime;
+        private LocalDateTime endAt;
 
         private String message;
         private Long memberId;
@@ -68,7 +68,16 @@ public class WalkLogDTO {
         private List<WalkLogContentDTO.Response> walkLogContents;
 
     }
-//패스워드와 나머지 객체들은 반환할 필요가 없어서 제거하고 Dto생성
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class SimpleResponse{
+        private Long walkLogId; // 이름이 조금 변경되도 괜찮은지?
+        private String mapImage; // 구현예정
+        private LocalDateTime startedAt;
+        private LocalDateTime endAt;
+        private String message;
+        private List<WalkLogContentDTO.Response> walkLogContents; //좌표 관련된 정보는 필요 없으신지? //Response내부에도 질문있음
 
-
+    }
 }

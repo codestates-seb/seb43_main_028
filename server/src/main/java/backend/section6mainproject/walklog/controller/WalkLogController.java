@@ -10,10 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.Positive;
-import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -38,10 +37,10 @@ public class WalkLogController {
         //멤버 인증 로직은 추후에 반영
         walkLogEndPostDTO.setWalkLogId(walkLogId);
 
-        WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDTO(
+        WalkLogDTO.DetailResponse detailResponse = walkLogMapper.walkLogToWalkLogDetailResponseDTO(
                 walkLogService.exitWalkLog(
                 walkLogMapper.walkLogEndPostDTOtoWalkLog(walkLogEndPostDTO)));
-        return new ResponseEntity(response,HttpStatus.OK);
+        return new ResponseEntity(detailResponse,HttpStatus.OK);
     }
 
     @PatchMapping("/{walk-log-id}")
@@ -49,22 +48,24 @@ public class WalkLogController {
                                        @RequestBody WalkLogDTO.Patch walkLogPatchDTO){
         walkLogPatchDTO.setWalkLogId(walkLogId);
         WalkLog updatedWalkLog = walkLogService.updateWalkLog(walkLogMapper.walkLogPatchDTOToWalkLog(walkLogPatchDTO));
-        WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDTO(updatedWalkLog);
+        WalkLogDTO.DetailResponse detailResponse = walkLogMapper.walkLogToWalkLogDetailResponseDTO(updatedWalkLog);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(detailResponse, HttpStatus.OK);
 
     }
     @GetMapping("/{walk-log-id}")
     public ResponseEntity getWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
-        WalkLogDTO.Response response = walkLogMapper.walkLogToWalkLogResponseDTO(walkLogService.findWalkLog(walkLogId));
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        WalkLogDTO.DetailResponse detailResponse = walkLogMapper.walkLogToWalkLogDetailResponseDTO(walkLogService.findWalkLog(walkLogId));
+        return new ResponseEntity<>(detailResponse, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity getWalkLogs(@Positive @RequestParam int page){
-        //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심
-        Page<WalkLog> walkLogs = walkLogService.findWalkLogs( page - 1, PAGE_SIZE);
-        List<WalkLogDTO.Response> responses = walkLogMapper.walkLogsToWalkLogResponseDTOs(walkLogs.toList());
-        return new ResponseEntity<>(new MultiResponseDto<>(responses,walkLogs), HttpStatus.OK);
+    public ResponseEntity getWalkLogs(@Positive @RequestParam int page,
+                                      @RequestParam(value = "size",required = false,defaultValue = "10") int size,
+                                      @RequestParam(value = "date",required = false,defaultValue = "2000-01-01") String date){
+        //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심//RequestParam의 경우에는 String로 들어오는 만큼 dto에서 유효성 검사를 철저하게 만들것
+        Page<WalkLog> walkLogs = walkLogService.findWalkLogs( page,size,date);
+        List<WalkLogDTO.SimpleResponse> response = walkLogMapper.walkLogsToWalkLogSimpleResponseDTOs(walkLogs.toList());
+        return new ResponseEntity<>(new MultiResponseDto<>(response,walkLogs), HttpStatus.OK);
     }
     @DeleteMapping("/{walk-log-id}")
     public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){

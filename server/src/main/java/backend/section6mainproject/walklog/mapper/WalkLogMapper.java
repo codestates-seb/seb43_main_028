@@ -19,8 +19,14 @@ public interface WalkLogMapper {
     @Mapping(source = "member.nickname",target = "nickname")
     @Mapping(target = "coordinates",qualifiedByName = "coordinatesToCoordinateSubDTOs")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentsToWalkLogContentResponseDTOs")
-    WalkLogDTO.Response walkLogToWalkLogResponseDTO(WalkLog walkLog);
+    WalkLogDTO.DetailResponse walkLogToWalkLogDetailResponseDTO(WalkLog walkLog);
     WalkLogDTO.Created walkLogToWalkLogCreatedDTO(WalkLog walkLog);
-    List<WalkLogDTO.Response> walkLogsToWalkLogResponseDTOs(List<WalkLog> walkLogs);
+    List<WalkLogDTO.DetailResponse> walkLogsToWalkLogDetailResponseDTOs(List<WalkLog> walkLogs); //임시
+
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentsToWalkLogContentResponseDTOs")
+    @Mapping(target = "startedAt", source = "createdAt")
+    WalkLogDTO.SimpleResponse walkLogToWalkLogSimpleResponseDTO(WalkLog walkLog); //구현중
+    List<WalkLogDTO.SimpleResponse> walkLogsToWalkLogSimpleResponseDTOs(List<WalkLog> walkLogs); //임시
+
 
 }
