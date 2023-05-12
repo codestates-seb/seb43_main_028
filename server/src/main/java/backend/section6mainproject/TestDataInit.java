@@ -7,6 +7,7 @@ import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,12 +22,13 @@ public class TestDataInit {
     private final MemberRepository memberRepository;
     private final WalkLogRepository walkLogRepository;
     private final WalkLogContentRepository walkLogContentRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
         Member firstMember = new Member();
         firstMember.setEmail("admin@gmail.com");
-        firstMember.setPassword("1234");
+        firstMember.setPassword(passwordEncoder.encode("1234"));
         firstMember.setNickname("거터볼래");
         firstMember.setIntroduction("안녕하세요");
         memberRepository.save(firstMember);

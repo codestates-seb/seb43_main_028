@@ -22,3 +22,7 @@ logging:
 aws-s3:
   access-key: ${AWS_S3_ACCESS_KEY}
   secret-access-key: ${AWS_S3_SECRET_ACCESS_KEY}
+jwt:
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 60
+  refresh-token-expiration-days: 7
