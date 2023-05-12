@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import { signIn, getCurrentUserInfo } from '../apis/user'
 import styles from './SignIn.module.scss'
-import userAtom from '../store/userAtom'
+import { userAtom } from '../store/authAtom'
 
 function SignIn() {
   const navigate = useNavigate()

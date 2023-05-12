@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
-import userAtom from '../store/userAtom'
+import { userAtom } from '../store/authAtom'
 
 export default function Home() {
   // userData는 배열의 형태

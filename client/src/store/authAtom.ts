@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
 
-// 유저 정보를 담을 atom 생성
-const userAtom = atom<object>({
+// 유저 정보
+export const userAtom = atom<object>({
   defaultWalkLogPublicSetting: 'PRIVATE',
   email: null,
   imageUrl: null,
@@ -12,4 +12,5 @@ const userAtom = atom<object>({
   totalWalkLogContent: 0,
 })
 
-export default userAtom
+// 로그인 여부
+export const isLoginAtom = atom<boolean>(false)

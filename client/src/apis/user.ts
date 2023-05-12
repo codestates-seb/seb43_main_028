@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+import saveRefreshTokenToLocalStorage from '../utils/refreshTokenHandler'
 
 type SignUpPropsType = {
   nickname: string
@@ -42,6 +43,7 @@ export const signIn = async ({ email, password, autoLogin = true }: SignInPropsT
     const response = await axios.post('/api/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
     axios.defaults.headers.common.Authorization = authorization
+    saveRefreshTokenToLocalStorage(response.headers.refresh)
     return response.data.memberId
   } catch (error) {
     return 'fail'
