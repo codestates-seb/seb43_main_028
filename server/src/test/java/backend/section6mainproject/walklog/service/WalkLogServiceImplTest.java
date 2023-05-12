@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -40,6 +42,7 @@ public class WalkLogServiceImplTest {
     public void createWalkLogTest() {
         // given
         WalkLog walkLog = createWalkLog();
+        given(walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(Mockito.anyLong())).willReturn(Optional.of(new ArrayList<>()));
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(walkLog.getMember());
         given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(walkLog);
         // when
@@ -49,6 +52,25 @@ public class WalkLogServiceImplTest {
         // then
         assertNotNull(createdWalkLog);
         assertEquals(walkLog.getMember(), createdWalkLog.getMember());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenWalkLogAlreadyRecordingTest() {
+        //given
+        WalkLog walkLog = new WalkLog();
+        Long memberId = 1L;
+        walkLog.setWalkLogId(memberId);
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.RECORDING);
+        ArrayList<WalkLog> walkLogs = new ArrayList<>();
+        walkLogs.add(walkLog);
+
+        given(walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(Mockito.anyLong())).willReturn(Optional.of(walkLogs));
+        //when
+        RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
+            walkLogService.createWalkLog(memberId);
+        });
+        //then
+        assertThat(exception.getMessage()).isEqualTo("WalkLog already recording");
     }
 
     @Test

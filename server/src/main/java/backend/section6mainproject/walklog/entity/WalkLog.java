@@ -4,7 +4,6 @@ import backend.section6mainproject.audit.Auditable;
 import backend.section6mainproject.content.entity.WalkLogContent;
 import backend.section6mainproject.coordinate.entity.Coordinate;
 import backend.section6mainproject.member.entity.Member;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,9 +22,10 @@ public class WalkLog extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long walkLogId;
     @Column(nullable = false)
-    private LocalDateTime endTime = LocalDateTime.now();
+    private LocalDateTime endAt = LocalDateTime.now();
     @Column(length = 50)
     private String message;
+    private String mapImage; //구현 예정
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
