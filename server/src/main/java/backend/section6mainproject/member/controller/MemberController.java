@@ -1,11 +1,8 @@
 package backend.section6mainproject.member.controller;
 
-import backend.section6mainproject.content.dto.WalkLogContentDTO;
 import backend.section6mainproject.member.dto.MemberDTO;
-import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
-import backend.section6mainproject.member.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,15 +29,19 @@ public class MemberController {
     }
 
     @PostMapping("/sign")
-    public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post memberPostDto) {
-        Long memberId = memberService.createMember(mapper.memberPostDtoToMember(memberPostDto));
-        URI location = UriComponentsBuilder
+    public ResponseEntity postMember(@Valid @RequestBody MemberDTO.Post post) {
+        MemberDTO.PostRequestForService postRequestForService = mapper.memberPostRequestToService(post);
+        MemberDTO.Created memberIdResponse = memberService.createMember(postRequestForService);
+
+        MemberDTO.CreatedIdForClient response = mapper.makeMemberIdForClient(memberIdResponse);
+
+        /*URI location = UriComponentsBuilder
                 .newInstance()
                 .path(MEMBER_DEFAULT_URL + "/" + memberId)
                 .buildAndExpand(memberId)
-                .toUri();
+                .toUri();*/
 
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @PatchMapping(path = "/{member-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -48,8 +49,11 @@ public class MemberController {
                                       @Valid @RequestPart MemberDTO.Patch patch,
                                       @RequestPart MultipartFile profileImage) {
         patch.setMemberId(memberId);
+        MemberDTO.PatchRequestForService patchRequestForService = mapper.memberPatchRequestToService(patch, profileImage);
 
-        MemberDTO.Response response = mapper.memberToMemberResponseDto(memberService.updateMember(mapper.memberPatchDtoToMember(patch), profileImage));
+        MemberDTO.ProfileResponseForController preResponse = memberService.updateMember(patchRequestForService);
+
+        MemberDTO.ProfileResponseForClient response = mapper.memberProfileResponseToClient(preResponse);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -58,7 +62,9 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") @Positive Long memberId) {
-        return new ResponseEntity<>(mapper.memberToMemberResponseDto(memberService.findMember(memberId)), HttpStatus.OK);
+       MemberDTO.ProfileResponseForClient response = mapper.memberProfileResponseToClient(memberService.findMember(memberId));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
