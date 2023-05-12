@@ -67,31 +67,59 @@ public class WalkLogServiceImpl implements WalkLogService {
     }
 
     @Override
-    public Page<WalkLog> findWalkLogs(int page, int size, String date){
+    public Page<WalkLog> findWalkLogs(int page, int size, int year,int month, int day){//년월일 int타입으로 나눠서 리팩토링하기
         PageRequest pageRequest = PageRequest.of(page - 1, size,Sort.by("walkLogId").descending());
-        if(date.equals("2000-01-01")) {
+        if(year == 9999 && month == 99 && day == 99) {
             return walkLogRepository.findAllByWalkLogPublicSetting(pageRequest, WalkLog.WalkLogPublicSetting.PUBLIC);
 
         }
-        if (date.substring(date.length()-2).equals("00")){
-            date = date.substring(0,date.length()-2) + "01";
-            LocalDate parse = LocalDate.parse(date);
+        if (day == 0){
+            LocalDate parse = LocalDate.parse(year+"-"+month+1);
             LocalDateTime start = LocalDateTime.of(parse.withDayOfMonth(1), LocalTime.of(0,0,0));
             LocalDateTime end = LocalDateTime.of(parse.withDayOfMonth(parse.lengthOfMonth()), LocalTime.of(23,59,59));
             return walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetween(pageRequest, WalkLog.WalkLogPublicSetting.PUBLIC,start,end);
         }
-        String[] split = date.split("-");
-        Integer year = Integer.parseInt(split[0]);
-        Integer month = Integer.parseInt(split[1]);
-            Integer day = Integer.parseInt(split[2]);
             if(year >= 2000 && year <= 9999 || month >=1 && month <=12 || day >= 1 && day <= 31){
-                LocalDateTime start = LocalDateTime.of(LocalDate.parse(date), LocalTime.of(0,0,0));
-                LocalDateTime end = LocalDateTime.of(LocalDate.parse(date), LocalTime.of(23,59,59));
+                LocalDate parse = LocalDate.parse(year+"-"+month+day);
+                LocalDateTime start = LocalDateTime.of(parse, LocalTime.of(0,0,0));
+                LocalDateTime end = LocalDateTime.of(parse, LocalTime.of(23,59,59));
                 return walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetween(pageRequest,
                         WalkLog.WalkLogPublicSetting.PUBLIC,
                         start,
                         end);
-            }else throw new RuntimeException("양식이 일치하지 않습니다.");
+            }else throw new RuntimeException("양식이 일치하지 않습니다."); //비즈니스로직을 작명해서 새로 추가하기
+    }
+    @Override
+    public Page<WalkLog> findMyWalkLogs(Long memberId,int page, int size, int year,int month, int day){//년월일 int타입으로 나눠서 리팩토링하기
+
+        memberService.findVerifiedMember(memberId);
+        PageRequest pageRequest = PageRequest.of(page - 1, size,Sort.by("walkLogId").descending());
+        if(year == 9999 && month == 99 && day == 99) {
+            return walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(pageRequest,
+                    WalkLog.WalkLogPublicSetting.PUBLIC,
+                    memberId);
+
+        }
+        if (day == 0){
+            LocalDate parse = LocalDate.parse(year+"-"+month+1);
+            LocalDateTime start = LocalDateTime.of(parse.withDayOfMonth(1), LocalTime.of(0,0,0));
+            LocalDateTime end = LocalDateTime.of(parse.withDayOfMonth(parse.lengthOfMonth()), LocalTime.of(23,59,59));
+            return walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetweenAndMember_MemberId(pageRequest,
+                    WalkLog.WalkLogPublicSetting.PUBLIC,
+                    start,
+                    end,
+                    memberId);
+        }
+            if(year >= 2000 && year <= 9999 || month >=1 && month <=12 || day >= 1 && day <= 31){
+                LocalDate parse = LocalDate.parse(year+"-"+month+day);
+                LocalDateTime start = LocalDateTime.of(parse, LocalTime.of(0,0,0));
+                LocalDateTime end = LocalDateTime.of(parse, LocalTime.of(23,59,59));
+                return walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetweenAndMember_MemberId(pageRequest,
+                        WalkLog.WalkLogPublicSetting.PUBLIC,
+                        start,
+                        end,
+                        memberId);
+            }else throw new RuntimeException("양식이 일치하지 않습니다."); //비즈니스로직을 작명해서 새로 추가하기
     }
     @Override
     public void deleteWalkLog(Long walkLogId){

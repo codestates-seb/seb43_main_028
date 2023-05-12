@@ -234,7 +234,6 @@ public class WalkLogControllerTest {
         walkLog.setWalkLogId(walkLogId);
         walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
         walkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        walkLog.setCreatedAt(LocalDateTime.of(LocalDate.parse("2023-0" + (5) + "-01"), LocalTime.now()));
         walkLogs.add(walkLog);
 
         Long walkLogId2 = 2L;
@@ -243,7 +242,6 @@ public class WalkLogControllerTest {
         walkLog.setWalkLogId(walkLogId2);
         walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
         walkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        walkLog.setCreatedAt(LocalDateTime.of(LocalDate.parse("2023-0" + (4) + "-01"), LocalTime.now()));
         walkLogs.add(walkLog2);
         return walkLogs;
     }

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable {
-//    @CreatedDate
+    @CreatedDate
     @Column(nullable = false, updatable = false) //달력테스트가 끝난 후 nullable = false로 변경해주세요
     private LocalDateTime createdAt;
 
