@@ -3,9 +3,10 @@ import { useAtom } from 'jotai'
 import { signIn, getCurrentUserInfo } from '../apis/user'
 import styles from './SignIn.module.scss'
 import { userAtom } from '../store/authAtom'
+import useRouter from '../hooks/useRouter'
 
 function SignIn() {
-  const navigate = useNavigate()
+  const { routeTo } = useRouter()
   const [, setUserAtom] = useAtom(userAtom)
 
   const logInSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +23,7 @@ function SignIn() {
       const userInfoRes = await getCurrentUserInfo(`/api/members/${memberId}`)
       // 전역 상태에 userInfoRes 저장
       setUserAtom(userInfoRes)
-      navigate('/')
+      routeTo('/')
       return
     }
     alert('Sorry, you failed to log in.')
