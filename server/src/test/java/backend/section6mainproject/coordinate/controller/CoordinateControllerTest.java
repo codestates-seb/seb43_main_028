@@ -114,8 +114,8 @@ class CoordinateControllerTest {
         stompSession.send("/pub/walk-logs", pub);
 
         //then
-        ErrorResponse errorResponse = errorFuture.get(5, TimeUnit.SECONDS);
-        System.out.println(errorResponse);
+        Assertions.assertDoesNotThrow(() -> errorFuture.get(5, TimeUnit.SECONDS));
+
     }
 
     private void stubbingMockBean() {
