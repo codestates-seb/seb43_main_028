@@ -3,6 +3,7 @@ package backend.section6mainproject.coordinate.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
@@ -12,8 +13,6 @@ public class CoordinateControllerDTO {
     @Getter
     @Setter
     public static class Pub {
-        @Setter
-        private Long walkLogId;
         @NotNull
         private Double lat;
         @NotNull

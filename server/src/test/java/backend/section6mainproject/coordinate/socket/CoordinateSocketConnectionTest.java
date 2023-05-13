@@ -9,6 +9,7 @@ import backend.section6mainproject.walklog.entity.WalkLog;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -19,6 +20,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -38,8 +40,10 @@ import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CoordinateSocketConnectionTest {
+    @LocalServerPort
+    private int port;
     @MockBean
     private MemberService memberService;
     private WebSocketStompClient stompClient;
@@ -50,7 +54,11 @@ class CoordinateSocketConnectionTest {
     public CoordinateSocketConnectionTest() {
         this.stompClient = new WebSocketStompClient(new StandardWebSocketClient());
         this.stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-        this.url = "ws://localhost:8080/ws/walk-logs";
+    }
+
+    @BeforeEach
+    void init() {
+        this.url = String.format("ws://localhost:%d/ws/walk-logs", port);
     }
 
     @Test
@@ -70,7 +78,6 @@ class CoordinateSocketConnectionTest {
         //when //then
         Assertions.assertThrows(Exception.class, () -> stompClient.connect(url, new StompSessionHandlerAdapter() {
         }).get(3, TimeUnit.MINUTES));
-
 
     }
     @Test

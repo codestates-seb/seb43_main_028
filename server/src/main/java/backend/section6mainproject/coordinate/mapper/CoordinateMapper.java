@@ -11,8 +11,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CoordinateMapper {
-    @Mapping(source = "walkLogId", target = "walkLog.walkLogId")
-    Coordinate coordinatePubDTOToCoordinate(CoordinateControllerDTO.Pub pub);
 
     CoordinateControllerDTO.Sub coordinateToCoordinateSubDTO(Coordinate coordinate);
 
