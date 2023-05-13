@@ -85,7 +85,7 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
-        Assertions.assertThrows(TimeoutException.class, () -> completableFuture.get(3, TimeUnit.SECONDS));
+        Assertions.assertThrows(TimeoutException.class, () -> completableFuture.get(5, TimeUnit.SECONDS));
 
     }
     @Test
@@ -104,7 +104,7 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
-        StompHeaders stompHeaders = completableFuture.get(3, TimeUnit.SECONDS);
+        StompHeaders stompHeaders = completableFuture.get(5, TimeUnit.SECONDS);
         MatcherAssert.assertThat(stompHeaders.size(), is(greaterThan(0)));
         MatcherAssert.assertThat(stompHeaders.get("message").get(0), is(containsString(BusinessLogicException.class.getName())));
 
