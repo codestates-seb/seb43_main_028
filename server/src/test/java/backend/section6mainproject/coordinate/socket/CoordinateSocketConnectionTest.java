@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.BDDMockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CoordinateSocketConnectionTest {
@@ -64,7 +65,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void connectWebSocket() throws ExecutionException, InterruptedException, TimeoutException {
         //given
-        BDDMockito.given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
+        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
         //when //then
         Assertions.assertDoesNotThrow(() -> stompClient.connect(url, new StompSessionHandlerAdapter() {
         }).get(3, TimeUnit.MINUTES));
@@ -74,7 +75,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void connectWithNoWalkLogRecording() {
         //given
-        BDDMockito.given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(new Member());
+        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(new Member());
         //when //then
         Assertions.assertThrows(Exception.class, () -> stompClient.connect(url, new StompSessionHandlerAdapter() {
         }).get(3, TimeUnit.MINUTES));
@@ -83,7 +84,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void subscribeWebSocket() throws ExecutionException, InterruptedException, TimeoutException {
         //given
-        BDDMockito.given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
+        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
         //when
         StompSession stompSession = stompClient.connect(url, new StompSessionHandlerAdapter() {
             @Override
@@ -101,7 +102,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void subscribeWrongDest() throws ExecutionException, InterruptedException, TimeoutException {
         //given
-        BDDMockito.given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
+        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
         //when
         StompSession stompSession = stompClient.connect(url, new StompSessionHandlerAdapter() {
             @Override

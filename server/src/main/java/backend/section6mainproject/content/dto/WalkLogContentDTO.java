@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 public class WalkLogContentDTO {
     @Getter
     public static class Post {
@@ -16,6 +18,7 @@ public class WalkLogContentDTO {
     @AllArgsConstructor
     public static class Response {
         private Long walkLogContentId;
+        private LocalDateTime createdAt;
         private String text;
         private String imageUrl;
     }
