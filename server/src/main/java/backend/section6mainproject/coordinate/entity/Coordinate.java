@@ -18,7 +18,9 @@ public class Coordinate {
     private Long coordinateId;
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
     private Double lat;
+    @Column(nullable = false)
     private Double lng;
 
     @ManyToOne

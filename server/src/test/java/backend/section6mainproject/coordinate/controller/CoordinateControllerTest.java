@@ -6,14 +6,15 @@ import backend.section6mainproject.coordinate.mapper.CoordinateMapper;
 import backend.section6mainproject.coordinate.service.CoordinateService;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.service.MemberService;
+import backend.section6mainproject.response.ErrorResponse;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -50,7 +51,8 @@ class CoordinateControllerTest {
     private WebSocketStompClient stompClient;
     private String url;
     private StompSession stompSession;
-    private CompletableFuture<CoordinateControllerDTO.Sub> completableFuture;
+    private CompletableFuture<CoordinateControllerDTO.Sub> subscribeFuture;
+    private CompletableFuture<ErrorResponse> errorFuture;
     private StubData stubData = new StubData();
 
 
@@ -65,19 +67,23 @@ class CoordinateControllerTest {
     @BeforeEach
     void init() throws ExecutionException, InterruptedException, TimeoutException {
         this.url = String.format("ws://localhost:%d/ws/walk-logs", port);
-        completableFuture = new CompletableFuture<>();
+        subscribeFuture = new CompletableFuture<>();
+        errorFuture = new CompletableFuture<>();
+
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(stubData.getStubMember());
         this.stompSession = stompClient.connect(url, new StompSessionHandlerAdapter() {
-        }).get(3, TimeUnit.SECONDS);
+        }).get(2, TimeUnit.SECONDS);
         stompSession.subscribe("/sub/1", new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
+                if(headers.containsKey("error")) return ErrorResponse.class;
                 return CoordinateControllerDTO.Sub.class;
             }
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                completableFuture.complete((CoordinateControllerDTO.Sub) payload);
+                if(headers.containsKey("error")) errorFuture.complete((ErrorResponse) payload);
+                else subscribeFuture.complete((CoordinateControllerDTO.Sub) payload);
             }
         });
     }
@@ -86,19 +92,39 @@ class CoordinateControllerTest {
     void publishCoordinate() throws ExecutionException, InterruptedException, TimeoutException {
         //given
         CoordinateControllerDTO.Pub pub = stubData.getStubCoordinatePub();
-        given(mapper.controllerPubDTOTOServiceCreateParamDTO(Mockito.any(CoordinateControllerDTO.Pub.class))).willReturn(new CoordinateServiceDTO.CreateParam());
-        given(coordinateService.createCoordinate(Mockito.any(CoordinateServiceDTO.CreateParam.class)))
-                .willReturn(new CoordinateServiceDTO.CreateReturn(0, 1L, null, null, null));
-        given(mapper.serviceCreateReturnDTOToControllerSubDTO(Mockito.any(CoordinateServiceDTO.CreateReturn.class)))
-                .willReturn(stubData.getStubCoordinateSub());
+
+        stubbingMockBean();
 
         //when
         stompSession.send("/pub/walk-logs", pub);
 
         //then
-        CoordinateControllerDTO.Sub sub = completableFuture.get(3, TimeUnit.SECONDS);
+        CoordinateControllerDTO.Sub sub = subscribeFuture.get(3, TimeUnit.SECONDS);
         MatcherAssert.assertThat(sub.getLat(), is(equalTo(pub.getLat())));
         MatcherAssert.assertThat(sub.getLng(), is(equalTo(pub.getLng())));
+    }
+
+    @Test
+    void publishCoordinateWithInvalidPayload() throws ExecutionException, InterruptedException, TimeoutException {
+        //given
+        CoordinateControllerDTO.Pub pub = new CoordinateControllerDTO.Pub();
+        stubbingMockBean();
+
+        //when
+        stompSession.send("/pub/walk-logs", pub);
+
+        //then
+        ErrorResponse errorResponse = errorFuture.get(3, TimeUnit.SECONDS);
+        System.out.println(errorResponse);
+    }
+
+    private void stubbingMockBean() {
+        given(mapper.controllerPubDTOTOServiceCreateParamDTO(Mockito.any(CoordinateControllerDTO.Pub.class)))
+                .willReturn(new CoordinateServiceDTO.CreateParam());
+        given(coordinateService.createCoordinate(Mockito.any(CoordinateServiceDTO.CreateParam.class)))
+                .willReturn(new CoordinateServiceDTO.CreateReturn(0, 1L, null, null, null));
+        given(mapper.serviceCreateReturnDTOToControllerSubDTO(Mockito.any(CoordinateServiceDTO.CreateReturn.class)))
+                .willReturn(stubData.getStubCoordinateSub());
     }
 
 
