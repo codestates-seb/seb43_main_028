@@ -1,9 +1,9 @@
 @use '../../styles/typography' as T;
 @use '../../styles/color' as C;
-@use '../../styles/utils' as F;
+@use '../../styles/utils' as U;
 
 .container {
-  @include F.flex-c(row, flex-start, center);
+  @include U.flex-c(row, flex-start, center);
   margin: 24px 0;
   gap: 16px;
 }

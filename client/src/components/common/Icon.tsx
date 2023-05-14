@@ -13,6 +13,8 @@ type IconName =
   | 'trash-gray'
   | 'no-image'
   | 'arrow-right'
+  | 'arrow-left'
+  | 'three-dot'
 
 interface IconProps {
   name: IconName
