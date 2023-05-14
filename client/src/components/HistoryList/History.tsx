@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './History.module.scss'
 import HistoryItem from './HistoryItem'
-import { getHourMinuteDiff } from '../../utils/ date'
+import { passedHourMinuteSecondFormat } from '../../utils/date'
 
 interface ItemITF {
   id: number

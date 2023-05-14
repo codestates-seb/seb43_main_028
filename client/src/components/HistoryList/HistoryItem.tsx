@@ -1,6 +1,6 @@
 import Icon from '../common/Icon'
 import styles from './HistoryItem.module.scss'
-import { timerFormat } from '../../utils/ date'
+import { timerFormat } from '../../utils/date'
 
 type HistoryItemProps = {
   item: { id: number; createdAt: string; imageUrl: string; text: string }
@@ -11,7 +11,6 @@ export default function HistoryItem({ item, startAt }: HistoryItemProps) {
   const { id, imageUrl, text, createdAt } = item
   const snapTimeDiff = new Date(createdAt).getTime() - new Date(startAt).getTime()
   const snapTime = timerFormat(snapTimeDiff / 1000)
-  console.log(snapTimeDiff)
 
   return (
     <div key={id} className={styles.container}>
