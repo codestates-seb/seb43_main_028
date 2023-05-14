@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-google-maps/api": "^2.18.1",
     "@vitejs/plugin-react": "^4.0.0",
+    "axios": "^1.4.0",
     "jotai": "^2.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
