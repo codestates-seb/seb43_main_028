@@ -7,19 +7,13 @@ import backend.section6mainproject.coordinate.repository.CoordinateRepository;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @SpringBootTest
@@ -35,18 +29,18 @@ class CoordinateServiceTest {
     @Test
     void createCoordinate() {
         //given
-        CoordinateServiceDTO.CreateParam createParam = stubData.getCreateParam();
-        CoordinateServiceDTO.CreateReturn createReturn = stubData.getCreateReturn();
+        CoordinateServiceDTO.Input input = stubData.getInput();
+        CoordinateServiceDTO.Output output = stubData.getOutput();
 
-        given(mapper.serviceCreateParamDTOToEntity(Mockito.any(CoordinateServiceDTO.CreateParam.class))).willReturn(new Coordinate());
+        given(mapper.serviceInputDTOToEntity(Mockito.any(CoordinateServiceDTO.Input.class))).willReturn(new Coordinate());
         given(coordinateRepository.save(Mockito.any(Coordinate.class))).willReturn(new Coordinate());
-        given(mapper.entityToServiceCreateReturnDTO(Mockito.any(Coordinate.class))).willReturn(createReturn);
+        given(mapper.entityToServiceOutputDTO(Mockito.any(Coordinate.class))).willReturn(output);
 
         //when
-        CoordinateServiceDTO.CreateReturn result = coordinateService.createCoordinate(createParam);
+        CoordinateServiceDTO.Output result = coordinateService.createCoordinate(input);
 
         //then
-        MatcherAssert.assertThat(result, Matchers.is(Matchers.equalTo(createReturn)));
+        MatcherAssert.assertThat(result, Matchers.is(Matchers.equalTo(output)));
     }
 
     private class StubData {
@@ -54,16 +48,16 @@ class CoordinateServiceTest {
         private double lat = 1.1;
         private double lng = 2.2;
 
-        private CoordinateServiceDTO.CreateParam getCreateParam() {
-            CoordinateServiceDTO.CreateParam createParam = new CoordinateServiceDTO.CreateParam();
-            createParam.setWalkLogId(walkLogId);
-            createParam.setLat(lat);
-            createParam.setLng(lng);
-            return createParam;
+        private CoordinateServiceDTO.Input getInput() {
+            CoordinateServiceDTO.Input input = new CoordinateServiceDTO.Input();
+            input.setWalkLogId(walkLogId);
+            input.setLat(lat);
+            input.setLng(lng);
+            return input;
         }
 
-        private CoordinateServiceDTO.CreateReturn getCreateReturn() {
-            return new CoordinateServiceDTO.CreateReturn(1L, walkLogId, lat, lng, LocalDateTime.now());
+        private CoordinateServiceDTO.Output getOutput() {
+            return new CoordinateServiceDTO.Output(1L, walkLogId, lat, lng, LocalDateTime.now());
         }
     }
 }

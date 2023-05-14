@@ -119,11 +119,11 @@ class CoordinateControllerTest {
     }
 
     private void stubbingMockBean() {
-        given(mapper.controllerPubDTOTOServiceCreateParamDTO(Mockito.any(CoordinateControllerDTO.Pub.class)))
-                .willReturn(new CoordinateServiceDTO.CreateParam());
-        given(coordinateService.createCoordinate(Mockito.any(CoordinateServiceDTO.CreateParam.class)))
-                .willReturn(new CoordinateServiceDTO.CreateReturn(0, 1L, null, null, null));
-        given(mapper.serviceCreateReturnDTOToControllerSubDTO(Mockito.any(CoordinateServiceDTO.CreateReturn.class)))
+        given(mapper.controllerPubDTOTOServiceInputDTO(Mockito.any(CoordinateControllerDTO.Pub.class)))
+                .willReturn(new CoordinateServiceDTO.Input());
+        given(coordinateService.createCoordinate(Mockito.any(CoordinateServiceDTO.Input.class)))
+                .willReturn(new CoordinateServiceDTO.Output(0, 1L, null, null, null));
+        given(mapper.serviceOutputDTOToControllerSubDTO(Mockito.any(CoordinateServiceDTO.Output.class)))
                 .willReturn(stubData.getStubCoordinateSub());
     }
 

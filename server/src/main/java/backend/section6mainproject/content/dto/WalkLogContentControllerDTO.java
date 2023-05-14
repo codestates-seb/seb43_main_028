@@ -6,13 +6,18 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-public class WalkLogContentDTO {
+public class WalkLogContentControllerDTO {
     @Getter
     public static class Post {
-        @Setter
-        private Long walkLogId;
         private String text;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PostResponse {
+        private Long walkLogContentId;
+    }
+
 
     @Getter
     @AllArgsConstructor
