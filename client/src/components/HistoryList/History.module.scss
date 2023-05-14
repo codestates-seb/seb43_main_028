@@ -1,0 +1,60 @@
+@use '../../styles/color' as C;
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+
+.container {
+  margin: 10px 20px;
+  background-color: C.$white;
+  @include U.flex-c(column, flex-start, flex-start);
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px rgb(128, 128, 128, 0.1);
+}
+
+.mapTimeBox {
+  @include U.flex-c(row, flex-start, flex-start);
+  gap: 12px;
+}
+
+.map {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+.date {
+  @include T.gray900-regular-12;
+}
+
+.message {
+  @include T.gray900-bold-16;
+  width: 100%;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 24px;
+  max-height: 48px;
+}
+
+.time {
+  @include T.gray600-regular-12;
+}
+
+.moreBtn {
+  width: 100%;
+  @include U.flex-c(row);
+  @include T.gray600-regular-16;
+}
+
+.detailBtn {
+  width: 100%;
+  text-align: center;
+  border: 1px solid C.$gray600;
+  border-radius: 12px;
+  padding: 9.5px 0;
+}
