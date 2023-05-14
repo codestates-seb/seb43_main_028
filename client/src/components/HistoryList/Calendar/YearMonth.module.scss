@@ -1,0 +1,8 @@
+@use '../../../styles/utils' as U;
+@use '../../../styles/typography' as T;
+
+.container {
+  @include T.gray900-bold-20;
+  margin-bottom: 20px;
+  @include U.flex-c(row, space-between, center);
+}
