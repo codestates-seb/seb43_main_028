@@ -1,11 +1,12 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const useRouter = () => {
-  const router = useNavigate()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   return {
-    currentPath: window.location.pathname,
-    routeTo: (path: string) => router(path),
+    pathname,
+    routeTo: (path: string) => navigate(path),
   }
 }
 
