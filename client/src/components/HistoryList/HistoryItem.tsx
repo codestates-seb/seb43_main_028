@@ -13,7 +13,7 @@ export default function HistoryItem({ item, startAt }: HistoryItemProps) {
   const snapTime = timerFormat(snapTimeDiff / 1000)
 
   return (
-    <div key={id} className={styles.container}>
+    <li key={id} className={styles.container}>
       {imageUrl && <img src={imageUrl} alt='올린 사진' />}
       <div className={imageUrl ? styles.timeTextBox : styles.noImg}>
         <div className={styles.snapTimeBox}>
@@ -22,6 +22,6 @@ export default function HistoryItem({ item, startAt }: HistoryItemProps) {
         </div>
         <p className={styles.text}>{text}</p>
       </div>
-    </div>
+    </li>
   )
 }

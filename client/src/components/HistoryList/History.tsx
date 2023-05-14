@@ -30,15 +30,14 @@ export default function History({ data }: HistoryItemProps) {
   const Month = date.getMonth() + 1
   const Day = date.getDate()
   const timeDiff = new Date(endAt).getTime() - new Date(startAt).getTime()
-  const time = getHourMinuteDiff(timeDiff)
-  const moreContents = walkLogContents.slice(1)
+  const time = passedHourMinuteSecondFormat(timeDiff)
 
   const handleMore = () => {
     setMore(true)
   }
 
   return (
-    <div className={styles.container}>
+    <li className={styles.container}>
       <div className={styles.mapTimeBox}>
         <img src={mapImg} className={styles.map} alt='지도 이미지' />
         <div>
@@ -49,19 +48,20 @@ export default function History({ data }: HistoryItemProps) {
         </div>
       </div>
       <p className={styles.message}>{message}</p>
-      <HistoryItem item={walkLogContents[0]} startAt={startAt} />
+      <ul className={styles.walkLogContentList}>
+        {walkLogContents.map((item, index) => {
+          if (!moreContent && index > 0) return null
+          return <HistoryItem key={item.id} item={item} startAt={startAt} />
+        })}
+      </ul>
       {!moreContent && (
         <button type='button' className={styles.moreBtn} onClick={handleMore}>
           <Icon name='three-dot' size={24} /> {walkLogContents.length - 1} more
         </button>
       )}
-      {moreContent &&
-        moreContents.map(item => {
-          return <HistoryItem key={item.id} item={item} startAt={startAt} />
-        })}
       <button type='button' className={styles.detailBtn}>
         자세히 보기
       </button>
-    </div>
+    </li>
   )
 }
