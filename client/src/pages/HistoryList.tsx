@@ -14,27 +14,27 @@ const dummy = {
     {
       id: 0,
       mapImg: 'https://developers.kakaomobility.com/_nuxt/img/img_api4.507c175.png',
-      startAt: '2023-05-01T18:55:09.228Z',
-      endAt: '2023-05-01T18:55:19.228Z',
+      startAt: '2023-05-01T18:55:01.228Z',
+      endAt: '2023-05-01T18:55:50.228Z',
       message:
         '한 줄 메시지 입니다. 넘어가면 두 줄이 됩니다. 두 줄에서 3줄로 넘어가지 않습니다. 엄청 길어지면 어떻게 해야할까요? 점점점으로 표시해야겠죠?',
       walkLogContents: [
         {
           id: 10,
-          createdAt: '2023-05-01T17:00:19.228Z',
+          createdAt: '2023-05-01T18:55:05.228Z',
           imageUrl:
             'https://mblogthumb-phinf.pstatic.net/MjAxOTEyMzFfNDkg/MDAxNTc3ODAzMTIyNjk5.gzT3yhSvbjo4Ro2V2THLJfxyG3Pug8Tm_N-Z2YB_g1sg.2rAXmG8w1ssQ1RUGPkXKXI-BMUAwnTxBbaMZbP4oqG0g.JPEG.achutube/%EC%98%88%EC%81%9C_%ED%8C%8C%EC%8A%A4%ED%85%94%ED%86%A4_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4_2.jpg?type=w2',
           text: '본문 내용입니다. 오늘의 산책은 즐거웠다 날씨가 좋으니 기분이 좋다. 매일 산책 해야지',
         },
         {
           id: 11,
-          createdAt: '2023-05-01T17:10:19.228Z',
+          createdAt: '2023-05-01T18:55:15.228Z',
           imageUrl: '',
           text: '다른 문을 열어 따라갈 필요는 없어 넌 너의 길로, 난 나의 길로 음 하루하루마다 색이 달라진 느낌 밝게 빛이 나는 길을 찾아 Im on my way 넌 그냥 믿으면 돼 Im on my way 보이는 그대로야',
         },
         {
           id: 12,
-          createdAt: '2023-05-01T17:15:19.228Z',
+          createdAt: '2023-05-01T18:55:45.228Z',
           imageUrl: '',
           text: '너는 누군가의 dreams come true 제일 좋은 어느 날의 데자뷰 머물고픈 어딘가의 낯선 뷰 Ill be far away Thats my Life is 아름다운 갤럭시 Be a writer 장르로는 판타지 내일 내게 열리는 건 big, big 스테이지 So that is who I am',
         },
@@ -143,9 +143,11 @@ export default function HistoryList() {
         </button>
       </div>
       {calendar && <Calendar data={data} />}
-      {data.map(item => {
-        return <History key={item.id} data={item} />
-      })}
+      <ul className={styles.historyList}>
+        {data.map(item => {
+          return <History key={item.id} data={item} />
+        })}
+      </ul>
     </div>
   )
 }
