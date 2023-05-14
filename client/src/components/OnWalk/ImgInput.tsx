@@ -1,14 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import styles from './ImgInput.module.scss'
-import Modal from '../common/Modal'
-import Camera from './Camera'
 import Icon from '../common/Icon'
 
 export default function ImgInput() {
   const [preview, setPreview] = useState<string>('')
   const [imgFile, setImgFile] = useState<File | undefined>()
-  const [modal, setModal] = useState<boolean>(false)
-  const [camera, setCamera] = useState<boolean>(false)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,8 +18,8 @@ export default function ImgInput() {
     setPreview('')
   }
 
-  const handleModal = () => {
-    setModal(!modal)
+  const handleCameraClick = () => {
+    inputRef.current?.click()
   }
 
   useEffect(() => {
@@ -38,28 +34,6 @@ export default function ImgInput() {
     }
   }, [imgFile])
 
-  const modalData = {
-    title: '옵션 선택',
-    options: [
-      {
-        id: 0,
-        label: '사진 촬영',
-        handleClick: () => {
-          setCamera(true)
-          setModal(false)
-        },
-      },
-      {
-        id: 1,
-        label: '앨범에서 가져오기',
-        handleClick: () => {
-          setModal(false)
-          inputRef.current?.click()
-        },
-      },
-    ],
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.previewBox}>
@@ -67,7 +41,7 @@ export default function ImgInput() {
           <>
             <img src={preview} alt='이미지 미리보기' />
             <button type='button' onClick={handleClear} className={styles.previewClearBtn}>
-              X
+              <Icon name='close' size={16} />
             </button>
           </>
         ) : (
@@ -79,14 +53,13 @@ export default function ImgInput() {
         )}
       </div>
 
-      <button type='button' className={styles.cameraBtn} onClick={handleModal}>
+      <button type='button' className={styles.cameraBtn} onClick={handleCameraClick}>
         <Icon name='camera-oval' size={48} />
       </button>
-      {modal && <Modal modalData={modalData} onClose={handleModal} />}
-      {!modal && camera && <Camera setCamera={setCamera} setPreview={setPreview} />}
 
       <input
-        id='photo'
+        id='image'
+        name='image'
         type='file'
         ref={inputRef}
         onChange={handleChange}
