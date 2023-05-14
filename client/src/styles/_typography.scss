@@ -18,6 +18,9 @@
 @mixin gray900-bold-16 {
   @include U.font($weight: 700, $size: 1.6rem, $color: C.$gray900);
 }
+@mixin gray900-bold-12 {
+  @include U.font($weight: 700, $size: 1.2rem, $color: C.$gray900);
+}
 @mixin gray900-bold-10 {
   @include U.font($weight: 700, $size: 1rem, $color: C.$gray900);
 }
