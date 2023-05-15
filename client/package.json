@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@react-google-maps/api": "^2.18.1",
+    "@tanstack/react-query": "^4.29.7",
     "@vitejs/plugin-react": "^4.0.0",
     "axios": "^1.4.0",
     "jotai": "^2.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-query": "^3.39.3",
     "react-router-dom": "^6.11.1",
     "vite": "^4.3.4"
   },
