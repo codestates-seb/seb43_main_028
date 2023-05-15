@@ -1,10 +1,10 @@
 import { NavLink } from 'react-router-dom'
-import { TapBarElementITF } from '../../types/TapBarElement'
+import { TapBarElementType } from '../../router/routerData'
 import Icon from './Icon'
 import styles from './Tapbar.module.scss'
 
 type TapbarProps = {
-  tapBarContent: TapBarElementITF[]
+  tapBarContent: TapBarElementType[]
 }
 
 export default function Tapbar({ tapBarContent }: TapbarProps) {

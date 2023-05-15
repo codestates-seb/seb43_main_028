@@ -1,5 +1,4 @@
 import { lazy } from 'react'
-import { TapBarElementITF } from '../types/TapBarElement'
 
 const Home = lazy(() => import('../pages/Home'))
 const Feed = lazy(() => import('../pages/Feed'))
@@ -12,15 +11,21 @@ const SignIn = lazy(() => import('../pages/SignIn'))
 const SignUp = lazy(() => import('../pages/SignUp'))
 const NotFound = lazy(() => import('../pages/NotFound'))
 
-interface RouterElement {
+type RouterElement = {
   id: number
   path: string
   label: string
   element: React.ReactNode
   onTapBar: boolean
+  showTapBar: boolean
   withAuth: boolean
 }
 
+export type TapBarElementType = {
+  id: number
+  path: string
+  label: string
+}
 export const routerData: RouterElement[] = [
   { id: 0, path: '/', label: '홈', element: <Home />, onTapBar: true, withAuth: false },
   {
@@ -76,7 +81,7 @@ export const routerData: RouterElement[] = [
   { id: 9, path: '*', label: '404', element: <NotFound />, onTapBar: false, withAuth: false },
 ]
 
-export const TapBarContent: TapBarElementITF[] = routerData.reduce((prev, router) => {
+export const TapBarContent: TapBarElementType[] = routerData.reduce((prev, router) => {
   if (!router.onTapBar) return prev
   return [
     ...prev,
@@ -86,4 +91,4 @@ export const TapBarContent: TapBarElementITF[] = routerData.reduce((prev, router
       label: router.label,
     },
   ]
-}, [] as TapBarElementITF[])
+}, [] as TapBarElementType[])
