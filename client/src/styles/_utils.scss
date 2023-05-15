@@ -20,3 +20,7 @@
   width: $width;
   height: $height;
 }
+
+@mixin box-shadow($dp: 4px) {
+  box-shadow: 0px $dp $dp rgba(50, 50, 71, 0.06), 0px $dp $dp * 2 rgba(50, 50, 71, 0.06);
+}

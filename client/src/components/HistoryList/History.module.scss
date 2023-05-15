@@ -3,17 +3,17 @@
 @use '../../styles/typography' as T;
 
 .container {
-  margin: 10px 20px;
-  background-color: C.$white;
+  width: 100%;
   @include U.flex-c(column, flex-start, flex-start);
-  gap: 10px;
-  padding: 10px 20px;
+  gap: 16px;
+  background-color: C.$white;
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 3px rgb(128, 128, 128, 0.1);
+  @include U.box-shadow(4px);
 }
 
 .mapTimeBox {
-  @include U.flex-c(row, flex-start, flex-start);
+  @include U.flex-c(row);
   gap: 12px;
 }
 
@@ -24,7 +24,16 @@
 }
 
 .date {
-  @include T.gray900-regular-12;
+  @include T.gray900-regular-14;
+}
+
+.time {
+  @include T.gray600-regular-12;
+}
+
+.walkLogContentList {
+  @include U.flex-c(column);
+  gap: 12px;
 }
 
 .message {
@@ -41,10 +50,6 @@
   max-height: 48px;
 }
 
-.time {
-  @include T.gray600-regular-12;
-}
-
 .moreBtn {
   width: 100%;
   @include U.flex-c(row);
@@ -52,9 +57,8 @@
 }
 
 .detailBtn {
-  width: 100%;
+  @include U.size(100%, 40px);
   text-align: center;
   border: 1px solid C.$gray600;
-  border-radius: 12px;
-  padding: 9.5px 0;
+  border-radius: 10px;
 }

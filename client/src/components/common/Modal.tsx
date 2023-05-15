@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import styles from './Modal.module.scss'
+import Icon from './Icon'
 
 type Option = {
   label: string
@@ -14,34 +16,32 @@ type Props = {
   onClose: () => void
 }
 
-function Modal({ modalData, onClose }: Props): JSX.Element {
-  const handleClose = (
-    event: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
-  ) => {
-    // event.target -> 실제로 클릭된 요소
-    // event.currentTarget -> 이벤트가 바인딩된 요소
-    // 백그라운드를 클릭했을 때, 그 클릭이 모달 자체를 클릭한 것인지 확인
-    if (event.target === event.currentTarget) {
-      onClose()
+function Modal({ modalData, onClose }: Props) {
+  const { title, options } = modalData
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'unset'
     }
-  }
+  })
 
   return (
     <>
-      <div role='presentation' className={styles.modalBackground} onClick={handleClose} />
+      <div role='presentation' className={styles.modalBackground} onClick={onClose} />
       <div className={styles.modal}>
         <div className={styles.modalTop}>
-          <div>{modalData.title}</div>
-          <button className={styles.xBtn} type='button' onClick={handleClose}>
-            𝖷
+          <div>{title}</div>
+          <button type='button' onClick={onClose}>
+            <Icon name='close' />
           </button>
         </div>
         <ul className={styles.optionsContainer}>
-          {modalData.options.map(option => {
+          {options.map(({ id, label, handleClick }) => {
             return (
-              <li key={option.id}>
-                <button type='button' onClick={option.handleClick}>
-                  {option.label}
+              <li key={id}>
+                <button type='button' onClick={handleClick}>
+                  {label}
                 </button>
               </li>
             )
