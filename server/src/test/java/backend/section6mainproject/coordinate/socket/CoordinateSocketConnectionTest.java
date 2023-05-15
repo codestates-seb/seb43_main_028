@@ -104,6 +104,7 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
+
         StompHeaders stompHeaders = completableFuture.get(20, TimeUnit.SECONDS);
         MatcherAssert.assertThat(stompHeaders.size(), is(greaterThan(0)));
         MatcherAssert.assertThat(stompHeaders.get("message").get(0), is(containsString(BusinessLogicException.class.getName())));
