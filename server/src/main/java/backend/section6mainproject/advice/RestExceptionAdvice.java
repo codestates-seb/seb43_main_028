@@ -35,14 +35,6 @@ public class RestExceptionAdvice {
         return response;
     }
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    //모든 예외를 처리하는 메소드(디폴트)
-    public ErrorResponse handleException(Exception e){
-        log.error("# handle Exception",e);
-        final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
-        return response;
-    }
-    @ExceptionHandler
     //비즈니스 로직 예외를 처리하는 메소드.
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
@@ -80,6 +72,14 @@ public class RestExceptionAdvice {
         final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
                 e.getMessage());
 
+        return response;
+    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    //모든 예외를 처리하는 메소드(디폴트)
+    public ErrorResponse handleException(Exception e){
+        log.error("# handle Exception",e);
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
         return response;
     }
 }
