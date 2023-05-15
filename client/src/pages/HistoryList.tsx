@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './HistoryList.module.scss'
 import History from '../components/HistoryList/History'
-import Calendar from '../components/HistoryList/Calendar/Calendar'
+import Calendar, { DataType } from '../components/HistoryList/Calendar/Calendar'
 
 const dummy = {
   pageinfo: {
@@ -100,25 +100,9 @@ const dummy = {
   ],
 }
 
-interface ItemITF {
-  id: number
-  createdAt: string
-  imageUrl: string
-  text: string
-}
-
-interface DataITF {
-  id: number
-  mapImg: string
-  startAt: string
-  endAt: string
-  message: string
-  walkLogContents: ItemITF[]
-}
-
 export default function HistoryList() {
   const [calendar, setCalendar] = useState<boolean>(false)
-  const [data, setData] = useState<DataITF[]>(dummy.data)
+  const [data, setData] = useState<DataType[]>(dummy.data)
 
   const handleCalendar = () => {
     setCalendar(!calendar)

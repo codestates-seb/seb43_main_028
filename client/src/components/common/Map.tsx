@@ -11,13 +11,13 @@ const containerStyle = {
   height: '340px',
 }
 
-type LatLng = { lat: number; lng: number }
+type LatLngType = { lat: number; lng: number }
 
 // test
 function Map() {
   const [apiKey, setApiKey] = useState('')
-  const [currentLocation, setCurrentLocation] = useState<LatLng | undefined>(undefined)
-  const [locations, setLocations] = useState<LatLng[]>([])
+  const [currentLocation, setCurrentLocation] = useState<LatLngType | undefined>(undefined)
+  const [locations, setLocations] = useState<LatLngType[]>([])
   const [isLoadMap, setIsLoadMap] = useState(false)
   const [distance, setDistance] = useState(0)
 
@@ -45,7 +45,7 @@ function Map() {
   }, [])
 
   function watchLocation() {
-    let prevLocation: LatLng | undefined // 이전 위치
+    let prevLocation: LatLngType | undefined // 이전 위치
 
     if (navigator.geolocation) {
       // 기기의 현재 위치를 탐색하는 브라우저 api 사용

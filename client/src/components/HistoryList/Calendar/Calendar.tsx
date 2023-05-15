@@ -3,24 +3,24 @@ import styles from './Calendar.module.scss'
 import WeekDays from './WeekDays'
 import YearMonth from './YearMonth'
 
-interface ItemITF {
+export type ItemType = {
   id: number
   createdAt: string
   imageUrl: string
   text: string
 }
 
-interface DataITF {
+export type DataType = {
   id: number
   mapImg: string
   startAt: string
   endAt: string
   message: string
-  walkLogContents: ItemITF[]
+  walkLogContents: ItemType[]
 }
 
 type CalendarProps = {
-  data: DataITF[]
+  data: DataType[]
 }
 
 function getCalendarRows(year: number, month: number): (0 | Date)[][] {
@@ -73,8 +73,6 @@ export default function Calendar({ data }: CalendarProps) {
       setMonth(month + 1)
     }
   }
-
-  useState(() => {}, [month, year])
 
   return (
     <div className={styles.container}>

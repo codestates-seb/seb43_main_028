@@ -1,14 +1,14 @@
 import Icon from '../../common/Icon'
 import styles from './YearMonth.module.scss'
 
-type YearMonthType = {
+type YearMonthProps = {
   year: number
   month: number
   prevMonth: () => void
   nextMonth: () => void
 }
 
-export default function YearMonth({ year, month, prevMonth, nextMonth }: YearMonthType) {
+export default function YearMonth({ year, month, prevMonth, nextMonth }: YearMonthProps) {
   return (
     <caption>
       <div className={styles.container}>
