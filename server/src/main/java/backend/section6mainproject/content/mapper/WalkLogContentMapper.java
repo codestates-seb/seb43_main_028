@@ -23,12 +23,12 @@ public interface WalkLogContentMapper {
 
     // refactored codes
 
-    // request flow
+    // request flow - for create
 
-    WalkLogContentServiceDTO.Input controllerPostDTOTOServiceInputDTO(WalkLogContentControllerDTO.Post post);
+    WalkLogContentServiceDTO.CreateInput controllerPostDTOTOServiceCreateInputDTO(WalkLogContentControllerDTO.Post post);
 
     @Mapping(source = "walkLogId", target = "walkLog.walkLogId")
-    WalkLogContent serviceInputDTOToEntity(WalkLogContentServiceDTO.Input input);
+    WalkLogContent serviceCreateInputDTOToEntity(WalkLogContentServiceDTO.CreateInput createInput);
 
     // response flow - for create
     WalkLogContentServiceDTO.CreateOutput entityToServiceCreateOutputDTO(WalkLogContent walkLogContent);

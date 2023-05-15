@@ -20,10 +20,10 @@ public class WalkLogContentServiceImpl implements WalkLogContentService {
     private final WalkLogContentMapper mapper;
 
     @Override
-    public WalkLogContentServiceDTO.CreateOutput createWalkLogContent(WalkLogContentServiceDTO.Input input) {
-        WalkLogContent walkLogContent = mapper.serviceInputDTOToEntity(input);
+    public WalkLogContentServiceDTO.CreateOutput createWalkLogContent(WalkLogContentServiceDTO.CreateInput createInput) {
+        WalkLogContent walkLogContent = mapper.serviceCreateInputDTOToEntity(createInput);
         walkLogService.findVerifiedWalkLog(walkLogContent.getWalkLog().getWalkLogId());
-        String imageKey = storageService.store(input.getContentImage(), "content");
+        String imageKey = storageService.store(createInput.getContentImage(), "content");
         walkLogContent.setImageKey(imageKey);
         WalkLogContent savedWalkLogContent = walkLogContentRepository.save(walkLogContent);
         return mapper.entityToServiceCreateOutputDTO(savedWalkLogContent);

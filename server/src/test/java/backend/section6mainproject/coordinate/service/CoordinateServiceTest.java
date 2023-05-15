@@ -7,22 +7,23 @@ import backend.section6mainproject.coordinate.repository.CoordinateRepository;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 
 import static org.mockito.BDDMockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CoordinateServiceTest {
-    @Autowired
-    private CoordinateService coordinateService;
-    @MockBean
+    @InjectMocks
+    private CoordinateServiceImpl coordinateService;
+    @Mock
     private CoordinateRepository coordinateRepository;
-    @MockBean
+    @Mock
     private CoordinateMapper mapper;
     private StubData stubData = new StubData();
 

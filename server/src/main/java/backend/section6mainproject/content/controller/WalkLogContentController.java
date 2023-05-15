@@ -28,10 +28,10 @@ public class WalkLogContentController {
     public ResponseEntity<WalkLogContentControllerDTO.PostResponse> postContent(@Positive @PathVariable("walk-log-id") long walkLogId,
                                          @Valid @RequestPart WalkLogContentControllerDTO.Post content,
                                          @RequestPart MultipartFile contentImage) {
-        WalkLogContentServiceDTO.Input input = mapper.controllerPostDTOTOServiceInputDTO(content);
-        input.setWalkLogId(walkLogId);
-        input.setContentImage(contentImage);
-        WalkLogContentServiceDTO.CreateOutput walkLogContent = walkLogContentService.createWalkLogContent(input);
+        WalkLogContentServiceDTO.CreateInput createInput = mapper.controllerPostDTOTOServiceCreateInputDTO(content);
+        createInput.setWalkLogId(walkLogId);
+        createInput.setContentImage(contentImage);
+        WalkLogContentServiceDTO.CreateOutput walkLogContent = walkLogContentService.createWalkLogContent(createInput);
         URI uri = UriComponentsBuilder.newInstance()
                 .path(WALK_LOG_CONTENT_DEFAULT_URL + walkLogContent.getWalkLogContentId())
                 .build()

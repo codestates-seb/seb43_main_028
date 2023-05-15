@@ -99,7 +99,7 @@ class CoordinateControllerTest {
         stompSession.send("/pub/walk-logs", pub);
 
         //then
-        CoordinateControllerDTO.Sub sub = subscribeFuture.get(5, TimeUnit.SECONDS);
+        CoordinateControllerDTO.Sub sub = subscribeFuture.get(3, TimeUnit.SECONDS);
         MatcherAssert.assertThat(sub.getLat(), is(equalTo(pub.getLat())));
         MatcherAssert.assertThat(sub.getLng(), is(equalTo(pub.getLng())));
     }
@@ -114,7 +114,7 @@ class CoordinateControllerTest {
         stompSession.send("/pub/walk-logs", pub);
 
         //then
-        Assertions.assertDoesNotThrow(() -> errorFuture.get(5, TimeUnit.SECONDS));
+        Assertions.assertDoesNotThrow(() -> errorFuture.get(3, TimeUnit.SECONDS));
 
     }
 

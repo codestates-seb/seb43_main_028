@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class WalkLogContentServiceDTO {
     @Getter
     @Setter
-    public static class Input {
+    public static class CreateInput {
         private Long walkLogId;
         private String text;
         private MultipartFile contentImage;
