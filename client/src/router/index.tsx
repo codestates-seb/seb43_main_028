@@ -4,11 +4,11 @@ import GeneralLayout from '../layout/GeneralLayout'
 import { routerData } from './routerData'
 
 const router = createBrowserRouter(
-  routerData.map(router => ({
-    path: router.path,
+  routerData.map(routerElement => ({
+    path: routerElement.path,
     element: (
-      <GeneralLayout showTapBar={router.onTapBar}>
-        <Suspense fallback={<div>Loading...</div>}>{router.element}</Suspense>
+      <GeneralLayout showTapBar={routerElement.showTapBar}>
+        <Suspense fallback={<div>Loading...</div>}>{routerElement.element}</Suspense>
       </GeneralLayout>
     ),
   }))
