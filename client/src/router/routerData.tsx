@@ -26,14 +26,24 @@ export type TapBarElementType = {
   path: string
   label: string
 }
+
 export const routerData: RouterElement[] = [
-  { id: 0, path: '/', label: '홈', element: <Home />, onTapBar: true, withAuth: false },
+  {
+    id: 0,
+    path: '/',
+    label: '홈',
+    element: <Home />,
+    onTapBar: true,
+    showTapBar: true,
+    withAuth: false,
+  },
   {
     id: 3,
     path: '/history',
     label: '기록',
     element: <HistoryList />,
     onTapBar: true,
+    showTapBar: true,
     withAuth: true,
   },
   {
@@ -42,16 +52,34 @@ export const routerData: RouterElement[] = [
     label: '기록상세',
     element: <HistoryDetail />,
     onTapBar: false,
+    showTapBar: true,
     withAuth: true,
   },
-  { id: 1, path: '/feed', label: '피드', element: <Feed />, onTapBar: true, withAuth: false },
-  { id: 2, path: '/mypage', label: '내정보', element: <MyPage />, onTapBar: true, withAuth: true },
+  {
+    id: 1,
+    path: '/feed',
+    label: '피드',
+    element: <Feed />,
+    onTapBar: true,
+    showTapBar: true,
+    withAuth: false,
+  },
+  {
+    id: 2,
+    path: '/mypage',
+    label: '내정보',
+    element: <MyPage />,
+    onTapBar: true,
+    showTapBar: true,
+    withAuth: true,
+  },
   {
     id: 5,
     path: '/onwalk',
     label: '걷기중',
     element: <OnWalk />,
     onTapBar: false,
+    showTapBar: false,
     withAuth: false,
   },
   {
@@ -60,6 +88,7 @@ export const routerData: RouterElement[] = [
     label: '걷기완료',
     element: <AfterWalk />,
     onTapBar: false,
+    showTapBar: false,
     withAuth: false,
   },
   {
@@ -68,6 +97,7 @@ export const routerData: RouterElement[] = [
     label: '로그인',
     element: <SignIn />,
     onTapBar: false,
+    showTapBar: true,
     withAuth: false,
   },
   {
@@ -76,9 +106,18 @@ export const routerData: RouterElement[] = [
     label: '회원가입',
     element: <SignUp />,
     onTapBar: false,
+    showTapBar: true,
     withAuth: false,
   },
-  { id: 9, path: '*', label: '404', element: <NotFound />, onTapBar: false, withAuth: false },
+  {
+    id: 9,
+    path: '*',
+    label: '404',
+    element: <NotFound />,
+    onTapBar: false,
+    showTapBar: true,
+    withAuth: false,
+  },
 ]
 
 export const TapBarContent: TapBarElementType[] = routerData.reduce((prev, router) => {
