@@ -37,7 +37,7 @@ class CoordinateSocketConnectionTest {
     private MemberService memberService;
     private WebSocketStompClient stompClient;
     private String url;
-    private CompletableFuture<StompHeaders> completableFuture = new CompletableFuture<>();
+    private CompletableFuture<StompHeaders> completableFuture;
 
 
     public CoordinateSocketConnectionTest() {
@@ -47,6 +47,7 @@ class CoordinateSocketConnectionTest {
 
     @BeforeEach
     void init() {
+        completableFuture = new CompletableFuture<>();
         this.url = String.format("ws://localhost:%d/ws/walk-logs", port);
     }
 
@@ -85,7 +86,7 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
-        Assertions.assertThrows(TimeoutException.class, () -> completableFuture.get(10, TimeUnit.SECONDS));
+        Assertions.assertThrows(TimeoutException.class, () -> completableFuture.get(3, TimeUnit.SECONDS));
 
     }
     @Test
@@ -104,7 +105,7 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
-        StompHeaders stompHeaders = completableFuture.get(10, TimeUnit.SECONDS);
+        StompHeaders stompHeaders = completableFuture.get(3, TimeUnit.SECONDS);
         MatcherAssert.assertThat(stompHeaders.size(), is(greaterThan(0)));
         MatcherAssert.assertThat(stompHeaders.get("message").get(0), is(containsString(BusinessLogicException.class.getName())));
 
