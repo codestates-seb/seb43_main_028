@@ -13,27 +13,9 @@ export function passedHourMinuteSecondFormat(timeDiff: number) {
   const formattedMinute = minute ? `${minute}분` : ''
   const formattedSecond = second ? `${second}초` : ''
 
-  return !formattedHour && !formattedMinute
-    ? formattedSecond
-    : `${formattedHour} ${formattedMinute}`
-}
-
-export function getHourMinuteDiff(timeDiff: number) {
-  const aMinute = 1000 * 60
-  const anHour = 1000 * 60 * 60
-
-  if (timeDiff >= anHour) {
-    const hour = Math.floor(timeDiff / anHour)
-    const rest = timeDiff % anHour
-    const minute = Math.floor(rest / aMinute) ? `${Math.floor(rest / aMinute)} 분` : ''
-    return `${hour} 시간 ${minute} `
-  }
-  if (timeDiff >= aMinute) {
-    const minute = Math.floor(timeDiff / aMinute)
-    return `${minute} 분`
-  }
-
-  return '0분'
+  return (
+    !formattedHour && !formattedMinute ? formattedSecond : `${formattedHour} ${formattedMinute}`
+  ).trim()
 }
 
 export function dateFormat(date: Date) {
