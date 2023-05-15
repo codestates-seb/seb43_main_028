@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import { signIn, getCurrentUserInfo } from '../apis/user'
 import styles from './SignIn.module.scss'
