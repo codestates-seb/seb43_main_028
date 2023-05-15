@@ -1,6 +1,7 @@
 package backend.section6mainproject.coordinate.mapper;
 
-import backend.section6mainproject.coordinate.dto.CoordinateDTO;
+import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
+import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.coordinate.entity.Coordinate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,11 +11,28 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CoordinateMapper {
-    @Mapping(source = "walkLogId", target = "walkLog.walkLogId")
-    Coordinate coordinatePubDTOToCoordinate(CoordinateDTO.Pub pub);
 
-    CoordinateDTO.Sub coordinateToCoordinateSubDTO(Coordinate coordinate);
+    CoordinateControllerDTO.Sub coordinateToCoordinateSubDTO(Coordinate coordinate);
 
     @Named("coordinatesToCoordinateSubDTOs")
-    List<CoordinateDTO.Sub> coordinatesToCoordinateSubDTOs(List<Coordinate> coordinates);
+    List<CoordinateControllerDTO.Sub> coordinatesToCoordinateSubDTOs(List<Coordinate> coordinates);
+
+    CoordinateServiceDTO.CreateParam controllerPubDTOTOServiceCreateParamDTO(CoordinateControllerDTO.Pub pub);
+
+    @Mapping(source = "walkLogId", target = "walkLog.walkLogId")
+    Coordinate serviceCreateParamDTOToEntity(CoordinateServiceDTO.CreateParam createParam);
+
+    @Mapping(source = "walkLog.walkLogId", target = "walkLogId")
+    CoordinateServiceDTO.CreateReturn entityToServiceCreateReturnDTO(Coordinate coordinate);
+
+    CoordinateControllerDTO.Sub serviceCreateReturnDTOToControllerSubDTO(CoordinateServiceDTO.CreateReturn createReturn);
+
+    @Named("coordinateEntityToServiceDTO")
+    List<CoordinateServiceDTO.CreateReturn> entitiesToServiceCreateReturnDTOs(List<Coordinate> coordinates);
+    @Named("coordinateServiceDTOToControllerDTO")
+    List<CoordinateControllerDTO.Sub> serviceCreateReturnDTOsToControllerSubDTOs(List<CoordinateServiceDTO.CreateReturn> createReturns);
+
+
+
+
 }

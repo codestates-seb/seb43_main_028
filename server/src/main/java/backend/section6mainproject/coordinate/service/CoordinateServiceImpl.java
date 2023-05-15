@@ -1,6 +1,8 @@
 package backend.section6mainproject.coordinate.service;
 
+import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.coordinate.entity.Coordinate;
+import backend.section6mainproject.coordinate.mapper.CoordinateMapper;
 import backend.section6mainproject.coordinate.repository.CoordinateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,8 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CoordinateServiceImpl implements CoordinateService {
     private final CoordinateRepository coordinateRepository;
+    private final CoordinateMapper mapper;
+
     @Override
-    public Coordinate createCoordinate(Coordinate coordinate) {
-        return coordinateRepository.save(coordinate);
+    public CoordinateServiceDTO.CreateReturn createCoordinate(CoordinateServiceDTO.CreateParam coordinateDTO) {
+        Coordinate coordinate = mapper.serviceCreateParamDTOToEntity(coordinateDTO);
+        Coordinate savedCoordinate = coordinateRepository.save(coordinate);
+        return mapper.entityToServiceCreateReturnDTO(savedCoordinate);
     }
 }
