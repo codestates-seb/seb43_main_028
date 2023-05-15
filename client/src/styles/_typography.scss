@@ -23,17 +23,20 @@
 }
 
 @mixin gray900-regular-16 {
-  @include U.font($weight: 400, $size: 2rem, $color: C.$gray900);
+  @include U.font($weight: 400, $size: 1.6rem, $color: C.$gray900);
 }
 @mixin gray900-regular-14 {
-  @include U.font($weight: 400, $size: 1.8rem, $color: C.$gray900);
+  @include U.font($weight: 400, $size: 1.4rem, $color: C.$gray900);
 }
 @mixin gray900-regular-12 {
-  @include U.font($weight: 400, $size: 1.6rem, $color: C.$gray900);
+  @include U.font($weight: 400, $size: 1.2rem, $color: C.$gray900);
 }
 
 @mixin gray600-regular-16 {
   @include U.font($weight: 400, $size: 1.6rem, $color: C.$gray600);
+}
+@mixin gray600-regular-14 {
+  @include U.font($weight: 400, $size: 1.4rem, $color: C.$gray600);
 }
 @mixin gray600-regular-12 {
   @include U.font($weight: 400, $size: 1.2rem, $color: C.$gray600);
