@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class MemberControllerDTO {
 
@@ -20,6 +21,7 @@ public class MemberControllerDTO {
         private String email;
 
         @NotBlank(message = "비밀번호를 입력해주세요.")
+        @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[@$^#!%*?&])[a-zA-Z\\d@$^#!%*?&]{10,}$")
         private String password;
 
         @NotBlank(message = "닉네임을 입력해주세요.")
