@@ -74,10 +74,17 @@ function Form() {
     ref: passwordRef,
   } = register('password', {
     required: '비밀번호는 필수 입력입니다.',
+    minLength: {
+      value: 10,
+      message: '비밀번호는 총 10자 이상이어야 합니다.',
+    },
+    maxLength: {
+      value: 15,
+      message: '비밀번호는 15자 이하여야 합니다.',
+    },
     pattern: {
       value: passwordReg,
-      message:
-        '비밀번호에는 영소문자, 숫자, 특수문자가 각각 한 개 이상 포함되어야 하고, 비밀번호는 총 10자 이상이어야 합니다.',
+      message: '비밀번호에는 영소문자, 숫자, 특수문자가 각각 한 개 이상 포함되어야 합니다.',
     },
   })
 
@@ -145,10 +152,6 @@ function Form() {
       {dirtyFields.password && errors.password && (
         <span className={styles.error}>{errors.password.message}</span>
       )}
-      <p className={styles.notice}>
-        Passwords must contain at least eight characters,
-        <br /> including at least 1 letter and 1 number.
-      </p>
       <button className={styles.signupBtn} type='submit'>
         Sign up
       </button>
