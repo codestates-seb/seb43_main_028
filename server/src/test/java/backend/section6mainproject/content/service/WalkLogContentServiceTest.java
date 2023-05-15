@@ -53,8 +53,10 @@ class WalkLogContentServiceTest {
         given(walkLogContentRepository.save(Mockito.any(WalkLogContent.class))).willReturn(new WalkLogContent());
         given(mapper.entityToServiceCreateOutputDTO(Mockito.any(WalkLogContent.class))).willReturn(stubData.getCreateOutput());
 
+        WalkLogContentServiceDTO.CreateInput createInput = stubData.getCreateInput();
+
         // when
-        WalkLogContentServiceDTO.CreateOutput result = walkLogContentService.createWalkLogContent(stubData.getCreateInput());
+        WalkLogContentServiceDTO.CreateOutput result = walkLogContentService.createWalkLogContent(createInput);
 
         // then
         MatcherAssert.assertThat(result.getWalkLogContentId(), is(equalTo(stubData.getCreateOutput().getWalkLogContentId())));
