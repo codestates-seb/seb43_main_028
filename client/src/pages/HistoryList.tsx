@@ -2,6 +2,7 @@ import { useState } from 'react'
 import styles from './HistoryList.module.scss'
 import History from '../components/HistoryList/History'
 import Calendar, { DataType } from '../components/HistoryList/Calendar/Calendar'
+import Toggle from '../components/HistoryList/Toggle'
 
 const dummy = {
   pageinfo: {
@@ -109,23 +110,8 @@ export default function HistoryList() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.toggleBox}>
-        <button
-          type='button'
-          className={calendar ? styles.btn : styles.clickedBtn}
-          onClick={handleCalendar}
-        >
-          최신순 보기
-        </button>
-        <button
-          type='button'
-          className={calendar ? styles.clickedBtn : styles.btn}
-          onClick={handleCalendar}
-        >
-          월별 보기
-        </button>
-      </div>
+    <div>
+      <Toggle handleCalendar={handleCalendar} calendar={calendar} />
       {calendar && <Calendar data={data} />}
       <ul className={styles.historyList}>
         {data.map(item => {
