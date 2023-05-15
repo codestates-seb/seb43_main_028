@@ -1,40 +1,17 @@
 import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
-import {
-  Home,
-  Feed,
-  MyPage,
-  AfterWalk,
-  OnWalk,
-  HistoryDetail,
-  HistoryList,
-  SignIn,
-  SignUp,
-  NotFound,
-} from '../pages'
+import { Suspense } from 'react'
+import GeneralLayout from '../layout/GeneralLayout'
+import { routerData } from './routerData'
 
-import Test from '../components/common/Test'
-import Map from '../components/common/Map'
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    errorElement: <NotFound />,
-    children: [
-      { index: true, element: <Home /> },
-      { path: 'feed', element: <Feed /> },
-      { path: 'mypage', element: <MyPage /> },
-      { path: 'afterwalk', element: <AfterWalk /> },
-      { path: 'onwalk', element: <OnWalk /> },
-      { path: 'history/:id', element: <HistoryDetail /> },
-      { path: 'history', element: <HistoryList /> },
-      { path: 'signin', element: <SignIn /> },
-      { path: 'signup', element: <SignUp /> },
-      { path: 'test', element: <Test /> },
-      { path: 'maptest', element: <Map /> },
-    ],
-  },
-])
+const router = createBrowserRouter(
+  routerData.map(routerElement => ({
+    path: routerElement.path,
+    element: (
+      <GeneralLayout showTapBar={routerElement.showTapBar}>
+        <Suspense fallback={<div>Loading...</div>}>{routerElement.element}</Suspense>
+      </GeneralLayout>
+    ),
+  }))
+)
 
 export default router

@@ -1,0 +1,33 @@
+@use '../../styles/color' as C;
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+
+.container {
+  @include U.size(100%, 56px);
+  max-width: 640px;
+  position: fixed;
+  bottom: 0;
+  background: C.$white;
+  border-top: 1px solid C.$gray200;
+}
+
+.tapList {
+  @include U.size(100%, 56px);
+  @include U.flex-c(row, space-between, stretch);
+}
+
+.tapItem {
+  flex: 1;
+  @include U.flex-c(column);
+}
+
+.tapLink {
+  @include U.flex-c(column);
+  @include T.gray600-regular-12;
+  @include U.size(100%);
+  text-align: center;
+}
+
+.active {
+  @include T.gray900-bold-12;
+}

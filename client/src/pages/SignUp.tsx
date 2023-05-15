@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styles from './SignUp.module.scss'
-import { getCurrentUserInfo, signUp } from '../apis/user'
+import { signUp } from '../apis/user'
 import useRouter from '../hooks/useRouter'
 
 function Form() {
