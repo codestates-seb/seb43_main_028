@@ -57,8 +57,6 @@ export default function Calendar({ data }: CalendarProps) {
     return acc.includes(strDate) ? acc : [...acc, strDate]
   }, [])
 
-  const key = [999, 998, 997, 996, 995, 994, 993]
-
   const handlePrevMonth = () => {
     if (month <= 1) {
       setYear(year - 1)
@@ -89,13 +87,13 @@ export default function Calendar({ data }: CalendarProps) {
         />
         <WeekDays />
         <tbody>
-          {getCalendarRows(year, month).map((row, idx) => {
+          {getCalendarRows(year, month).map(row => {
             const today = new Date().toDateString()
 
             return (
-              <tr key={key[idx]}>
-                {row.map((date, index) => {
-                  if (date === 0) return <td key={key[index]} className={styles.date} />
+              <tr key={crypto.randomUUID()}>
+                {row.map(date => {
+                  if (date === 0) return <td key={crypto.randomUUID()} className={styles.date} />
 
                   return (
                     <td key={date.getDate()} className={styles.date}>
