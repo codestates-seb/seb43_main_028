@@ -9,9 +9,10 @@ import { TapBarContent } from '../router/routerData'
 
 type GeneralLayoutProps = {
   children: React.ReactNode
+  showTapBar: boolean
 }
 
-export default function GeneralLayout({ children }: GeneralLayoutProps) {
+export default function GeneralLayout({ children, showTapBar }: GeneralLayoutProps) {
   const [isAuthChecking, setIsAuthChecking] = useState(true)
   const [id, setId] = useAtom(idAtom)
   const [isLogin] = useAtom(isLoginAtom)
@@ -54,7 +55,7 @@ export default function GeneralLayout({ children }: GeneralLayoutProps) {
   return (
     <div>
       {children}
-      <Tapbar tapBarContent={TapBarContent} />
+      {showTapBar && <Tapbar tapBarContent={TapBarContent} />}
     </div>
   )
 }
