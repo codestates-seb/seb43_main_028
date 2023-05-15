@@ -4,22 +4,24 @@ import { useForm } from 'react-hook-form'
 import styles from './SignUp.module.scss'
 import { signUp } from '../apis/user'
 import useRouter from '../hooks/useRouter'
+import TermsOfUse from '../components/SignUp/TermsOfUse'
 
 type FormValueType = {
-  displayName: string
+  nickname: string
   email: string
   password: string
 }
 
 function Form() {
-  const [nickname, setNickname] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  // 이용약관 관련 state
+  const [allCheck, setAllCheck] = useState(false)
+  const [useCheck, setUseCheck] = useState(false)
+  const [privacyCheck, setPrivacyCheck] = useState(false)
 
   const emailReg =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
   const passwordReg = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{10,}$/
-  const displayNameReg = /^[가-힣]{2,}$|^[a-zA-Z]{4,}$/
+  const nicknameReg = /^[가-힣]{2,}$|^[a-zA-Z]{4,}$/
 
   const { routeTo } = useRouter()
 
@@ -55,14 +57,14 @@ function Form() {
   })
 
   const {
-    onChange: displayNameOnChange,
-    onBlur: displayNameOnBlur,
-    name: displayNameName,
-    ref: displayNameRef,
-  } = register('displayName', {
+    onChange: nicknameOnChange,
+    onBlur: nicknameOnBlur,
+    name: nicknameName,
+    ref: nicknameRef,
+  } = register('nickname', {
     required: '닉네임을 입력하세요',
     pattern: {
-      value: displayNameReg,
+      value: nicknameReg,
       message: '닉네임은 한글 2글자 이상 또는 영어 4글자 이상이어야 합니다.',
     },
   })
@@ -88,40 +90,40 @@ function Form() {
     },
   })
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   signUp({ nickname, email, password }).then(res => {
-  //     if (res === 'success') {
-  //       routeTo('/signin')
-  //     } else if (res === '409-fail') {
-  //       alert('This email has already been registered.')
-  //     } else {
-  //       alert('Sorry, you failed to sign up.')
-  //     }
-  //   })
-  // }
+  const submitSignUpData = (data: any) => {
+    console.log(data)
+    signUp(data).then(res => {
+      if (res === 'success') {
+        routeTo('/signin')
+      } else if (res === '409-fail') {
+        alert('This email has already been registered.')
+      } else {
+        alert('Sorry, you failed to sign up.')
+      }
+    })
+  }
 
   return (
     <form
       className={styles.form}
       onSubmit={handleSubmit(data => {
-        console.log(data)
+        submitSignUpData(data)
       })}
     >
-      <label className={styles.label} htmlFor='displayName'>
-        Display name
+      <label className={styles.label} htmlFor='nickname'>
+        nickname
       </label>
       <input
-        id='displayName'
+        id='nickname'
         className={styles.input}
         type='text'
-        onChange={displayNameOnChange}
-        onBlur={displayNameOnBlur}
-        name={displayNameName}
-        ref={displayNameRef}
+        onChange={nicknameOnChange}
+        onBlur={nicknameOnBlur}
+        name={nicknameName}
+        ref={nicknameRef}
       />
-      {dirtyFields.displayName && errors.displayName && (
-        <span className={styles.error}>{errors.displayName.message}</span>
+      {dirtyFields.nickname && errors.nickname && (
+        <span className={styles.error}>{errors.nickname.message}</span>
       )}
       <label className={styles.label} htmlFor='email'>
         Email
@@ -152,6 +154,14 @@ function Form() {
       {dirtyFields.password && errors.password && (
         <span className={styles.error}>{errors.password.message}</span>
       )}
+      <TermsOfUse
+        allCheck={allCheck}
+        setAllCheck={setAllCheck}
+        useCheck={useCheck}
+        setUseCheck={setUseCheck}
+        privacyCheck={privacyCheck}
+        setPrivacyCheck={setPrivacyCheck}
+      />
       <button className={styles.signupBtn} type='submit'>
         Sign up
       </button>
