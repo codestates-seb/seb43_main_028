@@ -15,7 +15,7 @@ public class MemberControllerDTO {
 
     @Getter
     @Setter
-    public static class PostInController {
+    public static class Post {
         @Email
         @NotBlank(message = "이메일을 입력해주세요.")
         private String email;
@@ -31,7 +31,7 @@ public class MemberControllerDTO {
 
     @Getter
     @Setter
-    public static class PatchInController {
+    public static class Patch {
         @NotSpace(message = "비밀번호를 변경해주십시오.")
         private String password;
         @NotSpace(message = "닉네임을 입력해주세요.")
@@ -44,13 +44,15 @@ public class MemberControllerDTO {
 
     @Getter
     @Setter
-    public static class CreatedIdForClient {
+    @AllArgsConstructor
+    public static class PostResponse {
         private Long memberId;
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
-    public static class ProfileResponseForClient {
+    public static class Response {
         private Long memberId;
         private String email;
         private String nickname;

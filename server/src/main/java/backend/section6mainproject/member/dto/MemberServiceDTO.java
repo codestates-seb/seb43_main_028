@@ -12,7 +12,7 @@ import javax.validation.constraints.Email;
 public class MemberServiceDTO {
     @Getter
     @Setter
-    public static class PostInService {
+    public static class CreateInput {
         @Email
         @NotSpace(message = "이메일을 입력해주세요.")
         private String email;
@@ -26,7 +26,7 @@ public class MemberServiceDTO {
 
     @Getter
     @Setter
-    public static class PatchInService {
+    public static class UpdateInput {
         private Long memberId;
 
         @NotSpace(message = "비밀번호를 변경해주십시오.")
@@ -45,13 +45,14 @@ public class MemberServiceDTO {
 
     @Getter
     @Setter
-    public static class CreatedToController {
+    public static class CreateOutput {
         private Long memberId;
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
-    public static class ProfileResponseForController {
+    public static class Output {
         private Long memberId;
         private String email;
         private String nickname;
