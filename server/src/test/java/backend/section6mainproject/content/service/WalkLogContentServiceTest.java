@@ -5,11 +5,13 @@ import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.content.entity.WalkLogContent;
 import backend.section6mainproject.content.mapper.WalkLogContentMapper;
 import backend.section6mainproject.content.repository.WalkLogContentRepository;
+import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.helper.image.StorageService;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,6 +63,18 @@ class WalkLogContentServiceTest {
         // then
         MatcherAssert.assertThat(result.getWalkLogContentId(), is(equalTo(stubData.getCreateOutput().getWalkLogContentId())));
     }
+
+    @Test
+    void createWalkLogContentNotValidInput() {
+        // given
+        WalkLogContentServiceDTO.CreateInput createInput = new WalkLogContentServiceDTO.CreateInput();
+        createInput.setWalkLogId(1L);
+
+        // when //then
+        Assertions.assertThrows(BusinessLogicException.class, () -> walkLogContentService.createWalkLogContent(createInput));
+    }
+
+
 
 
 }
