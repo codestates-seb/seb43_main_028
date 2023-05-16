@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Icon from '../common/Icon'
 import styles from './History.module.scss'
 import HistoryItem from './HistoryItem'
@@ -11,7 +12,7 @@ type HistoryItemProps = {
 
 export default function History({ data }: HistoryItemProps) {
   const [moreContent, setMore] = useState(false)
-  const { mapImg, startAt, endAt, message, walkLogContents } = data
+  const { id, mapImg, startAt, endAt, message, walkLogContents } = data
   const date = new Date(startAt)
   const Year = date.getFullYear()
   const Month = date.getMonth() + 1
@@ -46,9 +47,9 @@ export default function History({ data }: HistoryItemProps) {
           <Icon name='three-dot' size={24} /> {walkLogContents.length - 1} more
         </button>
       )}
-      <button type='button' className={styles.detailBtn}>
+      <Link to={`/history/${id}`} className={styles.detailBtn}>
         자세히 보기
-      </button>
+      </Link>
     </li>
   )
 }
