@@ -106,7 +106,7 @@ export const routerData: RouterElement[] = [
     label: '회원가입',
     element: <SignUp />,
     onTapBar: false,
-    showTapBar: true,
+    showTapBar: false,
     withAuth: false,
   },
   {

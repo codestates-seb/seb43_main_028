@@ -55,25 +55,52 @@ function TermsOfUse({
   }, [useCheck, privacyCheck, setAllCheck])
 
   return (
-    <form method='post' action='' className={styles.form}>
-      <div className={styles.form_agreement}>
-        <div className={styles.form_agreement_title}>약관동의</div>
-        <div className={styles.form_agreement_box}>
-          <div className={styles.form_agreement_all}>
-            <input type='checkbox' id='all-check' checked={allCheck} onChange={allBtnEvent} />
-            <label htmlFor='all-check'>전체동의</label>
+    <form method='post' action='' className={styles.formContainer}>
+      <div className={styles.formAgreement}>
+        <div className={styles.formAgreementTitle}>약관 동의</div>
+        <div className={styles.formAgreementBox}>
+          <div className={styles.formAgreementAll}>
+            <div className={styles.checkboxWrapper}>
+              <input
+                className={styles.checkbox}
+                type='checkbox'
+                id='all-check'
+                checked={allCheck}
+                onChange={allBtnEvent}
+              />
+            </div>
+            <label htmlFor='all-check'>전체 동의합니다.</label>
           </div>
-          <div className={styles.form_agreement_item}>
-            <input type='checkbox' id='check2' checked={useCheck} onChange={useBtnEvent} />
-            <label htmlFor='check2'>
-              이용약관 <span className={styles.blue}>(필수)</span>
-            </label>
-          </div>
-          <div className={styles.form_agreement_item}>
-            <input type='checkbox' id='check3' checked={privacyCheck} onChange={privacyBtnEvent} />
-            <label htmlFor='check3'>
-              개인정보 이용 및 수집에 동의합니다. <span className={styles.gray}>(필수)</span>
-            </label>
+          <hr />
+          <div className={styles.formAgreementItemBox}>
+            <div className={styles.formAgreementItem}>
+              <div className={styles.checkboxWrapper}>
+                <input
+                  className={styles.checkbox}
+                  type='checkbox'
+                  id='check2'
+                  checked={useCheck}
+                  onChange={useBtnEvent}
+                />
+              </div>
+              <label htmlFor='check2'>
+                이용약관에 동의합니다. <span className={styles.blue}>(필수)</span>
+              </label>
+            </div>
+            <div className={styles.formAgreementItem}>
+              <div className={styles.checkboxWrapper}>
+                <input
+                  className={styles.checkbox}
+                  type='checkbox'
+                  id='check3'
+                  checked={privacyCheck}
+                  onChange={privacyBtnEvent}
+                />
+              </div>
+              <label htmlFor='check3'>
+                개인정보 수집 및 이용에 동의합니다. <span className={styles.gray}>(필수)</span>
+              </label>
+            </div>
           </div>
         </div>
       </div>

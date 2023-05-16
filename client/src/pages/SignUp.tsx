@@ -12,7 +12,7 @@ type FormValueType = {
   password: string
 }
 
-function Form() {
+function SignUp() {
   // 이용약관 관련 state
   const [allCheck, setAllCheck] = useState(false)
   const [useCheck, setUseCheck] = useState(false)
@@ -75,7 +75,7 @@ function Form() {
     name: passwordName,
     ref: passwordRef,
   } = register('password', {
-    required: '비밀번호는 필수 입력입니다.',
+    required: '비밀번호를 입력하세요',
     minLength: {
       value: 10,
       message: '비밀번호는 총 10자 이상이어야 합니다.',
@@ -105,55 +105,67 @@ function Form() {
 
   return (
     <form
-      className={styles.form}
+      className={styles.formContainer}
       onSubmit={handleSubmit(data => {
         submitSignUpData(data)
       })}
     >
-      <label className={styles.label} htmlFor='nickname'>
-        nickname
-      </label>
-      <input
-        id='nickname'
-        className={styles.input}
-        type='text'
-        onChange={nicknameOnChange}
-        onBlur={nicknameOnBlur}
-        name={nicknameName}
-        ref={nicknameRef}
-      />
-      {dirtyFields.nickname && errors.nickname && (
-        <span className={styles.error}>{errors.nickname.message}</span>
-      )}
-      <label className={styles.label} htmlFor='email'>
-        Email
-      </label>
-      <input
-        id='email'
-        className={styles.input}
-        onChange={emailOnChange}
-        onBlur={emailOnBlur}
-        name={emailName}
-        ref={emailRef}
-      />
-      {dirtyFields.email && errors.email && (
-        <span className={styles.error}>{errors.email.message}</span>
-      )}
-      <label className={styles.label} htmlFor='password'>
-        Password
-      </label>
-      <input
-        id='password'
-        className={styles.input}
-        type='password'
-        onChange={passwordOnChange}
-        onBlur={passwordOnBlur}
-        name={passwordName}
-        ref={passwordRef}
-      />
-      {dirtyFields.password && errors.password && (
-        <span className={styles.error}>{errors.password.message}</span>
-      )}
+      <div className={styles.inputBox}>
+        <label className={styles.label} htmlFor='email'>
+          이메일
+        </label>
+        <input
+          id='email'
+          className={styles.input}
+          placeholder='이메일을 입력해주세요.'
+          onChange={emailOnChange}
+          onBlur={emailOnBlur}
+          name={emailName}
+          ref={emailRef}
+        />
+        <div className={styles.errorWrapper}>
+          {dirtyFields.email && errors.email ? (
+            <span className={styles.error}>{errors.email.message}</span>
+          ) : (
+            <div className={styles.noError} />
+          )}
+        </div>
+      </div>
+      <div className={styles.inputBox}>
+        <label className={styles.label} htmlFor='password'>
+          비밀번호
+        </label>
+        <input
+          id='password'
+          className={styles.input}
+          type='password'
+          onChange={passwordOnChange}
+          onBlur={passwordOnBlur}
+          name={passwordName}
+          ref={passwordRef}
+        />
+        {dirtyFields.password && errors.password && (
+          <span className={styles.error}>{errors.password.message}</span>
+        )}
+      </div>
+      <div className={styles.inputBox}>
+        <label className={styles.label} htmlFor='nickname'>
+          이름
+        </label>
+        <input
+          id='nickname'
+          className={styles.input}
+          type='text'
+          onChange={nicknameOnChange}
+          onBlur={nicknameOnBlur}
+          name={nicknameName}
+          ref={nicknameRef}
+        />
+
+        {dirtyFields.nickname && errors.nickname && (
+          <span className={styles.error}>{errors.nickname.message}</span>
+        )}
+      </div>
       <TermsOfUse
         allCheck={allCheck}
         setAllCheck={setAllCheck}
@@ -163,22 +175,9 @@ function Form() {
         setPrivacyCheck={setPrivacyCheck}
       />
       <button className={styles.signupBtn} type='submit'>
-        Sign up
+        회원가입하기
       </button>
-      <span>
-        이미 가입하셨나요? <Link to='/signin'>Log in</Link>
-      </span>
     </form>
-  )
-}
-
-function SignUp() {
-  return (
-    <div className={styles.container}>
-      <div className={styles.formBox}>
-        <Form />
-      </div>
-    </div>
   )
 }
 
