@@ -195,7 +195,7 @@ public class WalkLogServiceImpl implements WalkLogService {
                         new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND));
     }
     private List<WalkLog> findWalkLogByMemberId(Long memberId){
-        Optional<List<WalkLog>> walkLogsByMemberId = walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(memberId);
-        return walkLogsByMemberId.orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND));
+        return walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(memberId);
+
     }
 }

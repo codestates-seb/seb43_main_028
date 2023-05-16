@@ -24,8 +24,10 @@ public interface WalkLogMapper {
     @Mapping(source = "member.memberId",target = "memberId")
     @Mapping(source = "member.nickname",target = "nickname")
     @Mapping(target = "coordinates",qualifiedByName = "coordinateEntityToServiceDTO")
-    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentsToWalkLogContentResponseDTOs")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     WalkLogServiceDTO.Output walkLogToWalkLogServiceOutputDTO(WalkLog walkLog);
+    @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
     WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
 
 
@@ -39,7 +41,7 @@ public interface WalkLogMapper {
     List<WalkLogServiceDTO.CreateOutput> walkLogsToWalkLogServiceOutputDTOs(List<WalkLog> walkLogs);
     List<WalkLogControllerDTO.DetailResponse> walkLogsToWalkLogDetailResponseDTOs(List<WalkLog> walkLogs); //임시
 
-    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentsToWalkLogContentResponseDTOs")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
     WalkLogServiceDTO.FindsOutput walkLogToWalkLogServiceFindsOutputDTO(WalkLog walkLog); //구현중
     List<WalkLogServiceDTO.FindsOutput> walkLogsToWalkLogServiceFindsOutputDTOs(List<WalkLog> walkLogs); //임시

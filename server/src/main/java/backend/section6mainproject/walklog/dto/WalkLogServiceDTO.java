@@ -1,6 +1,7 @@
 package backend.section6mainproject.walklog.dto;
 
-import backend.section6mainproject.content.dto.WalkLogContentDTO;
+import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
+import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.Getter;
@@ -61,7 +62,7 @@ public class WalkLogServiceDTO {
         private LocalDateTime startedAt;
         private LocalDateTime endAt;
         private String message;
-        private List<WalkLogContentDTO.Response> walkLogContents;
+        private List<WalkLogContentServiceDTO.Output> walkLogContents;
 
     }
 
@@ -81,8 +82,8 @@ public class WalkLogServiceDTO {
 
 
         private WalkLog.WalkLogPublicSetting walkLogPublicSetting;
-        private List<CoordinateServiceDTO.CreateReturn> coordinates;
-        private List<WalkLogContentDTO.Response> walkLogContents;
+        private List<CoordinateServiceDTO.Output> coordinates;
+        private List<WalkLogContentServiceDTO.Output> walkLogContents;
 
     }
 

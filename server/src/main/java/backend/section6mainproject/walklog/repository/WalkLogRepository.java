@@ -15,7 +15,7 @@ public interface WalkLogRepository extends JpaRepository<WalkLog, Long> {
     List<WalkLog> findAllByWalkLogPublicSettingAndMember_MemberId(Pageable pageable,
                                                                   WalkLog.WalkLogPublicSetting walkLogPublicSetting,
                                                                   Long memberId);
-    Optional<List<WalkLog>> findAllByMember_MemberIdOrderByWalkLogIdDesc(Long memberId);
+    List<WalkLog> findAllByMember_MemberIdOrderByWalkLogIdDesc(Long memberId);
 
    List<WalkLog> findAllByWalkLogPublicSettingAndCreatedAtBetween(WalkLog.WalkLogPublicSetting walkLogPublicSetting,
                                                                   LocalDateTime start,

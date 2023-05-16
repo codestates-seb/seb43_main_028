@@ -48,16 +48,20 @@ public class WalkLogServiceImplTest {
     public void createWalkLogTest() {
         // given
         WalkLog walkLog = createWalkLog();
+
         WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
         createInput.setMemberId(walkLog.getMember().getMemberId());
         WalkLogServiceDTO.CreateOutput createOutput = new WalkLogServiceDTO.CreateOutput();
         createOutput.setWalkLogId(walkLog.getWalkLogId());
         List<WalkLog> walkLogs = new ArrayList<>();
         walkLogs.add(walkLog);
+        Member member = new Member();
+        member.setMemberId(2L);
 
-        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(new Member());
+
+        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(member);
         given(walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(Mockito.anyLong()))
-                .willReturn(Optional.of(walkLogs));
+                .willReturn(new ArrayList<>());
         given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(new WalkLog());
         given(walkLogMapper.walkLogToWalkLogServiceCreatedOutputDTO(Mockito.any(WalkLog.class))).willReturn(createOutput);
         // when
@@ -78,7 +82,7 @@ public class WalkLogServiceImplTest {
         ArrayList<WalkLog> walkLogs = new ArrayList<>();
         walkLogs.add(walkLog);
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(walkLog.getMember());
-        given(walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(Mockito.anyLong())).willReturn(Optional.of(walkLogs));
+        given(walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(Mockito.anyLong())).willReturn(walkLogs);
         //when
         RuntimeException exception = assertThrows(BusinessLogicException.class, () -> {
             walkLogService.createWalkLog(createInput);

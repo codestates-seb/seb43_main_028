@@ -1,7 +1,7 @@
 package backend.section6mainproject.content.controller;
 
-import backend.section6mainproject.content.dto.WalkLogContentDTO;
-import backend.section6mainproject.content.entity.WalkLogContent;
+import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
+import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.content.mapper.WalkLogContentMapper;
 import backend.section6mainproject.content.service.WalkLogContentService;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +25,29 @@ public class WalkLogContentController {
     private final WalkLogContentService walkLogContentService;
     private final WalkLogContentMapper mapper;
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> postContent(@Positive @PathVariable("walk-log-id") long walkLogId,
-                                         @Valid @RequestPart WalkLogContentDTO.Post content,
-                                         @RequestPart MultipartFile contentImage) {
-        content.setWalkLogId(walkLogId);
-        WalkLogContent walkLogContent = walkLogContentService.createWalkLogContent(mapper.walkLogContentPostDTOToWalkLogContent(content), contentImage);
+    public ResponseEntity<WalkLogContentControllerDTO.PostResponse> postContent(@Positive @PathVariable("walk-log-id") long walkLogId,
+                                         @Valid @RequestPart WalkLogContentControllerDTO.Post content,
+                                         @RequestPart(required = false) MultipartFile contentImage) {
+        WalkLogContentServiceDTO.CreateInput createInput = mapper.controllerPostDTOTOServiceCreateInputDTO(content);
+        createInput.setWalkLogId(walkLogId);
+        createInput.setContentImage(contentImage);
+        WalkLogContentServiceDTO.CreateOutput walkLogContent = walkLogContentService.createWalkLogContent(createInput);
         URI uri = UriComponentsBuilder.newInstance()
                 .path(WALK_LOG_CONTENT_DEFAULT_URL + walkLogContent.getWalkLogContentId())
                 .build()
                 .toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(mapper.serviceCreateOutputDTOToControllerCreateResponseDTO(walkLogContent));
+    }
+
+    @PatchMapping(path = "/{content-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<WalkLogContentControllerDTO.Response> patchContent(@Positive @PathVariable("content-id") long walkLogContentId,
+                                                                             @Valid @RequestPart WalkLogContentControllerDTO.Patch content,
+                                                                             @RequestPart(required = false) MultipartFile contentImage) {
+        WalkLogContentServiceDTO.UpdateInput updateInput = mapper.controllerPatchDTOToServiceUpdateInputDTO(content);
+        updateInput.setWalkLogContentId(walkLogContentId);
+        updateInput.setContentImage(contentImage);
+        WalkLogContentServiceDTO.Output output = walkLogContentService.updateWalkLogContent(updateInput);
+        return ResponseEntity.ok(mapper.serviceOutputDTOToControllerResponseDTO(output));
     }
 
 }
