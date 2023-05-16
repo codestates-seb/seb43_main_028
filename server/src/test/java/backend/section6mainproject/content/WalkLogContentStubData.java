@@ -8,11 +8,17 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class WalkLogContentStubData {
     private String text = "걷기 중 순간기록 중입니다.";
     private Long walkLogContentId = 1L;
     private Long walkLogId = 1L;
+    private String imageUrl = "/test/image/test.jpg";
+
+    public Long getWalkLogId() {
+        return walkLogId;
+    }
 
     public Long getWalkLogContentId() {
         return walkLogContentId;
@@ -24,17 +30,20 @@ public class WalkLogContentStubData {
         return post;
     }
 
+    public WalkLogContentControllerDTO.Patch getPatch() {
+        WalkLogContentControllerDTO.Patch patch = new WalkLogContentControllerDTO.Patch();
+        patch.setText(text);
+        return patch;
+    }
+
     public WalkLogContentControllerDTO.PostResponse getPostResponse() {
         return new WalkLogContentControllerDTO.PostResponse(walkLogContentId);
     }
 
-    public MockMultipartFile getImage() throws IOException {
-        String fileName = "test";
-        String contentType = "jpg";
-        String fileFullName = fileName + "." + contentType;
-        FileInputStream inputStream = new FileInputStream("src/test/resources/testImage/" + fileFullName);
-        return new MockMultipartFile("contentImage", fileFullName, contentType, inputStream);
+    public WalkLogContentControllerDTO.Response getResponse() {
+        return new WalkLogContentControllerDTO.Response(walkLogContentId, LocalDateTime.now(), text, imageUrl);
     }
+
     public WalkLogContentServiceDTO.CreateInput getCreateInput() throws IOException {
         WalkLogContentServiceDTO.CreateInput createInput = new WalkLogContentServiceDTO.CreateInput();
         createInput.setWalkLogId(walkLogId);
@@ -42,9 +51,12 @@ public class WalkLogContentStubData {
         createInput.setContentImage(getImage());
         return createInput;
     }
-
     public WalkLogContentServiceDTO.CreateOutput getCreateOutput() {
         return new WalkLogContentServiceDTO.CreateOutput(walkLogContentId);
+    }
+
+    public WalkLogContentServiceDTO.Output getOutput() {
+        return new WalkLogContentServiceDTO.Output(walkLogContentId, LocalDateTime.now(), text, imageUrl);
     }
 
     public WalkLogContent getWalkLogContent() {
@@ -53,5 +65,13 @@ public class WalkLogContentStubData {
         walkLog.setWalkLogId(walkLogId);
         walkLogContent.setWalkLog(walkLog);
         return walkLogContent;
+    }
+
+    public MockMultipartFile getImage() throws IOException {
+        String fileName = "test";
+        String contentType = "jpg";
+        String fileFullName = fileName + "." + contentType;
+        FileInputStream inputStream = new FileInputStream("src/test/resources/testImage/" + fileFullName);
+        return new MockMultipartFile("contentImage", fileFullName, contentType, inputStream);
     }
 }
