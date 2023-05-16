@@ -16,9 +16,9 @@ public class CoordinateServiceImpl implements CoordinateService {
     private final CoordinateMapper mapper;
 
     @Override
-    public CoordinateServiceDTO.CreateReturn createCoordinate(CoordinateServiceDTO.CreateParam coordinateDTO) {
-        Coordinate coordinate = mapper.serviceCreateParamDTOToEntity(coordinateDTO);
+    public CoordinateServiceDTO.Output createCoordinate(CoordinateServiceDTO.Input coordinateDTO) {
+        Coordinate coordinate = mapper.serviceInputDTOToEntity(coordinateDTO);
         Coordinate savedCoordinate = coordinateRepository.save(coordinate);
-        return mapper.entityToServiceCreateReturnDTO(savedCoordinate);
+        return mapper.entityToServiceOutputDTO(savedCoordinate);
     }
 }

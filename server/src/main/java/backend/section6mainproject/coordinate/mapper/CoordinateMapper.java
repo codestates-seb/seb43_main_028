@@ -12,27 +12,32 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CoordinateMapper {
 
+    // legacy codes
+
     CoordinateControllerDTO.Sub coordinateToCoordinateSubDTO(Coordinate coordinate);
 
     @Named("coordinatesToCoordinateSubDTOs")
     List<CoordinateControllerDTO.Sub> coordinatesToCoordinateSubDTOs(List<Coordinate> coordinates);
 
-    CoordinateServiceDTO.CreateParam controllerPubDTOTOServiceCreateParamDTO(CoordinateControllerDTO.Pub pub);
+    // refactored codes
+
+    // request flow
+
+    CoordinateServiceDTO.Input controllerPubDTOTOServiceInputDTO(CoordinateControllerDTO.Pub pub);
 
     @Mapping(source = "walkLogId", target = "walkLog.walkLogId")
-    Coordinate serviceCreateParamDTOToEntity(CoordinateServiceDTO.CreateParam createParam);
+    Coordinate serviceInputDTOToEntity(CoordinateServiceDTO.Input input);
+
+    // response flow
 
     @Mapping(source = "walkLog.walkLogId", target = "walkLogId")
-    CoordinateServiceDTO.CreateReturn entityToServiceCreateReturnDTO(Coordinate coordinate);
+    CoordinateServiceDTO.Output entityToServiceOutputDTO(Coordinate coordinate);
 
-    CoordinateControllerDTO.Sub serviceCreateReturnDTOToControllerSubDTO(CoordinateServiceDTO.CreateReturn createReturn);
+    CoordinateControllerDTO.Sub serviceOutputDTOToControllerSubDTO(CoordinateServiceDTO.Output aOutput);
 
     @Named("coordinateEntityToServiceDTO")
-    List<CoordinateServiceDTO.CreateReturn> entitiesToServiceCreateReturnDTOs(List<Coordinate> coordinates);
+    List<CoordinateServiceDTO.Output> entitiesToServiceOutputDTOs(List<Coordinate> coordinates);
     @Named("coordinateServiceDTOToControllerDTO")
-    List<CoordinateControllerDTO.Sub> serviceCreateReturnDTOsToControllerSubDTOs(List<CoordinateServiceDTO.CreateReturn> createReturns);
-
-
-
+    List<CoordinateControllerDTO.Sub> serviceOutputDTOsToControllerSubDTOs(List<CoordinateServiceDTO.Output> aOutputs);
 
 }
