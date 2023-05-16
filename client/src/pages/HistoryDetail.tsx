@@ -6,6 +6,7 @@ import { timerFormat } from '../utils/date'
 import { differenceInSeconds } from '../components/HistoryList/Calendar/date-fns'
 import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
+import Modal from '../components/common/Modal'
 
 const dummy = {
   pageinfo: {
@@ -18,7 +19,8 @@ const dummy = {
     walkLogId: '1',
     startAt: '2023-05-11T14:48:27.98596',
     endAt: '2023-05-11T18:00:00.983845',
-    message: '너가 파티에선 주인공이지 (Feat. 하곤)',
+    message:
+      '너가 파티에선 주인공이지 (Feat. 하곤) 그걸 망치는 건 내 몫이지 널 데리러 가니 그 순간이 곧 나의 재미 집에 가자 when its night Party 멈춰 time to go out 재미도 엄청 없어보인다 집에 가서 I will Make you go wild 우리가 여기선 주인공인 것같어',
     walkLogPublicSetting: '나만 보기', // 전체 공개, 나만 보기 2개 중 1개 (추후 친구 공개 등 확장성 고려 필요)
     coordinates: [
       // 이게 뭔지 ?? 필요 없을 것 같은데 ..? region 확인을 위한 우편번호 필요
@@ -57,10 +59,39 @@ export default function HistoryDetail() {
   const [data, setData] = useState(dummy.data)
   const [edit, setEdit] = useState<boolean>(false)
   const [editId, setEditId] = useState<string>()
+  const [deleteModal, setDeleteModal] = useState<boolean>(false)
 
   const handleEdit = () => {
     setEdit(prev => !prev)
   }
+
+  const handleDeleteModal = () => {
+    setDeleteModal(prev => !prev)
+  }
+
+  const modalData = {
+    title: '기록을 삭제하시겠습니까?',
+    options: [
+      {
+        label: '삭제하기',
+        handleClick: () => console.log('진짜 삭제'),
+        id: 0,
+      },
+      {
+        label: '취소하기',
+        handleClick: handleDeleteModal,
+        id: 1,
+      },
+    ],
+  }
+
+  const editSnapForm = data.walkLogContents.map(da => {
+    if (da.id === editId) {
+      const initialValue = { imgUrl: da.imageUrl, text: da.text }
+      return <SnapForm key={da.id} initialValue={initialValue} handleCancel={handleEdit} />
+    }
+    return ''
+  })
 
   const detailItems = data.walkLogContents.map(da => {
     const snapTimeDiff = differenceInSeconds(new Date(da.createdAt), new Date(data.startAt))
@@ -77,20 +108,12 @@ export default function HistoryDetail() {
     )
   })
 
-  const snapForm = data.walkLogContents.map(da => {
-    if (da.id === editId) {
-      const initialValue = { imgUrl: da.imageUrl, text: da.text }
-      return <SnapForm key={da.id} initialValue={initialValue} handleCancel={handleEdit} />
-    }
-    return ''
-  })
-
   return (
     <div>
       {edit ? (
-        snapForm
+        editSnapForm
       ) : (
-        <div>
+        <div className={styles.container}>
           <Title
             startAt={data.startAt}
             endAt={data.endAt}
@@ -99,7 +122,12 @@ export default function HistoryDetail() {
           />
           <div className={styles.map}>지도 재사용 컴포넌츠</div>
           {detailItems}
-          <button type='button'>기록 삭제</button>
+          <div className={styles.deleteBtnBox}>
+            <button type='button' className={styles.deleteBtn} onClick={handleDeleteModal}>
+              기록 삭제
+            </button>
+          </div>
+          {deleteModal && <Modal modalData={modalData} onClose={handleDeleteModal} />}
         </div>
       )}
     </div>

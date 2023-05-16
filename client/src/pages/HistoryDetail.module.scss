@@ -1,8 +1,25 @@
 @use '../styles/color' as C;
+@use '../styles/utils' as U;
+
+.container {
+  // @include U.flex-c(column);
+}
 
 .map {
   margin: 24px 20px;
   height: 230px;
   background-color: C.$gray600;
   border-radius: 12px;
+}
+
+.deleteBtnBox {
+  padding: 0 20px 24px;
+}
+
+.deleteBtn {
+  text-align: center;
+  background-color: C.$white;
+  border-radius: 12px;
+  @include U.size(100%, 40px);
+  border: 1px solid;
 }
