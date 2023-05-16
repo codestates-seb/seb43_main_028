@@ -1,9 +1,11 @@
 package backend.section6mainproject.walklog.controller;
 
 import backend.section6mainproject.member.entity.Member;
-import backend.section6mainproject.walklog.dto.WalkLogDTO;
+import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
 
+import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
+import backend.section6mainproject.walklog.mapper.WalkLogMapper;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -18,18 +20,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -43,20 +40,23 @@ public class WalkLogControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
+    private WalkLogMapper walkLogMapper;
+    @MockBean
     private WalkLogService walkLogService;
 
     @Test
     void postWalkLogTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        WalkLogDTO.Post post = new WalkLogDTO.Post();
+        WalkLogControllerDTO.Post post = new WalkLogControllerDTO.Post();
         post.setMemberId(1L);
+        WalkLogControllerDTO.PostResponse response = new WalkLogControllerDTO.PostResponse();
+        response.setWalkLogId(1L);
         String content = objectMapper.writeValueAsString(post);
 
-        WalkLog walkLog = createWalkLog();
-
-
-        given(walkLogService.createWalkLog(Mockito.anyLong())).willReturn(walkLog);
-
+        given(walkLogMapper.walkLogControllerPostDTOtoWalkLogServiceCreateInputDTO(Mockito.any(WalkLogControllerDTO.Post.class))).willReturn(new WalkLogServiceDTO.CreateInput());
+        given(walkLogService.createWalkLog(Mockito.any(WalkLogServiceDTO.CreateInput.class))).willReturn(new WalkLogServiceDTO.CreateOutput());
+        given(walkLogMapper.walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(Mockito.any(WalkLogServiceDTO.CreateOutput.class)))
+                .willReturn(response);
         // when
         ResultActions actions =
                 mockMvc.perform(
@@ -64,11 +64,11 @@ public class WalkLogControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(content)
-                                );
+                );
         // then
         actions
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.walkLogId").value(walkLog.getWalkLogId()));
+                .andExpect(jsonPath("$.walkLogId").value(response.getWalkLogId()));
     }
 
     @Test
@@ -76,21 +76,19 @@ public class WalkLogControllerTest {
         //given
         ObjectMapper objectMapper = new ObjectMapper();
         WalkLog walkLog = createWalkLog();
-
         //WalkLogDto.Patch 객체가 1개 필요
-        WalkLogDTO.Patch patchWalkLogDto = new WalkLogDTO.Patch();
-        patchWalkLogDto.setMessage("안녕하십니끄아악!");
-        patchWalkLogDto.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        //updated된 WalkLog 객체
-        WalkLog updatedWalkLog = new WalkLog();
-        updatedWalkLog.setMember(walkLog.getMember());
-        updatedWalkLog.setWalkLogId(walkLog.getWalkLogId());
-        updatedWalkLog.setMessage("안녕하십니끄아악!");
-        updatedWalkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        WalkLogControllerDTO.Patch patchWalkLogDto = new WalkLogControllerDTO.Patch();
+        patchWalkLogDto.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PRIVATE);
+        patchWalkLogDto.setMessage("안녕하세용");
+        WalkLogControllerDTO.DetailResponse detailResponse = new WalkLogControllerDTO.DetailResponse();
+        detailResponse.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PRIVATE);
+        detailResponse.setMessage("안녕하세용");
         //Json 데이터 생성
         String jsonPatchWalkLogDto = objectMapper.writeValueAsString(patchWalkLogDto);
         //walkLogService.updateWalkLog메서드 로직 Mock수행
-        given(walkLogService.updateWalkLog(Mockito.any(WalkLog.class))).willReturn(updatedWalkLog);
+        given(walkLogMapper.walkLogControllerPatchDTOtoWalkLogServiceUpdateInputDTO(Mockito.any(WalkLogControllerDTO.Patch.class))).willReturn(new WalkLogServiceDTO.UpdateInput());
+        given(walkLogService.updateWalkLog(Mockito.any(WalkLogServiceDTO.UpdateInput.class))).willReturn(new WalkLogServiceDTO.Output());
+        given(walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(Mockito.any(WalkLogServiceDTO.Output.class))).willReturn(detailResponse);
         //when
         //patchWalkLog메서드를 수행 했을 때
         ResultActions perform = mockMvc.perform(
@@ -101,11 +99,11 @@ public class WalkLogControllerTest {
 
         //then
         perform
-        //예상되는 결과는 status가 isok
+                //예상되는 결과는 status가 isok
                 .andExpect(status().isOk())
-        //WalkLogDto.Patch객체로 전달받은 데이터들이 변경되었는지확인
-                .andExpect(jsonPath("$.message").value(updatedWalkLog.getMessage()));
-//                .andExpect(jsonPath("$.walkLogPublicSetting").value(response.getWalkLogPublicSetting())); enum이라 에러가 발생하는듯함
+                //WalkLogDto.Patch객체로 전달받은 데이터들이 변경되었는지확인
+                .andExpect(jsonPath("$.message").value(detailResponse.getMessage()))
+                .andExpect(jsonPath("$.walkLogPublicSetting").value(String.valueOf(detailResponse.getWalkLogPublicSetting())));
     }
     @Test
     void endWalkLogTest() throws Exception {
@@ -113,20 +111,21 @@ public class WalkLogControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         WalkLog walkLog = createWalkLog();
 
-        //WalkLogDto.Patch 객체가 1개 필요
-        WalkLogDTO.EndPost endPostDTO = new WalkLogDTO.EndPost();
-        endPostDTO.setMessage("안녕하십니끄아악!");
+        WalkLogControllerDTO.EndPost endPostDTO = new WalkLogControllerDTO.EndPost();
+        endPostDTO.setMessage("안녕하십니깟!");
         endPostDTO.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        //updated된 WalkLog 객체
-        WalkLog finishedWalkLog = new WalkLog();
-        finishedWalkLog.setMember(walkLog.getMember());
-        finishedWalkLog.setWalkLogId(walkLog.getWalkLogId());
-        finishedWalkLog.setMessage("안녕하십니끄아악!");
-        finishedWalkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        //update된 WalkLogControllerDetailResponse 객체
+        WalkLogControllerDTO.DetailResponse detailResponse = createDetailResponse(walkLog);
+        detailResponse.setMessage("안녕하십니깟!");
+        detailResponse.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+
         //Json 데이터 생성
         String jasonEndWalkLogDTO = objectMapper.writeValueAsString(endPostDTO);
         //walkLogService.updateWalkLog메서드 로직 Mock수행
-        given(walkLogService.exitWalkLog(Mockito.any(WalkLog.class))).willReturn(finishedWalkLog);
+        given(walkLogMapper.walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(Mockito.any(WalkLogControllerDTO.EndPost.class))).
+                willReturn(new WalkLogServiceDTO.ExitInput());
+        given(walkLogService.exitWalkLog(Mockito.any(WalkLogServiceDTO.ExitInput.class))).willReturn(new WalkLogServiceDTO.Output());
+        given(walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(Mockito.any(WalkLogServiceDTO.Output.class))).willReturn(detailResponse);
         //when
         //patchWalkLog메서드를 수행 했을 때
         ResultActions perform = mockMvc.perform(
@@ -137,20 +136,33 @@ public class WalkLogControllerTest {
 
         //then
         perform
-        //예상되는 결과는 status가 isok
+                //예상되는 결과는 status가 isok
                 .andExpect(status().isOk())
-        //WalkLogDto.Patch객체로 전달받은 데이터들이 변경되었는지확인
-                .andExpect(jsonPath("$.message").value(finishedWalkLog.getMessage()))
-                .andExpect(jsonPath("$.walkLogPublicSetting").value(String.valueOf(finishedWalkLog.getWalkLogPublicSetting())));
+                .andExpect(jsonPath("$.message").value(detailResponse.getMessage()));
+    }
+
+    private static WalkLogControllerDTO.DetailResponse createDetailResponse(WalkLog walkLog) {
+        WalkLogControllerDTO.DetailResponse detailResponse = new WalkLogControllerDTO.DetailResponse();
+        detailResponse.setWalkLogId(walkLog.getWalkLogId());
+        detailResponse.setNickname(walkLog.getMember().getNickname());
+        detailResponse.setMemberId(walkLog.getMember().getMemberId());
+        detailResponse.setMessage(walkLog.getMessage());
+        detailResponse.setWalkLogPublicSetting(walkLog.getWalkLogPublicSetting());
+        detailResponse.setCreatedAt(walkLog.getCreatedAt());
+        detailResponse.setEndAt(walkLog.getEndAt());
+        return detailResponse;
     }
 
     @Test
     void getWalkLogTest() throws Exception {
         //given
         WalkLog walkLog = createWalkLog();
+        WalkLogControllerDTO.DetailResponse detailResponse = walkLogToWalkLogDetailResponseDTO(walkLog);
         //walkLogId를 http메서드로 요청보내고
         //요청을 통해서 잘 조회되는지 확인
-        given(walkLogService.findWalkLog(Mockito.anyLong())).willReturn(walkLog);
+        given(walkLogService.findWalkLog(walkLog.getWalkLogId())).willReturn(new WalkLogServiceDTO.Output());
+        given(walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(Mockito.any(WalkLogServiceDTO.Output.class)))
+                .willReturn(detailResponse);
         //when
         ResultActions perform = mockMvc.perform(
                 get("/walk-logs/" + walkLog.getWalkLogId())
@@ -165,6 +177,7 @@ public class WalkLogControllerTest {
                 .andExpect(jsonPath("$.nickname").value(walkLog.getMember().getNickname()));
 
     }
+
     @Test
     void getAllWalkLogsTest(){
         //전체 조회
@@ -183,11 +196,11 @@ public class WalkLogControllerTest {
     void getWalkLogsByMonthTest(){
         //특정 월 조회
     }
+
     @Test
     void getWalkLogsByDayTest(){
         //특정 일 조회
     }
-
     @Test
     void deleteWalkLogTest() throws Exception {
         //WalkLogRepository에 저장되어있던 1번 데이터가 WalkLogService.deleteWalkLog에 의해서 삭제되어야함
@@ -200,6 +213,15 @@ public class WalkLogControllerTest {
         //then
         verify(walkLogService, times(1)).deleteWalkLog(Mockito.anyLong());
 
+    }
+
+    private WalkLogControllerDTO.DetailResponse walkLogToWalkLogDetailResponseDTO(WalkLog walkLog) {
+        WalkLogControllerDTO.DetailResponse detailResponse = new WalkLogControllerDTO.DetailResponse();
+        detailResponse.setWalkLogId(walkLog.getWalkLogId());
+        detailResponse.setMessage(walkLog.getMessage());
+        detailResponse.setMemberId(walkLog.getMember().getMemberId());
+        detailResponse.setNickname(walkLog.getMember().getNickname());
+        return detailResponse;
     }
 
     private WalkLog createWalkLog() {

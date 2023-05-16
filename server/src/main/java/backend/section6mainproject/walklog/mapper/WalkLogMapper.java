@@ -2,31 +2,49 @@ package backend.section6mainproject.walklog.mapper;
 
 import backend.section6mainproject.content.mapper.WalkLogContentMapper;
 import backend.section6mainproject.coordinate.mapper.CoordinateMapper;
-import backend.section6mainproject.walklog.dto.WalkLogDTO;
+import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
+import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-
+//브랜치 병합 후 점검할것
 @Mapper(componentModel = "spring",uses = {CoordinateMapper.class, WalkLogContentMapper.class})
 public interface WalkLogMapper {
-    WalkLog walkLogPatchDTOToWalkLog(WalkLogDTO.Patch walkLogPatchDTO);
+    WalkLogServiceDTO.CreateInput walkLogControllerPostDTOtoWalkLogServiceCreateInputDTO(WalkLogControllerDTO.Post walkLogControllerPostDTO);
+    WalkLogServiceDTO.CreateOutput walkLogToWalkLogServiceCreatedOutputDTO(WalkLog walkLog);
 
-    WalkLog walkLogEndPostDTOtoWalkLog(WalkLogDTO.EndPost walkLogEndPostDTO);
+    WalkLogControllerDTO.PostResponse walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(WalkLogServiceDTO.CreateOutput walkLogServiceCreateOutputDTO);
+
+    WalkLogServiceDTO.UpdateInput walkLogControllerPatchDTOtoWalkLogServiceUpdateInputDTO(WalkLogControllerDTO.Patch walkLogControllerPatchDTO);
+    WalkLog walkLogServiceUpdateInputDTOtoWalkLog(WalkLogServiceDTO.UpdateInput updateInput);
     @Mapping(source = "member.memberId",target = "memberId")
     @Mapping(source = "member.nickname",target = "nickname")
-    @Mapping(target = "coordinates",qualifiedByName = "coordinatesToCoordinateSubDTOs")
-    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentsToWalkLogContentResponseDTOs")
-    WalkLogDTO.DetailResponse walkLogToWalkLogDetailResponseDTO(WalkLog walkLog);
-    WalkLogDTO.Created walkLogToWalkLogCreatedDTO(WalkLog walkLog);
-    List<WalkLogDTO.DetailResponse> walkLogsToWalkLogDetailResponseDTOs(List<WalkLog> walkLogs); //임시
+    @Mapping(target = "coordinates",qualifiedByName = "coordinateEntityToServiceDTO")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
+    WalkLogServiceDTO.Output walkLogToWalkLogServiceOutputDTO(WalkLog walkLog);
+    @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
+    WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
 
-    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentsToWalkLogContentResponseDTOs")
+
+    WalkLogServiceDTO.ExitInput walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(WalkLogControllerDTO.EndPost endPost);
+    WalkLog walkLogServiceExitInputDTOtoWalkLog(WalkLogServiceDTO.ExitInput exitInput);
+
+    WalkLog walkLogControllerPatchDTOtoWalkLog(WalkLogControllerDTO.Patch walkLogPatchDTO);
+
+    WalkLog walkLogEndPostDTOtoWalkLog(WalkLogControllerDTO.EndPost walkLogEndPostDTO);
+    WalkLogServiceDTO.FindsInput walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(WalkLogControllerDTO.GetRequests getRequests);
+    List<WalkLogServiceDTO.CreateOutput> walkLogsToWalkLogServiceOutputDTOs(List<WalkLog> walkLogs);
+    List<WalkLogControllerDTO.DetailResponse> walkLogsToWalkLogDetailResponseDTOs(List<WalkLog> walkLogs); //임시
+
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
-    WalkLogDTO.SimpleResponse walkLogToWalkLogSimpleResponseDTO(WalkLog walkLog); //구현중
-    List<WalkLogDTO.SimpleResponse> walkLogsToWalkLogSimpleResponseDTOs(List<WalkLog> walkLogs); //임시
+    WalkLogServiceDTO.FindsOutput walkLogToWalkLogServiceFindsOutputDTO(WalkLog walkLog); //구현중
+    List<WalkLogServiceDTO.FindsOutput> walkLogsToWalkLogServiceFindsOutputDTOs(List<WalkLog> walkLogs); //임시
 
 
 }
