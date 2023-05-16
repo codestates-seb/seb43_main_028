@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import styles from './TermsOfUse.module.scss'
+import Icon from '../common/Icon'
 
 type TermsOfUseProps = {
   allCheck: boolean
@@ -18,6 +19,9 @@ function TermsOfUse({
   privacyCheck,
   setPrivacyCheck,
 }: TermsOfUseProps) {
+  console.log('allCheck: ', allCheck)
+  console.log('useCheck: ', useCheck)
+  console.log('privacyCheck: ', privacyCheck)
   const allBtnEvent = () => {
     if (allCheck === false) {
       setAllCheck(true)
@@ -47,6 +51,13 @@ function TermsOfUse({
   }
 
   useEffect(() => {
+    setAllCheck(false)
+    setUseCheck(false)
+    setPrivacyCheck(false)
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
     if (useCheck === true && privacyCheck === true) {
       setAllCheck(true)
     } else {
@@ -61,13 +72,9 @@ function TermsOfUse({
         <div className={styles.formAgreementBox}>
           <div className={styles.formAgreementAll}>
             <div className={styles.checkboxWrapper}>
-              <input
-                className={styles.checkbox}
-                type='checkbox'
-                id='all-check'
-                checked={allCheck}
-                onChange={allBtnEvent}
-              />
+              <button type='button' onClick={allBtnEvent}>
+                {allCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
+              </button>
             </div>
             <label htmlFor='all-check'>전체 동의합니다.</label>
           </div>
@@ -75,30 +82,22 @@ function TermsOfUse({
           <div className={styles.formAgreementItemBox}>
             <div className={styles.formAgreementItem}>
               <div className={styles.checkboxWrapper}>
-                <input
-                  className={styles.checkbox}
-                  type='checkbox'
-                  id='check2'
-                  checked={useCheck}
-                  onChange={useBtnEvent}
-                />
+                <button type='button' onClick={useBtnEvent}>
+                  {useCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
+                </button>
               </div>
               <label htmlFor='check2'>
-                이용약관에 동의합니다. <span className={styles.blue}>(필수)</span>
+                이용약관에 동의합니다. <span>(필수)</span>
               </label>
             </div>
             <div className={styles.formAgreementItem}>
               <div className={styles.checkboxWrapper}>
-                <input
-                  className={styles.checkbox}
-                  type='checkbox'
-                  id='check3'
-                  checked={privacyCheck}
-                  onChange={privacyBtnEvent}
-                />
+                <button type='button' onClick={privacyBtnEvent}>
+                  {privacyCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
+                </button>
               </div>
               <label htmlFor='check3'>
-                개인정보 수집 및 이용에 동의합니다. <span className={styles.gray}>(필수)</span>
+                개인정보 수집 및 이용에 동의합니다. <span>(필수)</span>
               </label>
             </div>
           </div>
