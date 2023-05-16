@@ -1,0 +1,43 @@
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+@use '../../styles/color' as C;
+
+.contentBox {
+  margin: 0 20px 24px;
+  background-color: C.$white;
+  overflow: hidden;
+  border-radius: 12px;
+  img {
+    height: 240px;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.textBox {
+  padding: 20px;
+  @include U.flex-c(column, space-between, flex-start);
+  gap: 8px;
+}
+
+.text {
+  width: 100%;
+  background-color: C.$white;
+  border: none;
+  height: 100%;
+}
+
+.iconsBox {
+  width: 100%;
+  @include T.gray600-regular-16;
+  @include U.flex-c(row, space-between, center);
+}
+
+.editDeleteBox {
+  @include U.flex-c(row, flex-start, center);
+}
+
+.icon {
+  @include U.flex-c(row, flex-start, center);
+  gap: 2px;
+}

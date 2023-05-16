@@ -11,6 +11,7 @@ import endOfMonth from 'date-fns/endOfMonth'
 import startOfMonth from 'date-fns/startOfMonth'
 import eachDayOfInterval from 'date-fns/eachDayOfInterval'
 import getWeeksInMonth from 'date-fns/getWeeksInMonth'
+import differenceInSeconds from 'date-fns/differenceInSeconds'
 
 function getWeekRows(date: Date): (0 | Date)[][] {
   const lastDate = getDate(endOfMonth(date))
@@ -45,4 +46,5 @@ export {
   startOfToday,
   startOfDay,
   isEqual,
+  differenceInSeconds,
 }

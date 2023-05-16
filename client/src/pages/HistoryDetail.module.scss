@@ -1,0 +1,8 @@
+@use '../styles/color' as C;
+
+.map {
+  margin: 24px 20px;
+  height: 230px;
+  background-color: C.$gray600;
+  border-radius: 12px;
+}

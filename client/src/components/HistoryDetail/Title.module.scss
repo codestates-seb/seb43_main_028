@@ -1,0 +1,14 @@
+@use '../../styles/color' as C;
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+
+.container {
+  width: 100%;
+  padding: 20px;
+  background-color: C.$white;
+}
+
+.timeBox {
+  @include U.flex-c(row, flex-start);
+  gap: 12px;
+}
