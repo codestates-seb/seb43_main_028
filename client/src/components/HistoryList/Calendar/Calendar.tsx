@@ -58,7 +58,7 @@ export default function Calendar({ data }: CalendarProps) {
         <Dates
           date={date}
           selectDate={selectDate}
-          handleSelectDate={handleSelectDate}
+          handleSelect={handleSelectDate}
           histories={histories}
         />
       </table>
