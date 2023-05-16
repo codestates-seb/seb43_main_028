@@ -3,7 +3,7 @@ package backend.section6mainproject.walklog.dto;
 
 
 
-import backend.section6mainproject.content.dto.WalkLogContentDTO;
+import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
 
 import lombok.Getter;
@@ -65,7 +65,7 @@ public class WalkLogDTO {
 
         private WalkLogPublicSetting walkLogPublicSetting;
         private List<CoordinateControllerDTO.Sub> coordinates;
-        private List<WalkLogContentDTO.Response> walkLogContents;
+        private List<WalkLogContentControllerDTO.Response> walkLogContents;
 
     }
     @Getter
@@ -77,7 +77,7 @@ public class WalkLogDTO {
         private LocalDateTime startedAt;
         private LocalDateTime endAt;
         private String message;
-        private List<WalkLogContentDTO.Response> walkLogContents;
+        private List<WalkLogContentControllerDTO.Response> walkLogContents;
 
     }
 }
