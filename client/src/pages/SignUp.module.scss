@@ -34,6 +34,10 @@
     color: C.$gray400;
     font-size: 1.4rem;
   }
+  &:focus {
+    border: none;
+    border-bottom: 1px solid C.$gray900;
+  }
 }
 
 .signupBtn {
@@ -63,6 +67,6 @@
   margin-bottom: 5px !important;
 }
 
-.noError {
+.errorWrapper {
   height: 24px;
 }
