@@ -16,6 +16,12 @@ public class WalkLogContentControllerDTO {
     }
 
     @Getter
+    @Setter
+    public static class Patch {
+        private String text;
+    }
+
+    @Getter
     @AllArgsConstructor
     public static class PostResponse {
         private Long walkLogContentId;

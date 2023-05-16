@@ -27,7 +27,7 @@ public class WalkLogContentController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<WalkLogContentControllerDTO.PostResponse> postContent(@Positive @PathVariable("walk-log-id") long walkLogId,
                                          @Valid @RequestPart WalkLogContentControllerDTO.Post content,
-                                         @RequestPart MultipartFile contentImage) {
+                                         @RequestPart(required = false) MultipartFile contentImage) {
         WalkLogContentServiceDTO.CreateInput createInput = mapper.controllerPostDTOTOServiceCreateInputDTO(content);
         createInput.setWalkLogId(walkLogId);
         createInput.setContentImage(contentImage);
@@ -37,6 +37,17 @@ public class WalkLogContentController {
                 .build()
                 .toUri();
         return ResponseEntity.created(uri).body(mapper.serviceCreateOutputDTOToControllerCreateResponseDTO(walkLogContent));
+    }
+
+    @PatchMapping(path = "/{content-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<WalkLogContentControllerDTO.Response> patchContent(@Positive @PathVariable("content-id") long walkLogContentId,
+                                                                             @Valid @RequestPart WalkLogContentControllerDTO.Patch content,
+                                                                             @RequestPart(required = false) MultipartFile contentImage) {
+        WalkLogContentServiceDTO.UpdateInput updateInput = mapper.controllerPatchDTOToServiceUpdateInputDTO(content);
+        updateInput.setWalkLogContentId(walkLogContentId);
+        updateInput.setContentImage(contentImage);
+        WalkLogContentServiceDTO.Output output = walkLogContentService.updateWalkLogContent(updateInput);
+        return ResponseEntity.ok(mapper.serviceOutputDTOToControllerResponseDTO(output));
     }
 
 }
