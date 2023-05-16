@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class CoordinateServiceDTO {
     @Getter
     @Setter
-    public static class CreateParam {
+    public static class Input {
         @Setter
         private Long walkLogId;
         @NotNull
@@ -21,7 +21,7 @@ public class CoordinateServiceDTO {
 
     @Getter
     @AllArgsConstructor
-    public static class CreateReturn {
+    public static class Output {
         private long coordinateId;
         private long walkLogId;
         private Double lat;
