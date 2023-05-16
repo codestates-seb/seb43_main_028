@@ -1,0 +1,26 @@
+@use '../../../styles/color' as C;
+@use '../../../styles/utils' as U;
+
+.date {
+  @include U.flex-c(column, flex-start, center);
+}
+
+.selected {
+  border-radius: 50%;
+  border: 1px solid C.$babygreen;
+  @include U.flex-c(column, center, center);
+  @include U.size(50px);
+}
+
+.today {
+  border: 1px solid C.$gray900;
+  width: 16px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border: 3px solid C.$babygreen;
+  border-radius: 50%;
+  margin: 5px auto 0 auto;
+}

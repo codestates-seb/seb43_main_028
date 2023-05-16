@@ -73,26 +73,26 @@ const dummy = {
     {
       id: 2,
       mapImg: 'https://developers.kakaomobility.com/_nuxt/img/img_api4.507c175.png',
-      startAt: '2023-05-11T16:55:19.228Z',
-      endAt: '2023-05-11T20:15:20.228Z',
+      startAt: '2023-05-16T10:55:19.228Z',
+      endAt: '2023-05-16T13:15:20.228Z',
       message: '너가 파티에선 주인공이지 (Feat. 하곤)',
       walkLogContents: [
         {
           id: 16,
-          createdAt: '2023-05-11T17:55:19.228Z',
+          createdAt: '2023-05-16T11:55:19.228Z',
           imageUrl:
             'https://mblogthumb-phinf.pstatic.net/MjAxODEwMTJfMjgz/MDAxNTM5MjcwNzk5NDMz._RguaLGCU8YJg8-bjtjSYl64y6hZ8Twk0bn_Q3436iog.FXXHZM-E9K8AKuzoum4zbzL3-3oMnMLWSVRRV_IoGMwg.PNG.mentorkh/%EC%98%88%EC%81%9C%ED%95%98%EB%8A%98_%EA%B0%90%EC%84%B1%EC%9D%B4%EB%AF%B8%EC%A7%80_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4__%281%29.png?type=w800',
           text: '너가 파티에선 주인공이지 그걸 망치는 건 내 몫이지 널 데리러 가니 그 순간이 곧 나의 재미 집에 가자 when its night Party 멈춰 time to go out 재미도 엄청 없어보인다 집에 가서 Ill Make you go wild 우리가 여기선 주인공인 것같어',
         },
         {
           id: 17,
-          createdAt: '2023-05-11T18:00:19.228Z',
+          createdAt: '2023-05-16T12:00:19.228Z',
           imageUrl: '',
           text: 'hey I been dreamin bout you bout it we will get slow here we go (oo we can) 둘이서 (oo we can all night long) And I been drinkin bout nobody else you know Bet u know that 우리도 then',
         },
         {
           id: 18,
-          createdAt: '2023-05-11T18:55:19.228Z',
+          createdAt: '2023-05-16T12:55:19.228Z',
           imageUrl: 'https://i.pinimg.com/originals/d2/11/77/d21177861d4c3ee30af8ee649a033b91.jpg',
           text: '내가 어떻게 하는지 알면 watch yo tone babe (get stoned get roamed get humped get hmm) or do I look kinda boring 내가 볼땐 다 이길 수가 있거든 lemme show yo 일단 니네 연락들은 hold it down 우린 금요일 밤부터 phone을 안 켜두니까 Ye like everytime we gon do it like this shit is day job forkin 맨날',
         },
