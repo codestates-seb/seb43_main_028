@@ -1,0 +1,72 @@
+@use '../../styles/color' as C;
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+
+.editContainer {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: C.$white;
+  z-index: 1000;
+  position: absolute;
+  @include U.flex-c(column, flex-start, start);
+  gap: 20px;
+}
+
+.titleBox {
+  width: 100%;
+  @include U.flex-c(row, space-between, center);
+}
+
+.editBtnBox {
+  @include U.flex-c(row, center, center);
+  gap: 20px;
+}
+
+.confirmBtn {
+  @include T.gray900-bold-16;
+}
+
+.editTitle {
+  @include T.gray900-bold-20;
+}
+
+.editMessage {
+  @include T.gray600-regular-12;
+}
+
+.editProfileImgBox {
+  @include U.flex-c(row, flex-start, center);
+  gap: 20px;
+}
+
+.editName {
+  width: 100%;
+  > input {
+    width: 100%;
+    height: 48px;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: C.$gray100;
+    &::placeholder {
+      color: C.$gray400;
+    }
+    border: none;
+  }
+}
+
+.editIntroduction {
+  width: 100%;
+  > textarea {
+    resize: none;
+    width: 100%;
+    height: 120px;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: C.$gray100;
+    &::placeholder {
+      color: C.$gray400;
+    }
+    border: none;
+  }
+}
