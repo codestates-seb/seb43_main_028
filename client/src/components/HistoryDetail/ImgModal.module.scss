@@ -32,4 +32,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2001;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
