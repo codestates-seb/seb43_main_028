@@ -34,9 +34,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberServiceDTO.CreatedToController createMember(MemberServiceDTO.PostInService postInService) {
+    public MemberServiceDTO.CreateOutput createMember(MemberServiceDTO.CreateInput createInput) {
         //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 postRequest를 Member 엔티티로 변환한다.
-        Member member = mapper.memberPostRequestToMember(postInService);
+        Member member = mapper.createInputToMember(createInput);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         verifyExistsEmail(member.getEmail());
 
@@ -44,12 +44,13 @@ public class MemberServiceImpl implements MemberService{
         member.setRoles(authorityUtils.getRoles());
 
         Member savedMember = memberRepository.save(member);
-        MemberServiceDTO.CreatedToController memberIdResponse = mapper.makeMemberIdAfterPostMember(savedMember);
+        MemberServiceDTO.CreateOutput memberIdResponse = mapper.memberToCreateOutput(savedMember);
 
         return memberIdResponse;
     }
 
     private void encodeMemberCredential(Member member) {
+        if(member.getPassword() == null) return;
         String encodedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
     }
@@ -77,9 +78,9 @@ public class MemberServiceImpl implements MemberService{
         return findMember;
     }
     @Override
-    public MemberServiceDTO.ProfileResponseForController updateMember(MemberServiceDTO.PatchInService patchInService) {
+    public MemberServiceDTO.Output updateMember(MemberServiceDTO.UpdateInput updateInput) {
         //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 patchRequest를 Member 엔티티로 변환한다.
-        Member member = mapper.memberPatchRequestToMember(patchInService);
+        Member member = mapper.updateInputToMember(updateInput);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         Member findMember = findVerifiedMember(member.getMemberId());
         //기존 회원의 프로필이미지가 있다면 삭제
@@ -88,12 +89,12 @@ public class MemberServiceImpl implements MemberService{
 
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
 
-        String profile = storageService.store(patchInService.getProfileImage(), "profile");
+        String profile = storageService.store(updateInput.getProfileImage(), "profile");
 
         updatedMember.setProfileImage(profile);
         memberRepository.save(updatedMember);
         //컨트롤러로 다시 던지기 전에 mapper로 변환해서 응답용DTO를 전달해준다.
-        return mapper.memberToMemberResponseDto(updatedMember);
+        return mapper.memberToOutput(updatedMember);
     }
 
     @Override
@@ -104,9 +105,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberServiceDTO.ProfileResponseForController findMember(Long memberId) {
+    public MemberServiceDTO.Output findMember(Long memberId) {
         Member invokedMember = findVerifiedMember(memberId);
-        return mapper.memberToMemberResponseDto(invokedMember);
+        return mapper.memberToOutput(invokedMember);
     }
 
     private void distinguishQuittedMember(Member member) {
