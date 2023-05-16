@@ -37,7 +37,6 @@ class CoordinateSocketConnectionTest {
     private MemberService memberService;
     private WebSocketStompClient stompClient;
     private String url;
-    private CompletableFuture<StompHeaders> completableFuture;
 
 
     public CoordinateSocketConnectionTest() {
@@ -47,7 +46,6 @@ class CoordinateSocketConnectionTest {
 
     @BeforeEach
     void init() {
-        completableFuture = new CompletableFuture<>();
         this.url = String.format("ws://localhost:%d/ws/walk-logs", port);
     }
 
@@ -73,6 +71,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void subscribeWebSocket() throws ExecutionException, InterruptedException, TimeoutException {
         //given
+        CompletableFuture<StompHeaders> completableFuture = new CompletableFuture<>();
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
 
         //when
@@ -92,6 +91,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void subscribeWrongDest() throws ExecutionException, InterruptedException, TimeoutException {
         //given
+        CompletableFuture<StompHeaders> completableFuture = new CompletableFuture<>();
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
 
         //when

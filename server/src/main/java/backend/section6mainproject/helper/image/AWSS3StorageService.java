@@ -57,7 +57,7 @@ public class AWSS3StorageService implements StorageService {
 
     @Override
     public String store(MultipartFile image, String directory) {
-        if(image == null || !image.getContentType().startsWith("image")) return null;
+        if(image == null || image.getContentType() == null || !image.getContentType().startsWith("image")) return null;
         UUID uuid = UUID.randomUUID();
         String uploadImageName = directory + "/" + uuid + "_" + image.getOriginalFilename();
         try {
