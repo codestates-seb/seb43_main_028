@@ -8,31 +8,35 @@ type SelectedDateProps = {
 }
 
 function SelectedDate({ day, histories, handleSelectDate }: SelectedDateProps) {
+  const isHistory = histories.map(history => {
+    if (isEqual(history, day)) {
+      return <div key={history} className={styles.dot} />
+    }
+    return ''
+  })
+
   return (
     <button type='button' onClick={() => handleSelectDate(day)} className={styles.selected}>
       {format(day, 'dd')}
       {isEqual(startOfToday(), day) && <div className={styles.today} />}
-      {histories.map(history => {
-        if (isEqual(history, day)) {
-          return <div key={history} className={styles.dot} />
-        }
-        return ''
-      })}
+      {isHistory}
     </button>
   )
 }
 
 function UnSelectedDate({ day, histories, handleSelectDate }: SelectedDateProps) {
+  const isHistory = histories.map(history => {
+    if (isEqual(history, day)) {
+      return <div key={history} className={styles.dot} />
+    }
+    return ''
+  })
+
   return (
-    <button type='button' onClick={() => handleSelectDate(day)}>
+    <button type='button' onClick={() => handleSelectDate(day)} className={styles.unSelected}>
       {format(day, 'dd')}
       {isEqual(startOfToday(), day) && <div className={styles.today} />}
-      {histories.map(history => {
-        if (isEqual(history, day)) {
-          return <div key={history} className={styles.dot} />
-        }
-        return ''
-      })}
+      {isHistory}
     </button>
   )
 }
@@ -54,7 +58,7 @@ export default function Dates({ date, selectDate, handleSelectDate, histories }:
               if (day === 0) return <td key={crypto.randomUUID()} />
 
               return (
-                <td key={crypto.randomUUID()} className={styles.date}>
+                <td key={crypto.randomUUID()} className={styles.container}>
                   {selectDate && isEqual(day, selectDate) ? (
                     <SelectedDate
                       day={day}

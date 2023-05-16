@@ -1,26 +1,36 @@
 @use '../../../styles/color' as C;
 @use '../../../styles/utils' as U;
 
-.date {
-  @include U.flex-c(column, flex-start, center);
+.container {
+  position: relative;
+  @include U.flex-c(column, center, center);
 }
 
-.selected {
-  border-radius: 50%;
-  border: 1px solid C.$babygreen;
+.unSelected {
   @include U.flex-c(column, center, center);
   @include U.size(50px);
 }
 
+.selected {
+  @include U.flex-c(column, center, center);
+  @include U.size(50px);
+  border-radius: 50%;
+  border: 1px solid C.$babygreen;
+}
+
 .today {
-  border: 1px solid C.$gray900;
+  position: absolute;
   width: 16px;
+  bottom: 13px;
+  height: 1.5px;
+  background: C.$gray900;
 }
 
 .dot {
+  position: absolute;
   width: 6px;
   height: 6px;
-  border: 3px solid C.$babygreen;
+  background: C.$babygreen;
   border-radius: 50%;
-  margin: 5px auto 0 auto;
+  bottom: 4px;
 }
