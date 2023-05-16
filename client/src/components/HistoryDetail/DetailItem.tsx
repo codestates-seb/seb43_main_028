@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './DetailItem.module.scss'
+import ImgModal from './ImgModal'
 
 type DetailItemProps = {
   data: {
@@ -15,6 +17,7 @@ type DetailItemProps = {
 
 export default function DetailItem({ data, snapTime, onEdit, setEditId }: DetailItemProps) {
   const { id, imageUrl, text } = data
+  const [imgModal, setImgModal] = useState(false)
 
   const handleEdit = () => {
     if (id) {
@@ -23,9 +26,16 @@ export default function DetailItem({ data, snapTime, onEdit, setEditId }: Detail
     onEdit()
   }
 
+  const handlePhotoModal = () => {
+    setImgModal(prev => !prev)
+  }
+
   return (
     <article className={styles.contentBox}>
-      {imageUrl && <img src={imageUrl} alt='History 사진' />}
+      {imageUrl && (
+        <img src={imageUrl} alt='History 사진' onClick={handlePhotoModal} role='presentation' />
+      )}
+      {imageUrl && imgModal && <ImgModal imageUrl={imageUrl} onClose={handlePhotoModal} />}
       <div className={styles.textBox}>
         {text}
         <div className={styles.iconsBox}>
