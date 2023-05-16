@@ -1,0 +1,94 @@
+@use '../styles/color' as C;
+@use '../styles/utils' as U;
+@use '../styles/typography' as T;
+
+.mypageContainer {
+  @include U.flex-c(column, flex-start, start);
+  padding: 20px;
+  gap: 20px;
+}
+
+.profileBox {
+  width: 100%;
+  height: 245px;
+  background-color: C.$white;
+  padding: 20px;
+  border-radius: 12px;
+  @include U.flex-c(column, flex-start, start);
+  gap: 20px;
+}
+
+.infoBox {
+  @include U.flex-c(row, space-between, center);
+  width: 100%;
+}
+
+.userInfo {
+  @include U.flex-c(column, flex-start, start);
+}
+.imageWrapper {
+  @include U.size(64px);
+  @include U.flex-c(row, center, center);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.userInfo {
+  @include U.flex-c(column, flex-start, start);
+  gap: 6px;
+}
+
+.userName {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: C.$gray900;
+}
+
+.userEmail {
+  @include T.gray600-regular-12;
+}
+
+.userRegisteredAt {
+  @include T.gray600-regular-12;
+}
+
+.userText {
+  @include T.gray900-regular-14;
+}
+
+.editProfileBtn {
+  width: 100%;
+  background-color: C.$gray200;
+  height: 32px;
+  font-size: 1.4rem;
+  border-radius: 4px;
+}
+
+.configBox {
+  width: 100%;
+
+  // height: 170px;
+  background-color: C.$white;
+  padding: 20px;
+  border-radius: 12px;
+  @include U.flex-c(column, flex-start, start);
+  gap: 20px;
+}
+
+.configTitle {
+  @include T.gray900-bold-16;
+}
+
+.selectWrapper {
+}
+
+.configMessage {
+  @include T.gray600-regular-14;
+}
+
+.unregisterWrapper {
+  @include U.flex-c(row, center, center);
+  width: 100%;
+  color: C.$gray600;
+  margin-top: 20px;
+}

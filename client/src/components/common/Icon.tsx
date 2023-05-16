@@ -17,6 +17,7 @@ type IconName =
   | 'three-dot'
   | 'before-check'
   | 'after-check'
+  | 'arrow-drop-down'
 
 interface IconProps {
   name: IconName
