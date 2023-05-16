@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.*;
@@ -49,19 +50,21 @@ class WalkLogContentServiceTest {
     @Test
     void createWalkLogContent() throws IOException {
         // given
+        WalkLogContentServiceDTO.CreateInput createInput = stubData.getCreateInput();
+        WalkLogContentServiceDTO.CreateOutput createOutput = stubData.getCreateOutput();
+
         given(mapper.serviceCreateInputDTOToEntity(Mockito.any(WalkLogContentServiceDTO.CreateInput.class))).willReturn(stubData.getWalkLogContent());
         given(walkLogService.findVerifiedWalkLog(Mockito.anyLong())).willReturn(new WalkLog());
         given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("");
         given(walkLogContentRepository.save(Mockito.any(WalkLogContent.class))).willReturn(new WalkLogContent());
-        given(mapper.entityToServiceCreateOutputDTO(Mockito.any(WalkLogContent.class))).willReturn(stubData.getCreateOutput());
+        given(mapper.entityToServiceCreateOutputDTO(Mockito.any(WalkLogContent.class))).willReturn(createOutput);
 
-        WalkLogContentServiceDTO.CreateInput createInput = stubData.getCreateInput();
 
         // when
         WalkLogContentServiceDTO.CreateOutput result = walkLogContentService.createWalkLogContent(createInput);
 
         // then
-        MatcherAssert.assertThat(result.getWalkLogContentId(), is(equalTo(stubData.getCreateOutput().getWalkLogContentId())));
+        MatcherAssert.assertThat(result, is(equalTo(createOutput)));
     }
 
     @Test
@@ -74,7 +77,22 @@ class WalkLogContentServiceTest {
         Assertions.assertThrows(BusinessLogicException.class, () -> walkLogContentService.createWalkLogContent(createInput));
     }
 
+    @Test
+    void updateWalkLogContent() throws IOException {
+        // given
+        WalkLogContentServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
+        WalkLogContentServiceDTO.Output output = stubData.getOutput();
 
+        given(walkLogContentRepository.findById(Mockito.anyLong())).willReturn(Optional.of(stubData.getWalkLogContent()));
+        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("");
+        given(walkLogContentRepository.save(Mockito.any(WalkLogContent.class))).willReturn(new WalkLogContent());
+        given(mapper.entityToServiceOutputDTO(Mockito.any(WalkLogContent.class))).willReturn(output);
 
+        // when
+        WalkLogContentServiceDTO.Output result = walkLogContentService.updateWalkLogContent(updateInput);
+
+        // then
+        MatcherAssert.assertThat(result, is(equalTo(output)));
+    }
 
 }

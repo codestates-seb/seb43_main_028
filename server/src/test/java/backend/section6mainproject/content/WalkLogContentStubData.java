@@ -51,6 +51,15 @@ public class WalkLogContentStubData {
         createInput.setContentImage(getImage());
         return createInput;
     }
+
+    public WalkLogContentServiceDTO.UpdateInput getUpdateInput() throws IOException {
+        WalkLogContentServiceDTO.UpdateInput updateInput = new WalkLogContentServiceDTO.UpdateInput();
+        updateInput.setWalkLogContentId(walkLogContentId);
+        updateInput.setContentImage(getImage());
+        updateInput.setText(text);
+        return updateInput;
+    }
+
     public WalkLogContentServiceDTO.CreateOutput getCreateOutput() {
         return new WalkLogContentServiceDTO.CreateOutput(walkLogContentId);
     }
