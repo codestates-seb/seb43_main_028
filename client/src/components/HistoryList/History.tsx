@@ -5,6 +5,7 @@ import styles from './History.module.scss'
 import HistoryItem from './HistoryItem'
 import { passedHourMinuteSecondFormat } from '../../utils/date'
 import { DataType } from './Calendar/Calendar'
+import { format } from './Calendar/date-fns'
 
 type HistoryItemProps = {
   data: DataType
@@ -13,10 +14,6 @@ type HistoryItemProps = {
 export default function History({ data }: HistoryItemProps) {
   const [moreContent, setMore] = useState(false)
   const { id, mapImg, startAt, endAt, message, walkLogContents } = data
-  const date = new Date(startAt)
-  const Year = date.getFullYear()
-  const Month = date.getMonth() + 1
-  const Day = date.getDate()
   const timeDiff = new Date(endAt).getTime() - new Date(startAt).getTime()
   const time = passedHourMinuteSecondFormat(timeDiff)
 
@@ -29,9 +26,7 @@ export default function History({ data }: HistoryItemProps) {
       <div className={styles.mapTimeBox}>
         <img src={mapImg} className={styles.map} alt='지도 이미지' />
         <div>
-          <p className={styles.date}>
-            {Year}년 {Month}월 {Day}일
-          </p>
+          <p className={styles.date}>{format(new Date(startAt), 'yyyy년 M월 d일')}</p>
           <p className={styles.time}>{time}</p>
         </div>
       </div>
