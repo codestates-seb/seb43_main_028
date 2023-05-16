@@ -183,7 +183,11 @@ function SignUp() {
         privacyCheck={privacyCheck}
         setPrivacyCheck={setPrivacyCheck}
       />
-      <button className={styles.signupBtn} type='submit'>
+      <button
+        className={styles.signupBtn}
+        type='submit'
+        disabled={!allCheck || !useCheck || !privacyCheck || Object.keys(errors).length > 0}
+      >
         회원가입하기
       </button>
     </form>

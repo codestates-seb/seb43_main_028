@@ -34,24 +34,42 @@ function SignIn() {
   }
 
   return (
-    <div className={styles.container}>
-      <form className={styles.form} onSubmit={logInSubmitHandler}>
+    <form className={styles.formContainer} onSubmit={logInSubmitHandler}>
+      <div className={styles.inputBox}>
         <label className={styles.label}>
-          Email
-          <input className={styles.input} type='email' name='email' required />
+          이메일
+          <input
+            className={styles.input}
+            placeholder='이메일을 입력해주세요.'
+            type='email'
+            name='email'
+            required
+          />
         </label>
+      </div>
+      <div className={styles.inputBox}>
         <label className={styles.label}>
-          Password
-          <input className={styles.input} type='password' name='password' required />
+          비밀번호
+          <input
+            className={styles.input}
+            placeholder='비밀번호를 입력해주세요.'
+            type='password'
+            name='password'
+            required
+          />
         </label>
-        <button className={styles.LoginBtn} type='submit'>
-          Log in
-        </button>
-        <span>
-          Don’t have an account?<Link to='/signup'>Sign up</Link>
-        </span>
-      </form>
-    </div>
+      </div>
+      <button className={styles.loginBtn} type='submit'>
+        로그인하기
+      </button>
+      <div className={styles.linkWrapper}>
+        <span>비밀번호찾기</span>
+        <span className={styles.gray}>|</span>
+        <Link to='/signup'>
+          <span>회원가입하러가기</span>
+        </Link>
+      </div>
+    </form>
   )
 }
 

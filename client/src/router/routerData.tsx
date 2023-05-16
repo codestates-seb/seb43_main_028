@@ -97,7 +97,7 @@ export const routerData: RouterElement[] = [
     label: '로그인',
     element: <SignIn />,
     onTapBar: false,
-    showTapBar: true,
+    showTapBar: false,
     withAuth: false,
   },
   {
