@@ -95,4 +95,17 @@ class WalkLogContentServiceTest {
         MatcherAssert.assertThat(result, is(equalTo(output)));
     }
 
+    @Test
+    void deleteWalkLogContent() {
+        // given
+        given(walkLogContentRepository.findById(Mockito.anyLong())).willReturn(Optional.of(stubData.getWalkLogContent()));
+        Long walkLogContentId = stubData.getWalkLogContentId();
+
+        // when
+        walkLogContentService.deleteWalkLogContent(walkLogContentId);
+
+        // then
+        verify(walkLogContentRepository, times(1)).delete(Mockito.any(WalkLogContent.class));
+    }
+
 }
