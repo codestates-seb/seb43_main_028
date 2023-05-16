@@ -40,8 +40,4 @@ public interface CoordinateMapper {
     @Named("coordinateServiceDTOToControllerDTO")
     List<CoordinateControllerDTO.Sub> serviceOutputDTOsToControllerSubDTOs(List<CoordinateServiceDTO.Output> aOutputs);
 
-
-
-
-
 }

@@ -67,7 +67,6 @@ public class WalkLogDTO {
         private List<CoordinateControllerDTO.Sub> coordinates;
         private List<WalkLogContentControllerDTO.Response> walkLogContents;
 
-
     }
     @Getter
     @Setter

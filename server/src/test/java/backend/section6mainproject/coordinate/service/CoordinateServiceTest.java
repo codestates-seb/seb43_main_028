@@ -24,7 +24,6 @@ class CoordinateServiceTest {
     @Mock
     private CoordinateRepository coordinateRepository;
     @Mock
-
     private CoordinateMapper mapper;
     private StubData stubData = new StubData();
 
@@ -43,7 +42,6 @@ class CoordinateServiceTest {
 
         //then
         MatcherAssert.assertThat(result, Matchers.is(Matchers.equalTo(output)));
-
     }
 
     private class StubData {
@@ -61,7 +59,6 @@ class CoordinateServiceTest {
 
         private CoordinateServiceDTO.Output getOutput() {
             return new CoordinateServiceDTO.Output(1L, walkLogId, lat, lng, LocalDateTime.now());
-
         }
     }
 }

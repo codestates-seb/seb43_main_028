@@ -124,7 +124,6 @@ class CoordinateControllerTest {
         given(coordinateService.createCoordinate(Mockito.any(CoordinateServiceDTO.Input.class)))
                 .willReturn(new CoordinateServiceDTO.Output(0, 1L, null, null, null));
         given(mapper.serviceOutputDTOToControllerSubDTO(Mockito.any(CoordinateServiceDTO.Output.class)))
-
                 .willReturn(stubData.getStubCoordinateSub());
     }
 

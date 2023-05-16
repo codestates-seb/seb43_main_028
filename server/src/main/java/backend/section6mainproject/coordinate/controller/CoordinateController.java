@@ -25,7 +25,6 @@ public class CoordinateController {
         input.setWalkLogId(walkLogId);
         CoordinateServiceDTO.Output coordinate = coordinateService.createCoordinate(input);
         messagingTemplate.convertAndSend("/sub/" + coordinate.getWalkLogId(), mapper.serviceOutputDTOToControllerSubDTO(coordinate));
-
     }
 
 }

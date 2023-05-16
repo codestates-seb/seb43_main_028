@@ -20,6 +20,5 @@ public class CoordinateServiceImpl implements CoordinateService {
         Coordinate coordinate = mapper.serviceInputDTOToEntity(coordinateDTO);
         Coordinate savedCoordinate = coordinateRepository.save(coordinate);
         return mapper.entityToServiceOutputDTO(savedCoordinate);
-
     }
 }
