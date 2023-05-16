@@ -3,16 +3,30 @@ package backend.section6mainproject.content.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.parameters.P;
 
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
-public class WalkLogContentDTO {
+public class WalkLogContentControllerDTO {
     @Getter
+    @Setter
     public static class Post {
-        @Setter
-        private Long walkLogId;
         private String text;
     }
+
+    @Getter
+    @Setter
+    public static class Patch {
+        private String text;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PostResponse {
+        private Long walkLogContentId;
+    }
+
 
     @Getter
     @AllArgsConstructor

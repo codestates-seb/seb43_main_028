@@ -1,8 +1,11 @@
 package backend.section6mainproject.content.service;
 
-import backend.section6mainproject.content.entity.WalkLogContent;
-import org.springframework.web.multipart.MultipartFile;
+import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 
 public interface WalkLogContentService {
-    WalkLogContent createWalkLogContent(WalkLogContent walkLogContent, MultipartFile contentImage);
+    WalkLogContentServiceDTO.CreateOutput createWalkLogContent(WalkLogContentServiceDTO.CreateInput createInput);
+
+    WalkLogContentServiceDTO.Output updateWalkLogContent(WalkLogContentServiceDTO.UpdateInput updateInput);
+
+    WalkLogContentServiceDTO.Output findVerifiedWalkLogContent(Long walkLogContentId);
 }
