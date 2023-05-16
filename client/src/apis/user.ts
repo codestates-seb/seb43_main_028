@@ -17,13 +17,13 @@ type SignInPropsType = {
   autoLogin: boolean
 }
 
-type UserInfoType = {
+export type UserInfoType = {
   defaultWalkLogPublicSetting: string
-  email: string | null
-  imageUrl: string | null
-  introduction: string | null
+  email: string
+  imageUrl: string
+  introduction: string
   memberId: number
-  nickname: string | null
+  nickname: string
   totalWalkLog: number
   totalWalkLogContent: number
 }

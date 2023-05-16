@@ -41,7 +41,6 @@ function SignIn() {
           <input
             className={styles.input}
             placeholder='이메일을 입력해주세요.'
-            type='email'
             name='email'
             required
           />
@@ -52,8 +51,8 @@ function SignIn() {
           비밀번호
           <input
             className={styles.input}
-            placeholder='비밀번호를 입력해주세요.'
             type='password'
+            placeholder='비밀번호를 입력해주세요.'
             name='password'
             required
           />

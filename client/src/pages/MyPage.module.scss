@@ -50,6 +50,8 @@
 
 .userRegisteredAt {
   @include T.gray600-regular-12;
+  @include U.flex-c(row, flex-start, center);
+  gap: 5px;
 }
 
 .userText {

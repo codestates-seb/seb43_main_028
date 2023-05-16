@@ -1,17 +1,40 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAtom } from 'jotai'
+import { userAtom } from '../store/authAtom'
 import DropDown from '../components/common/DropDown'
 import EditProfile from '../components/MyPage/EditProfile'
 import styles from './MyPage.module.scss'
+import { UserInfoType } from '../apis/user'
 
 export default function Mypage() {
+  const [user, setUser] = useAtom(userAtom)
+  const [userData, setUserData] = useState<UserInfoType | null>(null)
+
   const [isModalOpened, setIsModalOpened] = useState(false)
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)
   }
+
+  // export type UserInfoType = {
+  //   defaultWalkLogPublicSetting: string
+  //   email: string
+  //   imageUrl: string
+  //   introduction: string
+  //   memberId: number
+  //   nickname: string
+  //   totalWalkLog: number
+  //   totalWalkLogContent: number
+  // }
+
   const selectOptions = [
     { id: 1, title: '나만 보기' },
     { id: 2, title: '전체 공개' },
   ]
+
+  useEffect(() => {
+    setUserData(user)
+  }, [user])
+
   return (
     <>
       {isModalOpened ? <EditProfile setIsModalOpened={setIsModalOpened} /> : null}
@@ -19,8 +42,8 @@ export default function Mypage() {
         <div className={styles.profileBox}>
           <div className={styles.infoBox}>
             <div className={styles.userInfo}>
-              <div className={styles.userName}>하종승</div>
-              <div className={styles.userEmail}>aaa@email.com</div>
+              <div className={styles.userName}>{userData?.nickname}</div>
+              <div className={styles.userEmail}>{userData?.email}</div>
               <div className={styles.userRegisteredAt}>
                 <span>회원 가입일:</span>
                 <span>2023-05-02</span>
@@ -29,14 +52,12 @@ export default function Mypage() {
             <div className={styles.imageWrapper}>
               <img
                 className={styles.userProfileImage}
-                src='https://ifh.cc/g/b8pZgt.png'
+                src={userData?.imageUrl}
                 alt='your profile'
               />
             </div>
           </div>
-          <div className={styles.userText}>
-            걷기를 사랑하는 남자 하 종 승 입니다. 걷기를 정말 사랑하는 남자 하 종 승 입니다.
-          </div>
+          <div className={styles.userText}>{userData?.introduction}</div>
           <button className={styles.editProfileBtn} type='button' onClick={handleOpenEditProfile}>
             프로필 수정하기
           </button>
