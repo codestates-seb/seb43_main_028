@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './Title.module.scss'
 import { dateFormat, passedHourMinuteSecondFormat } from '../../utils/date'
 import { format } from '../HistoryList/Calendar/date-fns'
+import DropDown from '../common/DropDown'
 
 type TitleProps = {
   startAt: string
@@ -10,7 +12,11 @@ type TitleProps = {
   publicSetting: string
 }
 
+const Options = ['나만 보기', '전체 공개']
+
 export default function Title({ startAt, endAt, message, publicSetting }: TitleProps) {
+  const [edit, setEdit] = useState(true)
+
   const start = new Date(startAt)
   const end = new Date(endAt)
   const formattedTime = {
@@ -19,20 +25,58 @@ export default function Title({ startAt, endAt, message, publicSetting }: TitleP
     time: `${format(start, 'H:mm')} ~ ${format(end, 'H:mm')}`,
   }
 
+  const filter = Options.filter(o => o !== publicSetting)
+  filter.unshift(publicSetting)
+  const dropDownOption = filter.map((o, i) => {
+    return { id: i, title: o }
+  })
+
+  const handleMessageEdit = (event: React.FormEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    setEdit(prev => !prev)
+    console.log('edit!')
+  }
+
+  const handleMessageSubmit = (event: React.FormEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    setEdit(prev => !prev)
+    console.log('submit!')
+  }
+
   return (
     <div className={styles.container}>
-      <div>{publicSetting}</div>
+      <DropDown options={dropDownOption} />
       <div className={styles.timeBox}>
-        {/* <Icon name='' size={16} /> */}
-        <div>{formattedTime.date}</div>
-        <Icon name='time-gray' size={16} />
-        <div>{formattedTime.timer}</div>
-        <div>({formattedTime.time})</div>
+        <div className={styles.iconBox}>
+          <Icon name='calendar' size={24} />
+          <div>{formattedTime.date}</div>
+        </div>
+        <div className={styles.iconBox}>
+          <Icon name='time-gray' size={16} />
+          <div>{formattedTime.timer}</div>
+          <div>({formattedTime.time})</div>
+        </div>
       </div>
-      <div>{message}</div>
-      <div>
-        <Icon name='edit-gray' />한 줄 메시지 수정
-      </div>
+      <form className={styles.formBox} onSubmit={e => e.preventDefault()}>
+        <textarea
+          id='message'
+          className={edit ? styles.message : styles.editing}
+          defaultValue={message}
+          disabled={edit}
+        />
+        <label htmlFor='message' className={styles.edit}>
+          <Icon name='edit-gray' />
+          {edit ? (
+            <button type='button' onClick={handleMessageEdit}>
+              한 줄 메시지 수정
+            </button>
+          ) : (
+            <button type='submit' onClick={handleMessageSubmit}>
+              수정 완료
+            </button>
+          )}
+        </label>
+      </form>
     </div>
   )
 }
