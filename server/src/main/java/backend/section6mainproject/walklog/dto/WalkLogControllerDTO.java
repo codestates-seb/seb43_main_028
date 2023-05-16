@@ -6,6 +6,7 @@ package backend.section6mainproject.walklog.dto;
 import backend.section6mainproject.content.dto.WalkLogContentDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
 
+import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.List;
 
 import static backend.section6mainproject.walklog.entity.WalkLog.*;
 
-public class WalkLogDTO {
+public class WalkLogControllerDTO {
     @Getter
     @Setter
     @NoArgsConstructor
@@ -26,28 +27,39 @@ public class WalkLogDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class Created {
+    public static class PostResponse{
         private Long walkLogId;
     }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    public static class EndPost {
-        private Long walkLogId;
-        private String message;
-        private WalkLogPublicSetting walkLogPublicSetting;
-    }
-
 
     @Getter
     @Setter
     @NoArgsConstructor
     public static class Patch{
-        private Long walkLogId;
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
+
+
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class EndPost {
+        private String message;
+        private WalkLogPublicSetting walkLogPublicSetting;
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class GetRequests {
+        private int page;
+        private int size = 10;
+        private int day = 99;
+        private int month = 99;
+        private int year = 9999;
+
+    }
+
 
     @Getter
     @Setter
@@ -63,20 +75,8 @@ public class WalkLogDTO {
         private String nickname;
 
 
-        private WalkLogPublicSetting walkLogPublicSetting;
+        private WalkLog.WalkLogPublicSetting walkLogPublicSetting;
         private List<CoordinateControllerDTO.Sub> coordinates;
-        private List<WalkLogContentDTO.Response> walkLogContents;
-
-    }
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    public static class SimpleResponse{
-        private Long walkLogId;
-        private String mapImage; // 구현예정
-        private LocalDateTime startedAt;
-        private LocalDateTime endAt;
-        private String message;
         private List<WalkLogContentDTO.Response> walkLogContents;
 
     }

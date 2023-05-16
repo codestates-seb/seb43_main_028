@@ -1,10 +1,12 @@
 package backend.section6mainproject.member.controller;
 
 import backend.section6mainproject.dto.MultiResponseDto;
+import backend.section6mainproject.dto.PageInfo;
 import backend.section6mainproject.member.dto.MemberDTO;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
-import backend.section6mainproject.walklog.dto.WalkLogDTO;
+import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
+import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.mapper.WalkLogMapper;
 import backend.section6mainproject.walklog.service.WalkLogService;
@@ -15,11 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -79,14 +79,13 @@ public class MemberController {
     }
     @GetMapping("/{member-id}/walk-logs")
     public ResponseEntity getMyWalkLogs(@PathVariable("member-id") @Positive Long memberId,
-                                        @Positive @RequestParam int page,
-                                        @RequestParam(value = "size",required = false,defaultValue = "10") int size,
-                                        @RequestParam(value = "year",required = false,defaultValue = "9999") int year,
-                                        @RequestParam(value = "month",required = false,defaultValue = "99") int month,
-                                        @RequestParam(value = "day",required = false,defaultValue = "99") int day){
-        Page<WalkLog> walkLogs = walkLogService.findMyWalkLogs(memberId, page, size, year, month, day);
-        List<WalkLogDTO.SimpleResponse> response = walkLogMapper.walkLogsToWalkLogSimpleResponseDTOs(walkLogs.toList());
-        return new ResponseEntity<>(new MultiResponseDto<>(response,walkLogs), HttpStatus.OK);
+                                        @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
+
+        WalkLogServiceDTO.FindsInput findsInput = walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests);
+        findsInput.setMemberId(memberId);
+        Page<WalkLogServiceDTO.FindsOutput> myWalkLogs = walkLogService.findMyWalkLogs(findsInput);
+        PageInfo pageInfo = walkLogService.createPageInfo(myWalkLogs);
+        return new ResponseEntity<>(new MultiResponseDto<>(myWalkLogs.toList(),pageInfo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
