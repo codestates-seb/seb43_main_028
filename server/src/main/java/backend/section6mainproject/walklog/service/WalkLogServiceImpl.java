@@ -4,6 +4,7 @@ import backend.section6mainproject.dto.PageInfo;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.member.entity.Member;
+import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.utils.CustomBeanUtils;
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;

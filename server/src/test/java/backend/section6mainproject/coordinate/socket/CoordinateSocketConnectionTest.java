@@ -37,7 +37,6 @@ class CoordinateSocketConnectionTest {
     private MemberService memberService;
     private WebSocketStompClient stompClient;
     private String url;
-    private CompletableFuture<StompHeaders> completableFuture = new CompletableFuture<>();
 
 
     public CoordinateSocketConnectionTest() {
@@ -72,6 +71,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void subscribeWebSocket() throws ExecutionException, InterruptedException, TimeoutException {
         //given
+        CompletableFuture<StompHeaders> completableFuture = new CompletableFuture<>();
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
 
         //when
@@ -85,12 +85,13 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
-        Assertions.assertThrows(TimeoutException.class, () -> completableFuture.get(5, TimeUnit.SECONDS));
+        Assertions.assertThrows(TimeoutException.class, () -> completableFuture.get(3, TimeUnit.SECONDS));
 
     }
     @Test
     void subscribeWrongDest() throws ExecutionException, InterruptedException, TimeoutException {
         //given
+        CompletableFuture<StompHeaders> completableFuture = new CompletableFuture<>();
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
 
         //when
@@ -104,7 +105,7 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
-        StompHeaders stompHeaders = completableFuture.get(5, TimeUnit.SECONDS);
+        StompHeaders stompHeaders = completableFuture.get(3, TimeUnit.SECONDS);
         MatcherAssert.assertThat(stompHeaders.size(), is(greaterThan(0)));
         MatcherAssert.assertThat(stompHeaders.get("message").get(0), is(containsString(BusinessLogicException.class.getName())));
 
