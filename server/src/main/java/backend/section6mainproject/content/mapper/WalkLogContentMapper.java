@@ -13,22 +13,16 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = StorageService.class)
 public interface WalkLogContentMapper {
 
-    // legacy codes
-
-    @Mapping(source = "imageKey", target = "imageUrl", qualifiedByName = "signBucket")
-    WalkLogContentControllerDTO.Response walkLogContentToWalkLogContentResponseDTO(WalkLogContent walkLogContent);
-    @Named("walkLogContentsToWalkLogContentResponseDTOs")
-    List<WalkLogContentControllerDTO.Response> walkLogContentsToWalkLogContentResponseDTOs(List<WalkLogContent> walkLogContents);
-
-
-    // refactored codes
-
     // request flow - for create
-
     WalkLogContentServiceDTO.CreateInput controllerPostDTOTOServiceCreateInputDTO(WalkLogContentControllerDTO.Post post);
 
     @Mapping(source = "walkLogId", target = "walkLog.walkLogId")
     WalkLogContent serviceCreateInputDTOToEntity(WalkLogContentServiceDTO.CreateInput createInput);
+
+    // request flow - for update
+    WalkLogContentServiceDTO.UpdateInput controllerPatchDTOToServiceUpdateInputDTO(WalkLogContentControllerDTO.Patch patch);
+
+
 
     // response flow - for create
     WalkLogContentServiceDTO.CreateOutput entityToServiceCreateOutputDTO(WalkLogContent walkLogContent);
@@ -39,10 +33,18 @@ public interface WalkLogContentMapper {
     @Mapping(source = "imageKey", target = "imageUrl", qualifiedByName = "signBucket")
     WalkLogContentServiceDTO.Output entityToServiceOutputDTO(WalkLogContent walkLogContent);
 
-    WalkLogContentControllerDTO.Response serviceOutputDTOToControllerResponseDTO(WalkLogContentServiceDTO.Output createReturn);
+    WalkLogContentControllerDTO.Response serviceOutputDTOToControllerResponseDTO(WalkLogContentServiceDTO.Output output);
 
     @Named("walkLogContentEntityToServiceDTO")
     List<WalkLogContentServiceDTO.Output> entitiesToServiceOutputDTOs(List<WalkLogContent> walkLogContents);
     @Named("walkLogContentServiceDTOToControllerDTO")
-    List<WalkLogContentControllerDTO.Response> serviceOutputDTOsToControllerResponseDTOs(List<WalkLogContentServiceDTO.Output> createReturns);
+    List<WalkLogContentControllerDTO.Response> serviceOutputDTOsToControllerResponseDTOs(List<WalkLogContentServiceDTO.Output> outputs);
+
+
+    // legacy codes
+
+    @Mapping(source = "imageKey", target = "imageUrl", qualifiedByName = "signBucket")
+    WalkLogContentControllerDTO.Response walkLogContentToWalkLogContentResponseDTO(WalkLogContent walkLogContent);
+    @Named("walkLogContentsToWalkLogContentResponseDTOs")
+    List<WalkLogContentControllerDTO.Response> walkLogContentsToWalkLogContentResponseDTOs(List<WalkLogContent> walkLogContents);
 }

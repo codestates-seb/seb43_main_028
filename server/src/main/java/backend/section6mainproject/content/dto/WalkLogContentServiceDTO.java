@@ -17,6 +17,14 @@ public class WalkLogContentServiceDTO {
     }
 
     @Getter
+    @Setter
+    public static class UpdateInput {
+        private Long walkLogContentId;
+        private String text;
+        private MultipartFile contentImage;
+    }
+
+    @Getter
     @AllArgsConstructor
     public static class CreateOutput {
         private Long walkLogContentId;
