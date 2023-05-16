@@ -1,6 +1,7 @@
 @use '../styles/utils' as U;
 
 .historyList {
+  margin-top: 24px;
   @include U.flex-c(column);
   gap: 24px;
   padding: 0 20px;
