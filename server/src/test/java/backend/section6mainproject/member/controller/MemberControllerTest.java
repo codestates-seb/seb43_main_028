@@ -70,7 +70,6 @@ public class MemberControllerTest {
         given(memberService.createMember(Mockito.any())).willReturn(createOutput);
         given(mapper.createOutputToPostResponse(Mockito.any())).willReturn(new MemberControllerDTO.PostResponse(createOutput.getMemberId()));
 
-        //then 결과를 확정한다.
         ResultActions result = mockMvc.perform(
                 post("/members/sign")
                         .accept(MediaType.APPLICATION_JSON)
