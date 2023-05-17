@@ -92,6 +92,16 @@ public class MemberController {
         PageInfo pageInfo = walkLogService.createPageInfo(myWalkLogs);
         return new ResponseEntity<>(new MultiResponseDto<>(myWalkLogs.getContent(),pageInfo), HttpStatus.OK);
     }
+    @GetMapping("/{member-id}/walk-logs/calendar")
+    public ResponseEntity getMyWalkLogsForCalendar(@PathVariable("member-id") @Positive Long memberId,
+                                                   @Valid @ModelAttribute WalkLogControllerDTO.GetCalendarRequests getCalendarRequests){
+        WalkLogServiceDTO.CalenderFindsInput calenderFindsInput =
+                walkLogMapper.walkLogControllerGetCalenderRequestsDTOtoWalkLogServiceCalenderFindsInputDTO(getCalendarRequests);
+        calenderFindsInput.setMemberId(memberId);
+        List<WalkLogControllerDTO.CalendarResponse> calendarResponses =
+                walkLogMapper.WalkLogServiceCalenderFindsOutputDTOsToWalkLogControllerCalendarResponseDTOs(walkLogService.findMyMonthWalkLogs(calenderFindsInput));
+        return new ResponseEntity(calendarResponses,HttpStatus.OK);
+    }
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive Long memberId) {
