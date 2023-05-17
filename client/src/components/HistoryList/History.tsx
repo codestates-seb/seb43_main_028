@@ -5,7 +5,7 @@ import styles from './History.module.scss'
 import HistoryItem from './HistoryItem'
 import { passedHourMinuteSecondFormat } from '../../utils/date'
 import { DataType } from './Calendar/Calendar'
-import { format } from './Calendar/date-fns'
+import { format } from '../../utils/date-fns'
 
 type HistoryItemProps = {
   data: DataType

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './Title.module.scss'
 import { dateFormat, passedHourMinuteSecondFormat } from '../../utils/date'
-import { format } from '../HistoryList/Calendar/date-fns'
+import { format } from '../../utils/date-fns'
 import DropDown from '../common/DropDown'
 
 type TitleProps = {

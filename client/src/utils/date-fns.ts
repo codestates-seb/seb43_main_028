@@ -13,36 +13,17 @@ import eachDayOfInterval from 'date-fns/eachDayOfInterval'
 import getWeeksInMonth from 'date-fns/getWeeksInMonth'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
 
-function getWeekRows(date: Date): (0 | Date)[][] {
-  const lastDate = getDate(endOfMonth(date))
-  const startBlankCount = getDay(startOfMonth(date))
-  const endBlankCount = 7 - ((startBlankCount + lastDate) % 7)
-  const weekCount = getWeeksInMonth(date)
-
-  const allDates = [
-    ...Array(startBlankCount).fill(0),
-    ...eachDayOfInterval({
-      start: startOfMonth(date),
-      end: endOfMonth(date),
-    }),
-    ...Array(endBlankCount).fill(0),
-  ]
-
-  const rows = Array(weekCount)
-    .fill(0)
-    .map((_, i) => [...allDates].splice(i * 7, 7))
-
-  return rows
-}
-
 export {
+  endOfMonth,
+  startOfMonth,
+  eachDayOfInterval,
+  getWeeksInMonth,
   addMonths,
   subMonths,
   format,
   getDate,
   ko,
   getDay,
-  getWeekRows,
   startOfToday,
   startOfDay,
   isEqual,
