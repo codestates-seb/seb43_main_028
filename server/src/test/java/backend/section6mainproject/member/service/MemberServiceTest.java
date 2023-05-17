@@ -99,14 +99,13 @@ public class MemberServiceTest {
     }
 
     /*@Test
-    @Disabled
     void updateMemberTest() throws Exception {
         MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
         Member findMember = stubData.getMember();
         MemberServiceDTO.Output output = stubData.getMemberOutput();
         findMember.setNickname(updateInput.getNickname());
 
-        given(mapper.updateInputToMember(Mockito.any(MemberServiceDTO.UpdateInput.class))).willReturn(new Member());
+        given(mapper.updateInputToMember(Mockito.any(MemberServiceDTO.UpdateInput.class))).willReturn(findMember);
         //doNothing().when(storageService).delete(findMember.getProfileImage());
         given(beanUtils.copyNonNullProperties(Mockito.any(Member.class), Mockito.any(Member.class))).willReturn(new Member());
         //given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("");
