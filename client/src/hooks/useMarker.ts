@@ -24,7 +24,5 @@ export default function useMarker({ map, position }: UseMarkerType) {
         strokeColor: 'white',
       },
     })
-
-    position && map?.panTo(position)
   }, [map, position])
 }

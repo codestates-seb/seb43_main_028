@@ -31,6 +31,8 @@ const MapCanvas = forwardRef<HTMLDivElement, MapCanvasProps>((props, ref) => {
   const map = useGoogleMap() || null
 
   map?.setOptions(defaultMapOptions)
+  map?.setCenter(position || SEOUL_POSITION)
+
   useMarker({ map, position })
   usePolyline({ map, path })
 
