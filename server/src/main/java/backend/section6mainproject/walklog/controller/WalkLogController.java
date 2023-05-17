@@ -71,13 +71,7 @@ public class WalkLogController {
                 walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(walkLogService.findWalkLog(walkLogId));
         return new ResponseEntity<>(detailResponse, HttpStatus.OK);
     }
-    @GetMapping
-    public ResponseEntity getWalkLogs(@Valid @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
-        //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심//RequestParam의 경우에는 String로 들어오는 만큼 dto에서 유효성 검사를 철저하게 만들것
-        Page<WalkLogServiceDTO.FindsOutput> walkLogs = walkLogService.findWalkLogs(walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests));
-        PageInfo pageInfo = walkLogService.createPageInfo(walkLogs);
-        return new ResponseEntity<>(new MultiResponseDto<>(walkLogs.getContent(),pageInfo), HttpStatus.OK);
-    }
+
     @DeleteMapping("/{walk-log-id}")
     public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
         walkLogService.deleteWalkLog(walkLogId);

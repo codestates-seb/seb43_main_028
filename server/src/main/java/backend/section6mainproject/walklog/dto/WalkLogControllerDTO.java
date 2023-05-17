@@ -1,6 +1,7 @@
 package backend.section6mainproject.walklog.dto;
 
 import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
+import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
 
 import backend.section6mainproject.walklog.entity.WalkLog;
@@ -56,6 +57,22 @@ public class WalkLogControllerDTO {
         private Integer day;
         private Integer month;
         private Integer year;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class GetCalendarRequests {
+        private Integer year;
+        private Integer month;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class CalendarResponse {
+        private Long walkLogId;
+        private LocalDateTime createdAt;
 
     }
 

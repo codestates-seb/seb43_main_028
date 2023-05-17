@@ -5,6 +5,8 @@ import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface WalkLogService {
     WalkLogServiceDTO.CreateOutput createWalkLog(WalkLogServiceDTO.CreateInput createInput);
 
@@ -13,8 +15,8 @@ public interface WalkLogService {
     WalkLogServiceDTO.Output exitWalkLog(WalkLogServiceDTO.ExitInput exitInput);
     void deleteWalkLog(Long walkLogId);
     WalkLogServiceDTO.Output findWalkLog(Long walkLogId);
-    Page<WalkLogServiceDTO.FindsOutput> findWalkLogs(WalkLogServiceDTO.FindsInput findsInput);
     Page<WalkLogServiceDTO.FindsOutput> findMyWalkLogs(WalkLogServiceDTO.FindsInput findsInput);
+    List<WalkLogServiceDTO.CalenderFindsOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindsInput totalFindsInput);
     WalkLog findVerifiedWalkLog(Long walkLogId);
     PageInfo createPageInfo(Page<WalkLogServiceDTO.FindsOutput> findsOutputs);
 
