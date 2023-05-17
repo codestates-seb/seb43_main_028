@@ -15,6 +15,7 @@ import java.util.List;
 public interface WalkLogMapper {
     WalkLogServiceDTO.CreateInput walkLogControllerPostDTOtoWalkLogServiceCreateInputDTO(WalkLogControllerDTO.Post walkLogControllerPostDTO);
     WalkLogServiceDTO.CreateOutput walkLogToWalkLogServiceCreatedOutputDTO(WalkLog walkLog);
+    WalkLogServiceDTO.TotalFindsInput walkLogControllerGetRequestsDTOtoWalkLogServiceTotalFindInputDTO(WalkLogControllerDTO.GetRequests getRequests);
 
     WalkLogControllerDTO.PostResponse walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(WalkLogServiceDTO.CreateOutput walkLogServiceCreateOutputDTO);
 

@@ -97,9 +97,11 @@ public class WalkLogServiceImpl implements WalkLogService {
         Integer year = findsInput.getYear();
         if(year == null && month == null && day == null) {
             List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC));
-// 요청으로 들어온 page와 한 page당 원하는 데이터의 갯수
             PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);
             return pageFindsOutput;
+
+
+// 요청으로 들어온 page와 한 page당 원하는 데이터의 갯수
 
         }
         if (day == 0){
@@ -123,7 +125,14 @@ public class WalkLogServiceImpl implements WalkLogService {
             return pageFindsOutput;
         }else throw new RuntimeException("양식이 일치하지 않습니다."); //비즈니스로직을 작명해서 새로 추가하기
     }
-
+    @Override
+    public List<WalkLogServiceDTO.FindsOutput> findTotalWalkLogs (){
+        return walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC));
+    }
+    @Override
+    public List<WalkLogServiceDTO.FindsOutput> findMyTotalWalkLogs (Long memberId){
+        return walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(WalkLog.WalkLogPublicSetting.PUBLIC,memberId));
+    }
     private static PageImpl<WalkLogServiceDTO.FindsOutput> listToPage(PageRequest pageRequest, List<WalkLogServiceDTO.FindsOutput> findsOutputs) {
         int start = (int) pageRequest.getOffset();
         int end = Math.min((start + pageRequest.getPageSize()), findsOutputs.size());
@@ -147,7 +156,7 @@ public class WalkLogServiceImpl implements WalkLogService {
 
         PageRequest pageRequest = PageRequest.of(findsInput.getPage(),findsInput.getSize(),Sort.by("walkLogId").descending());
         if(year == null && month == null && day == null) {
-            List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(pageRequest,
+            List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(
                     WalkLog.WalkLogPublicSetting.PUBLIC,
                     memberId));
             PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);

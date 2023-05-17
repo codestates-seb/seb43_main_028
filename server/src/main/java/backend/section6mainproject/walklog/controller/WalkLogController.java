@@ -73,6 +73,9 @@ public class WalkLogController {
     }
     @GetMapping
     public ResponseEntity getWalkLogs(@Valid @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
+        if(getRequests.isNoPage())
+            return new ResponseEntity<>(walkLogService.findTotalWalkLogs(),HttpStatus.OK);
+
         //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심//RequestParam의 경우에는 String로 들어오는 만큼 dto에서 유효성 검사를 철저하게 만들것
         Page<WalkLogServiceDTO.FindsOutput> walkLogs = walkLogService.findWalkLogs(walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests));
         PageInfo pageInfo = walkLogService.createPageInfo(walkLogs);

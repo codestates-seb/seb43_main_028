@@ -56,6 +56,7 @@ public class WalkLogControllerDTO {
         private Integer day;
         private Integer month;
         private Integer year;
+        private boolean noPage = false;
 
     }
 
