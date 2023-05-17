@@ -98,7 +98,7 @@ public class MemberServiceTest {
 
     }
 
-    @Test
+    /*@Test
     @Disabled
     void updateMemberTest() throws Exception {
         MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
@@ -115,10 +115,10 @@ public class MemberServiceTest {
 
         Assertions.assertEquals(updateInput.getNickname(), findMember.getNickname());
 
-    }
+    }*/
 
 
-    @Test
+    /*@Test
     @Disabled
     void deleteMember() throws Exception {
         //given
@@ -132,6 +132,6 @@ public class MemberServiceTest {
 
         //then
         verify(memberRepository, times(1)).save(Mockito.any(Member.class));
-    }
+    }*/
 
 }
