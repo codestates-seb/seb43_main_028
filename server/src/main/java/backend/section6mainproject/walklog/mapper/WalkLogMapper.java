@@ -29,6 +29,11 @@ public interface WalkLogMapper {
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
     WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
 
+    WalkLogServiceDTO.CalenderFindsInput walkLogControllerGetCalenderRequestsDTOtoWalkLogServiceCalenderFindsInputDTO(WalkLogControllerDTO.GetCalendarRequests getCalendarRequests);
+    WalkLogServiceDTO.CalenderFindsOutput walkLogToWalkLogServiceCalenderFindsOutputDTO(WalkLog walkLog);
+    List<WalkLogServiceDTO.CalenderFindsOutput> walkLogsToWalkLogServiceCalenderFindsOutputDTOs(List<WalkLog> walkLogs);
+    WalkLogControllerDTO.CalendarResponse WalkLogServiceCalenderFindsOutputDTOToWalkLogControllerCalendarResponseDTO(WalkLogServiceDTO.CalenderFindsOutput calenderFindsOutput);
+    List<WalkLogControllerDTO.CalendarResponse> WalkLogServiceCalenderFindsOutputDTOsToWalkLogControllerCalendarResponseDTOs(List<WalkLogServiceDTO.CalenderFindsOutput> calenderFindsOutputs);
 
     WalkLogServiceDTO.ExitInput walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(WalkLogControllerDTO.EndPost endPost);
     WalkLog walkLogServiceExitInputDTOtoWalkLog(WalkLogServiceDTO.ExitInput exitInput);

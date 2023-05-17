@@ -90,48 +90,12 @@ public class WalkLogServiceImpl implements WalkLogService {
     }
 
     @Override
-    public Page<WalkLogServiceDTO.FindsOutput> findWalkLogs(WalkLogServiceDTO.FindsInput findsInput){//년월일 int타입으로 나눠서 리팩토링하기
-        PageRequest pageRequest = PageRequest.of(findsInput.getPage(),findsInput.getSize(),Sort.by("walkLogId").descending());
-        Integer day = findsInput.getDay();
-        Integer month = findsInput.getMonth();
-        Integer year = findsInput.getYear();
-        if(year == null && month == null && day == null) {
-            List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC));
-            PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);
-            return pageFindsOutput;
-
-
-// 요청으로 들어온 page와 한 page당 원하는 데이터의 갯수
-
-        }
-        if (day == 0){
-            day++;
-            LocalDate parse = LocalDate.of(year,month,day);
-            LocalDateTime start = LocalDateTime.of(parse.withDayOfMonth(1), LocalTime.of(0,0,0));
-            LocalDateTime end = LocalDateTime.of(parse.withDayOfMonth(parse.lengthOfMonth()), LocalTime.of(23,59,59));
-            List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetween(WalkLog.WalkLogPublicSetting.PUBLIC, start, end));
-            PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);
-            return pageFindsOutput;
-        }
-        if(year >= 2000 && year <= 9999 || month >=1 && month <=12 || day >= 1 && day <= 31){
-            LocalDate parse = LocalDate.of(year,month,day);
-            LocalDateTime start = LocalDateTime.of(parse, LocalTime.of(0,0,0));
-            LocalDateTime end = LocalDateTime.of(parse, LocalTime.of(23,59,59));
-            List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(
-                    walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetween(WalkLog.WalkLogPublicSetting.PUBLIC,
-                            start,
-                            end));
-            PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);
-            return pageFindsOutput;
-        }else throw new RuntimeException("양식이 일치하지 않습니다."); //비즈니스로직을 작명해서 새로 추가하기
-    }
-    @Override
     public List<WalkLogServiceDTO.FindsOutput> findTotalWalkLogs (){
         return walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC));
     }
     @Override
-    public List<WalkLogServiceDTO.FindsOutput> findMyTotalWalkLogs (WalkLogServiceDTO.TotalFindsInput totalFindsInput){
-        return walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(WalkLog.WalkLogPublicSetting.PUBLIC,totalFindsInput.getMemberId()));
+    public List<WalkLogServiceDTO.CalenderFindsOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindsInput totalFindsInput){
+        return walkLogMapper.walkLogsToWalkLogServiceCalenderFindsOutputDTOs(walkLogRepository.findMyWalkLogByMonth(totalFindsInput.getMemberId(), totalFindsInput.getYear(), totalFindsInput.getMonth()));
     }
     private static PageImpl<WalkLogServiceDTO.FindsOutput> listToPage(PageRequest pageRequest, List<WalkLogServiceDTO.FindsOutput> findsOutputs) {
         int start = (int) pageRequest.getOffset();

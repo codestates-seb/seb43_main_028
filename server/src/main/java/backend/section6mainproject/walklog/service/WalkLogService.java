@@ -15,10 +15,9 @@ public interface WalkLogService {
     WalkLogServiceDTO.Output exitWalkLog(WalkLogServiceDTO.ExitInput exitInput);
     void deleteWalkLog(Long walkLogId);
     WalkLogServiceDTO.Output findWalkLog(Long walkLogId);
-    Page<WalkLogServiceDTO.FindsOutput> findWalkLogs(WalkLogServiceDTO.FindsInput findsInput);
     List<WalkLogServiceDTO.FindsOutput> findTotalWalkLogs ();
     Page<WalkLogServiceDTO.FindsOutput> findMyWalkLogs(WalkLogServiceDTO.FindsInput findsInput);
-    List<WalkLogServiceDTO.FindsOutput> findMyTotalWalkLogs (WalkLogServiceDTO.TotalFindsInput totalFindsInput);
+    List<WalkLogServiceDTO.CalenderFindsOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindsInput totalFindsInput);
     WalkLog findVerifiedWalkLog(Long walkLogId);
     PageInfo createPageInfo(Page<WalkLogServiceDTO.FindsOutput> findsOutputs);
 

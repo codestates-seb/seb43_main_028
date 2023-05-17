@@ -59,6 +59,22 @@ public class WalkLogControllerDTO {
         private boolean noPage = false;
 
     }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class GetCalendarRequests {
+        private Integer year;
+        private Integer month;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class CalendarResponse {
+        private Long walkLogId;
+        private LocalDateTime createdAt;
+
+    }
 
 
     @Getter

@@ -85,18 +85,23 @@ public class MemberController {
     @GetMapping("/{member-id}/walk-logs")
     public ResponseEntity getMyWalkLogs(@PathVariable("member-id") @Positive Long memberId,
                                         @Valid @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
-        if(getRequests.isNoPage()){
-            WalkLogServiceDTO.TotalFindsInput totalFindsInput = new WalkLogServiceDTO.TotalFindsInput();
-            totalFindsInput.setMemberId(memberId);
-            return new ResponseEntity(walkLogService.findMyTotalWalkLogs(totalFindsInput),HttpStatus.OK);
-        }
-
 
         WalkLogServiceDTO.FindsInput findsInput = walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests);
         findsInput.setMemberId(memberId);
         Page<WalkLogServiceDTO.FindsOutput> myWalkLogs = walkLogService.findMyWalkLogs(findsInput);
         PageInfo pageInfo = walkLogService.createPageInfo(myWalkLogs);
         return new ResponseEntity<>(new MultiResponseDto<>(myWalkLogs.getContent(),pageInfo), HttpStatus.OK);
+    }
+    @GetMapping("/{member-id}/walk-logs/calendar")
+    public ResponseEntity getMyWalkLogsForCalendar(@PathVariable("member-id") @Positive Long memberId,
+                                                   @Valid @ModelAttribute WalkLogControllerDTO.GetCalendarRequests getCalendarRequests){
+        WalkLogServiceDTO.CalenderFindsInput calenderFindsInput =
+                walkLogMapper.walkLogControllerGetCalenderRequestsDTOtoWalkLogServiceCalenderFindsInputDTO(getCalendarRequests);
+        calenderFindsInput.setMemberId(memberId);
+        List<WalkLogControllerDTO.CalendarResponse> calendarResponses =
+                walkLogMapper.WalkLogServiceCalenderFindsOutputDTOsToWalkLogControllerCalendarResponseDTOs(walkLogService.findMyMonthWalkLogs(calenderFindsInput));
+        return new ResponseEntity(calendarResponses,HttpStatus.OK);
+
     }
 
     @DeleteMapping("/{member-id}")

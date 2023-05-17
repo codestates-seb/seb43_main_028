@@ -55,8 +55,18 @@ public class WalkLogServiceDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class TotalFindsInput {
+    public static class CalenderFindsInput {
         private Long memberId;
+        private int year;
+        private int month;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class CalenderFindsOutput {
+        private Long walkLogId;
+        private LocalDateTime createdAt;
 
     }
     @Getter
