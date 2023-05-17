@@ -1,9 +1,10 @@
 import Icon from '../common/Icon'
 import styles from './HistoryItem.module.scss'
 import { timerFormat } from '../../utils/date'
+import { ItemType } from './Calendar/Calendar'
 
 type HistoryItemProps = {
-  item: { id: number; createdAt: string; imageUrl: string; text: string }
+  item: ItemType
   startAt: string
 }
 

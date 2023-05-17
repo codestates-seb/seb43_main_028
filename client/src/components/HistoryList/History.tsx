@@ -3,23 +3,10 @@ import Icon from '../common/Icon'
 import styles from './History.module.scss'
 import HistoryItem from './HistoryItem'
 import { passedHourMinuteSecondFormat } from '../../utils/date'
-
-interface ItemITF {
-  id: number
-  createdAt: string
-  imageUrl: string
-  text: string
-}
+import { DataType } from './Calendar/Calendar'
 
 type HistoryItemProps = {
-  data: {
-    id: number
-    mapImg: string
-    startAt: string
-    endAt: string
-    message: string
-    walkLogContents: ItemITF[]
-  }
+  data: DataType
 }
 
 export default function History({ data }: HistoryItemProps) {
