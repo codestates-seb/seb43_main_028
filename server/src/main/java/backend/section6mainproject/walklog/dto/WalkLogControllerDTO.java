@@ -9,7 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,6 +39,7 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class Patch{
+        @Size(max = 100) //한줄메시지기 때문에 길지않아도 된다고 판단했습니다.
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
@@ -44,6 +50,7 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class EndPost {
+        @Size(max = 100)
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
@@ -52,6 +59,8 @@ public class WalkLogControllerDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GetRequests {
+        @NotNull
+        @Positive
         private int page;
         private Integer size = 10;
         private Integer day;
@@ -63,7 +72,11 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class GetCalendarRequests {
+        @NotNull
+        @Min(value = 2023)
         private Integer year;
+        @NotNull
+        @Range(min = 1, max = 12)
         private Integer month;
 
     }
@@ -85,7 +98,7 @@ public class WalkLogControllerDTO {
         private Long walkLogId;
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
-
+        @Size(max = 100)
         private String message;
         private Long memberId;
         private String nickname;
