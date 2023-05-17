@@ -103,10 +103,24 @@ export const patchUserPrivacySettings = async (url: string, data: UserInfoType) 
   try {
     const response = await axios.patch(url, data, {
       headers: {
-        'Content-Type': 'application/json', // content-type을 multipart/form-data로 설정
+        'Content-Type': 'application/json',
       },
     })
     return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const patchUserPassword = async (url: string, newPassword: string) => {
+  try {
+    await axios.patch(url, newPassword, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return 'success'
   } catch (error: unknown) {
     console.log(error)
     return 'fail'

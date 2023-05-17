@@ -6,7 +6,7 @@ type DropDownProps = {
   options: {
     id: number
     title: string
-    handleClick: Promise<void>
+    handleClick: (title: string) => void
   }[]
 }
 
@@ -15,10 +15,10 @@ function DropDown({ options }: DropDownProps) {
   const [selectedOptionId, setSelectedOptionId] = useState(0)
   const [selectedOptionTitle, setSelectedOptionTitle] = useState(options[0].title)
 
-  const handleChangeCurrentOption = (title: string, changeSetting: () => void) => {
+  const handleChangeCurrentOption = (title: string, changeSetting: (title: string) => void) => {
     setSelectedOptionTitle(title)
     setIsOptionOpened(prev => !prev)
-    changeSetting()
+    changeSetting(title)
   }
   const handleOpenOptions = () => {
     setIsOptionOpened(prev => !prev)

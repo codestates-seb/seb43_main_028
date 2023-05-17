@@ -34,8 +34,6 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
     data.append('patch', blob)
     data.append('profileImage', image!)
 
-    console.log(data)
-
     if (memberId) {
       const res = await patchUserProfile(`/api/members/${memberId}`, data)
       setUser(res)

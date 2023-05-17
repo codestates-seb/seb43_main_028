@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import format from 'date-fns/format'
+import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import { userAtom, idAtom } from '../store/authAtom'
 import DropDown from '../components/common/DropDown'
@@ -36,14 +37,13 @@ export default function Mypage() {
       const editedUserData = { ...userData, defaultWalkLogPublicSetting: option }
       const res = await patchUserPrivacySettings(`/api/members/${memberId}`, editedUserData)
       setUser(res)
-      return
     }
-    alert('Error Occurred!')
+    // alert('Error Occurred!')
   }
 
   const selectOptions = [
-    { id: 1, title: '나만 보기', handleClick: handleSetPrivacySettings('PRIVATE') },
-    { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings('PUBLIC') },
+    { id: 1, title: '나만 보기', handleClick: handleSetPrivacySettings },
+    { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings },
   ]
 
   useEffect(() => {
@@ -52,9 +52,9 @@ export default function Mypage() {
 
   useEffect(() => {
     if (userData) {
-      const registeredDate = new Date(userData.createdAt)
-      const formattedData = format(registeredDate, 'yyyy-MM-dd')
-      setRegisteredAt(formattedData)
+      // const registeredDate = new Date(userData.createdAt)
+      // const formattedData = format(registeredDate, 'yyyy-MM-dd')
+      // setRegisteredAt(formattedData)
     }
   }, [userData])
 
@@ -95,7 +95,7 @@ export default function Mypage() {
           </div>
         </div>
         <div className={styles.setLinkWrapper}>
-          <button type='button'>비밀번호 변경하기</button>
+          <Link to='/changepassword'>비밀번호 변경하기</Link>
         </div>
         <div className={styles.setLinkWrapper}>
           <button type='button'>회원 탈퇴하기</button>
