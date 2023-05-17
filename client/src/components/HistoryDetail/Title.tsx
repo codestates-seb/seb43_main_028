@@ -9,11 +9,11 @@ type TitleProps = {
   startAt: string
   endAt: string
   message: string
-  publicSetting: string
+  publicSetting: 'Public' | 'Private'
 }
 
-const Options = ['나만 보기', '전체 공개']
-
+const OptionsObj = { Public: '전체 공개', Private: '나만 보기' }
+const OptionsAry = ['전체 공개', '나만 보기']
 export default function Title({ startAt, endAt, message, publicSetting }: TitleProps) {
   const [edit, setEdit] = useState(true)
 
@@ -25,8 +25,8 @@ export default function Title({ startAt, endAt, message, publicSetting }: TitleP
     time: `${format(start, 'H:mm')} ~ ${format(end, 'H:mm')}`,
   }
 
-  const filter = Options.filter(o => o !== publicSetting)
-  filter.unshift(publicSetting)
+  const filter = OptionsAry.filter(o => o !== OptionsObj[publicSetting])
+  filter.unshift(OptionsObj[publicSetting])
   const dropDownOption = filter.map((o, i) => {
     return { id: i, title: o }
   })
