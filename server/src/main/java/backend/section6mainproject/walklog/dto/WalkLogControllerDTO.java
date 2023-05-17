@@ -9,7 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -52,6 +56,8 @@ public class WalkLogControllerDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GetRequests {
+        @NotNull
+        @Positive
         private int page;
         private Integer size = 10;
         private Integer day;
@@ -63,7 +69,11 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class GetCalendarRequests {
+        @NotNull
+        @Min(value = 2023)
         private Integer year;
+        @NotNull
+        @Range(min = 1, max = 12)
         private Integer month;
 
     }
