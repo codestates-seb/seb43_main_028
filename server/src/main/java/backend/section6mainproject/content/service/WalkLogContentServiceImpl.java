@@ -53,6 +53,13 @@ public class WalkLogContentServiceImpl implements WalkLogContentService {
     }
 
     @Override
+    public void deleteWalkLogContent(Long walkLogContentId) {
+        WalkLogContent findWalkLogContent = findVerifiedWalkLogContentInternal(walkLogContentId);
+        storageService.delete(findWalkLogContent.getImageKey());
+        walkLogContentRepository.delete(findWalkLogContent);
+    }
+
+    @Override
     public WalkLogContentServiceDTO.Output findVerifiedWalkLogContent(Long walkLogContentId) {
         return mapper.entityToServiceOutputDTO(findVerifiedWalkLogContentInternal(walkLogContentId));
     }

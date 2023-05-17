@@ -115,4 +115,20 @@ class WalkLogContentControllerTest {
                 .andExpect(jsonPath("$.walkLogContentId").value(response.getWalkLogContentId()))
                 .andExpect(jsonPath("$.text").value(response.getText()));
     }
+
+    @Test
+    void deleteContent() throws Exception {
+        // given
+        Long walkLogId = stubData.getWalkLogId();
+        Long walkLogContentId = stubData.getWalkLogContentId();
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                MockMvcRequestBuilders.delete("/walk-logs/{walk-log-id}/contents/{content-id}", walkLogId, walkLogContentId)
+        );
+
+        // then
+        actions
+                .andExpect(status().isNoContent());
+    }
 }
