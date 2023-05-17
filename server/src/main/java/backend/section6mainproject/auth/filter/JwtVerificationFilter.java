@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
         String refresh = request.getHeader("Refresh");
         return (authorization == null || !authorization.startsWith("Bearer")) &&
-                (!request.getServletPath().equals("/members/refresh") || refresh == null);
+                (!request.getServletPath().equals("/members/refresh") || !getRefreshToken(request).isPresent());
     }
     private Map<String, Object> verifyAccessJws(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization").replace("Bearer ", "");
@@ -66,10 +67,20 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         return jwtTokenizer.getClaims(accessToken, base64EncodedSecretKey).getBody();
     }
     private String verifyRefreshJws(HttpServletRequest request) {
-        String refreshToken = request.getHeader("Refresh");
+        String refreshToken = getRefreshToken(request).get().getValue();
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return (String) jwtTokenizer.getClaims(refreshToken, base64EncodedSecretKey).getBody().get("sub");
     }
+
+    private Optional<Cookie> getRefreshToken(HttpServletRequest request) {
+        Optional<Cookie[]> optionalCookies = Optional.ofNullable(request.getCookies());
+        if (optionalCookies.isPresent()) {
+            Cookie[] cookies = optionalCookies.get();
+            return Arrays.stream(cookies).filter(cookie -> cookie.getName().equals("Refresh")).findAny();
+        }
+        return Optional.empty();
+    }
+
     private void setAuthenticationToContext(Map<String, Object> claims) {
         String memberId = (String) claims.get("sub");
         List<String> roles = (List<String>) claims.get("roles");
