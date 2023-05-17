@@ -3,14 +3,13 @@ package backend.section6mainproject.walklog.dto;
 import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class WalkLogServiceDTO {
+
     @Getter
     @Setter
     @NoArgsConstructor
@@ -51,6 +50,23 @@ public class WalkLogServiceDTO {
         private Integer day;
         private Integer month;
         private Integer year;
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class CalenderFindsInput {
+        private Long memberId;
+        private int year;
+        private int month;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class CalenderFindsOutput {
+        private Long walkLogId;
+        private LocalDateTime createdAt;
+
     }
     @Getter
     @Setter
