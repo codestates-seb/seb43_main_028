@@ -33,7 +33,7 @@ public class ConnectionInterceptor implements HandshakeInterceptor {
                 break;
             }
         }
-        if(walkLogId == null) throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND);//인증 구현 후 ExceptionCode에 추가예정 "WalkLog is not recording"
+        if(walkLogId == null) throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND);
         attributes.put("walkLogId", walkLogId);
         return true;
     }
