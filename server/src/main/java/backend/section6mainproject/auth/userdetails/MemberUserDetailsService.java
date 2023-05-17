@@ -1,6 +1,8 @@
 package backend.section6mainproject.auth.userdetails;
 
 import backend.section6mainproject.auth.utils.CustomAuthorityUtils;
+import backend.section6mainproject.exception.BusinessLogicException;
+import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +23,8 @@ public class MemberUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> optionalMember = memberRepository.findByEmail(username);
-        Member findMember = optionalMember.orElseThrow(() -> new RuntimeException("Member not found"));
+        Optional<Member> optionalMember = memberRepository.findByEmailAndMemberStatus(username, Member.MemberStatus.MEMBER_ACTIVE);
+        Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return new MemberUserDetails(findMember);
     }
     private final class MemberUserDetails extends Member implements UserDetails {
