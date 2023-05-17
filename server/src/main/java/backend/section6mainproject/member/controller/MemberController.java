@@ -74,6 +74,12 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /*@PatchMapping("/{member-id}/pw")
+    public ResponseEntity patchMemberPassword(@PathVariable("member-id") @Positive Long memberId,
+                                              @RequestBody MemberControllerDTO.PatchPw patchPw) {
+        return null; // 서비스 코드 작성 후 구현 예정
+    }*/
+
 
 
     @GetMapping("/{member-id}")

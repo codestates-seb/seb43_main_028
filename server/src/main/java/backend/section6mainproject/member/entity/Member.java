@@ -38,7 +38,7 @@ public class Member extends Auditable {
     @Column(length = 30)
     private WalkLogPublicSetting defaultWalkLogPublicSetting = WalkLogPublicSetting.PRIVATE;
 
-    @Column(length = 500)
+    @Column(length = 100) // 자기소개 길이 변경
     private String introduction;
 
     private String profileImage; //"directory/algorithm"등의 이미지이름 (+ 임시주소) == signBucket에서 처리

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -165,13 +166,13 @@ public class MemberControllerTest {
     }
     private MemberServiceDTO.Output makeMemberOutput() {
         Long memberId = 1L;
-        MemberServiceDTO.Output output = new MemberServiceDTO.Output(memberId, "test@gmail.com", "거터", null, "PRIVATE", null, 0, 0);
+        MemberServiceDTO.Output output = new MemberServiceDTO.Output(memberId, "test@gmail.com", "거터", null, "PRIVATE", null, 0, 0, LocalDateTime.now());
         return output;
     }
 
     private MemberControllerDTO.Response makeMemberResponse() {
         Long memberId = 1L;
-        MemberControllerDTO.Response response = new MemberControllerDTO.Response(memberId, "test@gmail.com", "거터", null, "PRIVATE", null, 0, 0);
+        MemberControllerDTO.Response response = new MemberControllerDTO.Response(memberId, "test@gmail.com", "거터", null, "PRIVATE", null, 0, 0, LocalDateTime.now());
         return response;
     }
 
