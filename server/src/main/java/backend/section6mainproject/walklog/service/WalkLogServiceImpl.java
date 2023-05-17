@@ -130,8 +130,8 @@ public class WalkLogServiceImpl implements WalkLogService {
         return walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC));
     }
     @Override
-    public List<WalkLogServiceDTO.FindsOutput> findMyTotalWalkLogs (Long memberId){
-        return walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(WalkLog.WalkLogPublicSetting.PUBLIC,memberId));
+    public List<WalkLogServiceDTO.FindsOutput> findMyTotalWalkLogs (WalkLogServiceDTO.TotalFindsInput totalFindsInput){
+        return walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(WalkLog.WalkLogPublicSetting.PUBLIC,totalFindsInput.getMemberId()));
     }
     private static PageImpl<WalkLogServiceDTO.FindsOutput> listToPage(PageRequest pageRequest, List<WalkLogServiceDTO.FindsOutput> findsOutputs) {
         int start = (int) pageRequest.getOffset();

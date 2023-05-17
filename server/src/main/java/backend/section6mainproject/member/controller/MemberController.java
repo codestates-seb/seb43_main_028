@@ -85,8 +85,11 @@ public class MemberController {
     @GetMapping("/{member-id}/walk-logs")
     public ResponseEntity getMyWalkLogs(@PathVariable("member-id") @Positive Long memberId,
                                         @Valid @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
-        if(getRequests.isNoPage())
-            return new ResponseEntity(walkLogService.findMyTotalWalkLogs(memberId),HttpStatus.OK);
+        if(getRequests.isNoPage()){
+            WalkLogServiceDTO.TotalFindsInput totalFindsInput = new WalkLogServiceDTO.TotalFindsInput();
+            totalFindsInput.setMemberId(memberId);
+            return new ResponseEntity(walkLogService.findMyTotalWalkLogs(totalFindsInput),HttpStatus.OK);
+        }
 
 
         WalkLogServiceDTO.FindsInput findsInput = walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests);

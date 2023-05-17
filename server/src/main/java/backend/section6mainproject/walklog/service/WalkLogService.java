@@ -18,7 +18,7 @@ public interface WalkLogService {
     Page<WalkLogServiceDTO.FindsOutput> findWalkLogs(WalkLogServiceDTO.FindsInput findsInput);
     List<WalkLogServiceDTO.FindsOutput> findTotalWalkLogs ();
     Page<WalkLogServiceDTO.FindsOutput> findMyWalkLogs(WalkLogServiceDTO.FindsInput findsInput);
-    List<WalkLogServiceDTO.FindsOutput> findMyTotalWalkLogs (Long memberId);
+    List<WalkLogServiceDTO.FindsOutput> findMyTotalWalkLogs (WalkLogServiceDTO.TotalFindsInput totalFindsInput);
     WalkLog findVerifiedWalkLog(Long walkLogId);
     PageInfo createPageInfo(Page<WalkLogServiceDTO.FindsOutput> findsOutputs);
 
