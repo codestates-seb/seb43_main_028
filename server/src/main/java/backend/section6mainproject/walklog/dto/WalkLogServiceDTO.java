@@ -1,6 +1,5 @@
 package backend.section6mainproject.walklog.dto;
 
-import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
 import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;

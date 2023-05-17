@@ -2,10 +2,8 @@ package backend.section6mainproject.walklog.service;
 
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.member.entity.Member;
-import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.utils.CustomBeanUtils;
-import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.mapper.WalkLogMapper;

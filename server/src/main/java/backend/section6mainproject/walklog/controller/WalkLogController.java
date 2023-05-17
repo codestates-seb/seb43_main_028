@@ -25,13 +25,12 @@ import java.util.List;
 @Slf4j
 public class WalkLogController {
 
-    private final static Integer PAGE_SIZE = 10;
     private final static String WALK_LOG_DEFAULT_URL = "/walk-logs";
 
     private final WalkLogService walkLogService;
     private final WalkLogMapper walkLogMapper;
     @PostMapping
-    public ResponseEntity postWalkLog(@RequestBody WalkLogControllerDTO.Post walkLogControllerPostDto){
+    public ResponseEntity postWalkLog(@Valid @RequestBody WalkLogControllerDTO.Post walkLogControllerPostDto){
         WalkLogServiceDTO.CreateInput createInput = walkLogMapper.walkLogControllerPostDTOtoWalkLogServiceCreateInputDTO(walkLogControllerPostDto);
         WalkLogServiceDTO.CreateOutput createOutput = walkLogService.createWalkLog(createInput);
         WalkLogControllerDTO.PostResponse postResponse = walkLogMapper.walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(createOutput);
@@ -56,7 +55,7 @@ public class WalkLogController {
 
     @PostMapping("/{walk-log-id}")
     public ResponseEntity endWalkLog(@PathVariable("walk-log-id") @Positive Long walkLogId,
-                                     @RequestBody WalkLogControllerDTO.EndPost walkLogEndPostDTO){
+                                     @Valid @RequestBody WalkLogControllerDTO.EndPost walkLogEndPostDTO){
         //현재 걷기 도중인
         //멤버 인증 로직은 추후에 반영
         WalkLogServiceDTO.ExitInput exitInput = walkLogMapper.walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(walkLogEndPostDTO);
@@ -73,7 +72,7 @@ public class WalkLogController {
         return new ResponseEntity<>(detailResponse, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity getWalkLogs(@ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
+    public ResponseEntity getWalkLogs(@Valid @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
         //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심//RequestParam의 경우에는 String로 들어오는 만큼 dto에서 유효성 검사를 철저하게 만들것
         Page<WalkLogServiceDTO.FindsOutput> walkLogs = walkLogService.findWalkLogs(walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests));
         PageInfo pageInfo = walkLogService.createPageInfo(walkLogs);

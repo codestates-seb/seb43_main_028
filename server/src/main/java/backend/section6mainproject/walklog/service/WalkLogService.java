@@ -1,7 +1,6 @@
 package backend.section6mainproject.walklog.service;
 
 import backend.section6mainproject.dto.PageInfo;
-import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import org.springframework.data.domain.Page;

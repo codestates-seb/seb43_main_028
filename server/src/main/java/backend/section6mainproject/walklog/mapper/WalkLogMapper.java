@@ -7,7 +7,6 @@ import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -36,7 +35,6 @@ public interface WalkLogMapper {
 
 
     WalkLogServiceDTO.FindsInput walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(WalkLogControllerDTO.GetRequests getRequests);
-    List<WalkLogServiceDTO.CreateOutput> walkLogsToWalkLogServiceOutputDTOs(List<WalkLog> walkLogs);
 
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
