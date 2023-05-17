@@ -7,5 +7,7 @@ public interface WalkLogContentService {
 
     WalkLogContentServiceDTO.Output updateWalkLogContent(WalkLogContentServiceDTO.UpdateInput updateInput);
 
+    void deleteWalkLogContent(Long walkLogContentId);
+
     WalkLogContentServiceDTO.Output findVerifiedWalkLogContent(Long walkLogContentId);
 }

@@ -50,4 +50,10 @@ public class WalkLogContentController {
         return ResponseEntity.ok(mapper.serviceOutputDTOToControllerResponseDTO(output));
     }
 
+    @DeleteMapping("/{content-id}")
+    public ResponseEntity<?> deleteContent(@Positive @PathVariable("content-id") long walkLogContentId) {
+        walkLogContentService.deleteWalkLogContent(walkLogContentId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
