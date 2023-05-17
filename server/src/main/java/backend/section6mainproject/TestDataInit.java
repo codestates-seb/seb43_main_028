@@ -27,9 +27,9 @@ public class TestDataInit {
     @PostConstruct
     public void init() {
         Member firstMember = new Member();
-        firstMember.setEmail("admin@gmail.com");
-        firstMember.setPassword(passwordEncoder.encode("1234"));
-        firstMember.setNickname("거터볼래");
+        firstMember.setEmail("test@gmail.com");
+        firstMember.setPassword(passwordEncoder.encode("testdot01!"));
+        firstMember.setNickname("거터");
         firstMember.setIntroduction("안녕하세요");
         memberRepository.save(firstMember);
 
