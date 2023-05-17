@@ -1,0 +1,36 @@
+@use '../../../styles/color' as C;
+@use '../../../styles/utils' as U;
+
+.container {
+  position: relative;
+  @include U.flex-c(column, center, center);
+}
+
+.unSelected {
+  @include U.flex-c(column, center, center);
+  @include U.size(50px);
+}
+
+.selected {
+  @include U.flex-c(column, center, center);
+  @include U.size(50px);
+  border-radius: 50%;
+  border: 1px solid C.$babygreen;
+}
+
+.today {
+  position: absolute;
+  width: 16px;
+  bottom: 13px;
+  height: 1.5px;
+  background: C.$gray900;
+}
+
+.dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: C.$babygreen;
+  border-radius: 50%;
+  bottom: 4px;
+}
