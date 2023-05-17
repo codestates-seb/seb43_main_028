@@ -39,7 +39,7 @@ public class WalkLogController {
                 .path(WALK_LOG_DEFAULT_URL + "/" + walkLogId)
                 .buildAndExpand(walkLogId)
                 .toUri();
-        return ResponseEntity.created(location).body(postResponse); //되는지 체크
+        return ResponseEntity.created(location).body(postResponse);
     }
     @PatchMapping("/{walk-log-id}")
     public ResponseEntity patchWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId,
