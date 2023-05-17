@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './Camera.module.scss'
 
-interface CameraProps {
+type CameraProps = {
   setCamera: React.Dispatch<React.SetStateAction<boolean>>
   setPreview: React.Dispatch<React.SetStateAction<string>>
 }

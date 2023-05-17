@@ -2,21 +2,21 @@ import { useEffect } from 'react'
 import styles from './Modal.module.scss'
 import Icon from './Icon'
 
-type Option = {
+type OptionType = {
   label: string
   handleClick: () => void
   id: number
 }
 
-type Props = {
+type ModalProps = {
   modalData: {
     title: string
-    options: Option[]
+    options: OptionType[]
   }
   onClose: () => void
 }
 
-function Modal({ modalData, onClose }: Props) {
+function Modal({ modalData, onClose }: ModalProps) {
   const { title, options } = modalData
 
   useEffect(() => {

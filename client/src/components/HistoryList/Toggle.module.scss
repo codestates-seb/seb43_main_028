@@ -1,0 +1,24 @@
+@use '../../styles/color' as C;
+
+.toggleBox {
+  margin: 20px 20px 16px;
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid C.$gray200;
+  button {
+    height: 32px;
+    flex-grow: 1;
+  }
+}
+
+.btn {
+  font-size: 1.4rem;
+  background-color: C.$white;
+}
+
+.clickedBtn {
+  @extend .btn;
+  background-color: C.$gray900;
+  color: C.$white;
+}

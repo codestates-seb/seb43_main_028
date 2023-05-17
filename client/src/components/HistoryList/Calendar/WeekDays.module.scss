@@ -1,15 +1,19 @@
 @use '../../../styles/typography' as T;
 
-.day {
+.월,
+.화,
+.수,
+.목,
+.금 {
   @include T.gray900-bold-16;
 }
 
-.saturday {
-  @extend .day;
+.토 {
+  @extend .월;
   color: blue;
 }
 
-.sunday {
-  @extend .day;
+.일 {
+  @extend .월;
   color: red;
 }

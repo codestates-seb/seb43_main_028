@@ -1,7 +1,7 @@
 import styles from './SnapForm.module.scss'
 import ImgInput from './ImgInput'
 
-interface HeaderProps {
+type HeaderProps = {
   onCancel: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 

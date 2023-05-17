@@ -1,6 +1,6 @@
 import SpriteIcon from '../../assets/sprite-icon.svg'
 
-type IconName =
+type IconNameType =
   | 'camera-color'
   | 'camera-oval'
   | 'close'
@@ -17,7 +17,7 @@ type IconName =
   | 'three-dot'
 
 interface IconProps {
-  name: IconName
+  name: IconNameType
   size?: 16 | 24 | 48
 }
 
