@@ -3,27 +3,21 @@ import Title from '../components/HistoryDetail/Title'
 import styles from './HistoryDetail.module.scss'
 
 import { timerFormat } from '../utils/date'
-import { differenceInSeconds } from '../components/HistoryList/Calendar/date-fns'
+import { differenceInSeconds } from '../utils/date-fns'
 import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
 
 const dummy = {
-  pageinfo: {
-    page: 1,
-    size: 10,
-    totalElements: 3,
-    totalPages: 1,
-  },
   data: {
     walkLogId: '1',
     startAt: '2023-05-11T14:48:27.98596',
     endAt: '2023-05-11T18:00:00.983845',
     message:
       '너가 파티에선 주인공이지 (Feat. 하곤) 그걸 망치는 건 내 몫이지 널 데리러 가니 그 순간이 곧 나의 재미 집에 가자 when its night Party 멈춰 time to go out 재미도 엄청 없어보인다 집에 가서 I will Make you go wild 우리가 여기선 주인공인 것같어',
-    walkLogPublicSetting: '나만 보기', // 전체 공개, 나만 보기 2개 중 1개 (추후 친구 공개 등 확장성 고려 필요)
+    walkLogPublicSetting: 'Private',
+    zipCode: 12345,
     coordinates: [
-      // 이게 뭔지 ?? 필요 없을 것 같은데 ..? region 확인을 위한 우편번호 필요
       {
         coordinateId: 1,
         lat: 1.21242,
@@ -50,6 +44,12 @@ const dummy = {
         createdAt: '2023-05-11T17:00:05.12345',
         imageUrl: '',
         text: '내가 어떻게 하는지 알면 watch yo tone babe (get stoned get roamed get humped get hmm) or do I look kinda boring 내가 볼땐 다 이길 수가 있거든 lemme show yo 일단 니네 연락들은 hold it down 우린 금요일 밤부터 phone을 안 켜두니까 Ye like everytime we gon do it like this shit is day job forkin 맨날 so 늦었어도 일단은 해 It got to be a coast we funk n do it baked 내 맨 밑에 goes',
+      },
+      {
+        id: '13',
+        createdAt: '2023-05-11T17:10:05.12345',
+        imageUrl: 'https://usercontents-c.styleshare.io/images/31640711/640x-',
+        text: '그냥 훔칠까봐 해 너도 그러길 원하지 원샷 투샷 들어가는 술잔 내가 망칠 거야 따분한 이 자릴 떠 Can I hold you tight tonight 저 벽의 작은 틈 속에 슉 두 손가락 넣고 날아올라 이내 천장을 뚫어 우린 지붕을 타고 여길 떠나 we should go that way 저길 내려다봐 우리가 하는 걸 쟤네들은 못하지 뒤를 돌아봐 오 그 다음 차례 bottom to the top 찍고 이제 down climbin 해가 뜰 때까지도 we dont stop 소리질러 I been dreamin bout you',
       },
     ],
   },
