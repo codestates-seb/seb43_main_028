@@ -71,12 +71,7 @@ public class WalkLogController {
                 walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(walkLogService.findWalkLog(walkLogId));
         return new ResponseEntity<>(detailResponse, HttpStatus.OK);
     }
-    @GetMapping
-    public ResponseEntity getWalkLogs(){
-        List<WalkLogControllerDTO.SimpleResponse> simpleResponses =
-                walkLogMapper.walkLogServiceFindsOutputsDTOtoWalkLogControllerSimpleResponseDTOs(walkLogService.findTotalWalkLogs());
-        return new ResponseEntity<>(simpleResponses,HttpStatus.OK);
-    }
+
     @DeleteMapping("/{walk-log-id}")
     public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
         walkLogService.deleteWalkLog(walkLogId);

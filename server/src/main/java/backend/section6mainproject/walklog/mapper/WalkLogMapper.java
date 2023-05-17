@@ -38,9 +38,6 @@ public interface WalkLogMapper {
     WalkLogServiceDTO.ExitInput walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(WalkLogControllerDTO.EndPost endPost);
     WalkLog walkLogServiceExitInputDTOtoWalkLog(WalkLogServiceDTO.ExitInput exitInput);
 
-    WalkLogControllerDTO.SimpleResponse walkLogServiceFindsOutputDTOtoWalkLogControllerSimpleResponseDTO(WalkLogServiceDTO.FindsOutput walkLogServiceDTO);
-    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
-    List<WalkLogControllerDTO.SimpleResponse> walkLogServiceFindsOutputsDTOtoWalkLogControllerSimpleResponseDTOs(List<WalkLogServiceDTO.FindsOutput> walkLogServiceDTOs);
     WalkLogServiceDTO.FindsInput walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(WalkLogControllerDTO.GetRequests getRequests);
 
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")

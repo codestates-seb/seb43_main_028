@@ -89,10 +89,7 @@ public class WalkLogServiceImpl implements WalkLogService {
         return output;
     }
 
-    @Override
-    public List<WalkLogServiceDTO.FindsOutput> findTotalWalkLogs (){
-        return walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC));
-    }
+
     @Override
     public List<WalkLogServiceDTO.CalenderFindsOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindsInput totalFindsInput){
         return walkLogMapper.walkLogsToWalkLogServiceCalenderFindsOutputDTOs(walkLogRepository.findMyWalkLogByMonth(totalFindsInput.getMemberId(), totalFindsInput.getYear(), totalFindsInput.getMonth()));

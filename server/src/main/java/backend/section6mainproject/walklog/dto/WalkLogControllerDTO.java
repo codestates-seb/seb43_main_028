@@ -95,17 +95,5 @@ public class WalkLogControllerDTO {
         private List<CoordinateControllerDTO.Sub> coordinates;
         private List<WalkLogContentControllerDTO.Response> walkLogContents;
 
-    }@Getter
-    @Setter
-    @NoArgsConstructor
-    public static class SimpleResponse {
-
-        private Long walkLogId;
-        private String mapImage; // 구현예정
-        private LocalDateTime startedAt;
-        private LocalDateTime endAt;
-        private String message;
-        private List<WalkLogContentControllerDTO.Response> walkLogContents;
-
     }
 }
