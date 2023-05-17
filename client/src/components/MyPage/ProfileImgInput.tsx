@@ -1,10 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
-import styles from './ImgInput.module.scss'
+import styles from './ProfileImgInput.module.scss'
 import Icon from '../common/Icon'
 
-export default function ImgInput() {
+type ProfileImgInputProps = {
+  imgFile: File | undefined
+  setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>
+}
+
+export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInputProps) {
   const [preview, setPreview] = useState<string>('')
-  const [imgFile, setImgFile] = useState<File | undefined>()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

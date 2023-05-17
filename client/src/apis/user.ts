@@ -24,6 +24,7 @@ export type UserInfoType = {
   introduction: string
   memberId: number
   nickname: string
+  createdAt: string
   totalWalkLog: number
   totalWalkLogContent: number
 }
@@ -80,6 +81,34 @@ export const refreshAccessToken = async () => {
     return 'success'
   } catch (error) {
     removeRefreshTokenFromLocalStorage()
+    return 'fail'
+  }
+}
+
+export const patchUserProfile = async (url: string, formData: FormData) => {
+  try {
+    const response = await axios.patch(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // content-type을 multipart/form-data로 설정
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const patchUserPrivacySettings = async (url: string, data: UserInfoType) => {
+  try {
+    const response = await axios.patch(url, data, {
+      headers: {
+        'Content-Type': 'application/json', // content-type을 multipart/form-data로 설정
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
     return 'fail'
   }
 }

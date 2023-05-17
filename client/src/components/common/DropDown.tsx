@@ -6,6 +6,7 @@ type DropDownProps = {
   options: {
     id: number
     title: string
+    handleClick: Promise<void>
   }[]
 }
 
@@ -13,9 +14,11 @@ function DropDown({ options }: DropDownProps) {
   const [isOptionOpened, setIsOptionOpened] = useState(false)
   const [selectedOptionId, setSelectedOptionId] = useState(0)
   const [selectedOptionTitle, setSelectedOptionTitle] = useState(options[0].title)
-  const handleChangeCurrentOption = (title: string) => {
+
+  const handleChangeCurrentOption = (title: string, changeSetting: () => void) => {
     setSelectedOptionTitle(title)
     setIsOptionOpened(prev => !prev)
+    changeSetting()
   }
   const handleOpenOptions = () => {
     setIsOptionOpened(prev => !prev)
@@ -37,7 +40,10 @@ function DropDown({ options }: DropDownProps) {
           {options.map(option => {
             return (
               <li key={option.id}>
-                <button type='button' onClick={() => handleChangeCurrentOption(option.title)}>
+                <button
+                  type='button'
+                  onClick={() => handleChangeCurrentOption(option.title, option.handleClick)}
+                >
                   {option.title}
                 </button>
               </li>
