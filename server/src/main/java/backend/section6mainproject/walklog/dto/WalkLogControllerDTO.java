@@ -39,7 +39,7 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class Patch{
-        @Size(max = 500)
+        @Size(max = 100) //한줄메시지기 때문에 길지않아도 된다고 판단했습니다.
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
@@ -50,7 +50,7 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class EndPost {
-        @Size(max = 500)
+        @Size(max = 100)
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
@@ -98,7 +98,7 @@ public class WalkLogControllerDTO {
         private Long walkLogId;
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
-        @Size(max = 500)
+        @Size(max = 100)
         private String message;
         private Long memberId;
         private String nickname;
