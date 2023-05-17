@@ -51,16 +51,10 @@ public class MemberServiceDTO {
     @Getter
     @Setter
     public static class UpdatePwInput {
+        private Long memberId;
         @NotSpace(message = "비밀번호를 변경해주십시오.")
         private String password;
     }
-
-    @Getter
-    @Setter
-    public static class UpdatePwOutput {
-        //필요한 필드는 프론트측과 상의 후 결정할 예정
-    }
-
 
 
     @Getter

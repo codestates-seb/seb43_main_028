@@ -13,6 +13,8 @@ public interface MemberMapper {
     MemberServiceDTO.CreateInput postToCreateInput(MemberControllerDTO.Post post); //API계층에서 서비스 계층으로 넘길때 사용됨
     Member createInputToMember(MemberServiceDTO.CreateInput createInput); //서비스용DTO를 엔티티로 바꾼다. 서비스 계층에서만 사용됨
     MemberServiceDTO.UpdateInput patchToUpdateInput(MemberControllerDTO.Patch patch); //API계층에서 서비스 계층으로 넘길때 사용됨
+    MemberServiceDTO.UpdatePwInput patchPwToUpdatePwInput(MemberControllerDTO.PatchPw patchPw); // API계층에서 서비스 계층으로 패스워드를 넘길때 사용됨
+    Member updatePwInputToMember(MemberServiceDTO.UpdatePwInput updatePwInput); // 서비스 계층용 DTO를 Member 엔티티로 변환할 때 사용됨
     @Mapping(target = "profileImage", ignore = true)
     Member updateInputToMember(MemberServiceDTO.UpdateInput updateInput); //서비스용DTO를 엔티티로 바꾼다. 서비스 계층에서만 사용됨
     @Mapping(source = "profileImage", target = "imageUrl", qualifiedByName = "signBucket")
