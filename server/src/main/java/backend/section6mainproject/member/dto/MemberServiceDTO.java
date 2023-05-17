@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 public class MemberServiceDTO {
     @Getter
@@ -26,11 +28,14 @@ public class MemberServiceDTO {
 
     @Getter
     @Setter
+    public static class CreateOutput {
+        private Long memberId;
+    }
+
+    @Getter
+    @Setter
     public static class UpdateInput {
         private Long memberId;
-
-        @NotSpace(message = "비밀번호를 변경해주십시오.")
-        private String password;
 
         @NotSpace(message = "닉네임을 입력해주세요.")
         private String nickname;
@@ -38,16 +43,25 @@ public class MemberServiceDTO {
         @NotSpace(message = "자기소개문구는 공백일 수 없습니다.")
         private String introduction;
 
-        private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting;
+        private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting; // 비밀번호와 달리 공개설정은 거시적으로 멤버프로필에 들어간다고 볼 수 있어서 UpdateInput 하나로 퉁침
 
         private MultipartFile profileImage;
     }
 
     @Getter
     @Setter
-    public static class CreateOutput {
-        private Long memberId;
+    public static class UpdatePwInput {
+        @NotSpace(message = "비밀번호를 변경해주십시오.")
+        private String password;
     }
+
+    @Getter
+    @Setter
+    public static class UpdatePwOutput {
+        //필요한 필드는 프론트측과 상의 후 결정할 예정
+    }
+
+
 
     @Getter
     @Setter
@@ -61,5 +75,6 @@ public class MemberServiceDTO {
         private String imageUrl;
         private int totalWalkLog;
         private int totalWalkLogContent;
+        private LocalDateTime createdAt; // 회원가입일시 공개
     }
 }
