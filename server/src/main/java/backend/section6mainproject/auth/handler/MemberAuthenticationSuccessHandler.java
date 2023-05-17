@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,7 +26,10 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
         if((Boolean) request.getAttribute("autoLogin")){
             String refreshToken = authenticationSuccessHandlerUtils.delegateRefreshToken(member);
-            response.setHeader("Refresh", refreshToken);
+            Cookie cookie = new Cookie("Refresh", refreshToken);
+            cookie.setPath("/members/refresh");
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
         }
 
         setMemberIdToBody(response, member);
