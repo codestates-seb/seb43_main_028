@@ -47,11 +47,11 @@ public class WalkLogServiceDTO {
     @NoArgsConstructor
     public static class FindsInput {
         private Long memberId;
-        private int page;
-        private int size;
-        private int day;
-        private int month;
-        private int year;
+        private Integer page;
+        private Integer size;
+        private Integer day;
+        private Integer month;
+        private Integer year;
     }
     @Getter
     @Setter

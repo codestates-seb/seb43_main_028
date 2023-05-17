@@ -7,9 +7,7 @@ import backend.section6mainproject.member.dto.MemberServiceDTO;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
-import backend.section6mainproject.walklog.dto.WalkLogDTO;
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
-import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.mapper.WalkLogMapper;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import org.springframework.data.domain.Page;
@@ -86,13 +84,13 @@ public class MemberController {
     }
     @GetMapping("/{member-id}/walk-logs")
     public ResponseEntity getMyWalkLogs(@PathVariable("member-id") @Positive Long memberId,
-                                        @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
+                                        @Valid @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
 
         WalkLogServiceDTO.FindsInput findsInput = walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests);
         findsInput.setMemberId(memberId);
         Page<WalkLogServiceDTO.FindsOutput> myWalkLogs = walkLogService.findMyWalkLogs(findsInput);
         PageInfo pageInfo = walkLogService.createPageInfo(myWalkLogs);
-        return new ResponseEntity<>(new MultiResponseDto<>(myWalkLogs.toList(),pageInfo), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(myWalkLogs.getContent(),pageInfo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")

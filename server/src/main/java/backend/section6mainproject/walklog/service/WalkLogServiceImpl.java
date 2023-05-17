@@ -94,10 +94,10 @@ public class WalkLogServiceImpl implements WalkLogService {
     @Override
     public Page<WalkLogServiceDTO.FindsOutput> findWalkLogs(WalkLogServiceDTO.FindsInput findsInput){//년월일 int타입으로 나눠서 리팩토링하기
         PageRequest pageRequest = PageRequest.of(findsInput.getPage(),findsInput.getSize(),Sort.by("walkLogId").descending());
-        int day = findsInput.getDay();
-        int month = findsInput.getMonth();
-        int year = findsInput.getYear();
-        if(year == 9999 && month == 99 && day == 99) {
+        Integer day = findsInput.getDay();
+        Integer month = findsInput.getMonth();
+        Integer year = findsInput.getYear();
+        if(year == null && month == null && day == null) {
             List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC));
 // 요청으로 들어온 page와 한 page당 원하는 데이터의 갯수
             PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);
@@ -142,13 +142,13 @@ public class WalkLogServiceImpl implements WalkLogService {
     @Override
     public Page<WalkLogServiceDTO.FindsOutput> findMyWalkLogs(WalkLogServiceDTO.FindsInput findsInput){//년월일 int타입으로 나눠서 리팩토링하기
         Long memberId = findsInput.getMemberId();
-        int year = findsInput.getYear();
-        int month = findsInput.getMonth();
-        int day = findsInput.getDay();
+        Integer year = findsInput.getYear();
+        Integer month = findsInput.getMonth();
+        Integer day = findsInput.getDay();
         memberService.findVerifiedMember(memberId);
 
         PageRequest pageRequest = PageRequest.of(findsInput.getPage(),findsInput.getSize(),Sort.by("walkLogId").descending());
-        if(year == 9999 && month == 99 && day == 99) {
+        if(year == null && month == null && day == null) {
             List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(pageRequest,
                     WalkLog.WalkLogPublicSetting.PUBLIC,
                     memberId));

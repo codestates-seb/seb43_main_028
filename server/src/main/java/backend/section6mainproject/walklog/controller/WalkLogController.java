@@ -4,16 +4,17 @@ import backend.section6mainproject.dto.MultiResponseDto;
 import backend.section6mainproject.dto.PageInfo;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
-import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.mapper.WalkLogMapper;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/walk-logs")
 @RequiredArgsConstructor
+@Slf4j
 public class WalkLogController {
 
     private final static Integer PAGE_SIZE = 10;
@@ -43,7 +45,7 @@ public class WalkLogController {
     }
     @PatchMapping("/{walk-log-id}")
     public ResponseEntity patchWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId,
-                                       @RequestBody WalkLogControllerDTO.Patch walkLogControllerPatchDto){
+                                       @Valid @RequestBody WalkLogControllerDTO.Patch walkLogControllerPatchDto){
 
         WalkLogServiceDTO.UpdateInput updateInput = walkLogMapper.walkLogControllerPatchDTOtoWalkLogServiceUpdateInputDTO(walkLogControllerPatchDto);
         updateInput.setWalkLogId(walkLogId);
@@ -75,7 +77,7 @@ public class WalkLogController {
         //객체지향적으로, 컨트롤러에는 엔티티가 존재해서는 안됨을 명심//RequestParam의 경우에는 String로 들어오는 만큼 dto에서 유효성 검사를 철저하게 만들것
         Page<WalkLogServiceDTO.FindsOutput> walkLogs = walkLogService.findWalkLogs(walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests));
         PageInfo pageInfo = walkLogService.createPageInfo(walkLogs);
-        return new ResponseEntity<>(new MultiResponseDto<>(walkLogs.toList(),pageInfo), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(walkLogs.getContent(),pageInfo), HttpStatus.OK);
     }
     @DeleteMapping("/{walk-log-id}")
     public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
