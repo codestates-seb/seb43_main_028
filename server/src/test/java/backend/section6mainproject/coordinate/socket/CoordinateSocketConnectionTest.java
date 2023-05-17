@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -31,6 +33,7 @@ import static org.mockito.BDDMockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CoordinateSocketConnectionTest {
+    private Logger log = LoggerFactory.getLogger(getClass());
     @LocalServerPort
     private int port;
     @MockBean
@@ -98,6 +101,7 @@ class CoordinateSocketConnectionTest {
         StompSession stompSession = stompClient.connect(url, new StompSessionHandlerAdapter() {
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
+                log.info("headers : {}", headers);
                 completableFuture.complete(headers);
             }
         }).get(2, TimeUnit.SECONDS);
