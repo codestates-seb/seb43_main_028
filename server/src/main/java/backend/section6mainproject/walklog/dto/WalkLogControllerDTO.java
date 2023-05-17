@@ -14,6 +14,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class Patch{
+        @Size(max = 500)
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
@@ -48,6 +50,7 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class EndPost {
+        @Size(max = 500)
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
@@ -95,7 +98,7 @@ public class WalkLogControllerDTO {
         private Long walkLogId;
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
-
+        @Size(max = 500)
         private String message;
         private Long memberId;
         private String nickname;
