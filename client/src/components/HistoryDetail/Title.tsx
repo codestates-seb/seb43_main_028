@@ -15,14 +15,12 @@ type TitleProps = {
 const OptionsObj = { Public: '전체 공개', Private: '나만 보기' }
 const OptionsAry = ['전체 공개', '나만 보기']
 export default function Title({ startAt, endAt, message, publicSetting }: TitleProps) {
-  const [edit, setEdit] = useState(true)
+  const [edit, setEdit] = useState(false)
 
-  const start = new Date(startAt)
-  const end = new Date(endAt)
   const formattedTime = {
-    date: dateFormat(start),
-    timer: passedHourMinuteSecondFormat(end.getTime() - start.getTime()),
-    time: `${format(start, 'H:mm')} ~ ${format(end, 'H:mm')}`,
+    date: dateFormat(new Date(startAt)),
+    timer: passedHourMinuteSecondFormat(new Date(endAt).getTime() - new Date(startAt).getTime()),
+    time: `${format(new Date(startAt), 'H:mm')} ~ ${format(new Date(endAt), 'H:mm')}`,
   }
 
   const filter = OptionsAry.filter(o => o !== OptionsObj[publicSetting])
@@ -31,17 +29,28 @@ export default function Title({ startAt, endAt, message, publicSetting }: TitleP
     return { id: i, title: o }
   })
 
-  const handleMessageEdit = (event: React.FormEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+  const handleMessageEdit = () => {
     setEdit(prev => !prev)
     console.log('edit!')
   }
 
-  const handleMessageSubmit = (event: React.FormEvent<HTMLButtonElement>) => {
+  const handleMessageSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setEdit(prev => !prev)
     console.log('submit!')
   }
+
+  const editingForm = (
+    <form className={styles.formBox} onSubmit={handleMessageSubmit}>
+      <label>
+        <input type='text' className={styles.editing} defaultValue={message} />
+        <div className={styles.iconBox}>
+          <Icon name='edit-gray' />
+          <button type='submit'>수정 완료</button>
+        </div>
+      </label>
+    </form>
+  )
 
   return (
     <div className={styles.container}>
@@ -57,26 +66,19 @@ export default function Title({ startAt, endAt, message, publicSetting }: TitleP
           <div>({formattedTime.time})</div>
         </div>
       </div>
-      <form className={styles.formBox} onSubmit={e => e.preventDefault()}>
-        <textarea
-          id='message'
-          className={edit ? styles.message : styles.editing}
-          defaultValue={message}
-          disabled={edit}
-        />
-        <label htmlFor='message' className={styles.edit}>
-          <Icon name='edit-gray' />
-          {edit ? (
+      {edit ? (
+        editingForm
+      ) : (
+        <div>
+          <p className={styles.message}>{message}</p>
+          <div className={styles.iconBox}>
+            <Icon name='edit-gray' />
             <button type='button' onClick={handleMessageEdit}>
               한 줄 메시지 수정
             </button>
-          ) : (
-            <button type='submit' onClick={handleMessageSubmit}>
-              수정 완료
-            </button>
-          )}
-        </label>
-      </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

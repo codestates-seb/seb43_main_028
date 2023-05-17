@@ -14,10 +14,10 @@
   margin-top: 20px;
   @include U.flex-c(row, flex-start);
   gap: 12px;
-  @include T.gray600-regular-16;
 }
 
 .iconBox {
+  @include T.gray600-regular-16;
   @include U.flex-c(row, flex-start);
   gap: 2px;
 }
@@ -28,21 +28,13 @@
 
 .message {
   @include T.gray900-bold-20;
-  width: 100%;
-
-  border: none;
-  background: none;
-  resize: vertical;
-}
-
-.edit {
-  @extend .iconBox;
-  @include T.gray600-regular-16;
 }
 
 .editing {
   @extend .message;
+  width: 100%;
   background-color: C.$gray200;
   border-radius: 12px;
   padding: 12px 16px;
+  resize: none;
 }
