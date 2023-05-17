@@ -50,7 +50,6 @@ public class WalkLogServiceDTO {
         private Integer day;
         private Integer month;
         private Integer year;
-        private boolean noPage;
     }
     @Getter
     @Setter

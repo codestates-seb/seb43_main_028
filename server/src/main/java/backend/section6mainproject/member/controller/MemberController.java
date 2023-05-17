@@ -101,7 +101,6 @@ public class MemberController {
         List<WalkLogControllerDTO.CalendarResponse> calendarResponses =
                 walkLogMapper.WalkLogServiceCalenderFindsOutputDTOsToWalkLogControllerCalendarResponseDTOs(walkLogService.findMyMonthWalkLogs(calenderFindsInput));
         return new ResponseEntity(calendarResponses,HttpStatus.OK);
-
     }
 
     @DeleteMapping("/{member-id}")

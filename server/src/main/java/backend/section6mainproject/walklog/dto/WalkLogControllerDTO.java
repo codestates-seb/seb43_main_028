@@ -1,6 +1,7 @@
 package backend.section6mainproject.walklog.dto;
 
 import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
+import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
 
 import backend.section6mainproject.walklog.entity.WalkLog;
@@ -56,7 +57,6 @@ public class WalkLogControllerDTO {
         private Integer day;
         private Integer month;
         private Integer year;
-        private boolean noPage = false;
 
     }
     @Getter
@@ -93,6 +93,18 @@ public class WalkLogControllerDTO {
 
         private WalkLog.WalkLogPublicSetting walkLogPublicSetting;
         private List<CoordinateControllerDTO.Sub> coordinates;
+        private List<WalkLogContentControllerDTO.Response> walkLogContents;
+
+    }@Getter
+    @Setter
+    @NoArgsConstructor
+    public static class SimpleResponse {
+
+        private Long walkLogId;
+        private String mapImage; // 구현예정
+        private LocalDateTime startedAt;
+        private LocalDateTime endAt;
+        private String message;
         private List<WalkLogContentControllerDTO.Response> walkLogContents;
 
     }
