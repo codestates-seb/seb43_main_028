@@ -20,7 +20,7 @@ public class MemberControllerDTO {
         private String email;
 
         @NotBlank(message = "비밀번호를 입력해주세요.")
-        @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[@$^#!%*?&])[a-zA-Z\\d@$^#!%*?&]{10,}$") //소문자,숫자,특수문자 각 1자 포함 총 10자 이상
+        @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[@$^#!%*?&])[a-zA-Z\\d@$^#!%*?&]{10,}$",message = "소문자,숫자,특수문자 각 1자 포함 총 10자 이상")
         private String password;
 
         @NotBlank(message = "닉네임을 입력해주세요.")
