@@ -10,6 +10,68 @@ v1.0.0, 2023.05.18
 
 ***
 == MemberController
+=== 회원 가입
+.http-request
+include::{snippets}/post-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-member/response-fields.adoc[]
+
+=== 회원 정보 수정
+.request-parts
+include::{snippets}/patch-member/request-parts.adoc[]
+
+.request-part-patch-fields
+include::{snippets}/patch-member/request-part-patch-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-member/response-fields.adoc[]
+
+=== 회원 정보 조회
+.http-request
+include::{snippets}/get-member/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-member/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-member/response-fields.adoc[]
+
+=== 회원 탈퇴
+.http-request
+include::{snippets}/delete-member/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-member/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-member/http-response.adoc[]
+
+=== 회원 비밀번호 변경
+.http-request
+include::{snippets}/patch-member-pw/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-member-pw/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-member-pw/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-member-pw/http-response.adoc[]
+
 == WalkLogController
 == WalkLogContentController
 === 걷기 중 순간기록 등록
