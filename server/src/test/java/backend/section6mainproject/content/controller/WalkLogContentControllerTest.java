@@ -66,7 +66,7 @@ class WalkLogContentControllerTest {
         given(mapper.controllerPostDTOTOServiceCreateInputDTO(Mockito.any(WalkLogContentControllerDTO.Post.class)))
                 .willReturn(new WalkLogContentServiceDTO.CreateInput());
         given(walkLogContentService.createWalkLogContent(Mockito.any(WalkLogContentServiceDTO.CreateInput.class)))
-                .willReturn(new WalkLogContentServiceDTO.CreateOutput(0L));
+                .willReturn(new WalkLogContentServiceDTO.CreateOutput(1L));
         given(mapper.serviceCreateOutputDTOToControllerCreateResponseDTO(Mockito.any(WalkLogContentServiceDTO.CreateOutput.class)))
                 .willReturn(stubData.getPostResponse());
 

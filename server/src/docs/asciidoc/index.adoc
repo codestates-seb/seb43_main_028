@@ -25,8 +25,8 @@ include::{snippets}/post-walk-log-content/request-part-content-fields.adoc[]
 .http-response
 include::{snippets}/post-walk-log-content/http-response.adoc[]
 
-.response-body
-include::{snippets}/patch-walk-log-content/response-body.adoc[]
+.response-fields
+include::{snippets}/post-walk-log-content/response-fields.adoc[]
 
 === 걷기 중 순간기록 수정
 .path-parameters
@@ -41,8 +41,8 @@ include::{snippets}/patch-walk-log-content/request-part-content-fields.adoc[]
 .http-response
 include::{snippets}/patch-walk-log-content/http-response.adoc[]
 
-.response-body
-include::{snippets}/patch-walk-log-content/response-body.adoc[]
+.response-fields
+include::{snippets}/patch-walk-log-content/response-fields.adoc[]
 
 === 걷기 중 순간기록 삭제
 .http-request
