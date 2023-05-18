@@ -57,7 +57,7 @@ export default function Title({ startAt, endAt, message, publicSetting }: TitleP
       <DropDown options={dropDownOption} />
       <div className={styles.timeBox}>
         <div className={styles.iconBox}>
-          <Icon name='calendar' size={24} />
+          <Icon name='calendar-gray' size={16} />
           <div>{formattedTime.date}</div>
         </div>
         <div className={styles.iconBox}>
