@@ -76,6 +76,14 @@
     </clipPath>
     </defs>
   </symbol>
-
-
+  <symbol width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id='arrow-drop-down'>
+    <path d="M11.2407 17.8642L4.41496 9.90079C3.85896 9.25212 4.31987 8.25 5.17422 8.25L18.8258 8.25C19.6801 8.25 20.141 9.25212 19.585 9.90079L12.7593 17.8642C12.3602 18.3298 11.6398 18.3298 11.2407 17.8642Z" fill="#212121"/>
+  </symbol>
+  <symbol width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="calendar">
+    <rect x="3" y="6" width="18" height="15" rx="2" stroke="#808080"/>
+    <path d="M3 11L21 11" stroke="#808080" stroke-linecap="round"/>
+    <path d="M9 16H15" stroke="#808080" stroke-linecap="round"/>
+    <path d="M8 3L8 7" stroke="#808080" stroke-linecap="round"/>
+    <path d="M16 3L16 7" stroke="#808080" stroke-linecap="round"/>
+  </symbol>
 </svg>
