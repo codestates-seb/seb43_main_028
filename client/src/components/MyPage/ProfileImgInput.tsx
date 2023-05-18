@@ -1,13 +1,38 @@
 import { useState, useRef, useEffect } from 'react'
+import imageCompression from 'browser-image-compression'
 import styles from './ProfileImgInput.module.scss'
 import Icon from '../common/Icon'
 
-export default function ProfileImgInput() {
+type ProfileImgInputProps = {
+  imgFile: File | undefined
+  setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>
+}
+
+export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInputProps) {
   const [preview, setPreview] = useState<string>('')
-  const [imgFile, setImgFile] = useState<File | undefined>()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
+  // const imageCompress = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0]
+  //   const options = {
+  //     maxSizeMB: 0.2, // 이미지 최대 용량
+  //     maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
+  //     useWebWorker: true,
+  //   }
+  //   try {
+  //     if (file) {
+  //       const compressedFile = await imageCompression(file, options)
+  //       setImgFile(compressedFile)
+  //     } else {
+  //       alert('no file')
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // imageCompress(event)
     setImgFile(event.target.files?.[0])
   }
 
@@ -19,6 +44,7 @@ export default function ProfileImgInput() {
   }
 
   const handleCameraClick = () => {
+    console.log(inputRef.current)
     inputRef.current?.click()
   }
 

@@ -10,6 +10,8 @@ type EditProfilePropsType = {
 }
 
 function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
+  const [imgFile, setImgFile] = useState<File | undefined>()
+
   const [memberId] = useAtom(idAtom)
   const [, setUser] = useAtom(userAtom)
 
@@ -66,7 +68,7 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
         자기소개는 60자 이하로 입력가능합니다.
       </div>
       <div className={styles.editProfileImgBox}>
-        <ProfileImgInput />
+        <ProfileImgInput imgFile={imgFile} setImgFile={setImgFile} />
       </div>
       <div className={styles.editName}>
         <input type='text' placeholder='이름' name='nickname' className={styles.editNameInput} />
