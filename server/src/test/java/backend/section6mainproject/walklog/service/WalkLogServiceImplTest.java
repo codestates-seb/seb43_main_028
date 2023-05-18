@@ -41,7 +41,7 @@ public class WalkLogServiceImplTest {
 
     @Mock
     private MemberService memberService;
-    @Spy
+    @Mock
     private WalkLogMapper walkLogMapper;
     @Mock
     private CustomBeanUtils<WalkLog> beanUtils;
@@ -246,20 +246,25 @@ public class WalkLogServiceImplTest {
     @Test
     public void findMyWalkLogsTest(){
         WalkLogServiceDTO.FindsInput findsInput = createFindsInput();
+        WalkLogServiceDTO.FindsOutput findsOutput = new WalkLogServiceDTO.FindsOutput();
+        findsOutput.setWalkLogId(1L);
+        findsOutput.setMessage("dd");
+        findsOutput.setStartedAt(LocalDateTime.now());
+        findsOutput.setEndAt(LocalDateTime.now());
         ArrayList<WalkLog> walkLogs = new ArrayList<>();
         WalkLog walkLog = createWalkLog(1L);
         WalkLog walkLog2 = createWalkLog(2L);
         walkLogs.add(walkLog);
         walkLogs.add(walkLog2);
-        PageImpl<WalkLog> pageWalkLogs = new PageImpl<>(walkLogs);
 
         given(walkLogRepository.findAllByMyWalkLogFromDay(Mockito.any(PageRequest.class),anyLong(),anyInt(),anyInt(),anyInt()))
-                .willReturn(pageWalkLogs);
-
+                .willReturn(new PageImpl<>(walkLogs));
+        given(walkLogMapper.walkLogToWalkLogServiceFindsOutputDTO(Mockito.any(WalkLog.class))).willReturn(findsOutput);
         Page<WalkLogServiceDTO.FindsOutput> result = walkLogService.findMyWalkLogs(findsInput);
 
         assertThat(result.getContent().size()).isEqualTo(2);
-        //값을 테스트하는법을 좀더 연구해보겠습니다...
+        assertThat(result.getContent().get(0).getWalkLogId()).isEqualTo(findsOutput.getWalkLogId());
+        assertThat(result.getContent().get(0).getMessage()).isEqualTo(findsOutput.getMessage());
 
     }
     @Test

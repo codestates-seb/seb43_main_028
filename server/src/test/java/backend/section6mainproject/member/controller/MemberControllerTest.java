@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static backend.section6mainproject.util.ApiDocumentUtils.*;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -250,13 +252,17 @@ public class MemberControllerTest {
         WalkLogControllerDTO.GetRequests getRequests = createWalkLogControllerDTOgetRequests();
         WalkLogServiceDTO.FindsInput findsInput = createWalkLogServiceDTOfindsInput();
         WalkLogControllerDTO.Response response = new WalkLogControllerDTO.Response();
+        ArrayList<WalkLogServiceDTO.FindsOutput> findsOutputs = new ArrayList<>();
+        WalkLogServiceDTO.FindsOutput findsOutput = new WalkLogServiceDTO.FindsOutput();
+        findsOutputs.add(findsOutput);
+        findsOutputs.add(findsOutput);
         response.setWalkLogId(1L);
         response.setMessage("메세지");
 
         given(walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(Mockito.any(WalkLogControllerDTO.GetRequests.class)))
                 .willReturn(findsInput);
         given(walkLogService.findMyWalkLogs(Mockito.any(WalkLogServiceDTO.FindsInput.class)))
-                .willReturn(new PageImpl<WalkLogServiceDTO.FindsOutput>(new ArrayList<>()));
+                .willReturn(new PageImpl<>(findsOutputs));
         given(walkLogMapper.walkLogServiceFindsOutputDTOtoWalkLogControllerResponseDTO(Mockito.any(WalkLogServiceDTO.FindsOutput.class)))
                 .willReturn(response);
         //when
@@ -268,8 +274,10 @@ public class MemberControllerTest {
                         .param("month",String.valueOf(getRequests.getMonth()))
                         .param("day",String.valueOf(getRequests.getDay())));
                 //then
-        perform.andExpect(status().isOk());
-        //값을 검증하는 부분에서 좋은 방법이 떠오르지 않아 통신유무만을 확인합니다. 혹시 좋은 방법이 있으신 분은 조언 부탁드리겠습니다.
+        perform.andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.size()").value(findsOutputs.size()))
+        .andExpect(jsonPath("$.data[0].walkLogId").value(response.getWalkLogId()))
+        .andExpect(jsonPath("$.data[0].message").value(response.getMessage()));
     }
 
     private static WalkLogControllerDTO.GetRequests createWalkLogControllerDTOgetRequests() {
