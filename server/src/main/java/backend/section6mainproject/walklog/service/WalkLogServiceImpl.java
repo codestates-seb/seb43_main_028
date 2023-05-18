@@ -90,13 +90,9 @@ public class WalkLogServiceImpl implements WalkLogService {
 
     @Override
     public List<WalkLogServiceDTO.CalenderFindsOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindsInput totalFindsInput){
-        return walkLogMapper.walkLogsToWalkLogServiceCalenderFindsOutputDTOs(walkLogRepository.findMyWalkLogFromMonthForCalendar(totalFindsInput.getMemberId(), totalFindsInput.getYear(), totalFindsInput.getMonth()));
-    }
-    private static PageImpl<WalkLogServiceDTO.FindsOutput> listToPage(PageRequest pageRequest, List<WalkLogServiceDTO.FindsOutput> findsOutputs) {
-        int start = (int) pageRequest.getOffset();
-        int end = Math.min((start + pageRequest.getPageSize()), findsOutputs.size());
-        PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = new PageImpl<>(findsOutputs.subList(start, end), pageRequest, findsOutputs.size());
-        return pageFindsOutput;
+        List<WalkLog> myWalkLogFromMonthForCalendar =
+                walkLogRepository.findMyWalkLogFromMonthForCalendar(totalFindsInput.getMemberId(), totalFindsInput.getYear(), totalFindsInput.getMonth());
+        return walkLogMapper.walkLogsToWalkLogServiceCalenderFindsOutputDTOs(myWalkLogFromMonthForCalendar);
     }
 
     @Override

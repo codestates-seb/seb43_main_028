@@ -86,11 +86,11 @@ public class MemberController {
     public ResponseEntity getMyWalkLogs(@PathVariable("member-id") @Positive Long memberId,
                                         @Valid @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
 
-        WalkLogServiceDTO.FindsInput findsInput = walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests);
+        WalkLogServiceDTO.FindsInput findsInput =
+                walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests);
         findsInput.setMemberId(memberId);
         Page<WalkLogServiceDTO.FindsOutput> myWalkLogs = walkLogService.findMyWalkLogs(findsInput);
-        PageInfo pageInfo = walkLogService.createPageInfo(myWalkLogs);
-        return new ResponseEntity<>(new MultiResponseDto<>(myWalkLogs.getContent(),pageInfo), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(myWalkLogs.getContent(),myWalkLogs), HttpStatus.OK);
     }
     @GetMapping("/{member-id}/walk-logs/calendar")
     public ResponseEntity getMyWalkLogsForCalendar(@PathVariable("member-id") @Positive Long memberId,
