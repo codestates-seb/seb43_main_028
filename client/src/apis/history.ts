@@ -14,3 +14,17 @@ export const getHistory = async (walkLogId: string) => {
     return 'fail'
   }
 }
+
+export const patchHistoryMessage = async (walkLogId: string, data: string) => {
+  try {
+    const response = await axios.patch(`/api/walk-logs/${walkLogId}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}

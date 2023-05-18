@@ -103,10 +103,11 @@ export default function HistoryDetail() {
       ) : (
         <div className={styles.container}>
           <Title
+            id={walkLogId}
             startAt={createdAt}
             endAt={endAt}
-            message={message}
-            publicSetting={walkLogPublicSetting}
+            text={message}
+            setting={walkLogPublicSetting}
           />
           <div className={styles.map}>지도 재사용 컴포넌츠</div>
           {detailItems}
