@@ -1,5 +1,6 @@
 package backend.section6mainproject.coordinate;
 
+import backend.section6mainproject.coordinate.interceptor.AnonymousInterceptor;
 import backend.section6mainproject.coordinate.interceptor.ConnectionInterceptor;
 import backend.section6mainproject.coordinate.interceptor.SubscribeInterceptor;
 import backend.section6mainproject.member.service.MemberService;
@@ -24,13 +25,15 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new SubscribeInterceptor());
+        registration.interceptors(new SubscribeInterceptor(), new AnonymousInterceptor());
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws/walk-logs")
                 .addInterceptors(new ConnectionInterceptor(memberService))
+                .setAllowedOrigins("*");
+        registry.addEndpoint("/ws/anonymous/walk-logs")
                 .setAllowedOrigins("*");
     }
 
