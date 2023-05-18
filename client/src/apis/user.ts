@@ -99,11 +99,11 @@ export const patchUserProfile = async (url: string, formData: FormData) => {
   }
 }
 
-export const patchUserPrivacySettings = async (url: string, data: UserInfoType) => {
+export const patchUserPrivacySettings = async (url: string, data: any) => {
   try {
     const response = await axios.patch(url, data, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     })
     return response.data

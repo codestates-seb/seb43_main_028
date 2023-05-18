@@ -19,17 +19,22 @@ export default function Mypage() {
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)
   }
-  const handleSetPrivacySettings = async (option: string) => {
+  const handleSetPrivacySettings = async (param: string) => {
     if (userData) {
-      const editedUserData = { ...userData, defaultWalkLogPublicSetting: option }
-      const res = await patchUserPrivacySettings(`/api/members/${memberId}`, editedUserData)
+      const data = new FormData()
+      const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: param })], {
+        type: 'application/json',
+      })
+
+      data.append('patch', blob)
+      const res = await patchUserPrivacySettings(`/api/members/${memberId}`, data)
       setUser(res)
     }
   }
 
   const selectOptions = [
-    { id: 1, title: '나만 보기', handleClick: handleSetPrivacySettings },
-    { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings },
+    { id: 1, title: '나만 보기', handleClick: handleSetPrivacySettings, param: 'PRIVATE' },
+    { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings, param: 'PUBLIC' },
   ]
 
   useEffect(() => {
