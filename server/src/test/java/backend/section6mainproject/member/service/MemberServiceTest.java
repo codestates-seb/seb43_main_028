@@ -98,6 +98,26 @@ public class MemberServiceTest {
 
     }
 
+    @Test
+    void updateMemberPasswordTest() throws Exception {
+        Long memberId = 1L;
+        String newPassword = "newPassword";
+        MemberServiceDTO.UpdatePwInput updatePwInput = new MemberServiceDTO.UpdatePwInput();
+        updatePwInput.setMemberId(memberId);
+        updatePwInput.setPassword(newPassword);
+
+        Member priorMember = new Member();
+        priorMember.setMemberId(memberId);
+        priorMember.setPassword("oldPassword");
+
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(priorMember));
+        given(memberRepository.save(Mockito.any(Member.class))).willReturn(new Member());
+
+        memberService.updateMemberPassword(updatePwInput);
+        verify(memberRepository, times(1)).findById(memberId);
+        verify(memberRepository, times(1)).save(priorMember);
+    }
+
     /*@Test
     void updateMemberTest() throws Exception {
         MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();

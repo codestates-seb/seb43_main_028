@@ -92,7 +92,7 @@ public class RestExceptionAdvice {
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity handleFileSizeLimitExceededException(FileSizeLimitExceededException e) {
+    public ResponseEntity handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         //전송한 이미지 용량초과시 예외처리
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.PAYLOAD_TOO_LARGE.value(), "File size limit exceeded");
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(errorResponse);
