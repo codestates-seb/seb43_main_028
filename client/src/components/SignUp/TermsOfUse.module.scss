@@ -2,7 +2,7 @@
 @use '../../styles/utils' as U;
 @use '../../styles/typography' as T;
 
-.formContainer {
+.container {
   width: 100%;
   height: 166px;
   background-color: C.$gray100;
@@ -11,13 +11,13 @@
   @include U.flex-c(column, flex-start, stretch);
 }
 
-.formAgreementTitle {
+.agreementTitle {
   font-weight: bold;
   font-size: 1.4rem;
   color: #000;
 }
 
-.formAgreementAll {
+.agreementAll {
   @include U.flex-c(row, flex-start, center);
   gap: 5px;
   height: 24px;
@@ -30,13 +30,13 @@ hr {
   border: 1px solid C.$gray200;
 }
 
-.formAgreementItemBox {
+.agreementItemBox {
   @include U.flex-c(column, flex-start, start);
   padding-top: 12px;
   gap: 0px;
 }
 
-.formAgreementItem {
+.agreementItem {
   @include U.flex-c(row, flex-start, center);
   gap: 5px;
   height: 24px;
