@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Icon from '../common/Icon'
 import styles from './DetailItem.module.scss'
 import ImgModal from './ImgModal'
-import { WalkLogContentsDataType } from '../../types/HistoryDetail'
+import { WalkLogContentsDataType, ModalOption } from '../../types/HistoryDetail'
 import { deleteHistoryItem } from '../../apis/history'
 
 type DetailItemProps = {
@@ -12,6 +12,8 @@ type DetailItemProps = {
   snapTime: string
   onEdit: () => void
   setEditId: React.Dispatch<React.SetStateAction<string | undefined>>
+  setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
+  setDeleteModalOption: React.Dispatch<React.SetStateAction<ModalOption>>
 }
 
 export default function DetailItem({
@@ -20,9 +22,20 @@ export default function DetailItem({
   snapTime,
   onEdit,
   setEditId,
+  setOpenDeleteModal,
+  setDeleteModalOption,
 }: DetailItemProps) {
   const { walkLogContentId, imageUrl, text } = data
   const [imgModal, setImgModal] = useState(false)
+
+  const queryClient = useQueryClient()
+
+  const handleDeleteHistoryItem = useMutation({
+    mutationFn: () => deleteHistoryItem(walkLogId, walkLogContentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['history', walkLogId])
+    },
+  })
 
   const handleEditMode = () => {
     if (walkLogContentId) {
@@ -35,14 +48,16 @@ export default function DetailItem({
     setImgModal(prev => !prev)
   }
 
-  const queryClient = useQueryClient()
-
-  const handleDeleteHistoryItem = useMutation({
-    mutationFn: () => deleteHistoryItem(walkLogId, walkLogContentId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['history', walkLogId])
-    },
-  })
+  const handleDeleteModal = () => {
+    setOpenDeleteModal(prev => !prev)
+    setDeleteModalOption({
+      title: '순간',
+      deleteFn: () => {
+        handleDeleteHistoryItem.mutate()
+        setOpenDeleteModal(prev => !prev)
+      },
+    })
+  }
 
   return (
     <article className={styles.contentBox}>
@@ -61,12 +76,7 @@ export default function DetailItem({
               <Icon name='edit-gray' size={24} />
               수정
             </button>
-            <button
-              type='button'
-              className={styles.icon}
-              onClick={() => handleDeleteHistoryItem.mutate()}
-              disabled={handleDeleteHistoryItem.isLoading}
-            >
+            <button type='button' className={styles.icon} onClick={handleDeleteModal}>
               <Icon name='trash-gray' size={24} />
               삭제
             </button>

@@ -10,12 +10,17 @@ import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
 import { getHistory } from '../apis/history'
-import { WalkLogContentsDataType } from '../types/HistoryDetail'
+import { WalkLogContentsDataType, ModalOption } from '../types/HistoryDetail'
 
 export default function HistoryDetail() {
   const [edit, setEdit] = useState<boolean>(false)
   const [editId, setEditId] = useState<string>()
-  const [deleteModal, setDeleteModal] = useState<boolean>(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [deleteModalOption, setDeleteModalOption] = useState<ModalOption>({
+    title: '',
+    deleteFn: () => {},
+  })
+
   const { id } = useParams()
 
   const getHistoryQuery = useQuery({
@@ -49,20 +54,27 @@ export default function HistoryDetail() {
   }
 
   const handleDeleteModal = () => {
-    setDeleteModal(prev => !prev)
+    setOpenDeleteModal(prev => !prev)
+    setDeleteModalOption({
+      title: '걷기',
+      deleteFn: () => {
+        console.log('걷기 기록 삭제')
+        setOpenDeleteModal(prev => !prev)
+      },
+    })
   }
 
   const modalData = {
-    title: '기록을 삭제하시겠습니까?',
+    title: `${deleteModalOption.title} 기록을 삭제하시겠습니까?`,
     options: [
       {
         label: '삭제하기',
-        handleClick: () => console.log('진짜 삭제'),
+        handleClick: deleteModalOption.deleteFn,
         id: 0,
       },
       {
         label: '취소하기',
-        handleClick: handleDeleteModal,
+        handleClick: () => setOpenDeleteModal(prev => !prev),
         id: 1,
       },
     ],
@@ -94,6 +106,8 @@ export default function HistoryDetail() {
         snapTime={snapTime}
         onEdit={handleEdit}
         setEditId={setEditId}
+        setOpenDeleteModal={setOpenDeleteModal}
+        setDeleteModalOption={setDeleteModalOption}
       />
     )
   })
@@ -118,7 +132,9 @@ export default function HistoryDetail() {
               기록 삭제
             </button>
           </div>
-          {deleteModal && <Modal modalData={modalData} onClose={handleDeleteModal} />}
+          {openDeleteModal && (
+            <Modal modalData={modalData} onClose={() => setOpenDeleteModal(prev => !prev)} />
+          )}
         </div>
       )}
     </div>

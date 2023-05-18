@@ -4,3 +4,8 @@ export type WalkLogContentsDataType = {
   text: string | null
   walkLogContentId: string
 }
+
+export type ModalOption = {
+  title: string
+  deleteFn: () => void
+}
