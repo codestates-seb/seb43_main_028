@@ -2,8 +2,12 @@ import { useState, useRef, useEffect } from 'react'
 import styles from './ImgInput.module.scss'
 import Icon from '../common/Icon'
 
-export default function ImgInput() {
-  const [preview, setPreview] = useState<string>('')
+type ImgInputProps = {
+  initialValue: string | undefined
+}
+
+export default function ImgInput({ initialValue }: ImgInputProps) {
+  const [preview, setPreview] = useState<string | undefined>(initialValue)
   const [imgFile, setImgFile] = useState<File | undefined>()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -23,14 +27,14 @@ export default function ImgInput() {
   }
 
   useEffect(() => {
-    if (!imgFile) return setPreview('')
+    if (!imgFile) return setPreview(initialValue)
 
     const nextPreview = URL.createObjectURL(imgFile)
     setPreview(nextPreview)
 
     return () => {
       URL.revokeObjectURL(nextPreview)
-      setPreview('')
+      setPreview(initialValue)
     }
   }, [imgFile])
 
