@@ -180,8 +180,7 @@ public class WalkLogServiceImplTest {
         //given
         WalkLogServiceDTO.UpdateInput updateInput = new WalkLogServiceDTO.UpdateInput();
         updateInput.setWalkLogId(1L);
-        WalkLog walkLog = new WalkLog();
-        walkLog.setWalkLogId(updateInput.getWalkLogId());
+        WalkLog walkLog = createWalkLog();
 
         given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
 
@@ -252,6 +251,7 @@ public class WalkLogServiceImplTest {
         walkLog.setMember(member);
         walkLog.setWalkLogId(1L);
         walkLog.setMessage("안녕하십니까");
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.RECORDING);
         return walkLog;
     }
 }

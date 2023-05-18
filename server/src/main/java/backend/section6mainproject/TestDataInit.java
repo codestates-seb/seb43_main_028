@@ -43,7 +43,6 @@ public class TestDataInit {
         WalkLogContent walkLogContent = new WalkLogContent();
         walkLogContent.setWalkLog(walkLog);
         walkLogContent.setText("첫번째 걷기 기록중 글 기록");
-        walkLogContent.setImageKey("걷기이미지");
         walkLogContentRepository.save(walkLogContent);
 
     }
