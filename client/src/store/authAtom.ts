@@ -7,6 +7,7 @@ type UserAtomType = {
   introduction: string
   memberId: number
   nickname: string
+  createdAt: string
   totalWalkLog: number
   totalWalkLogContent: number
 }
@@ -18,6 +19,7 @@ export const userAtom = atom<UserAtomType>({
   introduction: '',
   memberId: 0,
   nickname: '',
+  createdAt: '',
   totalWalkLog: 0,
   totalWalkLogContent: 0,
 })

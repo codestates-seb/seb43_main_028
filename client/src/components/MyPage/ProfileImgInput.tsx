@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
-import styles from './ImgInput.module.scss'
+import styles from './ProfileImgInput.module.scss'
 import Icon from '../common/Icon'
 
-type ImgInputProps = {
-  initialValue: string | undefined
+type ProfileImgInputProps = {
+  imgFile: File | undefined
+  setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>
 }
 
-export default function ImgInput({ initialValue }: ImgInputProps) {
-  const [preview, setPreview] = useState<string | undefined>(initialValue)
-  const [imgFile, setImgFile] = useState<File | undefined>()
+export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInputProps) {
+  const [preview, setPreview] = useState<string>('')
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,14 +27,14 @@ export default function ImgInput({ initialValue }: ImgInputProps) {
   }
 
   useEffect(() => {
-    if (!imgFile) return setPreview(initialValue)
+    if (!imgFile) return setPreview('')
 
     const nextPreview = URL.createObjectURL(imgFile)
     setPreview(nextPreview)
 
     return () => {
       URL.revokeObjectURL(nextPreview)
-      setPreview(initialValue)
+      setPreview('')
     }
   }, [imgFile])
 

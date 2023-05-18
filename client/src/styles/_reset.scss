@@ -48,3 +48,10 @@ ul,
 ol {
   list-style: none;
 }
+input {
+  appearance: none;
+  &:focus {
+    outline: none;
+    appearance: none;
+  }
+}
