@@ -67,8 +67,8 @@ public class WalkLogServiceImpl implements WalkLogService {
     @Override
     public WalkLogServiceDTO.Output exitWalkLog(WalkLogServiceDTO.ExitInput exitInput){
         WalkLog findWalkLog = findVerifiedWalkLog(exitInput.getWalkLogId());
-        String mapImage = storageService.store(exitInput.getMapImage(), "mapImage");
         checkWalkLogStatusRecording(findWalkLog);
+        String mapImage = storageService.store(exitInput.getMapImage(), "mapImage");
         WalkLog walkLog = walkLogMapper.walkLogServiceExitInputDTOtoWalkLog(exitInput);
         storageService.delete(findWalkLog.getMapImage());
         WalkLog exitedWalkLog = 
