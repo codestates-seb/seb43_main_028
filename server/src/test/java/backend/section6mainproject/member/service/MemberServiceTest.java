@@ -111,9 +111,9 @@ public class MemberServiceTest {
         priorMember.setPassword("oldPassword");
 
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(priorMember));
+        given(memberRepository.save(Mockito.any(Member.class))).willReturn(new Member());
 
         memberService.updateMemberPassword(updatePwInput);
-
         verify(memberRepository, times(1)).findById(memberId);
         verify(memberRepository, times(1)).save(priorMember);
     }

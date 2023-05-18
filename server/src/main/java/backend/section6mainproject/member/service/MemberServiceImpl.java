@@ -96,7 +96,6 @@ public class MemberServiceImpl implements MemberService{
         return mapper.memberToOutput(updatedMember);
     }
 
-    @Override
     public void updateMemberPassword(MemberServiceDTO.UpdatePwInput updatePwInput) {
         Long memberId = updatePwInput.getMemberId();
        Member findMember = findVerifiedMember(memberId); // 등록된 적 없는 회원이면 에러뜬다.
