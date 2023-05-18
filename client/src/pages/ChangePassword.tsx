@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAtom } from 'jotai'
-import { userAtom } from '../store/authAtom'
+import { userAtom, idAtom } from '../store/authAtom'
 import { signIn } from '../apis/user'
 import styles from './ChangePassword.module.scss'
 import ChangingPassword from '../components/ChangePassword/ChangingPassword'
@@ -9,24 +9,30 @@ import PasswordChanged from '../components/ChangePassword/PasswordChanged'
 export default function ChangePassword() {
   const [isChangingPassword, setIsChangingPassword] = useState(false)
   const [isPasswordChanged, setIsPasswordChanged] = useState(false)
+  const [memberId, setMemberId] = useState(-1)
 
   const [user] = useAtom(userAtom)
+  const [currentMemberId] = useAtom(idAtom)
   const { email } = user
 
   const confirmPassword = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const password = formData.get('password')
-    const memberId = await signIn({ email, password, autoLogin: true })
+    const id = await signIn({ email, password, autoLogin: true })
 
-    if (memberId) {
+    if (id === currentMemberId) {
+      setMemberId(id)
       setIsChangingPassword(true)
+    } else {
+      alert('잘못된 비밀번호입니다.')
     }
   }
 
   if (isChangingPassword && !isPasswordChanged) {
     return (
       <ChangingPassword
+        memberId={memberId}
         email={email}
         setIsChangingPassword={setIsChangingPassword}
         setIsPasswordChanged={setIsPasswordChanged}
@@ -35,7 +41,12 @@ export default function ChangePassword() {
   }
 
   if (!isChangingPassword && isPasswordChanged) {
-    return <PasswordChanged />
+    return (
+      <PasswordChanged
+        setIsChangingPassword={setIsChangingPassword}
+        setIsPasswordChanged={setIsPasswordChanged}
+      />
+    )
   }
 
   return (

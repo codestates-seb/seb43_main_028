@@ -113,13 +113,16 @@ export const patchUserPrivacySettings = async (url: string, data: UserInfoType) 
   }
 }
 
-export const patchUserPassword = async (url: string, newPassword: string) => {
+export const patchUserPassword = async (url: string, passwordData: any) => {
   try {
-    await axios.patch(url, newPassword, {
+    console.log(url, passwordData)
+    const response = await axios.patch(url, passwordData, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
+    console.log('patchUserPassword')
+    console.log(response)
     return 'success'
   } catch (error: unknown) {
     console.log(error)

@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form'
 import styles from './ChangingPassword.module.scss'
+import { patchUserPassword } from '../../apis/user'
 
 type ChangingPasswordPropsType = {
+  memberId: number
   email: string
   setIsChangingPassword: React.Dispatch<React.SetStateAction<boolean>>
   setIsPasswordChanged: React.Dispatch<React.SetStateAction<boolean>>
@@ -13,6 +15,7 @@ type FormValueType = {
 }
 
 export default function ChangingPassword({
+  memberId,
   email,
   setIsChangingPassword,
   setIsPasswordChanged,
@@ -57,15 +60,25 @@ export default function ChangingPassword({
     validate: value => value === getValues('newPassword') || '비밀번호가 다릅니다.',
   })
 
-  const handleChangePassword = () => {
-    setIsChangingPassword(false)
-    setIsPasswordChanged(true)
+  const handleChangePassword = async () => {
+    const newPassword = getValues('newPassword')
+    const passwordData = {
+      password: newPassword,
+    }
+    const res = await patchUserPassword(`/api/members/${memberId}/pw`, passwordData)
+    console.log(res)
+    if (res === 'success') {
+      console.log('성공')
+      setIsChangingPassword(false)
+      setIsPasswordChanged(true)
+    }
   }
+
   return (
     <form className={styles.formContainer} onSubmit={handleChangePassword}>
       <div className={styles.inputBox}>
         <label className={styles.label} htmlFor='password'>
-          비밀번호
+          신규 비밀번호
         </label>
         <input
           id='newPassword'
@@ -87,7 +100,7 @@ export default function ChangingPassword({
       </div>
       <div className={styles.inputBox}>
         <label className={styles.label} htmlFor='password'>
-          비밀번호
+          신규 비밀번호 확인
         </label>
         <input
           id='password'
