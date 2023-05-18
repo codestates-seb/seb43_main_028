@@ -6,12 +6,14 @@ import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
 import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.content.mapper.WalkLogContentMapper;
 import backend.section6mainproject.content.service.WalkLogContentService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import backend.section6mainproject.util.ApiDocumentUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
@@ -19,21 +21,30 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
+import org.springframework.restdocs.generate.RestDocumentationGenerator;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.PayloadDocumentation;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static backend.section6mainproject.util.ApiDocumentUtils.*;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = WalkLogContentController.class)
+@WebMvcTest(controllers = WalkLogContentController.class,
+        excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @MockBean({JpaMetamodelMappingContext.class, StompExceptionAdvice.class})
+@AutoConfigureRestDocs
 class WalkLogContentControllerTest {
+    @Autowired
     private MockMvc mockMvc;
     @MockBean
     private WalkLogContentMapper mapper;
@@ -48,7 +59,6 @@ class WalkLogContentControllerTest {
     void init() {
         objectMapper = new ObjectMapper();
         stubData = new WalkLogContentStubData();
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
     @Test
     void postContent() throws Exception {
@@ -67,17 +77,39 @@ class WalkLogContentControllerTest {
         MockPart part = new MockPart("content", content.getBytes(StandardCharsets.UTF_8));
         part.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
+        String urlTemplate = "/walk-logs/{walk-log-id}/contents";
+
         // when
         ResultActions actions = mockMvc.perform(
-                MockMvcRequestBuilders.multipart(HttpMethod.POST, "/walk-logs/{walk-log-id}/contents", stubData.getWalkLogId())
+
+                MockMvcRequestBuilders.multipart(HttpMethod.POST, urlTemplate, stubData.getWalkLogId())
                         .file(contentImage)
                         .part(part)
+                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate)
         );
 
         // then
         actions
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.walkLogContentId").value(stubData.getWalkLogContentId()));
+                .andExpect(jsonPath("$.walkLogContentId").value(stubData.getWalkLogContentId()))
+                .andDo(document(
+                        "post-walk-log-content",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("walk-log-id").description("걷기 기록 식별자")
+                        ),
+                        requestParts(
+                                partWithName("contentImage").description("걷기 중 순간기록 사진").optional(),
+                                partWithName("content").description("걷기 중 순간기록 JSON 데이터")
+                        ),
+                        requestPartFields("content",
+                                fieldWithPath("text").type(JsonFieldType.STRING).description("걷기 중 순간기록 텍스트").optional()
+                                ),
+                        responseFields(
+                                fieldWithPath("walkLogContentId").type(JsonFieldType.NUMBER).description("걷기중 순간기록 식별자")
+                        )
+                ));
     }
 
     @Test
@@ -99,21 +131,46 @@ class WalkLogContentControllerTest {
         MockPart part = new MockPart("content", content.getBytes(StandardCharsets.UTF_8));
         part.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
+        String urlTemplate = "/walk-logs/{walk-log-id}/contents/{content-id}";
+
         // when
         ResultActions actions = mockMvc.perform(
                 MockMvcRequestBuilders.multipart(
                                 HttpMethod.PATCH,
-                                "/walk-logs/{walk-log-id}/contents/{content-id}",
+                                urlTemplate,
                                 stubData.getWalkLogId(), stubData.getWalkLogContentId())
                         .file(contentImage)
                         .part(part)
+                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate)
         );
 
         // then
         actions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.walkLogContentId").value(response.getWalkLogContentId()))
-                .andExpect(jsonPath("$.text").value(response.getText()));
+                .andExpect(jsonPath("$.text").value(response.getText()))
+                .andDo(document(
+                        "patch-walk-log-content",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("walk-log-id").description("걷기 기록 식별자"),
+                                parameterWithName("content-id").description("걷기 중 순간기록 식별자")
+                        ),
+                        requestParts(
+                                partWithName("contentImage").description("걷기 중 순간기록 사진").optional(),
+                                partWithName("content").description("걷기 중 순간기록 JSON 데이터")
+                        ),
+                        requestPartFields("content",
+                                fieldWithPath("text").type(JsonFieldType.STRING).description("걷기 중 순간기록 텍스트").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("walkLogContentId").type(JsonFieldType.NUMBER).description("걷기 중 순간기록 식별자"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("순간기록 생성시각"),
+                                fieldWithPath("text").type(JsonFieldType.STRING).description("걷기 중 순간기록 텍스트"),
+                                fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("걷기 중 순간기록 사진 임시 URL")
+                        )
+                ));
     }
 
     @Test
@@ -122,13 +179,25 @@ class WalkLogContentControllerTest {
         Long walkLogId = stubData.getWalkLogId();
         Long walkLogContentId = stubData.getWalkLogContentId();
 
+        String urlTemplate = "/walk-logs/{walk-log-id}/contents/{content-id}";
+
         // when
         ResultActions actions = mockMvc.perform(
-                MockMvcRequestBuilders.delete("/walk-logs/{walk-log-id}/contents/{content-id}", walkLogId, walkLogContentId)
+                MockMvcRequestBuilders.delete(urlTemplate, walkLogId, walkLogContentId)
+                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate)
         );
 
         // then
         actions
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(document(
+                        "delete-walk-log-content",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("walk-log-id").description("걷기 기록 식별자"),
+                                parameterWithName("content-id").description("걷기 중 순간기록 식별자")
+                        )
+                ));
     }
 }

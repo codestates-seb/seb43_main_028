@@ -1,0 +1,55 @@
+= 걷기 기록 애플리케이션
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+
+v1.0.0, 2023.05.18
+
+***
+== MemberController
+== WalkLogController
+== WalkLogContentController
+=== 걷기 중 순간기록 등록
+.path-parameters
+include::{snippets}/post-walk-log-content/path-parameters.adoc[]
+
+.request-parts
+include::{snippets}/post-walk-log-content/request-parts.adoc[]
+
+.request-part-content-fields
+include::{snippets}/post-walk-log-content/request-part-content-fields.adoc[]
+
+.http-response
+include::{snippets}/post-walk-log-content/http-response.adoc[]
+
+.response-body
+include::{snippets}/patch-walk-log-content/response-body.adoc[]
+
+=== 걷기 중 순간기록 수정
+.path-parameters
+include::{snippets}/patch-walk-log-content/path-parameters.adoc[]
+
+.request-parts
+include::{snippets}/patch-walk-log-content/request-parts.adoc[]
+
+.request-part-content-fields
+include::{snippets}/patch-walk-log-content/request-part-content-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-walk-log-content/http-response.adoc[]
+
+.response-body
+include::{snippets}/patch-walk-log-content/response-body.adoc[]
+
+=== 걷기 중 순간기록 삭제
+.http-request
+include::{snippets}/delete-walk-log-content/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-walk-log-content/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-walk-log-content/http-response.adoc[]
