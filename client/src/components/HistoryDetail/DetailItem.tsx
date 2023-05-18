@@ -2,26 +2,22 @@ import { useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './DetailItem.module.scss'
 import ImgModal from './ImgModal'
+import { WalkLogContentsDataType } from '../../types/HistoryDetail'
 
 type DetailItemProps = {
-  data: {
-    id: string
-    createdAt: string
-    imageUrl: string
-    text: string
-  }
+  data: WalkLogContentsDataType
   snapTime: string
   onEdit: () => void
   setEditId: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 export default function DetailItem({ data, snapTime, onEdit, setEditId }: DetailItemProps) {
-  const { id, imageUrl, text } = data
+  const { walkLogContentId, imageUrl, text } = data
   const [imgModal, setImgModal] = useState(false)
 
   const handleEdit = () => {
-    if (id) {
-      setEditId(id)
+    if (walkLogContentId) {
+      setEditId(walkLogContentId)
     }
     onEdit()
   }

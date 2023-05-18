@@ -3,11 +3,11 @@ import styles from './ImgInput.module.scss'
 import Icon from '../common/Icon'
 
 type ImgInputProps = {
-  initialValue: string | undefined
+  initialValue: string | null
 }
 
 export default function ImgInput({ initialValue }: ImgInputProps) {
-  const [preview, setPreview] = useState<string | undefined>(initialValue)
+  const [preview, setPreview] = useState<string | null>(initialValue)
   const [imgFile, setImgFile] = useState<File | undefined>()
   const inputRef = useRef<HTMLInputElement | null>(null)
 

@@ -22,14 +22,12 @@ function Header({ onCancel }: HeaderProps) {
 }
 
 type SnapFormProps = {
-  initialValue?: {
-    imgUrl: string
-    text: string
-  }
+  initialImgUrl: string | null
+  initialText: string | null
   handleCancel: () => void
 }
 
-export default function SnapForm({ initialValue, handleCancel }: SnapFormProps) {
+export default function SnapForm({ initialImgUrl, initialText, handleCancel }: SnapFormProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log('순간기록 전송')
@@ -44,7 +42,7 @@ export default function SnapForm({ initialValue, handleCancel }: SnapFormProps) 
       <form onSubmit={handleSubmit}>
         <div>
           <Header onCancel={handleCancel} />
-          <ImgInput initialValue={initialValue?.imgUrl} />
+          <ImgInput initialValue={initialImgUrl} />
         </div>
         <label htmlFor='text'>
           <textarea
@@ -52,7 +50,7 @@ export default function SnapForm({ initialValue, handleCancel }: SnapFormProps) 
             id='text'
             name='text'
             rows={10}
-            defaultValue={initialValue?.text}
+            defaultValue={initialText}
           />
         </label>
       </form>
