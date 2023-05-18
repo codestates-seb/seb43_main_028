@@ -22,6 +22,9 @@ module.exports = {
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
     'no-shadow': 'off',
+    'no-unused-expressions': 'off',
+    '@typescript-eslint/no-unused-expressions': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     'jsx-a11y/label-has-associated-control': [
       2,
       {
