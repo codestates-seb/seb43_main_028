@@ -1,5 +1,6 @@
 import styles from './Dates.module.scss'
-import { getWeekRows, startOfToday, isEqual, format } from './date-fns'
+import { startOfToday, isEqual, format } from '../../../utils/date-fns'
+import { getWeekRows } from '../../../utils/date'
 
 type SelectedDateProps = {
   day: Date
