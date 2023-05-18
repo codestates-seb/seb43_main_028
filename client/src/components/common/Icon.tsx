@@ -18,6 +18,7 @@ type IconNameType =
   | 'before-check'
   | 'after-check'
   | 'arrow-drop-down'
+  | 'calendar-gray'
 
 interface IconProps {
   name: IconNameType
