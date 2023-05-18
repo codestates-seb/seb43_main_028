@@ -74,12 +74,16 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    /*@PatchMapping("/{member-id}/pw")
+    @PatchMapping("/{member-id}/pw")
     public ResponseEntity patchMemberPassword(@PathVariable("member-id") @Positive Long memberId,
                                               @RequestBody MemberControllerDTO.PatchPw patchPw) {
-        return null; // 서비스 코드 작성 후 구현 예정
-    }*/
+        MemberServiceDTO.UpdatePwInput pwInput = memberMapper.patchPwToUpdatePwInput(patchPw);
+        pwInput.setMemberId(memberId); // 멤버를 식별할 수 있는 id값을 세팅해준다.
 
+        memberService.updateMemberPassword(pwInput);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 
     @GetMapping("/{member-id}")

@@ -164,6 +164,29 @@ public class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nickname").value(response.getNickname()));
     }
+
+    @Test
+    void patchMemberPasswordTest() throws Exception {
+        Long memberId = 1L;
+        String newPassword = "starstar0101$";
+        MemberServiceDTO.UpdatePwInput pwInput = new MemberServiceDTO.UpdatePwInput();
+        pwInput.setMemberId(memberId);
+        pwInput.setPassword(newPassword);
+        MemberControllerDTO.PatchPw patchPw = new MemberControllerDTO.PatchPw();
+        patchPw.setPassword("starstar0101$");
+        String content = objectMapper.writeValueAsString(patchPw);
+
+        given(mapper.patchPwToUpdatePwInput(Mockito.any(MemberControllerDTO.PatchPw.class))).willReturn(pwInput);
+        doNothing().when(memberService).updateMemberPassword(Mockito.any(MemberServiceDTO.UpdatePwInput.class));
+
+        ResultActions actions = mockMvc.perform(
+                patch("/members/{member-id}/pw", memberId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                        .content(content));
+
+        verify(memberService, times(1)).updateMemberPassword(Mockito.any(MemberServiceDTO.UpdatePwInput.class));
+    }
     private MemberServiceDTO.Output makeMemberOutput() {
         Long memberId = 1L;
         MemberServiceDTO.Output output = new MemberServiceDTO.Output(memberId, "test@gmail.com", "거터", null, "PRIVATE", null, 0, 0, LocalDateTime.now());
