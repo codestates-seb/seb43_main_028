@@ -15,9 +15,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,7 +90,7 @@ public class WalkLogServiceImpl implements WalkLogService {
 
     @Override
     public List<WalkLogServiceDTO.CalenderFindsOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindsInput totalFindsInput){
-        return walkLogMapper.walkLogsToWalkLogServiceCalenderFindsOutputDTOs(walkLogRepository.findMyWalkLogByMonth(totalFindsInput.getMemberId(), totalFindsInput.getYear(), totalFindsInput.getMonth()));
+        return walkLogMapper.walkLogsToWalkLogServiceCalenderFindsOutputDTOs(walkLogRepository.findMyWalkLogFromMonthForCalendar(totalFindsInput.getMemberId(), totalFindsInput.getYear(), totalFindsInput.getMonth()));
     }
     private static PageImpl<WalkLogServiceDTO.FindsOutput> listToPage(PageRequest pageRequest, List<WalkLogServiceDTO.FindsOutput> findsOutputs) {
         int start = (int) pageRequest.getOffset();
@@ -114,42 +112,34 @@ public class WalkLogServiceImpl implements WalkLogService {
         Integer month = findsInput.getMonth();
         Integer day = findsInput.getDay();
         memberService.findVerifiedMember(memberId);
-
-        PageRequest pageRequest = PageRequest.of(findsInput.getPage(),findsInput.getSize(),Sort.by("walkLogId").descending());
-        if(year == null && month == null && day == null) {
-            List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(walkLogRepository.findAllByWalkLogPublicSettingAndMember_MemberId(
-                    WalkLog.WalkLogPublicSetting.PUBLIC,
-                    memberId));
-            PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);
-            return pageFindsOutput;
-
-        }
-        if (day == 0){
-            day++;
-            LocalDate parse = LocalDate.of(year,month,day);
-            LocalDateTime start = LocalDateTime.of(parse.withDayOfMonth(1), LocalTime.of(0,0,0));
-            LocalDateTime end = LocalDateTime.of(parse.withDayOfMonth(parse.lengthOfMonth()), LocalTime.of(23,59,59));
-            List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(
-                    walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetweenAndMember_MemberId(WalkLog.WalkLogPublicSetting.PUBLIC,
-                            start,
-                            end,
-                            memberId));
-            PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);
-            return pageFindsOutput;
-        }
-        if(year >= 2000 && year <= 9999 || month >=1 && month <=12 || day >= 1 && day <= 31){
-            LocalDate parse = LocalDate.of(year,month,day);
-            LocalDateTime start = LocalDateTime.of(parse, LocalTime.of(0,0,0));
-            LocalDateTime end = LocalDateTime.of(parse, LocalTime.of(23,59,59));
-            List<WalkLogServiceDTO.FindsOutput> findsOutputs = walkLogMapper.walkLogsToWalkLogServiceFindsOutputDTOs(
-                    walkLogRepository.findAllByWalkLogPublicSettingAndCreatedAtBetweenAndMember_MemberId(WalkLog.WalkLogPublicSetting.PUBLIC,
-                            start,
-                            end,
-                            memberId));
-            PageImpl<WalkLogServiceDTO.FindsOutput> pageFindsOutput = listToPage(pageRequest, findsOutputs);
-            return pageFindsOutput;
-        }else throw new RuntimeException("양식이 일치하지 않습니다."); //비즈니스로직을 작명해서 새로 추가하기
+        checkInputError(year, month, day);
+        PageRequest pageRequest = PageRequest.of(findsInput.getPage()-1,findsInput.getSize(),Sort.by("walkLogId").descending());
+        if(year == null)
+            return walkLogRepository.findAllByMember_MemberId(pageRequest, memberId)
+                            .map(walkLogMapper::walkLogToWalkLogServiceFindsOutputDTO);
+        else if (month == null)
+            return walkLogRepository.findAllByMyWalkLogFromYear(pageRequest,memberId,year)
+                    .map(walkLogMapper::walkLogToWalkLogServiceFindsOutputDTO);
+        else if (day == null)
+            return walkLogRepository.findMyWalkLogFromMonth(pageRequest,memberId, year, month)
+                    .map(walkLogMapper::walkLogToWalkLogServiceFindsOutputDTO);
+        else
+            return walkLogRepository.findAllByMyWalkLogFromDay(pageRequest,memberId, year, month, day)
+                    .map(walkLogMapper::walkLogToWalkLogServiceFindsOutputDTO);
     }
+
+    private static void checkInputError(Integer year, Integer month, Integer day) {
+        if(year == null){
+            if(month != null)
+                throw new BusinessLogicException(ExceptionCode.WRONG_MONTH_INPUT);
+            if(day != null)
+                throw new BusinessLogicException(ExceptionCode.WRONG_DAY_INPUT);
+        }else if(month == null){
+            if(day != null)
+                throw new BusinessLogicException(ExceptionCode.WRONG_DAY_INPUT);
+        }
+    }
+
     @Override
     public void deleteWalkLog(Long walkLogId){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLogId);

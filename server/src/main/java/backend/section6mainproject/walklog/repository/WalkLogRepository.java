@@ -6,20 +6,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface WalkLogRepository extends JpaRepository<WalkLog, Long> {
-    List<WalkLog> findAllByWalkLogPublicSetting(WalkLog.WalkLogPublicSetting walkLogPublicSetting);
-    List<WalkLog> findAllByWalkLogPublicSettingAndMember_MemberId(WalkLog.WalkLogPublicSetting walkLogPublicSetting,
-                                                                  Long memberId);
+    Page<WalkLog> findAllByMember_MemberId(Pageable pageable,Long memberId);
     List<WalkLog> findAllByMember_MemberIdOrderByWalkLogIdDesc(Long memberId);
     @Query("FROM WalkLog w WHERE w.member.memberId = :memberId AND YEAR(w.createdAt) = :year AND MONTH(w.createdAt) = :month ")
-    List<WalkLog> findMyWalkLogByMonth(Long memberId,int year,int month);
-    List<WalkLog> findAllByWalkLogPublicSettingAndCreatedAtBetweenAndMember_MemberId(
-                                                                                     WalkLog.WalkLogPublicSetting walkLogPublicSetting,
-                                                                                     LocalDateTime start,
-                                                                                     LocalDateTime end,
-                                                                                     Long memberId);
+    List<WalkLog> findMyWalkLogFromMonthForCalendar(Long memberId, int year, int month);
+    @Query("FROM WalkLog w WHERE w.member.memberId = :memberId AND YEAR(w.createdAt) = :year")
+    Page<WalkLog> findAllByMyWalkLogFromYear(Pageable pageable, Long memberId, int year);
+    @Query("FROM WalkLog w WHERE w.member.memberId = :memberId AND YEAR(w.createdAt) = :year AND MONTH(w.createdAt) = :month ")
+    Page<WalkLog> findMyWalkLogFromMonth(Pageable pageable,Long memberId, int year, int month);
+    @Query("FROM WalkLog w WHERE w.member.memberId = :memberId AND YEAR(w.createdAt) = :year AND MONTH(w.createdAt) = :month AND DAY(w.createdAt) = :day")
+    Page<WalkLog> findAllByMyWalkLogFromDay(Pageable pageable,Long memberId, int year, int month, int day);
 
 }
