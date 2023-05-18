@@ -1,5 +1,7 @@
 package backend.section6mainproject.walklog.service;
 
+import backend.section6mainproject.content.entity.WalkLogContent;
+import backend.section6mainproject.content.repository.WalkLogContentRepository;
 import backend.section6mainproject.dto.PageInfo;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.exception.ExceptionCode;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class WalkLogServiceImpl implements WalkLogService {
 
     private final WalkLogRepository walkLogRepository;
+    private final WalkLogContentRepository walkLogContentRepository;
     private final MemberService memberService;
     private final CustomBeanUtils<WalkLog> beanUtils;
     private final WalkLogMapper walkLogMapper;
@@ -68,14 +71,30 @@ public class WalkLogServiceImpl implements WalkLogService {
     public WalkLogServiceDTO.Output exitWalkLog(WalkLogServiceDTO.ExitInput exitInput){
         WalkLog findWalkLog = findVerifiedWalkLog(exitInput.getWalkLogId());
         checkWalkLogStatusRecording(findWalkLog);
-        String mapImage = storageService.store(exitInput.getMapImage(), "mapImage");
+        //WalkLogContent들을 조회
+        //만약 walkLogContrent들이 존재하면 리스트들을 돌면서 가장 첫번째 파일의 이미지 url주소를 mapImage에 반환
+
         WalkLog walkLog = walkLogMapper.walkLogServiceExitInputDTOtoWalkLog(exitInput);
-        storageService.delete(findWalkLog.getMapImage());
-        WalkLog exitedWalkLog = 
+        WalkLog exitedWalkLog =
                 beanUtils.copyNonNullProperties(walkLog, findWalkLog);
-        updateWalkLogExitSetting(mapImage, exitedWalkLog);
+        updateWalkLogExitSetting(getMapImage(exitInput), exitedWalkLog);
 
         return walkLogMapper.walkLogToWalkLogServiceOutputDTO(exitedWalkLog);
+    }
+
+    private String getMapImage(WalkLogServiceDTO.ExitInput exitInput) {
+        String mapImage = "";
+        List<WalkLogContent> walkLogContents =
+                walkLogContentRepository.findAllByWalkLog_WalkLogId(exitInput.getWalkLogId());
+        if(!walkLogContents.isEmpty()) {
+            WalkLogContent walkLogContent = walkLogContents.stream()
+                    .filter(content -> content.getImageKey() != null)
+                    .findFirst()
+                    .orElse(new WalkLogContent());
+            if(walkLogContent.getImageKey() != null) mapImage = walkLogContent.getImageKey();
+                    else mapImage = storageService.store(exitInput.getMapImage(), "mapImage");
+        }
+        return mapImage;
     }
 
     private void updateWalkLogExitSetting(String mapImage, WalkLog exitedWalkLog) {
