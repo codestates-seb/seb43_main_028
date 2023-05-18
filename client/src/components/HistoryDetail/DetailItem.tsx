@@ -1,21 +1,30 @@
 import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Icon from '../common/Icon'
 import styles from './DetailItem.module.scss'
 import ImgModal from './ImgModal'
 import { WalkLogContentsDataType } from '../../types/HistoryDetail'
+import { deleteHistoryItem } from '../../apis/history'
 
 type DetailItemProps = {
   data: WalkLogContentsDataType
+  walkLogId: string
   snapTime: string
   onEdit: () => void
   setEditId: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-export default function DetailItem({ data, snapTime, onEdit, setEditId }: DetailItemProps) {
+export default function DetailItem({
+  data,
+  walkLogId,
+  snapTime,
+  onEdit,
+  setEditId,
+}: DetailItemProps) {
   const { walkLogContentId, imageUrl, text } = data
   const [imgModal, setImgModal] = useState(false)
 
-  const handleEdit = () => {
+  const handleEditMode = () => {
     if (walkLogContentId) {
       setEditId(walkLogContentId)
     }
@@ -25,6 +34,15 @@ export default function DetailItem({ data, snapTime, onEdit, setEditId }: Detail
   const handlePhotoModal = () => {
     setImgModal(prev => !prev)
   }
+
+  const queryClient = useQueryClient()
+
+  const handleDeleteHistoryItem = useMutation({
+    mutationFn: () => deleteHistoryItem(walkLogId, walkLogContentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['history', walkLogId])
+    },
+  })
 
   return (
     <article className={styles.contentBox}>
@@ -39,14 +57,19 @@ export default function DetailItem({ data, snapTime, onEdit, setEditId }: Detail
             <Icon name='time-gray' size={24} /> {snapTime}
           </div>
           <div className={styles.editDeleteBox}>
-            <button type='button' className={styles.icon} onClick={handleEdit}>
+            <button type='button' className={styles.icon} onClick={handleEditMode}>
               <Icon name='edit-gray' size={24} />
               수정
             </button>
-            <div className={styles.icon}>
+            <button
+              type='button'
+              className={styles.icon}
+              onClick={() => handleDeleteHistoryItem.mutate()}
+              disabled={handleDeleteHistoryItem.isLoading}
+            >
               <Icon name='trash-gray' size={24} />
               삭제
-            </div>
+            </button>
           </div>
         </div>
       </div>

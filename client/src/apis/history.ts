@@ -28,3 +28,12 @@ export const patchHistoryMessage = async (walkLogId: string, data: string) => {
     return 'fail'
   }
 }
+
+export const deleteHistoryItem = async (walkLogId: string, contentId: string) => {
+  try {
+    const response = await axios.delete(`/api/walk-logs/${walkLogId}/contents/${contentId}`)
+    return response.status === 204 ? 'success' : 'fail'
+  } catch (error: unknown) {
+    return 'fail'
+  }
+}

@@ -17,6 +17,7 @@ export default function HistoryDetail() {
   const [editId, setEditId] = useState<string>()
   const [deleteModal, setDeleteModal] = useState<boolean>(false)
   const { id } = useParams()
+
   const getHistoryQuery = useQuery({
     queryKey: ['history', id],
     queryFn: () => {
@@ -88,6 +89,7 @@ export default function HistoryDetail() {
     return (
       <DetailItem
         key={da.walkLogContentId}
+        walkLogId={String(walkLogId)}
         data={da}
         snapTime={snapTime}
         onEdit={handleEdit}
