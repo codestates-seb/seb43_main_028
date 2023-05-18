@@ -85,7 +85,6 @@ public class MemberServiceImpl implements MemberService{
         Member findMember = findVerifiedMember(member.getMemberId());
         //기존 회원의 프로필이미지가 있다면 삭제
         storageService.delete(findMember.getProfileImage());
-        encodeMemberCredential(member);
 
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
 
@@ -95,6 +94,19 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.save(updatedMember);
         //컨트롤러로 다시 던지기 전에 mapper로 변환해서 응답용DTO를 전달해준다.
         return mapper.memberToOutput(updatedMember);
+    }
+
+    public void updateMemberPassword(MemberServiceDTO.UpdatePwInput updatePwInput) {
+        Long memberId = updatePwInput.getMemberId();
+       Member findMember = findVerifiedMember(memberId); // 등록된 적 없는 회원이면 에러뜬다.
+        encodeMemberCredentialForUpdatePw(updatePwInput, findMember);
+
+        memberRepository.save(findMember);
+    }
+
+    private void encodeMemberCredentialForUpdatePw(MemberServiceDTO.UpdatePwInput updatePwInput, Member findMember) {
+        String encodedPassword = passwordEncoder.encode(updatePwInput.getPassword());
+        findMember.setPassword(encodedPassword); //기존 encodeMemberCredential() 메소드의 경우 createMember()와 결합이 강해서 새로운 메소드를 만들었음
     }
 
     @Override
