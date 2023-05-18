@@ -60,7 +60,6 @@ export default function ImgInput({ initialValue }: ImgInputProps) {
       <button type='button' className={styles.cameraBtn} onClick={handleCameraClick}>
         <Icon name='camera-oval' size={48} />
       </button>
-
       <input
         id='image'
         name='image'

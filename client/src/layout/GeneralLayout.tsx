@@ -20,7 +20,7 @@ export default function GeneralLayout({ children, showTapBar }: GeneralLayoutPro
 
   useEffect(() => {
     const authHandler = async () => {
-      if (id === 0) {
+      if (!isLogin) {
         console.log('로그인하지 않은 상태입니다.')
         return 'fail'
       }
