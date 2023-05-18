@@ -60,7 +60,8 @@ export default function ChangingPassword({
     validate: value => value === getValues('newPassword') || '비밀번호가 다릅니다.',
   })
 
-  const handleChangePassword = async () => {
+  const handleChangePassword = async (event: React.FormEvent) => {
+    event.preventDefault()
     const newPassword = getValues('newPassword')
     const passwordData = {
       password: newPassword,
