@@ -107,9 +107,10 @@ public class WalkLogServiceImpl implements WalkLogService {
         Integer year = findsInput.getYear();
         Integer month = findsInput.getMonth();
         Integer day = findsInput.getDay();
+        PageRequest pageRequest =
+                PageRequest.of(findsInput.getPage()-1,findsInput.getSize(),Sort.by("walkLogId").descending());
         memberService.findVerifiedMember(memberId);
         checkInputError(year, month, day);
-        PageRequest pageRequest = PageRequest.of(findsInput.getPage()-1,findsInput.getSize(),Sort.by("walkLogId").descending());
         if(year == null)
             return walkLogRepository.findAllByMember_MemberId(pageRequest, memberId)
                             .map(walkLogMapper::walkLogToWalkLogServiceFindsOutputDTO);
