@@ -31,6 +31,7 @@ public interface WalkLogMapper {
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
     @Mapping(target = "mapImage",source = "imageUrl")
     WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
+    WalkLogControllerDTO.Response walkLogServiceFindsOutputDTOtoWalkLogControllerResponseDTO(WalkLogServiceDTO.FindsOutput findsOutput);
 
     WalkLogServiceDTO.CalenderFindsInput walkLogControllerGetCalenderRequestsDTOtoWalkLogServiceCalenderFindsInputDTO(WalkLogControllerDTO.GetCalendarRequests getCalendarRequests);
     WalkLogServiceDTO.CalenderFindsOutput walkLogToWalkLogServiceCalenderFindsOutputDTO(WalkLog walkLog);

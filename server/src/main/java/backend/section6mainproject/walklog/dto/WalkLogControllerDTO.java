@@ -89,6 +89,18 @@ public class WalkLogControllerDTO {
 
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class Response {
+        private Long walkLogId;
+        private String mapImage;
+        private LocalDateTime startedAt;
+        private LocalDateTime endAt;
+        private String message;
+        private List<WalkLogContentServiceDTO.Output> walkLogContents;
+
+    }
 
     @Getter
     @Setter
