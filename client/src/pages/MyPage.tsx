@@ -15,30 +15,16 @@ export default function Mypage() {
   const [userData, setUserData] = useState<UserInfoType | null>(null)
   const [registeredAt, setRegisteredAt] = useState('')
 
-  // console.log('회원가입일: ', userData?.createdAt)
-
   const [isModalOpened, setIsModalOpened] = useState(false)
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)
   }
-  // export type UserInfoType = {
-  //   defaultWalkLogPublicSetting: string
-  //   email: string
-  //   imageUrl: string
-  //   introduction: string
-  //   memberId: number
-  //   nickname: string
-  //   createdAt: Date
-  //   totalWalkLog: number
-  //   totalWalkLogContent: number
-  // }
   const handleSetPrivacySettings = async (option: string) => {
     if (userData) {
       const editedUserData = { ...userData, defaultWalkLogPublicSetting: option }
       const res = await patchUserPrivacySettings(`/api/members/${memberId}`, editedUserData)
       setUser(res)
     }
-    // alert('Error Occurred!')
   }
 
   const selectOptions = [
@@ -52,9 +38,9 @@ export default function Mypage() {
 
   useEffect(() => {
     if (userData) {
-      // const registeredDate = new Date(userData.createdAt)
-      // const formattedData = format(registeredDate, 'yyyy-MM-dd')
-      // setRegisteredAt(formattedData)
+      const registeredDate = new Date(userData.createdAt)
+      const formattedData = format(registeredDate, 'yyyy-MM-dd')
+      setRegisteredAt(formattedData)
     }
   }, [userData])
 

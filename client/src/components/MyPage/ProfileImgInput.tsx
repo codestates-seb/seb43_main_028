@@ -2,13 +2,9 @@ import { useState, useRef, useEffect } from 'react'
 import styles from './ProfileImgInput.module.scss'
 import Icon from '../common/Icon'
 
-type ProfileImgInputProps = {
-  imgFile: File | undefined
-  setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>
-}
-
-export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInputProps) {
+export default function ProfileImgInput() {
   const [preview, setPreview] = useState<string>('')
+  const [imgFile, setImgFile] = useState<File | undefined>()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +39,9 @@ export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInput
       <div className={styles.previewBox}>
         {preview ? (
           <>
-            <img src={preview} alt='이미지 미리보기' />
+            <div className={styles.imageWrapper}>
+              <img src={preview} alt='이미지 미리보기' />
+            </div>
             <button type='button' onClick={handleClear} className={styles.previewClearBtn}>
               <Icon name='close' size={16} />
             </button>
