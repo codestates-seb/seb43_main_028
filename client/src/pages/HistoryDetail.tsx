@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Title from '../components/HistoryDetail/Title'
 import styles from './HistoryDetail.module.scss'
 
@@ -9,7 +9,7 @@ import { differenceInSeconds } from '../utils/date-fns'
 import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
-import { getHistory } from '../apis/history'
+import { deleteHistory, getHistory } from '../apis/history'
 import { WalkLogContentsDataType, ModalOption } from '../types/HistoryDetail'
 
 export default function HistoryDetail() {
@@ -22,14 +22,20 @@ export default function HistoryDetail() {
   })
 
   const { id } = useParams()
+  const navigate = useNavigate()
+
+  const queryClient = useQueryClient()
 
   const getHistoryQuery = useQuery({
     queryKey: ['history', id],
-    queryFn: () => {
-      if (id) {
-        return getHistory(id)
-      }
-      return console.log('no id')
+    queryFn: () => getHistory(id!),
+  })
+
+  const handleDeleteHistory = useMutation({
+    mutationFn: () => deleteHistory(id!),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['history'])
+      navigate('/history')
     },
   })
 
@@ -58,7 +64,7 @@ export default function HistoryDetail() {
     setDeleteModalOption({
       title: '걷기',
       deleteFn: () => {
-        console.log('걷기 기록 삭제')
+        handleDeleteHistory.mutate()
         setOpenDeleteModal(prev => !prev)
       },
     })

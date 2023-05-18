@@ -29,11 +29,23 @@ export const patchHistoryMessage = async (walkLogId: string, data: string) => {
   }
 }
 
+export const deleteHistory = async (walkLogId: string) => {
+  try {
+    const response = await axios.delete(`/api/walk-logs/${walkLogId}`)
+    console.log('삭제 결과', response)
+    return response.status === 204 ? 'success' : 'fail'
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
 export const deleteHistoryItem = async (walkLogId: string, contentId: string) => {
   try {
     const response = await axios.delete(`/api/walk-logs/${walkLogId}/contents/${contentId}`)
     return response.status === 204 ? 'success' : 'fail'
   } catch (error: unknown) {
+    console.log(error)
     return 'fail'
   }
 }
