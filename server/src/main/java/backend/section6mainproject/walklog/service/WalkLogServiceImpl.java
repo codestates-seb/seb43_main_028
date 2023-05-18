@@ -55,8 +55,6 @@ public class WalkLogServiceImpl implements WalkLogService {
 
     @Override
     public WalkLogServiceDTO.Output updateWalkLog(WalkLogServiceDTO.UpdateInput updateInput){
-        //수정을 하면 updateRecoding로 바뀜
-        //walkLogPublicSetting값을 null값으로 받을지? walkLogStatus -> beanutils와 관련해서 고민해볼것
         WalkLog findWalkLog = findVerifiedWalkLog(updateInput.getWalkLogId());
         checkWalkLogStatusStop(findWalkLog);
         WalkLog updatedWalkLog = beanUtils.copyNonNullProperties(walkLogMapper.walkLogServiceUpdateInputDTOtoWalkLog(updateInput), findWalkLog);
