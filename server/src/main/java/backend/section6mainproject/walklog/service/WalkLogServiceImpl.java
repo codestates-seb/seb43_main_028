@@ -28,6 +28,7 @@ public class WalkLogServiceImpl implements WalkLogService {
     private final MemberService memberService;
     private final CustomBeanUtils<WalkLog> beanUtils;
     private final WalkLogMapper walkLogMapper;
+    private final int FIRST_PAGE_SETTING= 1;
 
     @Override
     public WalkLogServiceDTO.CreateOutput createWalkLog(WalkLogServiceDTO.CreateInput createInput){
@@ -108,7 +109,7 @@ public class WalkLogServiceImpl implements WalkLogService {
         Integer month = findsInput.getMonth();
         Integer day = findsInput.getDay();
         PageRequest pageRequest =
-                PageRequest.of(findsInput.getPage()-1,findsInput.getSize(),Sort.by("walkLogId").descending());
+                PageRequest.of(findsInput.getPage()-FIRST_PAGE_SETTING,findsInput.getSize(),Sort.by("walkLogId").descending());
         memberService.findVerifiedMember(memberId);
         checkInputError(year, month, day);
         if(year == null)
