@@ -98,6 +98,7 @@ public class WalkLogControllerDTO {
         private Long walkLogId;
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
+        private String mapImage;
         @Size(max = 100)
         private String message;
         private Long memberId;
