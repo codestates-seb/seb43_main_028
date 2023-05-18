@@ -10,7 +10,6 @@
 
 .previewBox {
   background-color: transparent;
-  border-radius: 12px;
   text-align: center;
   width: 100px;
   height: 100px;
@@ -28,7 +27,7 @@
 
 .imageWrapper {
   @include U.size(100%);
-
+  background-color: C.$gray200;
   border-radius: 50%;
   overflow: hidden;
 }
