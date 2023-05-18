@@ -17,13 +17,14 @@ type SignInPropsType = {
   autoLogin: boolean
 }
 
-type UserInfoType = {
+export type UserInfoType = {
   defaultWalkLogPublicSetting: string
-  email: string | null
-  imageUrl: string | null
-  introduction: string | null
+  email: string
+  imageUrl: string
+  introduction: string
   memberId: number
-  nickname: string | null
+  nickname: string
+  createdAt: string
   totalWalkLog: number
   totalWalkLogContent: number
 }
@@ -80,6 +81,51 @@ export const refreshAccessToken = async () => {
     return 'success'
   } catch (error) {
     removeRefreshTokenFromLocalStorage()
+    return 'fail'
+  }
+}
+
+export const patchUserProfile = async (url: string, formData: FormData) => {
+  try {
+    const response = await axios.patch(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // content-type을 multipart/form-data로 설정
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const patchUserPrivacySettings = async (url: string, data: any) => {
+  try {
+    const response = await axios.patch(url, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const patchUserPassword = async (url: string, passwordData: any) => {
+  try {
+    console.log(url, passwordData)
+    const response = await axios.patch(url, passwordData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    console.log('patchUserPassword')
+    console.log(response)
+    return 'success'
+  } catch (error: unknown) {
+    console.log(error)
     return 'fail'
   }
 }
