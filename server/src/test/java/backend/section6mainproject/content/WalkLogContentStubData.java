@@ -78,8 +78,8 @@ public class WalkLogContentStubData {
 
     public MockMultipartFile getImage() throws IOException {
         String fileName = "test";
-        String contentType = "jpg";
-        String fileFullName = fileName + "." + contentType;
+        String contentType = "image/jpeg";
+        String fileFullName = fileName + ".jpg";
         FileInputStream inputStream = new FileInputStream("src/test/resources/testImage/" + fileFullName);
         return new MockMultipartFile("contentImage", fileFullName, contentType, inputStream);
     }
