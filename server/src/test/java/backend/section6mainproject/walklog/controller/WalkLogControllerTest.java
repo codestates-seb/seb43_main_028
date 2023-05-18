@@ -14,12 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockPart;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,9 +123,14 @@ public class WalkLogControllerTest {
         WalkLogControllerDTO.DetailResponse detailResponse = createDetailResponse(walkLog);
         detailResponse.setMessage("안녕하십니깟!");
         detailResponse.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-
         //Json 데이터 생성
         String jasonEndWalkLogDTO = objectMapper.writeValueAsString(endPostDTO);
+        FileInputStream inputStream = new FileInputStream("src/test/resources/testImage/" + "test.jpg");
+        MockMultipartFile mapImageFile = new MockMultipartFile(
+                "mapImage", "test.jpg", "jpg", inputStream
+        );
+        MockPart part = new MockPart("endPost", jasonEndWalkLogDTO.getBytes(StandardCharsets.UTF_8));
+        part.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         //walkLogService.updateWalkLog메서드 로직 Mock수행
         given(walkLogMapper.walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(Mockito.any(WalkLogControllerDTO.EndPost.class))).
                 willReturn(new WalkLogServiceDTO.ExitInput());
@@ -127,11 +138,10 @@ public class WalkLogControllerTest {
         given(walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(Mockito.any(WalkLogServiceDTO.Output.class))).willReturn(detailResponse);
         //when
         //patchWalkLog메서드를 수행 했을 때
-        ResultActions perform = mockMvc.perform(
-                post("/walk-logs/" + walkLog.getWalkLogId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(jasonEndWalkLogDTO));
+        ResultActions perform = mockMvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.POST,"/walk-logs/{walk-log-id}", walkLog.getWalkLogId())
+                        .file(mapImageFile)
+                        .part(part)
+                );
 
         //then
         perform

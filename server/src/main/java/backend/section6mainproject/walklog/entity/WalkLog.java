@@ -35,7 +35,7 @@ public class WalkLog extends Auditable {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
-    private WalkLogStatus walkLogStatus = WalkLogStatus.RECORDING;
+    private WalkLogStatus walkLogStatus;
     @OneToMany(mappedBy = "walkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Coordinate> coordinates = new ArrayList<>();
     @OneToMany(mappedBy = "walkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
