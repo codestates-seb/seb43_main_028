@@ -55,7 +55,7 @@ public class WalkLogServiceImplTest {
     @Test
     public void createWalkLogTest() {
         // given
-        WalkLog walkLog = createWalkLog(1);
+        WalkLog walkLog = createWalkLog(1L);
 
         WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
         createInput.setMemberId(walkLog.getMember().getMemberId());
@@ -84,7 +84,7 @@ public class WalkLogServiceImplTest {
     @Test
     public void shouldThrowExceptionWhenWalkLogAlreadyRecordingTest() {
         //given
-        WalkLog walkLog = createWalkLog(1);
+        WalkLog walkLog = createWalkLog(1L);
         WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
         createInput.setMemberId(walkLog.getMember().getMemberId());
         ArrayList<WalkLog> walkLogs = new ArrayList<>();
@@ -104,7 +104,7 @@ public class WalkLogServiceImplTest {
 
         // given
         //WalkLog객체 추가
-        WalkLog walkLog = createWalkLog(1);
+        WalkLog walkLog = createWalkLog(1L);
         walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
 
         WalkLogServiceDTO.UpdateInput updateInput = new WalkLogServiceDTO.UpdateInput();
@@ -154,7 +154,7 @@ public class WalkLogServiceImplTest {
 
         // given
         //WalkLog객체 추가
-        WalkLog walkLog = createWalkLog(1);
+        WalkLog walkLog = createWalkLog(1L);
         walkLog.setMapImage("");
         //수정용 WalkLog객체 생성
         WalkLogServiceDTO.ExitInput exitInput = new WalkLogServiceDTO.ExitInput();
@@ -186,7 +186,7 @@ public class WalkLogServiceImplTest {
         //given
         WalkLogServiceDTO.UpdateInput updateInput = new WalkLogServiceDTO.UpdateInput();
         updateInput.setWalkLogId(1L);
-        WalkLog walkLog = createWalkLog(1);
+        WalkLog walkLog = createWalkLog(1L);
 
         given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
 
@@ -233,7 +233,7 @@ public class WalkLogServiceImplTest {
     @Test
     public void deleteWalkLogTest() {
         // Given
-        WalkLog walkLog = createWalkLog(1);
+        WalkLog walkLog = createWalkLog(1L);
 
         // When
         when(walkLogRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(walkLog));
@@ -247,8 +247,8 @@ public class WalkLogServiceImplTest {
     public void findMyWalkLogsTest(){
         WalkLogServiceDTO.FindsInput findsInput = createFindsInput();
         ArrayList<WalkLog> walkLogs = new ArrayList<>();
-        WalkLog walkLog = createWalkLog(1);
-        WalkLog walkLog2 = createWalkLog(2);
+        WalkLog walkLog = createWalkLog(1L);
+        WalkLog walkLog2 = createWalkLog(2L);
         walkLogs.add(walkLog);
         walkLogs.add(walkLog2);
         PageImpl<WalkLog> pageWalkLogs = new PageImpl<>(walkLogs);
@@ -317,10 +317,10 @@ public class WalkLogServiceImplTest {
         return findsInput;
     }
 
-    private static WalkLog createWalkLog(int num) {
-        Long memberId = (long) num;
+    private static WalkLog createWalkLog(Long num) {
+        Long memberId = num;
         Member member = new Member();
-        member.setMemberId((long) num);
+        member.setMemberId(num);
         member.setEmail("admin"+num+"@gmail.com");
         member.setPassword("12345");
         member.setNickname("닉네임"+num);
@@ -328,7 +328,7 @@ public class WalkLogServiceImplTest {
         //WalkLog 객체 추가
         WalkLog walkLog = new WalkLog();
         walkLog.setMember(member);
-        walkLog.setWalkLogId((long) num);
+        walkLog.setWalkLogId(num);
         walkLog.setMessage("메세지"+num);
         walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.RECORDING);
         return walkLog;
