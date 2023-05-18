@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useAtom } from 'jotai'
 import Title from '../components/HistoryDetail/Title'
 import styles from './HistoryDetail.module.scss'
-
 import { timerFormat } from '../utils/date'
 import { differenceInSeconds } from '../utils/date-fns'
 import DetailItem from '../components/HistoryDetail/DetailItem'
@@ -11,6 +11,7 @@ import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
 import { deleteHistory, getHistory } from '../apis/history'
 import { WalkLogContentsDataType, ModalOption } from '../types/HistoryDetail'
+import { isLoginAtom, idAtom } from '../store/authAtom'
 
 export default function HistoryDetail() {
   const [edit, setEdit] = useState<boolean>(false)
@@ -20,6 +21,10 @@ export default function HistoryDetail() {
     title: '',
     deleteFn: () => {},
   })
+  const [isLogin] = useAtom(isLoginAtom)
+  const [logInId] = useAtom(idAtom)
+
+  console.log(isLogin, logInId)
 
   const { id } = useParams()
   const navigate = useNavigate()
@@ -108,6 +113,7 @@ export default function HistoryDetail() {
       <DetailItem
         key={da.walkLogContentId}
         walkLogId={String(walkLogId)}
+        memberId={memberId}
         data={da}
         snapTime={snapTime}
         onEdit={handleEdit}
@@ -126,6 +132,8 @@ export default function HistoryDetail() {
         <div className={styles.container}>
           <Title
             id={walkLogId}
+            memberId={memberId}
+            nickname={nickname}
             startAt={createdAt}
             endAt={endAt}
             text={message}
@@ -133,11 +141,13 @@ export default function HistoryDetail() {
           />
           <div className={styles.map}>지도 재사용 컴포넌츠</div>
           {detailItems}
-          <div className={styles.deleteBtnBox}>
-            <button type='button' className={styles.deleteBtn} onClick={handleDeleteModal}>
-              기록 삭제
-            </button>
-          </div>
+          {isLogin && logInId === memberId && (
+            <div className={styles.deleteBtnBox}>
+              <button type='button' className={styles.deleteBtn} onClick={handleDeleteModal}>
+                기록 삭제
+              </button>
+            </div>
+          )}
           {openDeleteModal && (
             <Modal modalData={modalData} onClose={() => setOpenDeleteModal(prev => !prev)} />
           )}
