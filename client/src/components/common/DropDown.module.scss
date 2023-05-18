@@ -13,6 +13,10 @@
   }
 }
 
+.listContainer {
+  position: relative;
+}
+
 .listTitle {
   width: 110px;
   padding: 10px;
@@ -35,8 +39,11 @@
 }
 
 .listBox {
+  position: absolute;
+  width: 100%;
+  background-color: C.$white;
+  top: 31px;
   border: 1px solid C.$gray900;
-  border-top: none;
   padding: 10px;
   border-radius: 0 0 4px 4px;
   z-index: 1000;
