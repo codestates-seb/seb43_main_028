@@ -119,6 +119,7 @@ class CoordinateSocketConnectionTest {
         Member member = new Member();
         member.setMemberId(1L);
         WalkLog walkLog = new WalkLog();
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.RECORDING);
         walkLog.setWalkLogId(1L);
         member.getWalkLogs().add(walkLog);
         walkLog.setMember(member);
