@@ -39,7 +39,7 @@ function DropDown({ options }: DropDownProps) {
         </button>
         <div className={styles.buttonWrapper}>
           <button className={styles.openBtn} type='button' onClick={handleOpenOptions}>
-            <Icon name='arrow-drop-down' />
+            <Icon name='arrow-drop-down' size={16} />
           </button>
         </div>
       </div>
