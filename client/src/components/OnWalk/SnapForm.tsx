@@ -20,25 +20,40 @@ function Header({ onCancel }: HeaderProps) {
     </div>
   )
 }
-export default function SnapForm() {
+
+type SnapFormProps = {
+  initialValue?: {
+    imgUrl: string
+    text: string
+  }
+  handleCancel: () => void
+}
+
+export default function SnapForm({ initialValue, handleCancel }: SnapFormProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log('순간기록 전송')
   }
 
-  const handleCancel = () => {
-    console.log('순간 기록 취소')
-  }
+  // const handleCancel = () => {
+  //   console.log('순간 기록 취소')
+  // }
 
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <div>
           <Header onCancel={handleCancel} />
-          <ImgInput />
+          <ImgInput initialValue={initialValue?.imgUrl} />
         </div>
         <label htmlFor='text'>
-          <textarea className={styles.textInput} id='text' name='text' rows={10} />
+          <textarea
+            className={styles.textInput}
+            id='text'
+            name='text'
+            rows={10}
+            defaultValue={initialValue?.text}
+          />
         </label>
       </form>
     </div>

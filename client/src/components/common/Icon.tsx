@@ -15,6 +15,8 @@ type IconNameType =
   | 'arrow-right'
   | 'arrow-left'
   | 'three-dot'
+  | 'arrow-drop-down'
+  | 'calendar'
 
 interface IconProps {
   name: IconNameType

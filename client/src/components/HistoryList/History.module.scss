@@ -58,7 +58,7 @@
 
 .detailBtn {
   @include U.size(100%, 40px);
-  text-align: center;
+  @include U.flex-c(row, center, center);
   border: 1px solid C.$gray600;
   border-radius: 10px;
 }

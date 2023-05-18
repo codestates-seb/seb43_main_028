@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { addMonths, subMonths, startOfDay, isEqual } from './date-fns'
+import { addMonths, subMonths, startOfDay, isEqual } from '../../../utils/date-fns'
 import styles from './Calendar.module.scss'
 import WeekDays from './WeekDays'
 import YearMonth from './YearMonth'
