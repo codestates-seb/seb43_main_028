@@ -55,8 +55,7 @@ public class WalkLogServiceImplTest {
         // given
         WalkLog walkLog = createWalkLog(1L);
 
-        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
-        createInput.setMemberId(walkLog.getMember().getMemberId());
+        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput(walkLog.getMember().getMemberId());
         WalkLogServiceDTO.CreateOutput createOutput = new WalkLogServiceDTO.CreateOutput();
         createOutput.setWalkLogId(walkLog.getWalkLogId());
         List<WalkLog> walkLogs = new ArrayList<>();
@@ -83,8 +82,7 @@ public class WalkLogServiceImplTest {
     public void shouldThrowExceptionWhenWalkLogAlreadyRecordingTest() {
         //given
         WalkLog walkLog = createWalkLog(1L);
-        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
-        createInput.setMemberId(walkLog.getMember().getMemberId());
+        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput(walkLog.getMember().getMemberId());
         ArrayList<WalkLog> walkLogs = new ArrayList<>();
         walkLogs.add(walkLog);
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(walkLog.getMember());

@@ -12,6 +12,7 @@ import backend.section6mainproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -48,6 +49,13 @@ public class SecurityConfiguration {
                 .and()
                 .apply(new CustomFilterConfigurer()).and()
                 .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.GET, "/members/refresh").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/members/*/walk-logs/**").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
+                        .antMatchers("/ws/walk-logs").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/walk-logs/**").permitAll()
+                        .antMatchers("/walk-logs/**").hasRole("USER")
                         .anyRequest().permitAll());
         return http.build();
     }
@@ -71,10 +79,11 @@ public class SecurityConfiguration {
         }
     }
 
-    @Bean
+    // 테스트 시에만 사용하세요
+//    @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("https://pwa-test-beryl.vercel.app"));
+        corsConfiguration.setAllowedOrigins(List.of("*"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setExposedHeaders(List.of("Authorization", "Refresh"));
         corsConfiguration.setAllowedMethods(List.of("POST", "GET", "PATCH", "DELETE", "OPTIONS"));
