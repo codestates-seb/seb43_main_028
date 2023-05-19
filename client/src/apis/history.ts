@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getMonth, getYear, startOfToday } from '../utils/date-fns'
 
 export const getHistory = async (walkLogId: string) => {
   try {
@@ -66,5 +67,24 @@ export const getHistoryList = async (memberId: number, page = 1) => {
   } catch (error: unknown) {
     console.log(error)
     return 'fail'
+  }
+}
+
+const thisYear = getYear(startOfToday())
+const thisMonth = getMonth(startOfToday()) + 1
+
+export const getHistoryMonthList = async (memberId: number, year = thisYear, month = thisMonth) => {
+  try {
+    const response = await axios.get(`/api/members/${memberId}/walk-logs/calendar`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+      params: { year, month },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return `fail`
   }
 }

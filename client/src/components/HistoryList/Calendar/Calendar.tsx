@@ -1,21 +1,42 @@
-import { useState } from 'react'
-import { addMonths, subMonths, startOfDay, isEqual } from '../../../utils/date-fns'
+import { useEffect, useState } from 'react'
+import { useAtom } from 'jotai'
+import {
+  addMonths,
+  subMonths,
+  startOfDay,
+  isEqual,
+  getYear,
+  getMonth,
+} from '../../../utils/date-fns'
 import styles from './Calendar.module.scss'
 import WeekDays from './WeekDays'
 import YearMonth from './YearMonth'
 import Dates from './Dates'
-import { HistoryListDataType } from '../../../types/History'
+import { userAtom } from '../../../store/authAtom'
+import { getHistoryMonthList } from '../../../apis/history'
 
-type CalendarProps = {
-  data: HistoryListDataType[]
-}
+type MonthHistoriesType = {
+  createdAt: string
+  walkLogId: number
+}[]
 
-export default function Calendar({ data }: CalendarProps) {
+export default function Calendar() {
   const [date, setDate] = useState<Date>(new Date())
+  const [data, setData] = useState<MonthHistoriesType>([])
   const [selectDate, setSelectDate] = useState<Date | null>(null)
+  const [user] = useAtom(userAtom)
 
-  const histories = data?.reduce((acc: number[], cur) => {
-    const timeNum = startOfDay(new Date(cur.startedAt)).getTime()
+  useEffect(() => {
+    const getList = async () => {
+      const response = await getHistoryMonthList(user.memberId, getYear(date), getMonth(date) + 1)
+      console.log('response', response)
+      setData(response)
+    }
+    getList()
+  }, [date])
+
+  const histories = data.reduce((acc: number[], cur) => {
+    const timeNum = startOfDay(new Date(cur.createdAt)).getTime()
     return acc.includes(timeNum) ? acc : [...acc, timeNum]
   }, [])
 
