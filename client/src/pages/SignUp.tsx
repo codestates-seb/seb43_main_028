@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Icon from '../components/common/Icon'
 import styles from './SignUp.module.scss'
 import { signUp } from '../apis/user'
 import useRouter from '../hooks/useRouter'
@@ -34,7 +33,6 @@ function SignUp() {
     register,
     handleSubmit,
     formState: { dirtyFields, errors },
-    getValues,
     // mode
     // onChange: input 값이 바뀔 때마다 검증 로직 동작
     // onBlur: 포커스 상태를 잃을 때 동작
