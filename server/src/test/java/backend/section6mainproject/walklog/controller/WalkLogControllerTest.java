@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -114,6 +115,38 @@ public class WalkLogControllerTest {
                 //WalkLogDto.Patch객체로 전달받은 데이터들이 변경되었는지확인
                 .andExpect(jsonPath("$.message").value(detailResponse.getMessage()))
                 .andExpect(jsonPath("$.walkLogPublicSetting").value(String.valueOf(detailResponse.getWalkLogPublicSetting())));
+    }
+
+    @Test
+    void getWalkLogsTest() throws Exception {
+        //given
+        WalkLogControllerDTO.GetFeedRequest getFeedRequest = new WalkLogControllerDTO.GetFeedRequest();
+        getFeedRequest.setPage(1);
+        getFeedRequest.setSize(10);
+        ArrayList<WalkLogServiceDTO.FindFeedOutput> findFeedOutputs = new ArrayList<>();
+        WalkLogServiceDTO.FindFeedOutput findFeedOutput = new WalkLogServiceDTO.FindFeedOutput();
+        findFeedOutputs.add(findFeedOutput);
+        findFeedOutputs.add(findFeedOutput);
+        WalkLogControllerDTO.GetFeedResponse getFeedResponse = new WalkLogControllerDTO.GetFeedResponse();
+        getFeedResponse.setWalkLogId(1L);
+        getFeedResponse.setMessage("안녕하세요");
+        getFeedResponse.setNickname("테스트");
+        given(walkLogMapper.walkLogControllerGetMemberRequestDTOtoWalkLogServiceFindFeedInputDTO(Mockito.any(WalkLogControllerDTO.GetFeedRequest.class)))
+                .willReturn(new WalkLogServiceDTO.FindFeedInput());
+        given(walkLogService.findFeedWalkLogs(Mockito.any(WalkLogServiceDTO.FindFeedInput.class)))
+                .willReturn(new PageImpl<>(findFeedOutputs));
+        given(walkLogMapper.walkLogServiceFindFeedOutputDTOtoWalkLogControllerGetFeedResponseDTO(Mockito.any(WalkLogServiceDTO.FindFeedOutput.class)))
+                .willReturn(getFeedResponse);
+        //when
+        ResultActions perform = mockMvc.perform(
+                get("/walk-logs")
+                        .param("page",String.valueOf(getFeedRequest.getPage()))
+                        .param("size",String.valueOf(getFeedRequest.getSize())));
+        //then
+        perform.andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(findFeedOutputs.size()))
+                .andExpect(jsonPath("$.data[0].walkLogId").value(getFeedResponse.getWalkLogId()))
+                .andExpect(jsonPath("$.data[0].message").value(getFeedResponse.getMessage()));
     }
     @Test
     void endWalkLogTest() throws Exception {
