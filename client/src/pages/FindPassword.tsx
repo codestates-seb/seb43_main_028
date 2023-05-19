@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styles from './FindPassword.module.scss'
 import TempPasswordSent from '../components/FindPassword/TempPasswordSent'
+import { getUserTempPassword } from '../apis/user'
 
 type FormValueType = {
   email: string
@@ -9,6 +10,7 @@ type FormValueType = {
 
 export default function FindPassword() {
   const [isTempPasswordSent, setIsTempPasswordSent] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
   const {
     register,
     handleSubmit,
@@ -35,12 +37,16 @@ export default function FindPassword() {
     event.preventDefault() // 기본 동작 막기
     handleGetTempPassword(data) // 임시 비밀번호 발급 처리 등의 로직 수행
   }
-  const handleGetTempPassword = (data: FormValueType) => {
-    console.log(data)
+  const handleGetTempPassword = async (data: FormValueType) => {
+    const res = await getUserTempPassword('/api/members/tmp-pw', data)
+    if (res === 'success') {
+      setUserEmail(getValues('email'))
+      setIsTempPasswordSent(true)
+    }
   }
 
   if (isTempPasswordSent) {
-    return <TempPasswordSent setIsTempPasswordSent={setIsTempPasswordSent} />
+    return <TempPasswordSent setIsTempPasswordSent={setIsTempPasswordSent} userEmail={userEmail} />
   }
   return (
     <form
