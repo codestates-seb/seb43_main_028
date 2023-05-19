@@ -28,7 +28,7 @@ public class TestDataInit {
     public void init() {
         Member firstMember = new Member();
         firstMember.setEmail("test@gmail.com");
-        firstMember.setPassword(passwordEncoder.encode("testdot"));
+        firstMember.setPassword(passwordEncoder.encode("testdot01!"));
         firstMember.setNickname("거터");
         firstMember.setIntroduction("안녕하세요");
         memberRepository.save(firstMember);
