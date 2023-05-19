@@ -32,6 +32,11 @@ public class EmailConfiguration {
     private String tlsEnable;
 
     @Bean
+    public EmailSendable mockExceptionEmailSendable() {
+        return new MockExceptionEmailSendable();
+    }
+
+    @Bean
     public EmailSendable simpleEmailSendable() {
         return new SimpleEmailSendable(javaMailSender());
     }
