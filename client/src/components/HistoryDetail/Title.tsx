@@ -64,6 +64,7 @@ export default function Title({
     console.log(response)
     setMessage(response.message)
     setEdit(prev => !prev)
+
   }
 
   const editingForm = (
@@ -77,6 +78,7 @@ export default function Title({
           maxLength={50}
           required
         />
+
 
         <div className={styles.iconBox}>
           <Icon name='edit-gray' />
@@ -98,6 +100,7 @@ export default function Title({
       <div className={styles.timeBox}>
         <div className={styles.iconBox}>
           <Icon name='calendar-gray' size={16} />
+
           <div>{formattedTime.date}</div>
         </div>
         <div className={styles.iconBox}>

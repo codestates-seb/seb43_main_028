@@ -9,12 +9,12 @@
 }
 
 .previewBox {
-  background-color: C.$gray100;
-  border-radius: 50%;
+
+  background-color: transparent;
   text-align: center;
   width: 100px;
   height: 100px;
-  overflow: hidden;
+
   position: relative;
   p {
     @include T.gray600-regular-12;
@@ -24,6 +24,14 @@
     @include U.size(100%);
     object-fit: cover;
   }
+}
+
+
+.imageWrapper {
+  @include U.size(100%);
+  background-color: C.$gray200;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .previewClearBtn {
@@ -46,4 +54,17 @@
 
 .album {
   display: none;
+}
+
+
+.previewClearBtn {
+  @include T.gray900-bold-10;
+  background-color: C.$gray200;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+  right: 4px;
 }

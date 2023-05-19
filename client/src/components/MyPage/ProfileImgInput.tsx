@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import imageCompression from 'browser-image-compression'
 import styles from './ProfileImgInput.module.scss'
 import Icon from '../common/Icon'
 
@@ -11,8 +12,28 @@ export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInput
   const [preview, setPreview] = useState<string>('')
   const inputRef = useRef<HTMLInputElement | null>(null)
 
+  const imageCompress = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    const options = {
+      maxSizeMB: 4, // 이미지 최대 용량
+      maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
+      useWebWorker: true,
+    }
+    try {
+      if (file) {
+        const compressedFile = await imageCompression(file, options)
+        setImgFile(compressedFile)
+      } else {
+        alert('no file')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImgFile(event.target.files?.[0])
+    imageCompress(event)
+    // setImgFile(event.target.files?.[0])
   }
 
   const handleClear = () => {
@@ -23,6 +44,7 @@ export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInput
   }
 
   const handleCameraClick = () => {
+    console.log(inputRef.current)
     inputRef.current?.click()
   }
 
@@ -43,17 +65,21 @@ export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInput
       <div className={styles.previewBox}>
         {preview ? (
           <>
-            <img src={preview} alt='이미지 미리보기' />
+            <div className={styles.imageWrapper}>
+              <img src={preview} alt='이미지 미리보기' />
+            </div>
             <button type='button' onClick={handleClear} className={styles.previewClearBtn}>
               <Icon name='close' size={16} />
             </button>
           </>
         ) : (
-          <p>
-            No
-            <br />
-            Image
-          </p>
+          <div className={styles.imageWrapper}>
+            <p>
+              No
+              <br />
+              Image
+            </p>
+          </div>
         )}
       </div>
 

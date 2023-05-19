@@ -58,8 +58,6 @@ export default function HistoryDetail() {
     walkLogPublicSetting,
   } = getHistoryQuery.data
 
-  console.log('queryData', getHistoryQuery.data)
-
   const handleEdit = () => {
     setEdit(prev => !prev)
   }
@@ -81,6 +79,7 @@ export default function HistoryDetail() {
       {
         label: '삭제하기',
         handleClick: deleteModalOption.deleteFn,
+
         id: 0,
       },
       {

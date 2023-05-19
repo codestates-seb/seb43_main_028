@@ -19,9 +19,6 @@ function TermsOfUse({
   privacyCheck,
   setPrivacyCheck,
 }: TermsOfUseProps) {
-  console.log('allCheck: ', allCheck)
-  console.log('useCheck: ', useCheck)
-  console.log('privacyCheck: ', privacyCheck)
   const allBtnEvent = () => {
     if (allCheck === false) {
       setAllCheck(true)
@@ -66,11 +63,11 @@ function TermsOfUse({
   }, [useCheck, privacyCheck, setAllCheck])
 
   return (
-    <form method='post' action='' className={styles.formContainer}>
-      <div className={styles.formAgreement}>
-        <div className={styles.formAgreementTitle}>약관 동의</div>
-        <div className={styles.formAgreementBox}>
-          <div className={styles.formAgreementAll}>
+    <div className={styles.container}>
+      <div className={styles.agreement}>
+        <div className={styles.agreementTitle}>약관 동의</div>
+        <div className={styles.agreementBox}>
+          <div className={styles.agreementAll}>
             <div className={styles.checkboxWrapper}>
               <button type='button' onClick={allBtnEvent}>
                 {allCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
@@ -79,8 +76,8 @@ function TermsOfUse({
             <label htmlFor='all-check'>전체 동의합니다.</label>
           </div>
           <hr />
-          <div className={styles.formAgreementItemBox}>
-            <div className={styles.formAgreementItem}>
+          <div className={styles.agreementItemBox}>
+            <div className={styles.agreementItem}>
               <div className={styles.checkboxWrapper}>
                 <button type='button' onClick={useBtnEvent}>
                   {useCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
@@ -90,7 +87,7 @@ function TermsOfUse({
                 이용약관에 동의합니다. <span>(필수)</span>
               </label>
             </div>
-            <div className={styles.formAgreementItem}>
+            <div className={styles.agreementItem}>
               <div className={styles.checkboxWrapper}>
                 <button type='button' onClick={privacyBtnEvent}>
                   {privacyCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
@@ -103,7 +100,7 @@ function TermsOfUse({
           </div>
         </div>
       </div>
-    </form>
+    </div>
   )
 }
 

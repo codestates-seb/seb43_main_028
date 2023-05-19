@@ -54,6 +54,7 @@ export default function DetailItem({
     setImgModal(prev => !prev)
   }
 
+
   const handleDeleteModal = () => {
     setOpenDeleteModal(prev => !prev)
     setDeleteModalOption({

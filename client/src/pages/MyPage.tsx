@@ -2,48 +2,42 @@ import { useEffect, useState } from 'react'
 import format from 'date-fns/format'
 import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
-import { userAtom, idAtom } from '../store/authAtom'
+import { userAtom, idAtom, isLoginAtom } from '../store/authAtom'
 import DropDown from '../components/common/DropDown'
 import EditProfile from '../components/MyPage/EditProfile'
 import styles from './MyPage.module.scss'
 import { UserInfoType, patchUserPrivacySettings } from '../apis/user'
+import Icon from '../components/common/Icon'
 
 export default function Mypage() {
+  const [isLogin] = useAtom(isLoginAtom)
+
   const [user, setUser] = useAtom(userAtom)
   const [memberId, setMemberId] = useAtom(idAtom)
 
   const [userData, setUserData] = useState<UserInfoType | null>(null)
+  console.log(userData?.imageUrl)
   const [registeredAt, setRegisteredAt] = useState('')
-
-  // console.log('회원가입일: ', userData?.createdAt)
-
   const [isModalOpened, setIsModalOpened] = useState(false)
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)
   }
-  // export type UserInfoType = {
-  //   defaultWalkLogPublicSetting: string
-  //   email: string
-  //   imageUrl: string
-  //   introduction: string
-  //   memberId: number
-  //   nickname: string
-  //   createdAt: Date
-  //   totalWalkLog: number
-  //   totalWalkLogContent: number
-  // }
-  const handleSetPrivacySettings = async (option: string) => {
+  const handleSetPrivacySettings = async (param: string) => {
     if (userData) {
-      const editedUserData = { ...userData, defaultWalkLogPublicSetting: option }
-      const res = await patchUserPrivacySettings(`/api/members/${memberId}`, editedUserData)
+      const data = new FormData()
+      const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: param })], {
+        type: 'application/json',
+      })
+
+      data.append('patch', blob)
+      const res = await patchUserPrivacySettings(`/api/members/${memberId}`, data)
       setUser(res)
     }
-    // alert('Error Occurred!')
   }
 
   const selectOptions = [
-    { id: 1, title: '나만 보기', handleClick: handleSetPrivacySettings },
-    { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings },
+    { id: 1, title: '나만 보기', handleClick: handleSetPrivacySettings, param: 'PRIVATE' },
+    { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings, param: 'PUBLIC' },
   ]
 
   useEffect(() => {
@@ -52,11 +46,15 @@ export default function Mypage() {
 
   useEffect(() => {
     if (userData) {
-      // const registeredDate = new Date(userData.createdAt)
-      // const formattedData = format(registeredDate, 'yyyy-MM-dd')
-      // setRegisteredAt(formattedData)
+      const registeredDate = new Date(userData.createdAt)
+      const formattedData = format(registeredDate, 'yyyy-MM-dd')
+      setRegisteredAt(formattedData)
     }
   }, [userData])
+
+  if (!isLogin) {
+    return <div>로그인해라</div>
+  }
 
   return (
     <>
@@ -73,11 +71,15 @@ export default function Mypage() {
               </div>
             </div>
             <div className={styles.imageWrapper}>
-              <img
-                className={styles.userProfileImage}
-                src={userData?.imageUrl}
-                alt='your profile'
-              />
+              {!userData?.imageUrl ? (
+                <Icon name='no-profile' size={64} />
+              ) : (
+                <img
+                  className={styles.userProfileImage}
+                  src={userData?.imageUrl}
+                  alt='your profile'
+                />
+              )}
             </div>
           </div>
           <div className={styles.userText}>{userData?.introduction}</div>

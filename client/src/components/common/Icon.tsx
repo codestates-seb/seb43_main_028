@@ -22,7 +22,7 @@ type IconNameType =
 
 interface IconProps {
   name: IconNameType
-  size?: 16 | 24 | 48
+  size?: 16 | 24 | 48 | 64
 }
 
 export default function Icon({ name, size = 24 }: IconProps) {

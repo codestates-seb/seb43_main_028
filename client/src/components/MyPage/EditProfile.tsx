@@ -10,9 +10,12 @@ type EditProfilePropsType = {
 }
 
 function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
-  const [memberId, setMemberId] = useAtom(idAtom)
-  const [user, setUser] = useAtom(userAtom)
+
   const [imgFile, setImgFile] = useState<File | undefined>()
+
+  const [memberId] = useAtom(idAtom)
+  const [, setUser] = useAtom(userAtom)
+
   const handleCloseEditProfile = () => {
     setIsModalOpened(false)
   }
@@ -24,15 +27,15 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
     const introduction = formData.get('introduction')
     const image = formData.get('image')
 
-    // formData.append('profileImage', imgFile!)
     const data = new FormData()
-    // blob
+
     const blob = new Blob([JSON.stringify({ nickname, introduction })], {
       type: 'application/json',
     })
 
     data.append('patch', blob)
-    data.append('profileImage', image!)
+
+    if (image) data.append('profileImage', image)
 
     if (memberId) {
       const res = await patchUserProfile(`/api/members/${memberId}`, data)
@@ -41,7 +44,9 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
       setIsModalOpened(false)
       return
     }
-    alert('failed')
+
+    alert('프로필 수정에 실패했습니다.')
+
   }
 
   return (

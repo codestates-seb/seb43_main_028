@@ -7,7 +7,15 @@ type DropDownProps = {
     id: number
     title: string
     handleClick: (title: string) => void
+    param: string
   }[]
+}
+
+type OptionType = {
+  id: number
+  title: string
+  handleClick: (title: string) => void
+  param: string
 }
 
 function DropDown({ options }: DropDownProps) {
@@ -15,10 +23,10 @@ function DropDown({ options }: DropDownProps) {
   const [selectedOptionId, setSelectedOptionId] = useState(0)
   const [selectedOptionTitle, setSelectedOptionTitle] = useState(options[0].title)
 
-  const handleChangeCurrentOption = (title: string, changeSetting: (title: string) => void) => {
-    setSelectedOptionTitle(title)
+  const handleChangeCurrentOption = (option: OptionType) => {
+    setSelectedOptionTitle(option.title)
     setIsOptionOpened(prev => !prev)
-    changeSetting(title)
+    option.handleClick(option.param)
   }
   const handleOpenOptions = () => {
     setIsOptionOpened(prev => !prev)
@@ -31,7 +39,7 @@ function DropDown({ options }: DropDownProps) {
         </button>
         <div className={styles.buttonWrapper}>
           <button className={styles.openBtn} type='button' onClick={handleOpenOptions}>
-            <Icon name='arrow-drop-down' />
+            <Icon name='arrow-drop-down' size={16} />
           </button>
         </div>
       </div>
@@ -40,10 +48,7 @@ function DropDown({ options }: DropDownProps) {
           {options.map(option => {
             return (
               <li key={option.id}>
-                <button
-                  type='button'
-                  onClick={() => handleChangeCurrentOption(option.title, option.handleClick)}
-                >
+                <button type='button' onClick={() => handleChangeCurrentOption(option)}>
                   {option.title}
                 </button>
               </li>
