@@ -3,19 +3,19 @@ package backend.section6mainproject.member.dto;
 import backend.section6mainproject.validator.NotSpace;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 public class MemberServiceDTO {
     @Getter
     @Setter
     public static class CreateInput {
-        @Email
+        @Pattern(regexp = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$", message = "올바른 형식의 이메일을 입력해주세요.")
         @NotSpace(message = "이메일을 입력해주세요.")
         private String email;
 
@@ -54,6 +54,12 @@ public class MemberServiceDTO {
         private Long memberId;
         @NotSpace(message = "비밀번호를 변경해주십시오.")
         private String password;
+    }
+
+    @Getter
+    @Setter
+    public static class FindNewPwInput {
+        private String email;
     }
 
 

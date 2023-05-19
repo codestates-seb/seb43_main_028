@@ -4,6 +4,7 @@ import backend.section6mainproject.advice.StompExceptionAdvice;
 import backend.section6mainproject.member.MemberStubData;
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
+import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
@@ -366,6 +367,7 @@ public class MemberControllerTest {
         String content = objectMapper.writeValueAsString(patchPw);
 
         given(mapper.patchPwToUpdatePwInput(Mockito.any(MemberControllerDTO.PatchPw.class))).willReturn(pwInput);
+
         String urlTemplate = "/members/{member-id}/pw";
 
         // when
