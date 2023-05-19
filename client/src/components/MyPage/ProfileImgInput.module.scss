@@ -9,6 +9,7 @@
 }
 
 .previewBox {
+
   background-color: transparent;
   text-align: center;
   width: 100px;
@@ -24,6 +25,7 @@
     object-fit: cover;
   }
 }
+
 
 .imageWrapper {
   @include U.size(100%);
@@ -53,6 +55,7 @@
 .album {
   display: none;
 }
+
 
 .previewClearBtn {
   @include T.gray900-bold-10;
