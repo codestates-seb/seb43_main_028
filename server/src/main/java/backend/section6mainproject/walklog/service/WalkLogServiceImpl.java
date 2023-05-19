@@ -74,28 +74,13 @@ public class WalkLogServiceImpl implements WalkLogService {
         checkWalkLogStatusRecording(findWalkLog);
         //WalkLogContent들을 조회
         //만약 walkLogContrent들이 존재하면 리스트들을 돌면서 가장 첫번째 파일의 이미지 url주소를 mapImage에 반환
-
+        String mapImage = storageService.store(exitInput.getMapImage(), "mapImage");
         WalkLog walkLog = walkLogMapper.walkLogServiceExitInputDTOtoWalkLog(exitInput);
         WalkLog exitedWalkLog =
                 beanUtils.copyNonNullProperties(walkLog, findWalkLog);
-        updateWalkLogExitSetting(getMapImage(exitInput), exitedWalkLog);
+        updateWalkLogExitSetting(mapImage, exitedWalkLog);
 
         return walkLogMapper.walkLogToWalkLogServiceOutputDTO(exitedWalkLog);
-    }
-
-    private String getMapImage(WalkLogServiceDTO.ExitInput exitInput) {
-        String mapImage = "";
-        List<WalkLogContent> walkLogContents =
-                walkLogContentRepository.findAllByWalkLog_WalkLogId(exitInput.getWalkLogId());
-        if(!walkLogContents.isEmpty()) {
-            WalkLogContent walkLogContent = walkLogContents.stream()
-                    .filter(content -> content.getImageKey() != null)
-                    .findFirst()
-                    .orElse(new WalkLogContent());
-            if(walkLogContent.getImageKey() != null) mapImage = walkLogContent.getImageKey();
-                    else mapImage = storageService.store(exitInput.getMapImage(), "mapImage");
-        }
-        return mapImage;
     }
 
     private void updateWalkLogExitSetting(String mapImage, WalkLog exitedWalkLog) {

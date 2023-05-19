@@ -1,6 +1,8 @@
 package backend.section6mainproject.walklog.controller;
 
 import backend.section6mainproject.walklog.WalkLogStubData;
+import backend.section6mainproject.advice.StompExceptionAdvice;
+import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
 
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
@@ -12,14 +14,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -37,9 +45,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(controllers = WalkLogController.class,
+        excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@MockBean({JpaMetamodelMappingContext.class, StompExceptionAdvice.class})
+@AutoConfigureRestDocs
 public class WalkLogControllerTest {
 
     @Autowired
@@ -61,8 +70,9 @@ public class WalkLogControllerTest {
         WalkLogControllerDTO.Post post = stubData.getPost();
         WalkLogControllerDTO.PostResponse response = stubData.getResponse();
         String content = objectMapper.writeValueAsString(post);
+        UsernamePasswordAuthenticationToken principal = UsernamePasswordAuthenticationToken
+                .authenticated(1L, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
-        given(walkLogMapper.walkLogControllerPostDTOtoWalkLogServiceCreateInputDTO(Mockito.any(WalkLogControllerDTO.Post.class))).willReturn(new WalkLogServiceDTO.CreateInput());
         given(walkLogService.createWalkLog(Mockito.any(WalkLogServiceDTO.CreateInput.class))).willReturn(new WalkLogServiceDTO.CreateOutput());
         given(walkLogMapper.walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(Mockito.any(WalkLogServiceDTO.CreateOutput.class)))
                 .willReturn(response);
@@ -72,7 +82,7 @@ public class WalkLogControllerTest {
                         post("/walk-logs")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(content)
+                                .principal(principal)
                 );
         // then
         actions

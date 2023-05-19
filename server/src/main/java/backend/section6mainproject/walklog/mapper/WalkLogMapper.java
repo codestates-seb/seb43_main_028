@@ -18,6 +18,7 @@ public interface WalkLogMapper {
     WalkLogServiceDTO.CreateInput walkLogControllerPostDTOtoWalkLogServiceCreateInputDTO(WalkLogControllerDTO.Post walkLogControllerPostDTO);
     WalkLogServiceDTO.UpdateInput walkLogControllerPatchDTOtoWalkLogServiceUpdateInputDTO(WalkLogControllerDTO.Patch walkLogControllerPatchDTO);
 
+
     WalkLogServiceDTO.ExitInput walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(WalkLogControllerDTO.EndPost endPost);
 
     WalkLogServiceDTO.FindInput walkLogControllerGetRequestDTOtoWalkLogServiceFindInputDTO(WalkLogControllerDTO.GetMemberRequest getMemberRequest);

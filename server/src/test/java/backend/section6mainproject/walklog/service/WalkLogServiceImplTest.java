@@ -64,6 +64,7 @@ public class WalkLogServiceImplTest {
         WalkLogServiceDTO.CreateOutput createOutput = stubData.getCreateOutput();
 
 
+
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(walkLog.getMember());
         given(walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(Mockito.anyLong()))
                 .willReturn(new ArrayList<>());
@@ -83,7 +84,6 @@ public class WalkLogServiceImplTest {
         //given
         WalkLog walkLog = stubData.getRecordingWalkLog(stubData.getMember());
         WalkLogServiceDTO.CreateInput createInput = stubData.getCreateInput();
-
         ArrayList<WalkLog> walkLogs = new ArrayList<>();
         walkLogs.add(walkLog);
 
