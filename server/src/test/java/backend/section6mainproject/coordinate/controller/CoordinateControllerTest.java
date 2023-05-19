@@ -1,5 +1,6 @@
 package backend.section6mainproject.coordinate.controller;
 
+import backend.section6mainproject.auth.handler.AuthenticationSuccessHandlerUtils;
 import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.coordinate.mapper.CoordinateMapper;
@@ -16,19 +17,23 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +46,8 @@ import static org.mockito.BDDMockito.*;
 class CoordinateControllerTest {
     @LocalServerPort
     private int port;
+    @Autowired
+    private AuthenticationSuccessHandlerUtils successHandlerUtils;
     @MockBean
     private MemberService memberService;
     @MockBean
@@ -71,7 +78,13 @@ class CoordinateControllerTest {
         errorFuture = new CompletableFuture<>();
 
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(stubData.getStubMember());
-        this.stompSession = stompClient.connect(url, new StompSessionHandlerAdapter() {
+
+        String accessToken = successHandlerUtils.delegateAccessToken(stubData.getStubMember());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBearerAuth(accessToken);
+        WebSocketHttpHeaders webSocketHttpHeaders = new WebSocketHttpHeaders(httpHeaders);
+
+        this.stompSession = stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
         }).get(2, TimeUnit.SECONDS);
         stompSession.subscribe("/sub/1", new StompFrameHandler() {
             @Override
@@ -135,6 +148,8 @@ class CoordinateControllerTest {
         private Member getStubMember() {
             Member member = new Member();
             member.setMemberId(1L);
+            member.setEmail("kim@gmaill.com");
+            member.setRoles(List.of("USER"));
             WalkLog walkLog = new WalkLog();
             walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.RECORDING);
             walkLog.setWalkLogId(1L);

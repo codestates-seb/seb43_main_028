@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,8 +29,9 @@ public class WalkLogController {
     private final WalkLogService walkLogService;
     private final WalkLogMapper walkLogMapper;
     @PostMapping
-    public ResponseEntity postWalkLog(@Valid @RequestBody WalkLogControllerDTO.Post post){
-        WalkLogServiceDTO.CreateInput createInput = walkLogMapper.walkLogControllerPostDTOtoWalkLogServiceCreateInputDTO(post);
+    public ResponseEntity postWalkLog(Authentication authentication){
+        long memberId = Long.parseLong(authentication.getPrincipal().toString());
+        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput(memberId);
         WalkLogServiceDTO.CreateOutput createOutput = walkLogService.createWalkLog(createInput);
         WalkLogControllerDTO.PostResponse postResponse = walkLogMapper.walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(createOutput);
         Long walkLogId = postResponse.getWalkLogId();

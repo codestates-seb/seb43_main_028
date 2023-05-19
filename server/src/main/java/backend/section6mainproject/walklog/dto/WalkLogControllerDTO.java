@@ -21,12 +21,6 @@ import java.util.List;
 import static backend.section6mainproject.walklog.entity.WalkLog.*;
 
 public class WalkLogControllerDTO {
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    public static class Post {
-        private Long memberId;
-    }
 
     @Getter
     @Setter

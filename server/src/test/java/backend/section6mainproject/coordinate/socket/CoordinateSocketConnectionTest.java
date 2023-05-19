@@ -1,7 +1,6 @@
 package backend.section6mainproject.coordinate.socket;
 
-import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
-import backend.section6mainproject.coordinate.service.CoordinateService;
+import backend.section6mainproject.auth.handler.AuthenticationSuccessHandlerUtils;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.service.MemberService;
@@ -13,16 +12,20 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -36,11 +39,13 @@ class CoordinateSocketConnectionTest {
     private Logger log = LoggerFactory.getLogger(getClass());
     @LocalServerPort
     private int port;
+    @Autowired
+    private AuthenticationSuccessHandlerUtils successHandlerUtils;
     @MockBean
     private MemberService memberService;
     private WebSocketStompClient stompClient;
     private String url;
-
+    private WebSocketHttpHeaders webSocketHttpHeaders;
 
     public CoordinateSocketConnectionTest() {
         this.stompClient = new WebSocketStompClient(new StandardWebSocketClient());
@@ -50,14 +55,20 @@ class CoordinateSocketConnectionTest {
     @BeforeEach
     void init() {
         this.url = String.format("ws://localhost:%d/ws/walk-logs", port);
+        String accessToken = successHandlerUtils.delegateAccessToken(getStubMember());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBearerAuth(accessToken);
+        this.webSocketHttpHeaders = new WebSocketHttpHeaders(httpHeaders);
     }
 
     @Test
     void connectWebSocket() throws ExecutionException, InterruptedException, TimeoutException {
         //given
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
+
+
         //when //then
-        Assertions.assertDoesNotThrow(() -> stompClient.connect(url, new StompSessionHandlerAdapter() {
+        Assertions.assertDoesNotThrow(() -> stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
         }).get(2, TimeUnit.MINUTES));
 
     }
@@ -67,7 +78,7 @@ class CoordinateSocketConnectionTest {
         //given
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(new Member());
         //when //then
-        Assertions.assertThrows(Exception.class, () -> stompClient.connect(url, new StompSessionHandlerAdapter() {
+        Assertions.assertThrows(Exception.class, () -> stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
         }).get(2, TimeUnit.MINUTES));
 
     }
@@ -78,7 +89,7 @@ class CoordinateSocketConnectionTest {
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
 
         //when
-        StompSession stompSession = stompClient.connect(url, new StompSessionHandlerAdapter() {
+        StompSession stompSession = stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
                 completableFuture.complete(headers);
@@ -98,7 +109,7 @@ class CoordinateSocketConnectionTest {
         given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
 
         //when
-        StompSession stompSession = stompClient.connect(url, new StompSessionHandlerAdapter() {
+        StompSession stompSession = stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
                 log.info("headers : {}", headers);
@@ -118,6 +129,8 @@ class CoordinateSocketConnectionTest {
     private Member getStubMember() {
         Member member = new Member();
         member.setMemberId(1L);
+        member.setEmail("kim@gmaill.com");
+        member.setRoles(List.of("USER"));
         WalkLog walkLog = new WalkLog();
         walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.RECORDING);
         walkLog.setWalkLogId(1L);
