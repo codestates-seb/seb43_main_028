@@ -1,11 +1,13 @@
 package backend.section6mainproject.walklog.controller;
 
+import backend.section6mainproject.dto.MultiResponseDto;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.mapper.WalkLogMapper;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +72,14 @@ public class WalkLogController {
                 walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(walkLogService.findWalkLog(walkLogId));
         return new ResponseEntity<>(detailResponse, HttpStatus.OK);
     }
+    @GetMapping
+    public ResponseEntity getWalkLogs(@Valid @ModelAttribute WalkLogControllerDTO.GetFeedRequest getFeedRequest){
+        WalkLogServiceDTO.FindFeedInput findFeedInput =
+                walkLogMapper.walkLogControllerGetMemberRequestDTOtoWalkLogServiceFindFeedInputDTO(getFeedRequest);
+        Page<WalkLogControllerDTO.GetFeedResponse> responses = walkLogService.findFeedWalkLogs(findFeedInput)
+                .map(walkLogMapper::walkLogServiceFindFeedOutputDTOtoWalkLogControllerGetFeedResponseDTO);
+
+        return new ResponseEntity<>(new MultiResponseDto<>(responses.getContent(),responses), HttpStatus.OK);    }
 
     @DeleteMapping("/{walk-log-id}")
     public ResponseEntity deleteWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
