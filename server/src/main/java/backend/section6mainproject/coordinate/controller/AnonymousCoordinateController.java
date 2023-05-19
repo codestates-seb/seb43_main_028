@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,10 +23,10 @@ public class AnonymousCoordinateController {
 
     @MessageMapping("/anonymous/walk-logs")
     public void publishCoordinateForAnonymous(@Valid @Payload AnonymousCoordinateControllerDTO.Pub pub) {
-        String userId = (String) SimpAttributesContextHolder.getAttributes().getAttribute("userId");
-        pub.setUserId(userId);
+        Object walkLogId = SimpAttributesContextHolder.getAttributes().getAttribute("walkLogId");
         AnonymousCoordinateServiceDTO.Input input = mapper.controllerPubDTOTOServiceInputDTO(pub);
-        if(userId != null) input.setUserIdSaved(true);
+        Optional.ofNullable(walkLogId).ifPresent(id -> input.setWalkLogId(Long.parseLong(id.toString())));
+        if(walkLogId != null) input.setUserIdSaved(true);
         AnonymousCoordinateServiceDTO.Output output = coordinateService.createCoordinate(input);
         messagingTemplate.convertAndSend("/sub/anonymous/" + output.getUserId(), mapper.serviceOutputDTOToControllerSubDTO(output));
     }

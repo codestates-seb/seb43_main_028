@@ -12,6 +12,7 @@ public interface AnonymousCoordinateMapper {
     AnonymousCoordinateServiceDTO.Input controllerPubDTOTOServiceInputDTO(AnonymousCoordinateControllerDTO.Pub pub);
 
     @Mapping(source = "userId", target = "walkLog.userId")
+    @Mapping(source = "walkLogId", target = "walkLog.walkLogId")
     AnonymousCoordinate serviceInputDTOToEntity(AnonymousCoordinateServiceDTO.Input input);
 
     @Mapping(source = "walkLog.userId", target = "userId")

@@ -26,7 +26,7 @@ public class AnonymousWalkLogController {
     private final AnonymousWalkLogService walkLogService;
 
     @PostMapping
-    public ResponseEntity postWalkLog(@Valid @RequestBody WalkLogControllerDTO.Post walkLogControllerPostDto) {
+    public ResponseEntity postWalkLog() {
         AnonymousWalkLogServiceDTO.CreateOutput createOutput = walkLogService.createWalkLog();
         AnonymousWalkLogControllerDTO.PostResponse postResponse = new AnonymousWalkLogControllerDTO.PostResponse(createOutput.getUserId());
         URI location = UriComponentsBuilder

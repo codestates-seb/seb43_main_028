@@ -8,6 +8,7 @@ import backend.section6mainproject.walklog.entity.AnonymousWalkLog;
 import backend.section6mainproject.walklog.repository.AnonymousWalkLogRepository;
 import backend.section6mainproject.walklog.service.AnonymousWalkLogService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpAttributesContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,7 +23,9 @@ public class AnonymousCoordinateServiceImpl implements AnonymousCoordinateServic
     @Override
     public AnonymousCoordinateServiceDTO.Output createCoordinate(AnonymousCoordinateServiceDTO.Input input) {
         if (!input.isUserIdSaved()) {
-            walkLogService.findVerifiedWalkLogByUserId(input.getUserId());
+            AnonymousWalkLog walkLog = walkLogService.findVerifiedWalkLogByUserId(input.getUserId());
+            SimpAttributesContextHolder.getAttributes().setAttribute("walkLogId", walkLog.getWalkLogId());
+            input.setWalkLogId(walkLog.getWalkLogId());
         }
         AnonymousCoordinate coordinate = mapper.serviceInputDTOToEntity(input);
         return mapper.entityToServiceOutputDTO(coordinateRepository.save(coordinate));

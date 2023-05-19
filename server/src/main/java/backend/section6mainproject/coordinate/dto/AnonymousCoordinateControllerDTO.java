@@ -11,6 +11,7 @@ public class AnonymousCoordinateControllerDTO {
     @Getter
     @Setter
     public static class Pub {
+        @NotNull
         private String userId;
         @NotNull
         private Double lat;

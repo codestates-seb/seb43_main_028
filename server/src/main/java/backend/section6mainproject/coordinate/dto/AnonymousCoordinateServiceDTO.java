@@ -11,11 +11,10 @@ public class AnonymousCoordinateServiceDTO {
     @Getter
     @Setter
     public static class Input {
-        @Setter
+        private Long walkLogId;
         private String userId;
-        @NotNull
+
         private Double lat;
-        @NotNull
         private Double lng;
         private boolean userIdSaved;
     }

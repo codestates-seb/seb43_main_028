@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +31,10 @@ public class AnonymousWalkLogServiceImpl implements AnonymousWalkLogService {
     @Override
     public AnonymousWalkLog findVerifiedWalkLogByUserId(String userId) {
         Optional<AnonymousWalkLog> optionalWalkLog = walkLogRepository.findByUserId(userId);
-        return optionalWalkLog.orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND));
+        return optionalWalkLog.orElseThrow(() -> {
+            Map<String, Object> attr = new HashMap<>();
+            attr.put("userId", userId);
+            return new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND, attr);
+        });
     }
 }

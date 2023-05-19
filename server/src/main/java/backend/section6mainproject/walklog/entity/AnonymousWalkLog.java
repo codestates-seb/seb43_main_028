@@ -32,10 +32,10 @@ public class AnonymousWalkLog extends Auditable {
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private WalkLog.WalkLogStatus walkLogStatus = WalkLog.WalkLogStatus.RECORDING;
-    @OneToMany(mappedBy = "WalkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<AnonymousCoordinate> anonymousCoordinates = new ArrayList<>();
     @OneToMany(mappedBy = "walkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<AnonymousWalkLogContent> anonymousWalkLogContents = new ArrayList<>();
+    private List<AnonymousCoordinate> coordinates = new ArrayList<>();
+    @OneToMany(mappedBy = "walkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<AnonymousWalkLogContent> walkLogContents = new ArrayList<>();
 
 
 

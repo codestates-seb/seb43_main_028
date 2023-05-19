@@ -11,11 +11,9 @@ public class CoordinateServiceDTO {
     @Getter
     @Setter
     public static class Input {
-        @Setter
+
         private Long walkLogId;
-        @NotNull
         private Double lat;
-        @NotNull
         private Double lng;
     }
 
