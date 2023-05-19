@@ -7,21 +7,23 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-public class CoordinateServiceDTO {
+public class AnonymousCoordinateServiceDTO {
     @Getter
     @Setter
     public static class Input {
-
         private Long walkLogId;
+        private String userId;
+
         private Double lat;
         private Double lng;
+        private boolean userIdSaved;
     }
 
     @Getter
     @AllArgsConstructor
     public static class Output {
         private long coordinateId;
-        private long walkLogId;
+        private String userId;
         private Double lat;
         private Double lng;
         private LocalDateTime createdAt;

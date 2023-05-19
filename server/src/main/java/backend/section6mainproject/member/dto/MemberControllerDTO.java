@@ -1,5 +1,6 @@
 package backend.section6mainproject.member.dto;
 
+import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.validator.NotSpace;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.AllArgsConstructor;
@@ -70,7 +71,7 @@ public class MemberControllerDTO {
         private String email;
         private String nickname;
         private String introduction;
-        private String defaultWalkLogPublicSetting;
+        private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting;
         private String imageUrl;
         private int totalWalkLog;
         private int totalWalkLogContent;

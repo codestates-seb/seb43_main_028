@@ -73,7 +73,7 @@ public class WalkLogControllerDTO {
     @NoArgsConstructor
     public static class GetCalendarRequests {
         @NotNull
-        @Min(value = 2023)
+//        @Min(value = 2023)
         private Integer year;
         @NotNull
         @Range(min = 1, max = 12)
@@ -89,6 +89,18 @@ public class WalkLogControllerDTO {
 
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class Response {
+        private Long walkLogId;
+        private String mapImage;
+        private LocalDateTime startedAt;
+        private LocalDateTime endAt;
+        private String message;
+        private List<WalkLogContentServiceDTO.Output> walkLogContents;
+
+    }
 
     @Getter
     @Setter
@@ -98,6 +110,7 @@ public class WalkLogControllerDTO {
         private Long walkLogId;
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
+        private String mapImage;
         @Size(max = 100)
         private String message;
         private Long memberId;

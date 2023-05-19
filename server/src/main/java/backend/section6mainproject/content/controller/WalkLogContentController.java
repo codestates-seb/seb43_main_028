@@ -34,7 +34,7 @@ public class WalkLogContentController {
         WalkLogContentServiceDTO.CreateOutput walkLogContent = walkLogContentService.createWalkLogContent(createInput);
         URI uri = UriComponentsBuilder.newInstance()
                 .path(WALK_LOG_CONTENT_DEFAULT_URL + walkLogContent.getWalkLogContentId())
-                .build()
+                .buildAndExpand(walkLogId)
                 .toUri();
         return ResponseEntity.created(uri).body(mapper.serviceCreateOutputDTOToControllerCreateResponseDTO(walkLogContent));
     }

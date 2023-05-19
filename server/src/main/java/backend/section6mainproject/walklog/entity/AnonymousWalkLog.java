@@ -1,7 +1,9 @@
 package backend.section6mainproject.walklog.entity;
 
 import backend.section6mainproject.audit.Auditable;
+import backend.section6mainproject.content.entity.AnonymousWalkLogContent;
 import backend.section6mainproject.content.entity.WalkLogContent;
+import backend.section6mainproject.coordinate.entity.AnonymousCoordinate;
 import backend.section6mainproject.coordinate.entity.Coordinate;
 import backend.section6mainproject.member.entity.Member;
 import lombok.Getter;
@@ -17,48 +19,24 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class WalkLog extends Auditable {
+public class AnonymousWalkLog extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long walkLogId;
     @Column(nullable = false)
+    private String userId;
+    @Column(nullable = false)
     private LocalDateTime endAt = LocalDateTime.now();
     @Column(length = 50)
     private String message;
-    private String mapImage; //구현 예정
-    @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
-    private WalkLogPublicSetting walkLogPublicSetting = WalkLogPublicSetting.PRIVATE;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 30)
-    private WalkLogStatus walkLogStatus;
+    private WalkLog.WalkLogStatus walkLogStatus = WalkLog.WalkLogStatus.RECORDING;
     @OneToMany(mappedBy = "walkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Coordinate> coordinates = new ArrayList<>();
+    private List<AnonymousCoordinate> coordinates = new ArrayList<>();
     @OneToMany(mappedBy = "walkLog", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<WalkLogContent> walkLogContents = new ArrayList<>();
+    private List<AnonymousWalkLogContent> walkLogContents = new ArrayList<>();
 
-    public void addCoordinate(Coordinate coordinate) {
-        coordinates.add(coordinate);
-    }
 
-    public void addWalkLogContent(WalkLogContent walkLogContent) {
-        walkLogContents.add(walkLogContent);
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-        this.walkLogPublicSetting = member.getDefaultWalkLogPublicSetting();
-    }
-
-    public enum WalkLogPublicSetting {
-        PUBLIC, PRIVATE
-    }
-    public enum WalkLogStatus{
-        RECORDING,STOP
-    }
 
 }

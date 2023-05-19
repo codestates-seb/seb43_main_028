@@ -4,6 +4,7 @@ import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,6 +40,8 @@ public class WalkLogServiceDTO {
         private Long walkLogId;
         private String message;
         private WalkLog.WalkLogPublicSetting walkLogPublicSetting;
+        private MultipartFile mapImage;
+
     }
     @Getter
     @Setter
@@ -90,6 +93,7 @@ public class WalkLogServiceDTO {
         private Long walkLogId;
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
+        private String imageUrl;
 
         private String message;
         private Long memberId;

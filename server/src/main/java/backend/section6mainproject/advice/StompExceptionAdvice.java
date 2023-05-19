@@ -57,7 +57,9 @@ public class StompExceptionAdvice {
     }
 
     private void sendError(ErrorResponse errorResponse) {
-        long walkLogId = Long.parseLong(SimpAttributesContextHolder.getAttributes().getAttribute("walkLogId").toString());
+        Object attr = SimpAttributesContextHolder.getAttributes().getAttribute("walkLogId");
+        if(attr == null) return;
+        long walkLogId = Long.parseLong(attr.toString());
         Map<String, Object> headers = new HashMap<>();
         headers.put("error", errorResponse.getStatus());
         messagingTemplate.convertAndSend("/sub/" + walkLogId, errorResponse, headers);
