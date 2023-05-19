@@ -58,7 +58,7 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GetRequests {
+    public static class GetMemberRequest {
         @NotNull
         @Positive
         private int page;
@@ -67,11 +67,36 @@ public class WalkLogControllerDTO {
         private Integer month;
         private Integer year;
 
+
     }
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class GetCalendarRequests {
+    public static class GetFeedRequest {
+        @NotNull
+        @Positive
+        private int page;
+        private Integer size = 10;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class GetFeedResponse {
+        private Long walkLogId;
+        private String mapImage;
+        private String nickname;
+        private String profileImage;
+        private LocalDateTime startedAt;
+        private LocalDateTime endAt;
+        private String message;
+        private List<WalkLogContentServiceDTO.Output> walkLogContents;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class GetCalendarRequest {
         @NotNull
 //        @Min(value = 2023)
         private Integer year;
