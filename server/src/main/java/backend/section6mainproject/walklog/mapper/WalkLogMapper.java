@@ -15,7 +15,6 @@ import java.util.List;
 @Mapper(componentModel = "spring",uses = {CoordinateMapper.class, WalkLogContentMapper.class, StorageService.class})
 public interface WalkLogMapper {
     //Controller To Service
-    WalkLogServiceDTO.CreateInput walkLogControllerPostDTOtoWalkLogServiceCreateInputDTO(WalkLogControllerDTO.Post walkLogControllerPostDTO);
     WalkLogServiceDTO.UpdateInput walkLogControllerPatchDTOtoWalkLogServiceUpdateInputDTO(WalkLogControllerDTO.Patch walkLogControllerPatchDTO);
 
 

@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -67,9 +68,7 @@ public class WalkLogControllerTest {
     }
     @Test
     void postWalkLogTest() throws Exception {
-        WalkLogControllerDTO.Post post = stubData.getPost();
         WalkLogControllerDTO.PostResponse response = stubData.getResponse();
-        String content = objectMapper.writeValueAsString(post);
         UsernamePasswordAuthenticationToken principal = UsernamePasswordAuthenticationToken
                 .authenticated(1L, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
 

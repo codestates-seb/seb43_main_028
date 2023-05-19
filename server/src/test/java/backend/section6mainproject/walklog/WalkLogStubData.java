@@ -60,11 +60,6 @@ public class WalkLogStubData {
         return walkLog;
     }
 
-    public WalkLogControllerDTO.Post getPost(){
-        WalkLogControllerDTO.Post post = new WalkLogControllerDTO.Post();
-        post.setMemberId(memberId);
-        return post;
-    }
     public WalkLogControllerDTO.PostResponse getResponse() {
         WalkLogControllerDTO.PostResponse response = new WalkLogControllerDTO.PostResponse();
         response.setWalkLogId(1L);
@@ -107,9 +102,7 @@ public class WalkLogStubData {
         return endPostDTO;
     }
     public WalkLogServiceDTO.CreateInput getCreateInput(){
-        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
-        createInput.setMemberId(memberId);
-        return createInput;
+        return new WalkLogServiceDTO.CreateInput(memberId);
     }
     public WalkLogServiceDTO.CreateOutput getCreateOutput(){
         WalkLogServiceDTO.CreateOutput createOutput = new WalkLogServiceDTO.CreateOutput();
