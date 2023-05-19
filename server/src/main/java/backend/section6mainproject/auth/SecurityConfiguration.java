@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer()).and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.GET, "/members/refresh").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/members/*/walk-logs/**").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
                         .antMatchers("/ws/walk-logs").hasRole("USER")
