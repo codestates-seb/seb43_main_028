@@ -12,8 +12,7 @@ import java.util.List;
 public class WalkLogServiceDTO {
 
     @Getter
-    @Setter
-    @NoArgsConstructor
+    @AllArgsConstructor
     public static class CreateInput {
         private Long memberId;
 

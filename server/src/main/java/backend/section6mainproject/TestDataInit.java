@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class TestDataInit {
     public void init() {
         Member firstMember = new Member();
         firstMember.setEmail("test@gmail.com");
+        firstMember.setRoles(List.of("USER"));
         firstMember.setPassword(passwordEncoder.encode("testdot01!"));
         firstMember.setNickname("거터");
         firstMember.setIntroduction("안녕하세요");

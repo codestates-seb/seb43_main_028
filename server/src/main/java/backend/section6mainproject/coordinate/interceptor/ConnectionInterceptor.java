@@ -8,10 +8,12 @@ import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +24,7 @@ public class ConnectionInterceptor implements HandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        // 인증 로직 구현 후, 토큰에서 memberId를 가져오게 할 예정이다.
-        Long memberId = 1L;
+        long memberId = Long.parseLong(((Authentication) request.getPrincipal()).getPrincipal().toString());
         Member findMember = memberService.findVerifiedMember(memberId);
         List<WalkLog> walkLogs = findMember.getWalkLogs();
         Long walkLogId = null;
