@@ -28,22 +28,32 @@ public class TestDataInit {
     public void init() {
         Member firstMember = new Member();
         firstMember.setEmail("test@gmail.com");
-        firstMember.setPassword(passwordEncoder.encode("testdot01!"));
+        firstMember.setPassword(passwordEncoder.encode("testdot"));
         firstMember.setNickname("거터");
         firstMember.setIntroduction("안녕하세요");
         memberRepository.save(firstMember);
+        for(int i =1; i<31;i++) {
+            WalkLog walkLog = createWalkLog(firstMember, i);
+            walkLog.setCreatedAt(LocalDateTime.now().minusMonths(i));
+            walkLogRepository.save(walkLog);
+            saveWalkLogContent(i, walkLog);
+        };
 
-        WalkLog walkLog = new WalkLog();
-        walkLog.setMember(firstMember);
-        walkLog.setMessage("안녕하십니까");
-        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
-        walkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        walkLogRepository.save(walkLog);
+    }
 
+    private void saveWalkLogContent(int i, WalkLog walkLog) {
         WalkLogContent walkLogContent = new WalkLogContent();
         walkLogContent.setWalkLog(walkLog);
-        walkLogContent.setText("첫번째 걷기 기록중 글 기록");
+        walkLogContent.setText("걷기 기록중 글 기록" + i);
         walkLogContentRepository.save(walkLogContent);
+    }
 
+    private WalkLog createWalkLog(Member firstMember,int num) {
+        WalkLog walkLog = new WalkLog();
+        walkLog.setMember(firstMember);
+        walkLog.setMessage("안녕하십니까"+num);
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        walkLog.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        return walkLog;
     }
 }

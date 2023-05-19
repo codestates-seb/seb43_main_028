@@ -73,7 +73,7 @@ public class WalkLogControllerDTO {
     @NoArgsConstructor
     public static class GetCalendarRequests {
         @NotNull
-        @Min(value = 2023)
+//        @Min(value = 2023)
         private Integer year;
         @NotNull
         @Range(min = 1, max = 12)
