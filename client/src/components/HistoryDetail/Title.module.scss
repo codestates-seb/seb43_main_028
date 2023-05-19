@@ -10,6 +10,14 @@
   gap: 8px;
 }
 
+.profile {
+  border-radius: 50%;
+}
+
+.nickName {
+  @include T.gray900-bold-18;
+}
+
 .timeBox {
   margin-top: 20px;
   @include U.flex-c(row, flex-start);
