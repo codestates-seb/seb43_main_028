@@ -6,16 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailSender {
-    private final JavaMailSender mailSender;
     private final EmailSendable emailSendable;
 
-    public EmailSender(JavaMailSender mailSender, EmailSendable emailSendable) {
-        this.mailSender = mailSender;
+    public EmailSender(EmailSendable emailSendable) {
         this.emailSendable = emailSendable;
     }
 
-    public void sendEmail(String[] to, String subject, String templateName) throws MailSendException,
+    public void sendEmail(String[] to, String subject, String message, String templateName) throws MailSendException,
             InterruptedException {
-        emailSendable.send(to, subject, templateName);
+        emailSendable.send(to, subject, message, templateName);
     }
 }

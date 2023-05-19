@@ -56,7 +56,8 @@ public class MemberServiceDTO {
         private String password;
     }
 
-    @Data
+    @Getter
+    @Setter
     public static class FindNewPwInput {
         private String email;
     }

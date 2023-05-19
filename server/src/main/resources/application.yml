@@ -33,7 +33,7 @@ mail:
       enable: true
   subject:
     member:
-      reset-password: 회원님의 임시비밀번호 =
+      reset-password: 임시비밀번호 안내 관련 이메일 입니다.
   template:
     name:
       member:

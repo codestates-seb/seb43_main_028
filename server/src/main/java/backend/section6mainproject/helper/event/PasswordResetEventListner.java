@@ -1,6 +1,7 @@
 package backend.section6mainproject.helper.event;
 
 import backend.section6mainproject.helper.email.EmailSender;
+import backend.section6mainproject.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -33,8 +34,9 @@ public class PasswordResetEventListner {
     public void listen(PasswordResetEvent event) throws Exception {
         try {
             String[] to = new String[]{event.getMember().getEmail()};
+            String message = event.getMember().getNickname() + "님의 임시 비밀번호 입니다. " + event.getTmpPw();
 
-            emailSender.sendEmail(to, subject + " " + event.getTmpPw(), templateName);
+            emailSender.sendEmail(to, subject, message, templateName);
         } catch (MailSendException e) {
             e.printStackTrace();
             log.error("MailSendException: Password reset Fail:");
