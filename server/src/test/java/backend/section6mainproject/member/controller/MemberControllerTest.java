@@ -2,6 +2,7 @@ package backend.section6mainproject.member.controller;
 
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
+import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.walklog.entity.WalkLog;
@@ -178,7 +179,6 @@ public class MemberControllerTest {
 
         given(mapper.patchPwToUpdatePwInput(Mockito.any(MemberControllerDTO.PatchPw.class))).willReturn(pwInput);
         doNothing().when(memberService).updateMemberPassword(Mockito.any(MemberServiceDTO.UpdatePwInput.class));
-
         ResultActions actions = mockMvc.perform(
                 patch("/members/{member-id}/pw", memberId)
                         .contentType(MediaType.APPLICATION_JSON)

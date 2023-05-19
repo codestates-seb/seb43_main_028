@@ -3,6 +3,7 @@ package backend.section6mainproject.member.dto;
 import backend.section6mainproject.validator.NotSpace;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,7 @@ public class MemberControllerDTO {
     @Getter
     @Setter
     public static class Post {
-        @Email
+        @Pattern(regexp = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$", message = "올바른 형식의 이메일을 입력해주세요.")
         @NotBlank(message = "이메일을 입력해주세요.")
         private String email;
 
@@ -46,6 +47,12 @@ public class MemberControllerDTO {
     public static class PatchPw {
         @NotBlank(message = "재설정하실 비밀번호를 입력해주세요.")
         private String password;
+    }
+
+    @Data
+    public static class GetNewPw {
+        @NotBlank(message = "회원님의 이메일을 입력해주세요.")
+        private String email;
     }
 
     @Getter

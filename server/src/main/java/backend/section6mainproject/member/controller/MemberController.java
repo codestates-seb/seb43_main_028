@@ -60,10 +60,20 @@ public class MemberController {
         return ResponseEntity.created(location).body(response);
     }
 
+    //이메일 보내기
+    @GetMapping("/tmp-pw")
+    public ResponseEntity getTemporaryPassword(@RequestBody MemberControllerDTO.GetNewPw email) throws InterruptedException {
+        MemberServiceDTO.FindNewPwInput findNewPwInput = memberMapper.getNewPwToFindNewPw(email);
+
+        memberService.getTemporaryPasswordThroughEmail(findNewPwInput);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @PatchMapping(path = "/{member-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity patchMember(@PathVariable("member-id") @Positive Long memberId,
                                       @Valid @RequestPart MemberControllerDTO.Patch patch,
-                                      @RequestPart MultipartFile profileImage) {
+                                      @RequestPart(required = false) MultipartFile profileImage) {
         MemberServiceDTO.UpdateInput updateInput = memberMapper.patchToUpdateInput(patch);
         updateInput.setProfileImage(profileImage);
         updateInput.setMemberId(memberId);
