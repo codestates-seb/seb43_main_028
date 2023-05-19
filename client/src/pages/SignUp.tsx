@@ -91,7 +91,6 @@ function SignUp() {
   })
 
   const submitSignUpData = (data: any) => {
-    console.log(data)
     signUp(data).then(res => {
       if (res === 'success') {
         routeTo('/signin')
