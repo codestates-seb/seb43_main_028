@@ -20,4 +20,6 @@ public interface WalkLogRepository extends JpaRepository<WalkLog, Long> {
     @Query("FROM WalkLog w WHERE w.member.memberId = :memberId AND YEAR(w.createdAt) = :year AND MONTH(w.createdAt) = :month AND DAY(w.createdAt) = :day")
     Page<WalkLog> findAllByMyWalkLogFromDay(Pageable pageable,Long memberId, int year, int month, int day);
 
+    Page<WalkLog> findAllByWalkLogPublicSetting(Pageable pageable, WalkLog.WalkLogPublicSetting walkLogPublicSetting);
+
 }
