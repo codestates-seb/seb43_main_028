@@ -266,6 +266,31 @@ public class WalkLogServiceImplTest {
 
     }
     @Test
+    public void findFeedWalkLogsTest(){
+        WalkLogServiceDTO.FindFeedInput findFeedInput = new WalkLogServiceDTO.FindFeedInput();
+        findFeedInput.setPage(1);
+        findFeedInput.setSize(10);
+        WalkLogServiceDTO.FindFeedOutput findFeedOutput = new WalkLogServiceDTO.FindFeedOutput();
+        findFeedOutput.setWalkLogId(1L);
+        findFeedOutput.setMessage("dd");
+        ArrayList<WalkLog> walkLogs = new ArrayList<>();
+        WalkLog walkLog = createWalkLog(1L);
+        WalkLog walkLog2 = createWalkLog(2L);
+        walkLogs.add(walkLog);
+        walkLogs.add(walkLog2);
+
+        given(walkLogRepository.findAllByWalkLogPublicSetting(Mockito.any(PageRequest.class),Mockito.any(WalkLog.WalkLogPublicSetting.class)))
+                .willReturn(new PageImpl<>(walkLogs));
+        given(walkLogMapper.walkLogToWalkLogServiceFindFeedOutputDTO(Mockito.any(WalkLog.class))).willReturn(findFeedOutput);
+
+        Page<WalkLogServiceDTO.FindFeedOutput> result = walkLogService.findFeedWalkLogs(findFeedInput);
+
+        assertThat(result.getContent().size()).isEqualTo(2);
+        assertThat(result.getContent().get(0).getWalkLogId()).isEqualTo(findFeedOutput.getWalkLogId());
+        assertThat(result.getContent().get(0).getMessage()).isEqualTo(findFeedOutput.getMessage());
+
+    }
+    @Test
     public void checkInputErrorTestWrongDay(){
         WalkLogServiceDTO.FindInput findInput = createFindsInput();
         findInput.setMonth(null);
