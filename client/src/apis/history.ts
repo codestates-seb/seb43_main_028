@@ -49,3 +49,22 @@ export const deleteHistoryItem = async (walkLogId: string, contentId: string) =>
     return 'fail'
   }
 }
+
+export const getHistoryList = async (memberId: number, page = 1) => {
+  try {
+    const url = `/api/members/${memberId}/walk-logs`
+    const response = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+      params: {
+        page,
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}

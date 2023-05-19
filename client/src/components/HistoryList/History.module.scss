@@ -2,6 +2,10 @@
 @use '../../styles/utils' as U;
 @use '../../styles/typography' as T;
 
+.containerBox {
+  width: 100%;
+}
+
 .container {
   width: 100%;
   @include U.flex-c(column, flex-start, flex-start);
