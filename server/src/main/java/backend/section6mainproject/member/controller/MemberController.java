@@ -1,7 +1,6 @@
 package backend.section6mainproject.member.controller;
 
 import backend.section6mainproject.dto.MultiResponseDto;
-import backend.section6mainproject.dto.PageInfo;
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
 import backend.section6mainproject.member.mapper.MemberMapper;
@@ -94,23 +93,23 @@ public class MemberController {
     }
     @GetMapping("/{member-id}/walk-logs")
     public ResponseEntity getMyWalkLogs(@PathVariable("member-id") @Positive Long memberId,
-                                        @Valid @ModelAttribute WalkLogControllerDTO.GetRequests getRequests){
+                                        @Valid @ModelAttribute WalkLogControllerDTO.GetMemberRequest getMemberRequest){
 
-        WalkLogServiceDTO.FindsInput findsInput =
-                walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests);
-        findsInput.setMemberId(memberId);
+        WalkLogServiceDTO.FindInput findInput =
+                walkLogMapper.walkLogControllerGetRequestDTOtoWalkLogServiceFindInputDTO(getMemberRequest);
+        findInput.setMemberId(memberId);
         Page<WalkLogControllerDTO.Response> responses =
-                walkLogService.findMyWalkLogs(findsInput).map(walkLogMapper::walkLogServiceFindsOutputDTOtoWalkLogControllerResponseDTO);
+                walkLogService.findMyWalkLogs(findInput).map(walkLogMapper::walkLogServiceFindOutputDTOtoWalkLogControllerResponseDTO);
         return new ResponseEntity<>(new MultiResponseDto<>(responses.getContent(),responses), HttpStatus.OK);
     }
     @GetMapping("/{member-id}/walk-logs/calendar")
     public ResponseEntity getMyWalkLogsForCalendar(@PathVariable("member-id") @Positive Long memberId,
-                                                   @Valid @ModelAttribute WalkLogControllerDTO.GetCalendarRequests getCalendarRequests){
-        WalkLogServiceDTO.CalenderFindsInput calenderFindsInput =
-                walkLogMapper.walkLogControllerGetCalenderRequestsDTOtoWalkLogServiceCalenderFindsInputDTO(getCalendarRequests);
-        calenderFindsInput.setMemberId(memberId);
+                                                   @Valid @ModelAttribute WalkLogControllerDTO.GetCalendarRequest getCalendarRequest){
+        WalkLogServiceDTO.CalenderFindInput calenderFindInput =
+                walkLogMapper.walkLogControllerGetCalenderRequestDTOtoWalkLogServiceCalenderFindInputDTO(getCalendarRequest);
+        calenderFindInput.setMemberId(memberId);
         List<WalkLogControllerDTO.CalendarResponse> calendarResponses =
-                walkLogMapper.WalkLogServiceCalenderFindsOutputDTOsToWalkLogControllerCalendarResponseDTOs(walkLogService.findMyMonthWalkLogs(calenderFindsInput));
+                walkLogMapper.WalkLogServiceCalenderFindOutputDTOsToWalkLogControllerCalendarResponseDTOs(walkLogService.findMyMonthWalkLogs(calenderFindInput));
         return new ResponseEntity(calendarResponses,HttpStatus.OK);
     }
 

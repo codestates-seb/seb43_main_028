@@ -31,24 +31,31 @@ public interface WalkLogMapper {
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
     @Mapping(target = "mapImage",source = "imageUrl")
     WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
-    WalkLogControllerDTO.Response walkLogServiceFindsOutputDTOtoWalkLogControllerResponseDTO(WalkLogServiceDTO.FindsOutput findsOutput);
+    WalkLogControllerDTO.Response walkLogServiceFindOutputDTOtoWalkLogControllerResponseDTO(WalkLogServiceDTO.FindOutput findOutput);
 
-    WalkLogServiceDTO.CalenderFindsInput walkLogControllerGetCalenderRequestsDTOtoWalkLogServiceCalenderFindsInputDTO(WalkLogControllerDTO.GetCalendarRequests getCalendarRequests);
-    WalkLogServiceDTO.CalenderFindsOutput walkLogToWalkLogServiceCalenderFindsOutputDTO(WalkLog walkLog);
-    List<WalkLogServiceDTO.CalenderFindsOutput> walkLogsToWalkLogServiceCalenderFindsOutputDTOs(List<WalkLog> walkLogs);
-    WalkLogControllerDTO.CalendarResponse WalkLogServiceCalenderFindsOutputDTOToWalkLogControllerCalendarResponseDTO(WalkLogServiceDTO.CalenderFindsOutput calenderFindsOutput);
-    List<WalkLogControllerDTO.CalendarResponse> WalkLogServiceCalenderFindsOutputDTOsToWalkLogControllerCalendarResponseDTOs(List<WalkLogServiceDTO.CalenderFindsOutput> calenderFindsOutputs);
+    WalkLogServiceDTO.CalenderFindInput walkLogControllerGetCalenderRequestDTOtoWalkLogServiceCalenderFindInputDTO(WalkLogControllerDTO.GetCalendarRequest getCalendarRequest);
+    WalkLogServiceDTO.CalenderFindOutput walkLogToWalkLogServiceCalenderFindOutputDTO(WalkLog walkLog);
+    List<WalkLogServiceDTO.CalenderFindOutput> walkLogsToWalkLogServiceCalenderFindOutputDTOs(List<WalkLog> walkLogs);
+    WalkLogControllerDTO.CalendarResponse WalkLogServiceCalenderFindOutputDTOToWalkLogControllerCalendarResponseDTO(WalkLogServiceDTO.CalenderFindOutput calenderFindOutput);
+    List<WalkLogControllerDTO.CalendarResponse> WalkLogServiceCalenderFindOutputDTOsToWalkLogControllerCalendarResponseDTOs(List<WalkLogServiceDTO.CalenderFindOutput> calenderFindOutputs);
 
     WalkLogServiceDTO.ExitInput walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(WalkLogControllerDTO.EndPost endPost);
     @Mapping(target = "mapImage", ignore = true)
     WalkLog walkLogServiceExitInputDTOtoWalkLog(WalkLogServiceDTO.ExitInput exitInput);
 
-    WalkLogServiceDTO.FindsInput walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(WalkLogControllerDTO.GetRequests getRequests);
+    WalkLogServiceDTO.FindInput walkLogControllerGetRequestDTOtoWalkLogServiceFindInputDTO(WalkLogControllerDTO.GetMemberRequest getMemberRequest);
 
+    WalkLogServiceDTO.FindFeedInput walkLogControllerGetMemberRequestDTOtoWalkLogServiceFindFeedInputDTO(WalkLogControllerDTO.GetFeedRequest getFeedRequest);
+    @Mapping(source = "member.nickname",target = "nickname")
+    @Mapping(source = "member.profileImage",target = "profileImage")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
-    WalkLogServiceDTO.FindsOutput walkLogToWalkLogServiceFindsOutputDTO(WalkLog walkLog); //구현중
-    List<WalkLogServiceDTO.FindsOutput> walkLogsToWalkLogServiceFindsOutputDTOs(List<WalkLog> walkLogs); //임시
+    WalkLogServiceDTO.FindFeedOutput walkLogToWalkLogServiceFindFeedOutputDTO(WalkLog walkLog);
+    WalkLogControllerDTO.GetFeedResponse walkLogServiceFindFeedOutputDTOtoWalkLogControllerGetFeedResponseDTO(WalkLogServiceDTO.FindFeedOutput findFeedOutput);
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
+    @Mapping(target = "startedAt", source = "createdAt")
+    WalkLogServiceDTO.FindOutput walkLogToWalkLogServiceFindOutputDTO(WalkLog walkLog); //구현중
+    List<WalkLogServiceDTO.FindOutput> walkLogsToWalkLogServiceFindOutputDTOs(List<WalkLog> walkLogs); //임시
 
 
 }
