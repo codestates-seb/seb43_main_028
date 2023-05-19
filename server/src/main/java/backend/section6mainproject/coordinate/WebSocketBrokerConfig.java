@@ -32,6 +32,8 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws/walk-logs")
                 .addInterceptors(new ConnectionInterceptor(memberService))
                 .setAllowedOrigins("*");
+        registry.addEndpoint("/ws/anonymous/walk-logs")
+                .setAllowedOrigins("*");
     }
 
 

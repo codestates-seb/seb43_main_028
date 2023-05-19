@@ -1,0 +1,117 @@
+= 걷기 기록 애플리케이션
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+
+v1.0.0, 2023.05.18
+
+***
+== MemberController
+=== 회원 가입
+.http-request
+include::{snippets}/post-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-member/response-fields.adoc[]
+
+=== 회원 정보 수정
+.request-parts
+include::{snippets}/patch-member/request-parts.adoc[]
+
+.request-part-patch-fields
+include::{snippets}/patch-member/request-part-patch-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-member/response-fields.adoc[]
+
+=== 회원 정보 조회
+.http-request
+include::{snippets}/get-member/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-member/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-member/response-fields.adoc[]
+
+=== 회원 탈퇴
+.http-request
+include::{snippets}/delete-member/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-member/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-member/http-response.adoc[]
+
+=== 회원 비밀번호 변경
+.http-request
+include::{snippets}/patch-member-pw/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-member-pw/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-member-pw/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-member-pw/http-response.adoc[]
+
+== WalkLogController
+== WalkLogContentController
+=== 걷기 중 순간기록 등록
+.path-parameters
+include::{snippets}/post-walk-log-content/path-parameters.adoc[]
+
+.request-parts
+include::{snippets}/post-walk-log-content/request-parts.adoc[]
+
+.request-part-content-fields
+include::{snippets}/post-walk-log-content/request-part-content-fields.adoc[]
+
+.http-response
+include::{snippets}/post-walk-log-content/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-walk-log-content/response-fields.adoc[]
+
+=== 걷기 중 순간기록 수정
+.path-parameters
+include::{snippets}/patch-walk-log-content/path-parameters.adoc[]
+
+.request-parts
+include::{snippets}/patch-walk-log-content/request-parts.adoc[]
+
+.request-part-content-fields
+include::{snippets}/patch-walk-log-content/request-part-content-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-walk-log-content/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-walk-log-content/response-fields.adoc[]
+
+=== 걷기 중 순간기록 삭제
+.http-request
+include::{snippets}/delete-walk-log-content/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-walk-log-content/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-walk-log-content/http-response.adoc[]

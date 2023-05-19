@@ -66,10 +66,10 @@ public class MemberStubData {
         return input;
     }
     public MockMultipartFile getImage() throws IOException {
-        String fileName = "블랙홀";
-        String contentType = "Jpeg";
-        String fileFullName = fileName + "." + contentType;
-        FileInputStream inputStream = new FileInputStream("src/test/resources/imageSource/" + fileFullName);
+        String fileName = "test";
+        String contentType = "image/jpeg";
+        String fileFullName = fileName + ".jpg";
+        FileInputStream inputStream = new FileInputStream("src/test/resources/testImage/" + fileFullName);
         return new MockMultipartFile("profileImage", fileFullName, contentType, inputStream);
     }
 }

@@ -3,6 +3,8 @@ package backend.section6mainproject.exception;
 import lombok.Getter;
 
 public enum ExceptionCode {
+    WRONG_MONTH_INPUT(400,"Not Input Year"),
+    WRONG_DAY_INPUT(400,"Month or Year Not Input"),
     WALK_LOG_ALREADY_RECORDING(400,"WalkLog already recording"),
     CANNOT_UPLOAD_WALK_LOG_CONTENT(400, "Cannot upload walkLogContent"),
     CAN_NOT_CHANGE_WALK_LOG(403,"WalkLog Can Not Change"),

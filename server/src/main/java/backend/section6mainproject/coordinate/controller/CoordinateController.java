@@ -27,4 +27,6 @@ public class CoordinateController {
         messagingTemplate.convertAndSend("/sub/" + coordinate.getWalkLogId(), mapper.serviceOutputDTOToControllerSubDTO(coordinate));
     }
 
+
+
 }

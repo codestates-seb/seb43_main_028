@@ -108,4 +108,5 @@ class WalkLogContentServiceTest {
         verify(walkLogContentRepository, times(1)).delete(Mockito.any(WalkLogContent.class));
     }
 
+
 }
