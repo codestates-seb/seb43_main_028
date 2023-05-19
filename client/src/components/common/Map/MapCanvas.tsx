@@ -11,7 +11,7 @@ const defaultMapOptions: google.maps.MapOptions = {
   streetViewControl: false,
   gestureHandling: 'greedy',
   zoomControl: false,
-  fullscreenControl: true,
+  fullscreenControl: false,
   scaleControl: false,
   styles: [
     { featureType: 'all', elementType: 'labels', stylers: [{ visibility: 'off' }] },
