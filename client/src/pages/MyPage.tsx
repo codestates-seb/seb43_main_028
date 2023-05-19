@@ -18,7 +18,6 @@ export default function Mypage() {
   const [userData, setUserData] = useState<UserInfoType | null>(null)
   console.log(userData?.imageUrl)
   const [registeredAt, setRegisteredAt] = useState('')
-
   const [isModalOpened, setIsModalOpened] = useState(false)
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)

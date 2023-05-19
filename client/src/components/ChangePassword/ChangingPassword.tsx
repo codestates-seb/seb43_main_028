@@ -35,6 +35,7 @@ export default function ChangingPassword({
     name: newPasswordName,
     ref: newPasswordRef,
   } = register('newPassword', {
+    // required: '비밀번호를 입력하세요',
     minLength: {
       value: 10,
       message: '비밀번호는 총 10자 이상이어야 합니다.',
@@ -68,6 +69,7 @@ export default function ChangingPassword({
     const res = await patchUserPassword(`/api/members/${memberId}/pw`, passwordData)
     console.log(res)
     if (res === 'success') {
+      console.log('성공')
       setIsChangingPassword(false)
       setIsPasswordChanged(true)
     }
