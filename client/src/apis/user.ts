@@ -99,6 +99,7 @@ export const patchUserProfile = async (url: string, formData: FormData) => {
   }
 }
 
+
 export const patchUserPrivacySettings = async (url: string, data: any) => {
   try {
     const response = await axios.patch(url, data, {
