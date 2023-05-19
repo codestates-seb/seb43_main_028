@@ -113,21 +113,22 @@ public class WalkLogStubData {
         WalkLogServiceDTO.UpdateInput updateInput = new WalkLogServiceDTO.UpdateInput();
         updateInput.setWalkLogId(walkLogId);
         updateInput.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        updateInput.setMessage("안녕하세용1");
+        updateInput.setMessage(message);
         return updateInput;
     }
     public WalkLogServiceDTO.Output getOutput(){
         WalkLogServiceDTO.Output output = new WalkLogServiceDTO.Output();
         output.setWalkLogId(walkLogId);
         output.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        output.setMessage("안녕하세용1");
+        output.setMessage(message);
         return output;
     }
-    public WalkLogServiceDTO.ExitInput getExitInput(){
+    public WalkLogServiceDTO.ExitInput getExitInput() throws IOException {
         WalkLogServiceDTO.ExitInput exitInput = new WalkLogServiceDTO.ExitInput();
-        exitInput.setMessage("hi!");
+        exitInput.setMessage(message);
         exitInput.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
         exitInput.setWalkLogId(1L);
+        exitInput.setMapImage(getImage());
         return exitInput;
     }
     public WalkLogServiceDTO.FindInput getFindInput() {

@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -137,8 +138,8 @@ public class WalkLogServiceImplTest {
         assertThat(exception.getMessage()).isEqualTo("WalkLog Not Found");
     }
 
-//    @Test 테스트 리팩토링을 새로 열어서 변경하도록 하겠습니다.
-    public void exitWalkLogTest(){
+    @Test
+    public void exitWalkLogTest() throws IOException {
 
         // given
         WalkLog walkLog = stubData.getRecordingWalkLog(stubData.getMember());
@@ -178,7 +179,7 @@ public class WalkLogServiceImplTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenWalkLogNotRecordingTest() {
+    public void shouldThrowExceptionWhenWalkLogNotRecordingTest() throws IOException {
         //given
         WalkLogServiceDTO.ExitInput exitInput = stubData.getExitInput();
         WalkLog walkLog = stubData.getStopWalkLog(stubData.getMember());
