@@ -1,34 +1,20 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Icon from '../common/Icon'
 import styles from './History.module.scss'
 import HistoryItem from './HistoryItem'
 import { passedHourMinuteSecondFormat } from '../../utils/date'
+import { DataType } from './Calendar/Calendar'
+import { format } from '../../utils/date-fns'
 
-interface ItemITF {
-  id: number
-  createdAt: string
-  imageUrl: string
-  text: string
-}
 
 type HistoryItemProps = {
-  data: {
-    id: number
-    mapImg: string
-    startAt: string
-    endAt: string
-    message: string
-    walkLogContents: ItemITF[]
-  }
+  data: DataType
 }
 
 export default function History({ data }: HistoryItemProps) {
   const [moreContent, setMore] = useState(false)
-  const { mapImg, startAt, endAt, message, walkLogContents } = data
-  const date = new Date(startAt)
-  const Year = date.getFullYear()
-  const Month = date.getMonth() + 1
-  const Day = date.getDate()
+  const { id, mapImg, startAt, endAt, message, walkLogContents } = data
   const timeDiff = new Date(endAt).getTime() - new Date(startAt).getTime()
   const time = passedHourMinuteSecondFormat(timeDiff)
 
@@ -41,9 +27,7 @@ export default function History({ data }: HistoryItemProps) {
       <div className={styles.mapTimeBox}>
         <img src={mapImg} className={styles.map} alt='지도 이미지' />
         <div>
-          <p className={styles.date}>
-            {Year}년 {Month}월 {Day}일
-          </p>
+          <p className={styles.date}>{format(new Date(startAt), 'yyyy년 M월 d일')}</p>
           <p className={styles.time}>{time}</p>
         </div>
       </div>
@@ -59,9 +43,9 @@ export default function History({ data }: HistoryItemProps) {
           <Icon name='three-dot' size={24} /> {walkLogContents.length - 1} more
         </button>
       )}
-      <button type='button' className={styles.detailBtn}>
+      <Link to={`/history/${id}`} className={styles.detailBtn}>
         자세히 보기
-      </button>
+      </Link>
     </li>
   )
 }

@@ -1,0 +1,40 @@
+@use '../../styles/utils' as U;
+@use '../../styles/color' as C;
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.2;
+  }
+}
+
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: C.$gray900;
+  opacity: 0.2;
+  z-index: 2000;
+
+  animation-duration: 0.5s;
+  animation-name: fadein;
+}
+
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2001;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}

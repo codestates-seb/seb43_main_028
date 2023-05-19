@@ -1,0 +1,51 @@
+import axios from 'axios'
+
+export const getHistory = async (walkLogId: string) => {
+  try {
+    const response = await axios.get(`/api/walk-logs/${walkLogId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const patchHistoryMessage = async (walkLogId: string, data: string) => {
+  try {
+    const response = await axios.patch(`/api/walk-logs/${walkLogId}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const deleteHistory = async (walkLogId: string) => {
+  try {
+    const response = await axios.delete(`/api/walk-logs/${walkLogId}`)
+    console.log('삭제 결과', response)
+    return response.status === 204 ? 'success' : 'fail'
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const deleteHistoryItem = async (walkLogId: string, contentId: string) => {
+  try {
+    const response = await axios.delete(`/api/walk-logs/${walkLogId}/contents/${contentId}`)
+    return response.status === 204 ? 'success' : 'fail'
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}

@@ -1,7 +1,7 @@
 import styles from './SnapForm.module.scss'
 import ImgInput from './ImgInput'
 
-interface HeaderProps {
+type HeaderProps = {
   onCancel: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
@@ -20,25 +20,39 @@ function Header({ onCancel }: HeaderProps) {
     </div>
   )
 }
-export default function SnapForm() {
+
+type SnapFormProps = {
+  initialImgUrl: string | null
+  initialText: string | null
+  handleCancel: () => void
+}
+
+export default function SnapForm({ initialImgUrl, initialText, handleCancel }: SnapFormProps) {
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log('순간기록 전송')
   }
 
-  const handleCancel = () => {
-    console.log('순간 기록 취소')
-  }
+  // const handleCancel = () => {
+  //   console.log('순간 기록 취소')
+  // }
 
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <div>
           <Header onCancel={handleCancel} />
-          <ImgInput />
+          <ImgInput initialValue={initialImgUrl} />
         </div>
         <label htmlFor='text'>
-          <textarea className={styles.textInput} id='text' name='text' rows={10} />
+          <textarea
+            className={styles.textInput}
+            id='text'
+            name='text'
+            rows={10}
+            defaultValue={initialText}
+          />
         </label>
       </form>
     </div>

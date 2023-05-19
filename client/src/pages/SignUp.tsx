@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import Icon from '../components/common/Icon'
 import styles from './SignUp.module.scss'
 import { signUp } from '../apis/user'
 import useRouter from '../hooks/useRouter'
@@ -12,7 +12,7 @@ type FormValueType = {
   password: string
 }
 
-function Form() {
+function SignUp() {
   // 이용약관 관련 state
   const [allCheck, setAllCheck] = useState(false)
   const [useCheck, setUseCheck] = useState(false)
@@ -21,7 +21,7 @@ function Form() {
   const emailReg =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
   const passwordReg = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{10,}$/
-  const nicknameReg = /^[가-힣]{2,}$|^[a-zA-Z]{4,}$/
+  const nicknameReg = /^[가-힣]{2,}$|^[a-zA-Z]{4,}$|^[가-힣a-zA-Z]{4,}$/
 
   const { routeTo } = useRouter()
 
@@ -49,7 +49,7 @@ function Form() {
     name: emailName,
     ref: emailRef,
   } = register('email', {
-    required: '이메일을 입력하세요',
+    // required: '이메일을 입력하세요',
     pattern: {
       value: emailReg,
       message: '이메일 형식이 올바르지 않습니다.',
@@ -62,7 +62,7 @@ function Form() {
     name: nicknameName,
     ref: nicknameRef,
   } = register('nickname', {
-    required: '닉네임을 입력하세요',
+    // required: '닉네임을 입력하세요',
     pattern: {
       value: nicknameReg,
       message: '닉네임은 한글 2글자 이상 또는 영어 4글자 이상이어야 합니다.',
@@ -75,7 +75,7 @@ function Form() {
     name: passwordName,
     ref: passwordRef,
   } = register('password', {
-    required: '비밀번호는 필수 입력입니다.',
+    // required: '비밀번호를 입력하세요',
     minLength: {
       value: 10,
       message: '비밀번호는 총 10자 이상이어야 합니다.',
@@ -86,12 +86,11 @@ function Form() {
     },
     pattern: {
       value: passwordReg,
-      message: '비밀번호에는 영소문자, 숫자, 특수문자가 각각 한 개 이상 포함되어야 합니다.',
+      message: '영소문자, 숫자, 특수문자가 각각 한 개 이상 포함되어야 합니다.',
     },
   })
 
-  const submitSignUpData = (data: any) => {
-    console.log(data)
+  const submitSignUpData = (data: FormValueType) => {
     signUp(data).then(res => {
       if (res === 'success') {
         routeTo('/signin')
@@ -105,55 +104,76 @@ function Form() {
 
   return (
     <form
-      className={styles.form}
+      className={styles.formContainer}
       onSubmit={handleSubmit(data => {
         submitSignUpData(data)
       })}
     >
-      <label className={styles.label} htmlFor='nickname'>
-        nickname
-      </label>
-      <input
-        id='nickname'
-        className={styles.input}
-        type='text'
-        onChange={nicknameOnChange}
-        onBlur={nicknameOnBlur}
-        name={nicknameName}
-        ref={nicknameRef}
-      />
-      {dirtyFields.nickname && errors.nickname && (
-        <span className={styles.error}>{errors.nickname.message}</span>
-      )}
-      <label className={styles.label} htmlFor='email'>
-        Email
-      </label>
-      <input
-        id='email'
-        className={styles.input}
-        onChange={emailOnChange}
-        onBlur={emailOnBlur}
-        name={emailName}
-        ref={emailRef}
-      />
-      {dirtyFields.email && errors.email && (
-        <span className={styles.error}>{errors.email.message}</span>
-      )}
-      <label className={styles.label} htmlFor='password'>
-        Password
-      </label>
-      <input
-        id='password'
-        className={styles.input}
-        type='password'
-        onChange={passwordOnChange}
-        onBlur={passwordOnBlur}
-        name={passwordName}
-        ref={passwordRef}
-      />
-      {dirtyFields.password && errors.password && (
-        <span className={styles.error}>{errors.password.message}</span>
-      )}
+      <div className={styles.inputBox}>
+        <label className={styles.label} htmlFor='email'>
+          이메일
+        </label>
+        <input
+          id='email'
+          className={styles.input}
+          placeholder='이메일을 입력해주세요.'
+          onChange={emailOnChange}
+          onBlur={emailOnBlur}
+          name={emailName}
+          ref={emailRef}
+        />
+        <div className={styles.errorWrapper}>
+          {dirtyFields.email && errors.email ? (
+            <span className={styles.error}>{errors.email.message}</span>
+          ) : (
+            <div className={styles.noError} />
+          )}
+        </div>
+      </div>
+      <div className={styles.inputBox}>
+        <label className={styles.label} htmlFor='password'>
+          비밀번호
+        </label>
+        <input
+          id='password'
+          placeholder='10~15자리 영대•소문자, 숫자, 특수문자 조합'
+          className={styles.input}
+          type='password'
+          onChange={passwordOnChange}
+          onBlur={passwordOnBlur}
+          name={passwordName}
+          ref={passwordRef}
+        />
+        <div className={styles.errorWrapper}>
+          {dirtyFields.password && errors.password ? (
+            <span className={styles.error}>{errors.password.message}</span>
+          ) : (
+            <div className={styles.noError} />
+          )}
+        </div>
+      </div>
+      <div className={styles.inputBox}>
+        <label className={styles.label} htmlFor='nickname'>
+          이름
+        </label>
+        <input
+          id='nickname'
+          placeholder='앱에서 사용할 이름을 입력해주세요.'
+          className={styles.input}
+          type='text'
+          onChange={nicknameOnChange}
+          onBlur={nicknameOnBlur}
+          name={nicknameName}
+          ref={nicknameRef}
+        />
+        <div className={styles.errorWrapper}>
+          {dirtyFields.nickname && errors.nickname ? (
+            <span className={styles.error}>{errors.nickname.message}</span>
+          ) : (
+            <div className={styles.noError} />
+          )}
+        </div>
+      </div>
       <TermsOfUse
         allCheck={allCheck}
         setAllCheck={setAllCheck}
@@ -162,23 +182,14 @@ function Form() {
         privacyCheck={privacyCheck}
         setPrivacyCheck={setPrivacyCheck}
       />
-      <button className={styles.signupBtn} type='submit'>
-        Sign up
+      <button
+        className={styles.signupBtn}
+        type='submit'
+        disabled={!allCheck || !useCheck || !privacyCheck || Object.keys(errors).length > 0}
+      >
+        회원가입하기
       </button>
-      <span>
-        이미 가입하셨나요? <Link to='/signin'>Log in</Link>
-      </span>
     </form>
-  )
-}
-
-function SignUp() {
-  return (
-    <div className={styles.container}>
-      <div className={styles.formBox}>
-        <Form />
-      </div>
-    </div>
   )
 }
 

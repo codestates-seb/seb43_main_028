@@ -1,0 +1,70 @@
+@use '../../styles/typography' as T;
+@use '../../styles/color' as C;
+@use '../../styles/utils' as U;
+
+.container {
+  @include U.flex-c(row, flex-start, center);
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.previewBox {
+
+  background-color: transparent;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+
+  position: relative;
+  p {
+    @include T.gray600-regular-12;
+    padding: 31px 28px;
+  }
+  img {
+    @include U.size(100%);
+    object-fit: cover;
+  }
+}
+
+
+.imageWrapper {
+  @include U.size(100%);
+  background-color: C.$gray200;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.previewClearBtn {
+  @include T.gray900-bold-10;
+  background-color: C.$gray200;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+.cameraBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.album {
+  display: none;
+}
+
+
+.previewClearBtn {
+  @include T.gray900-bold-10;
+  background-color: C.$gray200;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}

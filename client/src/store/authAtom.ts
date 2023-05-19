@@ -1,13 +1,25 @@
 import { atom } from 'jotai'
 
+type UserAtomType = {
+  defaultWalkLogPublicSetting: string
+  email: string
+  imageUrl: string
+  introduction: string
+  memberId: number
+  nickname: string
+  createdAt: string
+  totalWalkLog: number
+  totalWalkLogContent: number
+}
 // 유저 정보
-export const userAtom = atom<object>({
+export const userAtom = atom<UserAtomType>({
   defaultWalkLogPublicSetting: 'PRIVATE',
-  email: null,
-  imageUrl: null,
-  introduction: null,
-  memberId: null,
-  nickname: null,
+  email: '',
+  imageUrl: '',
+  introduction: '',
+  memberId: 0,
+  nickname: '',
+  createdAt: '',
   totalWalkLog: 0,
   totalWalkLogContent: 0,
 })

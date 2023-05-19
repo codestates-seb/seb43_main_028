@@ -1,3 +1,157 @@
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useAtom } from 'jotai'
+import Title from '../components/HistoryDetail/Title'
+import styles from './HistoryDetail.module.scss'
+import { timerFormat } from '../utils/date'
+import { differenceInSeconds } from '../utils/date-fns'
+import DetailItem from '../components/HistoryDetail/DetailItem'
+import SnapForm from '../components/OnWalk/SnapForm'
+import Modal from '../components/common/Modal'
+import { deleteHistory, getHistory } from '../apis/history'
+import { WalkLogContentsDataType, ModalOption } from '../types/HistoryDetail'
+import { isLoginAtom, idAtom } from '../store/authAtom'
+
 export default function HistoryDetail() {
-  return <div>HistoryDetail</div>
+  const [edit, setEdit] = useState<boolean>(false)
+  const [editId, setEditId] = useState<string>()
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [deleteModalOption, setDeleteModalOption] = useState<ModalOption>({
+    title: '',
+    deleteFn: () => {},
+  })
+  const [isLogin] = useAtom(isLoginAtom)
+  const [logInId] = useAtom(idAtom)
+
+  console.log(isLogin, logInId)
+
+  const { id } = useParams()
+  const navigate = useNavigate()
+
+  const queryClient = useQueryClient()
+
+  const getHistoryQuery = useQuery({
+    queryKey: ['history', id],
+    queryFn: () => getHistory(id!),
+  })
+
+  const handleDeleteHistory = useMutation({
+    mutationFn: () => deleteHistory(id!),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['history'])
+      navigate('/history')
+    },
+  })
+
+  if (getHistoryQuery.isLoading) return <h1>Loading...</h1>
+  if (getHistoryQuery.error) return <h1>Sorry, can not access to the page</h1>
+
+  const {
+    createdAt,
+    endAt,
+    memberId,
+    message,
+    nickname,
+    walkLogContents,
+    walkLogId,
+    walkLogPublicSetting,
+  } = getHistoryQuery.data
+
+  const handleEdit = () => {
+    setEdit(prev => !prev)
+  }
+
+  const handleDeleteModal = () => {
+    setOpenDeleteModal(prev => !prev)
+    setDeleteModalOption({
+      title: '걷기',
+      deleteFn: () => {
+        handleDeleteHistory.mutate()
+        setOpenDeleteModal(prev => !prev)
+      },
+    })
+  }
+
+  const modalData = {
+    title: `${deleteModalOption.title} 기록을 삭제하시겠습니까?`,
+    options: [
+      {
+        label: '삭제하기',
+        handleClick: deleteModalOption.deleteFn,
+
+        id: 0,
+      },
+      {
+        label: '취소하기',
+        handleClick: () => setOpenDeleteModal(prev => !prev),
+        id: 1,
+      },
+    ],
+  }
+
+  const editSnapForm = walkLogContents.map((da: WalkLogContentsDataType) => {
+    if (da.walkLogContentId === editId) {
+      return (
+        <SnapForm
+          key={da.walkLogContentId}
+          initialImgUrl={da.imageUrl}
+          initialText={da.text}
+          handleCancel={handleEdit}
+        />
+      )
+    }
+    return ''
+  })
+
+  const detailItems = walkLogContents.map((da: WalkLogContentsDataType) => {
+    const snapTimeDiff = differenceInSeconds(new Date(da.createdAt), new Date(createdAt))
+    const snapTime = timerFormat(snapTimeDiff)
+
+    return (
+      <DetailItem
+        key={da.walkLogContentId}
+        walkLogId={String(walkLogId)}
+        memberId={memberId}
+        data={da}
+        snapTime={snapTime}
+        onEdit={handleEdit}
+        setEditId={setEditId}
+        setOpenDeleteModal={setOpenDeleteModal}
+        setDeleteModalOption={setDeleteModalOption}
+      />
+    )
+  })
+
+  return (
+    <div>
+      {edit ? (
+        editSnapForm
+      ) : (
+        <div className={styles.container}>
+          <Title
+            id={walkLogId}
+            memberId={memberId}
+            nickname={nickname}
+            startAt={createdAt}
+            endAt={endAt}
+            text={message}
+            setting={walkLogPublicSetting}
+          />
+          <div className={styles.map}>지도 재사용 컴포넌츠</div>
+          {detailItems}
+          {isLogin && logInId === memberId && (
+            <div className={styles.deleteBtnBox}>
+              <button type='button' className={styles.deleteBtn} onClick={handleDeleteModal}>
+                기록 삭제
+              </button>
+            </div>
+          )}
+          {openDeleteModal && (
+            <Modal modalData={modalData} onClose={() => setOpenDeleteModal(prev => !prev)} />
+          )}
+        </div>
+      )}
+    </div>
+  )
 }

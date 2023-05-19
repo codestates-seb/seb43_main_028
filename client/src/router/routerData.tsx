@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import ChangePassword from '../pages/ChangePassword'
 
 const Home = lazy(() => import('../pages/Home'))
 const Feed = lazy(() => import('../pages/Feed'))
@@ -97,7 +98,7 @@ export const routerData: RouterElement[] = [
     label: '로그인',
     element: <SignIn />,
     onTapBar: false,
-    showTapBar: true,
+    showTapBar: false,
     withAuth: false,
   },
   {
@@ -106,11 +107,20 @@ export const routerData: RouterElement[] = [
     label: '회원가입',
     element: <SignUp />,
     onTapBar: false,
-    showTapBar: true,
+    showTapBar: false,
     withAuth: false,
   },
   {
     id: 9,
+    path: '/changepassword',
+    label: '비밀번호변경',
+    element: <ChangePassword />,
+    onTapBar: false,
+    showTapBar: false,
+    withAuth: false,
+  },
+  {
+    id: 10,
     path: '*',
     label: '404',
     element: <NotFound />,

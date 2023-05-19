@@ -1,0 +1,48 @@
+@use '../../styles/color' as C;
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+
+.container {
+  width: 100%;
+  padding: 20px;
+  background-color: C.$white;
+  @include U.flex-c(column, center, flex-start);
+  gap: 8px;
+}
+
+.profile {
+  border-radius: 50%;
+}
+
+.nickName {
+  @include T.gray900-bold-18;
+}
+
+.timeBox {
+  margin-top: 20px;
+  @include U.flex-c(row, flex-start);
+  gap: 12px;
+}
+
+.iconBox {
+  @include T.gray600-regular-16;
+  @include U.flex-c(row, flex-start);
+  gap: 2px;
+}
+
+.formBox {
+  width: 100%;
+}
+
+.message {
+  @include T.gray900-bold-20;
+}
+
+.editing {
+  @extend .message;
+  width: 100%;
+  background-color: C.$gray200;
+  border-radius: 12px;
+  padding: 12px 16px;
+  resize: none;
+}
