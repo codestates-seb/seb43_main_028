@@ -73,7 +73,11 @@ export const getHistoryList = async (memberId: number, page = 1) => {
 const thisYear = getYear(startOfToday())
 const thisMonth = getMonth(startOfToday()) + 1
 
-export const getHistoryMonthList = async (memberId: number, year = thisYear, month = thisMonth) => {
+export const getHistoryCalendarList = async (
+  memberId: number,
+  year = thisYear,
+  month = thisMonth
+) => {
   try {
     const response = await axios.get(`/api/members/${memberId}/walk-logs/calendar`, {
       headers: {

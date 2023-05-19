@@ -13,7 +13,7 @@ import WeekDays from './WeekDays'
 import YearMonth from './YearMonth'
 import Dates from './Dates'
 import { userAtom } from '../../../store/authAtom'
-import { getHistoryMonthList } from '../../../apis/history'
+import { getHistoryCalendarList } from '../../../apis/history'
 
 type MonthHistoriesType = {
   createdAt: string
@@ -28,7 +28,11 @@ export default function Calendar() {
 
   useEffect(() => {
     const getList = async () => {
-      const response = await getHistoryMonthList(user.memberId, getYear(date), getMonth(date) + 1)
+      const response = await getHistoryCalendarList(
+        user.memberId,
+        getYear(date),
+        getMonth(date) + 1
+      )
       console.log('response', response)
       setData(response)
     }
