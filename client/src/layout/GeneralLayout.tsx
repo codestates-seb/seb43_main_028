@@ -53,9 +53,9 @@ export default function GeneralLayout({ children, showTapBar }: GeneralLayoutPro
   }, [pathname, id, isLogin])
 
   return (
-    <div>
+    <>
       {children}
       {showTapBar && <Tapbar tapBarContent={TapBarContent} />}
-    </div>
+    </>
   )
 }
