@@ -18,9 +18,13 @@ public class SubscribeInterceptor implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         MessageHeaders headers = message.getHeaders();
+
+
         if (headers.get("stompCommand").toString().equals("SUBSCRIBE")) {
+            String destination = (String)headers.get("simpDestination");
+            if(destination.startsWith("/sub/anonymous")) return message;
+
             Object walkLogId = SimpAttributesContextHolder.getAttributes().getAttribute("walkLogId");
-            Object destination = headers.get("simpDestination");
             if (!destination.equals("/sub/" + walkLogId)) {
                 Map<String, Object> attr = new HashMap<>();
                 attr.put("dest", destination);
