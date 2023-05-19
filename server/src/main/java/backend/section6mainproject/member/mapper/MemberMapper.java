@@ -16,6 +16,7 @@ public interface MemberMapper {
     MemberServiceDTO.UpdatePwInput patchPwToUpdatePwInput(MemberControllerDTO.PatchPw patchPw); // API계층에서 서비스 계층으로 패스워드를 넘길때 사용됨
     @Mapping(target = "profileImage", ignore = true)
     Member updateInputToMember(MemberServiceDTO.UpdateInput updateInput); //서비스용DTO를 엔티티로 바꾼다. 서비스 계층에서만 사용됨
+    MemberServiceDTO.FindNewPwInput getNewPwToFindNewPw(MemberControllerDTO.GetNewPw getNewPw);
     @Mapping(source = "profileImage", target = "imageUrl", qualifiedByName = "signBucket")
     @Mapping(target = "totalWalkLog", expression = "java(member.getWalkLogs().size())")
     @Mapping(target = "totalWalkLogContent", expression = "java(member.getWalkLogs().stream().mapToInt(el -> el.getWalkLogContents().size()).sum())")

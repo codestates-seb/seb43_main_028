@@ -15,4 +15,6 @@ public interface MemberService {
     void deleteMember(Long memberId);
 
     MemberServiceDTO.Output findMember(Long memberId);
+
+    void getTemporaryPasswordThroughEmail(MemberServiceDTO.FindNewPwInput findNewPwInput) throws InterruptedException;
 }
