@@ -128,7 +128,7 @@ class CoordinateSocketConnectionTest {
 
     private Member getStubMember() {
         Member member = new Member();
-        member.setMemberId(1L);
+        member.setMemberId(2L);
         member.setEmail("kim@gmaill.com");
         member.setRoles(List.of("USER"));
         WalkLog walkLog = new WalkLog();
