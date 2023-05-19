@@ -99,8 +99,9 @@ public class MemberController {
         WalkLogServiceDTO.FindsInput findsInput =
                 walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(getRequests);
         findsInput.setMemberId(memberId);
-        Page<WalkLogServiceDTO.FindsOutput> myWalkLogs = walkLogService.findMyWalkLogs(findsInput);
-        return new ResponseEntity<>(new MultiResponseDto<>(myWalkLogs.getContent(),myWalkLogs), HttpStatus.OK);
+        Page<WalkLogControllerDTO.Response> responses =
+                walkLogService.findMyWalkLogs(findsInput).map(walkLogMapper::walkLogServiceFindsOutputDTOtoWalkLogControllerResponseDTO);
+        return new ResponseEntity<>(new MultiResponseDto<>(responses.getContent(),responses), HttpStatus.OK);
     }
     @GetMapping("/{member-id}/walk-logs/calendar")
     public ResponseEntity getMyWalkLogsForCalendar(@PathVariable("member-id") @Positive Long memberId,
