@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styles from './FindPassword.module.scss'
+import TempPasswordSent from '../components/FindPassword/TempPasswordSent'
 
 type FormValueType = {
   email: string
@@ -38,6 +39,9 @@ export default function FindPassword() {
     console.log(data)
   }
 
+  if (isTempPasswordSent) {
+    return <TempPasswordSent setIsTempPasswordSent={setIsTempPasswordSent} />
+  }
   return (
     <form
       className={styles.formContainer}
