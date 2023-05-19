@@ -21,12 +21,12 @@ const defaultMapOptions: google.maps.MapOptions = {
 
 type MapCanvasProps = {
   style: React.CSSProperties
-  position: google.maps.LatLngLiteral | null
-  path: google.maps.LatLngLiteral[] | null
+  position?: google.maps.LatLngLiteral | null
+  path?: google.maps.LatLngLiteral[] | null
 }
 
 const MapCanvas = forwardRef<HTMLDivElement, MapCanvasProps>((props, ref) => {
-  const { style, position, path } = props
+  const { style, position = null, path = null } = props
 
   const map = useGoogleMap() || null
 
