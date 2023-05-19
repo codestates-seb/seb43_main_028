@@ -1,7 +1,6 @@
 package backend.section6mainproject.member.controller;
 
 import backend.section6mainproject.advice.StompExceptionAdvice;
-import backend.section6mainproject.content.entity.WalkLogContent;
 import backend.section6mainproject.member.MemberStubData;
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
@@ -32,7 +31,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static backend.section6mainproject.util.ApiDocumentUtils.*;
-import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -249,60 +246,60 @@ public class MemberControllerTest {
     void getMyWalkLogsTest() throws Exception {
         //given
         Long memberId = 1L;
-        WalkLogControllerDTO.GetRequests getRequests = createWalkLogControllerDTOgetRequests();
-        WalkLogServiceDTO.FindsInput findsInput = createWalkLogServiceDTOfindsInput();
+        WalkLogControllerDTO.GetMemberRequest getMemberRequest = createWalkLogControllerDTOgetRequests();
+        WalkLogServiceDTO.FindInput findInput = createWalkLogServiceDTOfindsInput();
         WalkLogControllerDTO.Response response = new WalkLogControllerDTO.Response();
-        ArrayList<WalkLogServiceDTO.FindsOutput> findsOutputs = new ArrayList<>();
-        WalkLogServiceDTO.FindsOutput findsOutput = new WalkLogServiceDTO.FindsOutput();
-        findsOutputs.add(findsOutput);
-        findsOutputs.add(findsOutput);
+        ArrayList<WalkLogServiceDTO.FindOutput> findOutputs = new ArrayList<>();
+        WalkLogServiceDTO.FindOutput findOutput = new WalkLogServiceDTO.FindOutput();
+        findOutputs.add(findOutput);
+        findOutputs.add(findOutput);
         response.setWalkLogId(1L);
         response.setMessage("메세지");
 
-        given(walkLogMapper.walkLogControllerGetRequestsDTOtoWalkLogServiceFindsInputDTO(Mockito.any(WalkLogControllerDTO.GetRequests.class)))
-                .willReturn(findsInput);
-        given(walkLogService.findMyWalkLogs(Mockito.any(WalkLogServiceDTO.FindsInput.class)))
-                .willReturn(new PageImpl<>(findsOutputs));
-        given(walkLogMapper.walkLogServiceFindsOutputDTOtoWalkLogControllerResponseDTO(Mockito.any(WalkLogServiceDTO.FindsOutput.class)))
+        given(walkLogMapper.walkLogControllerGetRequestDTOtoWalkLogServiceFindInputDTO(Mockito.any(WalkLogControllerDTO.GetMemberRequest.class)))
+                .willReturn(findInput);
+        given(walkLogService.findMyWalkLogs(Mockito.any(WalkLogServiceDTO.FindInput.class)))
+                .willReturn(new PageImpl<>(findOutputs));
+        given(walkLogMapper.walkLogServiceFindOutputDTOtoWalkLogControllerResponseDTO(Mockito.any(WalkLogServiceDTO.FindOutput.class)))
                 .willReturn(response);
         //when
         ResultActions perform = mockMvc.perform(
                 get("/members/"+memberId+"/walk-logs")
-                        .param("page",String.valueOf(getRequests.getPage()))
-                        .param("size",String.valueOf(getRequests.getSize()))
-                        .param("year",String.valueOf(getRequests.getYear()))
-                        .param("month",String.valueOf(getRequests.getMonth()))
-                        .param("day",String.valueOf(getRequests.getDay())));
+                        .param("page",String.valueOf(getMemberRequest.getPage()))
+                        .param("size",String.valueOf(getMemberRequest.getSize()))
+                        .param("year",String.valueOf(getMemberRequest.getYear()))
+                        .param("month",String.valueOf(getMemberRequest.getMonth()))
+                        .param("day",String.valueOf(getMemberRequest.getDay())));
                 //then
         perform.andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.size()").value(findsOutputs.size()))
+        .andExpect(jsonPath("$.data.size()").value(findOutputs.size()))
         .andExpect(jsonPath("$.data[0].walkLogId").value(response.getWalkLogId()))
         .andExpect(jsonPath("$.data[0].message").value(response.getMessage()));
     }
 
-    private static WalkLogControllerDTO.GetRequests createWalkLogControllerDTOgetRequests() {
-        WalkLogControllerDTO.GetRequests getRequests = new WalkLogControllerDTO.GetRequests();
-        getRequests.setSize(3);
-        getRequests.setPage(1);
-        getRequests.setYear(LocalDateTime.now().getYear());
-        getRequests.setMonth(LocalDateTime.now().getMonthValue());
-        getRequests.setDay(LocalDateTime.now().getDayOfMonth());
-        return getRequests;
+    private static WalkLogControllerDTO.GetMemberRequest createWalkLogControllerDTOgetRequests() {
+        WalkLogControllerDTO.GetMemberRequest getMemberRequest = new WalkLogControllerDTO.GetMemberRequest();
+        getMemberRequest.setSize(3);
+        getMemberRequest.setPage(1);
+        getMemberRequest.setYear(LocalDateTime.now().getYear());
+        getMemberRequest.setMonth(LocalDateTime.now().getMonthValue());
+        getMemberRequest.setDay(LocalDateTime.now().getDayOfMonth());
+        return getMemberRequest;
     }
-    private static WalkLogServiceDTO.FindsInput createWalkLogServiceDTOfindsInput() {
-        WalkLogServiceDTO.FindsInput findsInput = new WalkLogServiceDTO.FindsInput();
-        findsInput.setSize(1);
-        findsInput.setPage(3);
-        findsInput.setYear(LocalDateTime.now().getYear());
-        findsInput.setMonth(LocalDateTime.now().getMonthValue());
-        findsInput.setDay(LocalDateTime.now().getDayOfMonth());
-        return findsInput;
+    private static WalkLogServiceDTO.FindInput createWalkLogServiceDTOfindsInput() {
+        WalkLogServiceDTO.FindInput findInput = new WalkLogServiceDTO.FindInput();
+        findInput.setSize(1);
+        findInput.setPage(3);
+        findInput.setYear(LocalDateTime.now().getYear());
+        findInput.setMonth(LocalDateTime.now().getMonthValue());
+        findInput.setDay(LocalDateTime.now().getDayOfMonth());
+        return findInput;
     }
 
     @Test
     void getMyWalkLogsForCalendarTest() throws Exception {
         Long memberId = 1L;
-        WalkLogControllerDTO.GetCalendarRequests request = new WalkLogControllerDTO.GetCalendarRequests();
+        WalkLogControllerDTO.GetCalendarRequest request = new WalkLogControllerDTO.GetCalendarRequest();
         request.setYear(LocalDateTime.now().getYear());
         request.setMonth(LocalDateTime.now().getMonthValue());
         WalkLogControllerDTO.CalendarResponse calendarResponse = new WalkLogControllerDTO.CalendarResponse();
@@ -312,11 +309,11 @@ public class MemberControllerTest {
         List<WalkLogControllerDTO.CalendarResponse> calendarResponses = new ArrayList<>();
         calendarResponses.add(calendarResponse);
         calendarResponses.add(calendarResponse2);
-        given(walkLogMapper.walkLogControllerGetCalenderRequestsDTOtoWalkLogServiceCalenderFindsInputDTO(Mockito.any(WalkLogControllerDTO.GetCalendarRequests.class)))
-                .willReturn(new WalkLogServiceDTO.CalenderFindsInput());
-        given(walkLogService.findMyMonthWalkLogs(Mockito.any(WalkLogServiceDTO.CalenderFindsInput.class)))
+        given(walkLogMapper.walkLogControllerGetCalenderRequestDTOtoWalkLogServiceCalenderFindInputDTO(Mockito.any(WalkLogControllerDTO.GetCalendarRequest.class)))
+                .willReturn(new WalkLogServiceDTO.CalenderFindInput());
+        given(walkLogService.findMyMonthWalkLogs(Mockito.any(WalkLogServiceDTO.CalenderFindInput.class)))
                 .willReturn(new ArrayList<>());
-        given(walkLogMapper.WalkLogServiceCalenderFindsOutputDTOsToWalkLogControllerCalendarResponseDTOs(Mockito.anyList()))
+        given(walkLogMapper.WalkLogServiceCalenderFindOutputDTOsToWalkLogControllerCalendarResponseDTOs(Mockito.anyList()))
                 .willReturn(calendarResponses);
         ResultActions perform = mockMvc.perform(
                 get("/members/"+memberId+"/walk-logs/calendar")
