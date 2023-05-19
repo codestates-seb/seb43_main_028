@@ -4,25 +4,10 @@ import styles from './Calendar.module.scss'
 import WeekDays from './WeekDays'
 import YearMonth from './YearMonth'
 import Dates from './Dates'
-
-export type ItemType = {
-  id: number
-  createdAt: string
-  imageUrl: string
-  text: string
-}
-
-export type DataType = {
-  id: number
-  mapImg: string
-  startAt: string
-  endAt: string
-  message: string
-  walkLogContents: ItemType[]
-}
+import { HistoryListDataType } from '../../../types/History'
 
 type CalendarProps = {
-  data: DataType[]
+  data: HistoryListDataType[]
 }
 
 export default function Calendar({ data }: CalendarProps) {
@@ -30,7 +15,7 @@ export default function Calendar({ data }: CalendarProps) {
   const [selectDate, setSelectDate] = useState<Date | null>(null)
 
   const histories = data?.reduce((acc: number[], cur) => {
-    const timeNum = startOfDay(new Date(cur.startAt)).getTime()
+    const timeNum = startOfDay(new Date(cur.startedAt)).getTime()
     return acc.includes(timeNum) ? acc : [...acc, timeNum]
   }, [])
 

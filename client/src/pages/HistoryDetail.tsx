@@ -10,7 +10,7 @@ import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
 import { deleteHistory, getHistory } from '../apis/history'
-import { WalkLogContentsDataType, ModalOption } from '../types/HistoryDetail'
+import { WalkLogContentsDataType, ModalOption } from '../types/History'
 import { isLoginAtom, idAtom } from '../store/authAtom'
 
 export default function HistoryDetail() {
