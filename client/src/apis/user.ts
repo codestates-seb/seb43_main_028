@@ -51,7 +51,7 @@ export const signIn = async ({ email, password, autoLogin = true }: SignInPropsT
     saveRefreshTokenToLocalStorage(response.headers.refresh)
     return response.data.memberId
   } catch (error) {
-    return 'fail'
+    return null
   }
 }
 
@@ -98,7 +98,6 @@ export const patchUserProfile = async (url: string, formData: FormData) => {
     return 'fail'
   }
 }
-
 
 export const patchUserPrivacySettings = async (url: string, data: any) => {
   try {
