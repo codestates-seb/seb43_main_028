@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useAtom } from 'jotai'
+import { useMutation } from '@tanstack/react-query'
 import Icon from '../common/Icon'
 import styles from './Title.module.scss'
 import { dateFormat, passedHourMinuteSecondFormat } from '../../utils/date'
 import { format } from '../../utils/date-fns'
 import DropDown from '../common/DropDown'
-import { patchHistoryMessage } from '../../apis/history'
+import { patchHistory } from '../../apis/history'
 import { isLoginAtom, idAtom } from '../../store/authAtom'
 
 type TitleProps = {
@@ -18,8 +19,8 @@ type TitleProps = {
   setting: 'PUBLIC' | 'PRIVATE'
 }
 
-const OptionsObj = { PUBLIC: '전체 공개', PRIVATE: '나만 보기' }
-const OptionsAry = ['전체 공개', '나만 보기']
+const koOptions: ['전체 공개', '나만 보기'] = ['전체 공개', '나만 보기']
+const engOptionsObj = { PUBLIC: koOptions[0], PRIVATE: koOptions[1] }
 export default function Title({
   id,
   memberId,
@@ -31,40 +32,60 @@ export default function Title({
 }: TitleProps) {
   const [edit, setEdit] = useState(false)
   const [message, setMessage] = useState(text)
-  const [publicSetting, setPublicSetting] = useState(OptionsObj[setting])
+  const [publicSetting, setPublicSetting] = useState(engOptionsObj[setting])
   const [isLogin] = useAtom(isLoginAtom)
   const [logInId] = useAtom(idAtom)
-
   const formattedTime = {
     date: dateFormat(new Date(startAt)),
     timer: passedHourMinuteSecondFormat(new Date(endAt).getTime() - new Date(startAt).getTime()),
     time: `${format(new Date(startAt), 'H:mm')} ~ ${format(new Date(endAt), 'H:mm')}`,
   }
 
-  const filteredOption = OptionsAry.filter(option => option !== publicSetting)
+  const messageRef = useRef<HTMLInputElement>(null)
+
+  const handlePatchHistory = useMutation<
+    { message: string; walkLogPublicSetting: 'PUBLIC' | 'PRIVATE' },
+    unknown,
+    string,
+    unknown
+  >({
+    mutationFn: data => patchHistory(id, data),
+    onSuccess: data => {
+      setMessage(data.message)
+    },
+  })
+
+  const filteredOption = koOptions.filter(option => option !== publicSetting)
   filteredOption.unshift(publicSetting)
+
   const dropDownOption = filteredOption.map((option, i) => {
+    const param = Object.keys(engOptionsObj).find(engOpt => engOptionsObj[engOpt] === option) || ''
+
     return {
       id: i,
       title: option,
-      handleClick: () => {
-        setPublicSetting(option)
+      param,
+      handleClick: (paramOpt: string) => {
+        const patchData = JSON.stringify({
+          message,
+          walkLogPublicSetting: paramOpt,
+        })
+        handlePatchHistory.mutate(patchData)
+        if (handlePatchHistory.isSuccess) {
+          setPublicSetting(option)
+        }
       },
     }
   })
 
-  const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value)
-  }
-
   const handleMessageSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const patchData = JSON.stringify({ message, walkLogPublicSetting: 'PRIVATE' })
-    const response = await patchHistoryMessage(id, patchData)
-    console.log(response)
-    setMessage(response.message)
+    const patchData = JSON.stringify({
+      message: messageRef.current ? messageRef.current.value : '',
+      walkLogPublicSetting: 'PRIVATE',
+    })
+    handlePatchHistory.mutate(patchData)
     setEdit(prev => !prev)
-
   }
 
   const editingForm = (
@@ -73,12 +94,11 @@ export default function Title({
         <input
           type='text'
           className={styles.editing}
-          value={message}
-          onChange={handleMessageChange}
+          defaultValue={message}
+          ref={messageRef}
           maxLength={50}
           required
         />
-
 
         <div className={styles.iconBox}>
           <Icon name='edit-gray' />

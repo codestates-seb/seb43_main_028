@@ -16,7 +16,7 @@ export const getHistory = async (walkLogId: string) => {
   }
 }
 
-export const patchHistoryMessage = async (walkLogId: string, data: string) => {
+export const patchHistory = async (walkLogId: string, data: string) => {
   try {
     const response = await axios.patch(`/api/walk-logs/${walkLogId}`, data, {
       headers: {
@@ -30,10 +30,24 @@ export const patchHistoryMessage = async (walkLogId: string, data: string) => {
   }
 }
 
+export const patchHistoryItem = async (walkLogId: string, contentId: string, data: FormData) => {
+  try {
+    const url = `/api/walk-logs/${walkLogId}/contents/${contentId}`
+    const response = await axios.patch(url, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
 export const deleteHistory = async (walkLogId: string) => {
   try {
     const response = await axios.delete(`/api/walk-logs/${walkLogId}`)
-    console.log('삭제 결과', response)
     return response.status === 204 ? 'success' : 'fail'
   } catch (error: unknown) {
     console.log(error)
