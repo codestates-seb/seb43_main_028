@@ -52,7 +52,6 @@ export default function HistoryList() {
 
       intObserver.current = new IntersectionObserver(histories => {
         if (histories[0].isIntersecting && hasNextPage) {
-          console.log('마지막에 접근')
           fetchNextPage()
         }
       })
@@ -65,7 +64,6 @@ export default function HistoryList() {
   )
 
   if (isLoading) return <h1>Loading...</h1>
-  if (isFetchingNextPage) return <h1>Loading...</h1>
   if (isError) return <h1>Fail...</h1>
 
   const body = data?.pages.map(page => {
@@ -89,6 +87,7 @@ export default function HistoryList() {
         />
       )}
       <ul className={styles.historyList}>{body}</ul>
+      {isFetchingNextPage && <p>다음 페이지 로딩 중</p>}
     </div>
   )
 }
