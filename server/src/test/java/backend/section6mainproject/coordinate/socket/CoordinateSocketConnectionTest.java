@@ -23,6 +23,7 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
@@ -124,7 +125,7 @@ class CoordinateSocketConnectionTest {
         //then
         StompHeaders stompHeaders = completableFuture.get(7, TimeUnit.SECONDS);
         MatcherAssert.assertThat(stompHeaders.size(), is(greaterThan(0)));
-        MatcherAssert.assertThat(stompHeaders.get("message").get(0), is(containsString(BusinessLogicException.class.getName())));
+        MatcherAssert.assertThat(stompHeaders.get("message").get(0), is(containsString(AccessDeniedException.class.getName())));
 
     }
 

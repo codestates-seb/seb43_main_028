@@ -61,7 +61,7 @@ public class MemberController {
 
     //이메일 보내기
     @PostMapping("/tmp-pw")
-    public ResponseEntity getTemporaryPassword(@RequestBody MemberControllerDTO.GetNewPw email) throws InterruptedException {
+    public ResponseEntity getTemporaryPassword(@Valid @RequestBody MemberControllerDTO.GetNewPw email) throws InterruptedException {
         MemberServiceDTO.FindNewPwInput findNewPwInput = memberMapper.getNewPwToFindNewPw(email);
 
         memberService.getTemporaryPasswordThroughEmail(findNewPwInput);
