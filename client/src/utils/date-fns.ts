@@ -12,6 +12,8 @@ import startOfMonth from 'date-fns/startOfMonth'
 import eachDayOfInterval from 'date-fns/eachDayOfInterval'
 import getWeeksInMonth from 'date-fns/getWeeksInMonth'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
+import getYear from 'date-fns/getYear'
+import getMonth from 'date-fns/getMonth'
 
 export {
   endOfMonth,
@@ -28,4 +30,6 @@ export {
   startOfDay,
   isEqual,
   differenceInSeconds,
+  getYear,
+  getMonth,
 }
