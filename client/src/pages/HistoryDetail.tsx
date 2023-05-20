@@ -12,6 +12,7 @@ import Modal from '../components/common/Modal'
 import { deleteHistory, getHistory } from '../apis/history'
 import { WalkLogContentsDataType, ModalOption } from '../types/HistoryDetail'
 import { isLoginAtom, idAtom } from '../store/authAtom'
+import Header from '../components/common/Header'
 
 export default function HistoryDetail() {
   const [edit, setEdit] = useState<boolean>(false)
@@ -125,6 +126,7 @@ export default function HistoryDetail() {
 
   return (
     <div>
+      <Header hasBackButton={false} hasCloseButton headerTitle='상세 기록' />
       {edit ? (
         editSnapForm
       ) : (
