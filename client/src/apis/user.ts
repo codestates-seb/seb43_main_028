@@ -151,3 +151,18 @@ export const getUserTempPassword = async (url: string, email: any) => {
     return 'fail'
   }
 }
+
+export const unregisterUser = async (url: string) => {
+  try {
+    await axios(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return 'success'
+  } catch (error) {
+    console.log(error)
+    return 'fail'
+  }
+}

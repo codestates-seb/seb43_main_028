@@ -6,19 +6,34 @@ import { userAtom, idAtom, isLoginAtom } from '../store/authAtom'
 import DropDown from '../components/common/DropDown'
 import EditProfile from '../components/MyPage/EditProfile'
 import styles from './MyPage.module.scss'
-import { UserInfoType, patchUserPrivacySettings } from '../apis/user'
+import { UserInfoType, patchUserPrivacySettings, unregisterUser } from '../apis/user'
 import Icon from '../components/common/Icon'
+import Modal from '../components/common/Modal'
+import { removeRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
+import useRouter from '../hooks/useRouter'
+
+type ModalOption = {
+  title: string
+  unregisterFn: () => void
+}
 
 export default function Mypage() {
-  const [isLogin] = useAtom(isLoginAtom)
+  const [isLogin, setIsLogin] = useAtom(isLoginAtom)
 
   const [user, setUser] = useAtom(userAtom)
   const [memberId, setMemberId] = useAtom(idAtom)
 
   const [userData, setUserData] = useState<UserInfoType | null>(null)
-  console.log(userData?.imageUrl)
   const [registeredAt, setRegisteredAt] = useState('')
   const [isModalOpened, setIsModalOpened] = useState(false)
+  const [isUnregisterModalOpened, setIsUnregisterModalOpened] = useState(false)
+  const [unregisterModalOption, setUnregisterModalOption] = useState<ModalOption>({
+    title: '',
+    unregisterFn: () => {},
+  })
+
+  const { routeTo } = useRouter()
+
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)
   }
@@ -40,6 +55,42 @@ export default function Mypage() {
     { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings, param: 'PUBLIC' },
   ]
 
+  const modalData = {
+    title: unregisterModalOption.title,
+    options: [
+      {
+        label: '확인',
+        handleClick: unregisterModalOption.unregisterFn,
+
+        id: 0,
+      },
+      {
+        label: '취소',
+        handleClick: () => setIsUnregisterModalOpened(prev => !prev),
+        id: 1,
+      },
+    ],
+  }
+
+  const handleUnregister = async () => {
+    const res = await unregisterUser(`/api/members/${memberId}`)
+    if (res === 'success') {
+      removeRefreshTokenFromLocalStorage()
+      setIsLogin(false)
+    }
+  }
+
+  const handleUnregisterModal = () => {
+    setIsUnregisterModalOpened(prev => !prev)
+    setUnregisterModalOption({
+      title: '회원 탈퇴',
+      unregisterFn: () => {
+        handleUnregister()
+        setIsUnregisterModalOpened(prev => !prev)
+      },
+    })
+  }
+
   useEffect(() => {
     setUserData(user)
   }, [user])
@@ -53,7 +104,7 @@ export default function Mypage() {
   }, [userData])
 
   if (!isLogin) {
-    return <div>로그인해라</div>
+    routeTo('/signin')
   }
 
   return (
@@ -100,9 +151,14 @@ export default function Mypage() {
           <Link to='/changepassword'>비밀번호 변경하기</Link>
         </div>
         <div className={styles.setLinkWrapper}>
-          <button type='button'>회원 탈퇴하기</button>
+          <button type='button' onClick={handleUnregisterModal}>
+            회원 탈퇴하기
+          </button>
         </div>
       </div>
+      {isUnregisterModalOpened && (
+        <Modal modalData={modalData} onClose={() => setIsUnregisterModalOpened(prev => !prev)} />
+      )}
     </>
   )
 }
