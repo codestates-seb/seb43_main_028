@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useAtom } from 'jotai'
 import { userAtom, idAtom } from '../store/authAtom'
 import { signIn } from '../apis/user'
@@ -41,7 +41,6 @@ export default function ChangePassword() {
         />
         <ChangingPassword
           memberId={userId}
-          email={email}
           setIsChangingPassword={setIsChangingPassword}
           setIsPasswordChanged={setIsPasswordChanged}
         />

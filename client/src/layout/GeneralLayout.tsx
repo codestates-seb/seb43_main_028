@@ -13,8 +13,8 @@ type GeneralLayoutProps = {
 }
 
 export default function GeneralLayout({ children, showTapBar }: GeneralLayoutProps) {
-  const [isAuthChecking, setIsAuthChecking] = useState(true)
-  const [id, setId] = useAtom(idAtom)
+  const [, setIsAuthChecking] = useState(true)
+  const [id] = useAtom(idAtom)
   const [isLogin] = useAtom(isLoginAtom)
   const { pathname } = useRouter()
 

@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.VITE_DEV_URL,
+        target: 'https://1b23-49-143-68-94.ngrok-free.app',
         changeOrigin: true,
         secure: false,
         rewrite: path => path.replace(/^\/api/, ''),

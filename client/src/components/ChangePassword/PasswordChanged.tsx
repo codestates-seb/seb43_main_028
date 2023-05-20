@@ -12,7 +12,7 @@ export default function PasswordChanged({
   setIsChangingPassword,
   setIsPasswordChanged,
 }: PasswordChangedPropsType) {
-  const [isLogin, setIsLogin] = useAtom(isLoginAtom)
+  const [, setIsLogin] = useAtom(isLoginAtom)
   const handleLogout = () => {
     console.log('handleLogout')
     setIsLogin(false)
