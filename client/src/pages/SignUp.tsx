@@ -4,6 +4,7 @@ import styles from './SignUp.module.scss'
 import { signUp } from '../apis/user'
 import useRouter from '../hooks/useRouter'
 import TermsOfUse from '../components/SignUp/TermsOfUse'
+import Header from '../components/common/Header'
 
 type FormValueType = {
   nickname: string
@@ -34,7 +35,6 @@ function SignUp() {
     register,
     handleSubmit,
     formState: { dirtyFields, errors },
-    getValues,
     // mode
     // onChange: input 값이 바뀔 때마다 검증 로직 동작
     // onBlur: 포커스 상태를 잃을 때 동작
@@ -100,93 +100,96 @@ function SignUp() {
   }
 
   return (
-    <form
-      className={styles.formContainer}
-      onSubmit={handleSubmit(data => {
-        submitSignUpData(data)
-      })}
-    >
-      <div className={styles.inputBox}>
-        <label className={styles.label} htmlFor='email'>
-          이메일
-        </label>
-        <input
-          id='email'
-          className={styles.input}
-          placeholder='이메일을 입력해주세요.'
-          onChange={emailOnChange}
-          onBlur={emailOnBlur}
-          name={emailName}
-          ref={emailRef}
-        />
-        <div className={styles.errorWrapper}>
-          {dirtyFields.email && errors.email ? (
-            <span className={styles.error}>{errors.email.message}</span>
-          ) : (
-            <div className={styles.noError} />
-          )}
-        </div>
-      </div>
-      <div className={styles.inputBox}>
-        <label className={styles.label} htmlFor='password'>
-          비밀번호
-        </label>
-        <input
-          id='password'
-          placeholder='10~15자리 영대•소문자, 숫자, 특수문자 조합'
-          className={styles.input}
-          type='password'
-          onChange={passwordOnChange}
-          onBlur={passwordOnBlur}
-          name={passwordName}
-          ref={passwordRef}
-        />
-        <div className={styles.errorWrapper}>
-          {dirtyFields.password && errors.password ? (
-            <span className={styles.error}>{errors.password.message}</span>
-          ) : (
-            <div className={styles.noError} />
-          )}
-        </div>
-      </div>
-      <div className={styles.inputBox}>
-        <label className={styles.label} htmlFor='nickname'>
-          이름
-        </label>
-        <input
-          id='nickname'
-          placeholder='앱에서 사용할 이름을 입력해주세요.'
-          className={styles.input}
-          type='text'
-          onChange={nicknameOnChange}
-          onBlur={nicknameOnBlur}
-          name={nicknameName}
-          ref={nicknameRef}
-        />
-        <div className={styles.errorWrapper}>
-          {dirtyFields.nickname && errors.nickname ? (
-            <span className={styles.error}>{errors.nickname.message}</span>
-          ) : (
-            <div className={styles.noError} />
-          )}
-        </div>
-      </div>
-      <TermsOfUse
-        allCheck={allCheck}
-        setAllCheck={setAllCheck}
-        useCheck={useCheck}
-        setUseCheck={setUseCheck}
-        privacyCheck={privacyCheck}
-        setPrivacyCheck={setPrivacyCheck}
-      />
-      <button
-        className={styles.signupBtn}
-        type='submit'
-        disabled={!allCheck || !useCheck || !privacyCheck || Object.keys(errors).length > 0}
+    <>
+      <Header hasBackButton hasCloseButton={false} headerTitle='회원가입' />
+      <form
+        className={styles.formContainer}
+        onSubmit={handleSubmit(data => {
+          submitSignUpData(data)
+        })}
       >
-        회원가입하기
-      </button>
-    </form>
+        <div className={styles.inputBox}>
+          <label className={styles.label} htmlFor='email'>
+            이메일
+          </label>
+          <input
+            id='email'
+            className={styles.input}
+            placeholder='이메일을 입력해주세요.'
+            onChange={emailOnChange}
+            onBlur={emailOnBlur}
+            name={emailName}
+            ref={emailRef}
+          />
+          <div className={styles.errorWrapper}>
+            {dirtyFields.email && errors.email ? (
+              <span className={styles.error}>{errors.email.message}</span>
+            ) : (
+              <div className={styles.noError} />
+            )}
+          </div>
+        </div>
+        <div className={styles.inputBox}>
+          <label className={styles.label} htmlFor='password'>
+            비밀번호
+          </label>
+          <input
+            id='password'
+            placeholder='10~15자리 영대•소문자, 숫자, 특수문자 조합'
+            className={styles.input}
+            type='password'
+            onChange={passwordOnChange}
+            onBlur={passwordOnBlur}
+            name={passwordName}
+            ref={passwordRef}
+          />
+          <div className={styles.errorWrapper}>
+            {dirtyFields.password && errors.password ? (
+              <span className={styles.error}>{errors.password.message}</span>
+            ) : (
+              <div className={styles.noError} />
+            )}
+          </div>
+        </div>
+        <div className={styles.inputBox}>
+          <label className={styles.label} htmlFor='nickname'>
+            이름
+          </label>
+          <input
+            id='nickname'
+            placeholder='앱에서 사용할 이름을 입력해주세요.'
+            className={styles.input}
+            type='text'
+            onChange={nicknameOnChange}
+            onBlur={nicknameOnBlur}
+            name={nicknameName}
+            ref={nicknameRef}
+          />
+          <div className={styles.errorWrapper}>
+            {dirtyFields.nickname && errors.nickname ? (
+              <span className={styles.error}>{errors.nickname.message}</span>
+            ) : (
+              <div className={styles.noError} />
+            )}
+          </div>
+        </div>
+        <TermsOfUse
+          allCheck={allCheck}
+          setAllCheck={setAllCheck}
+          useCheck={useCheck}
+          setUseCheck={setUseCheck}
+          privacyCheck={privacyCheck}
+          setPrivacyCheck={setPrivacyCheck}
+        />
+        <button
+          className={styles.signupBtn}
+          type='submit'
+          disabled={!allCheck || !useCheck || !privacyCheck || Object.keys(errors).length > 0}
+        >
+          회원가입하기
+        </button>
+      </form>
+    </>
   )
 }
 
