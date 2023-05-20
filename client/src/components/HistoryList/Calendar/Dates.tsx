@@ -4,13 +4,13 @@ import { getWeekRows } from '../../../utils/date'
 
 type SelectedDateProps = {
   day: Date
-  histories: number[]
+  histories: (number | undefined)[]
   handleSelect: (day: Date) => void
 }
 
 function SelectedDate({ day, histories, handleSelect }: SelectedDateProps) {
   const isHistory = histories.map(history => {
-    if (isEqual(history, day)) {
+    if (history && isEqual(history, day)) {
       return <div key={history} className={styles.dot} />
     }
     return ''
@@ -27,7 +27,7 @@ function SelectedDate({ day, histories, handleSelect }: SelectedDateProps) {
 
 function UnSelectedDate({ day, histories, handleSelect }: SelectedDateProps) {
   const isHistory = histories.map(history => {
-    if (isEqual(history, day)) {
+    if (history && isEqual(history, day)) {
       return <div key={history} className={styles.dot} />
     }
     return ''
