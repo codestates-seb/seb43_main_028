@@ -51,7 +51,8 @@ public class MemberControllerDTO {
         private String password;
     }
 
-    @Data
+    @Getter
+    @Setter
     public static class GetNewPw {
         @Pattern(regexp = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$", message = "올바른 형식의 이메일을 입력해주세요.")
         @NotBlank(message = "회원님의 이메일을 입력해주세요.")
