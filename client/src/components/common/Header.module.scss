@@ -13,28 +13,28 @@
 
 .backBtn {
   @include U.flex-c(row, flex-start, center);
-  width: 33.3333%;
+  width: 20%;
 }
 
 .noBackBtn {
   @include U.flex-c(row, flex-start, center);
-  width: 33.3333%;
+  width: 20%;
 }
 
 .headerTitle {
   @include U.flex-c(row, center, center);
   color: black;
   font-size: 1.6rem;
-  width: 33.3333%;
+  width: 60%;
 }
 
 .closeBtn {
   @include U.flex-c(row, flex-end, center);
   @include T.gray900-regular-14;
-  width: 33.3333%;
+  width: 20%;
 }
 
 .noCloseBtn {
   @include U.flex-c(row, flex-end, center);
-  width: 33.3333%;
+  width: 20%;
 }

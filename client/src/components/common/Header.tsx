@@ -5,9 +5,15 @@ type HeaderPropsType = {
   headerTitle: string
   hasBackButton: boolean
   hasCloseButton: boolean
+  handleCloseFn: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function Header({ headerTitle, hasBackButton, hasCloseButton }: HeaderPropsType) {
+export default function Header({
+  headerTitle,
+  hasBackButton,
+  hasCloseButton,
+  handleCloseFn,
+}: HeaderPropsType) {
   const toPreviousPage = () => {
     window.history.back()
   }
@@ -25,7 +31,7 @@ export default function Header({ headerTitle, hasBackButton, hasCloseButton }: H
       </div>
       <div className={styles.headerTitle}>{headerTitle}</div>
       {hasCloseButton ? (
-        <button type='button' className={styles.closeBtn} onClick={toPreviousPage}>
+        <button type='button' className={styles.closeBtn} onClick={() => handleCloseFn(false)}>
           닫기
         </button>
       ) : (
