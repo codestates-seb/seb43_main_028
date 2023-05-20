@@ -83,7 +83,7 @@ public class WalkLogControllerDTO {
         private LocalDateTime startedAt;
         private LocalDateTime endAt;
         private String message;
-        private List<WalkLogContentServiceDTO.Output> walkLogContents;
+        private List<WalkLogContentControllerDTO.Response> walkLogContents;
 
     }
     @Getter

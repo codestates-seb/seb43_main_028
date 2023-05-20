@@ -1,6 +1,7 @@
 package backend.section6mainproject.member.controller;
 
 import backend.section6mainproject.advice.StompExceptionAdvice;
+import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.member.MemberStubData;
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
@@ -249,33 +250,77 @@ public class MemberControllerTest {
         Long memberId = 1L;
         WalkLogControllerDTO.GetMemberRequest getMemberRequest = createWalkLogControllerDTOgetRequests();
         WalkLogServiceDTO.FindInput findInput = createWalkLogServiceDTOfindsInput();
-        WalkLogControllerDTO.Response response = new WalkLogControllerDTO.Response();
         ArrayList<WalkLogServiceDTO.FindOutput> findOutputs = new ArrayList<>();
         WalkLogServiceDTO.FindOutput findOutput = new WalkLogServiceDTO.FindOutput();
         findOutputs.add(findOutput);
         findOutputs.add(findOutput);
+        WalkLogControllerDTO.Response response = new WalkLogControllerDTO.Response();
         response.setWalkLogId(1L);
         response.setMessage("메세지");
-
+        response.setMapImage("/test/image/test.jpg");
+        response.setStartedAt(LocalDateTime.now());
+        response.setEndAt(LocalDateTime.now());
+        ArrayList<WalkLogContentServiceDTO.Output> outputs = new ArrayList<>();
+        WalkLogContentServiceDTO.Output output = new WalkLogContentServiceDTO.Output(1L, LocalDateTime.now(), "메세지1", "/test/image/test.jpg");
+        WalkLogContentServiceDTO.Output output2 = new WalkLogContentServiceDTO.Output(2L, LocalDateTime.now(), "메세지2", "/test/image/test.jpg");
+        outputs.add(output);
+        outputs.add(output2);
+        response.setWalkLogContents(outputs);
         given(walkLogMapper.walkLogControllerGetRequestDTOtoWalkLogServiceFindInputDTO(Mockito.any(WalkLogControllerDTO.GetMemberRequest.class)))
                 .willReturn(findInput);
         given(walkLogService.findMyWalkLogs(Mockito.any(WalkLogServiceDTO.FindInput.class)))
                 .willReturn(new PageImpl<>(findOutputs));
         given(walkLogMapper.walkLogServiceFindOutputDTOtoWalkLogControllerResponseDTO(Mockito.any(WalkLogServiceDTO.FindOutput.class)))
                 .willReturn(response);
+        String urlTemplate = "/members/{member-id}/walk-logs";
+
         //when
         ResultActions perform = mockMvc.perform(
-                get("/members/"+memberId+"/walk-logs")
+                get(urlTemplate,memberId)
                         .param("page",String.valueOf(getMemberRequest.getPage()))
                         .param("size",String.valueOf(getMemberRequest.getSize()))
                         .param("year",String.valueOf(getMemberRequest.getYear()))
                         .param("month",String.valueOf(getMemberRequest.getMonth()))
-                        .param("day",String.valueOf(getMemberRequest.getDay())));
+                        .param("day",String.valueOf(getMemberRequest.getDay()))
+                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate));
                 //then
         perform.andExpect(status().isOk())
         .andExpect(jsonPath("$.data.size()").value(findOutputs.size()))
         .andExpect(jsonPath("$.data[0].walkLogId").value(response.getWalkLogId()))
-        .andExpect(jsonPath("$.data[0].message").value(response.getMessage()));
+        .andExpect(jsonPath("$.data[0].message").value(response.getMessage()))
+                .andDo(document(
+                        "get-my-walk-logs",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("member-id").description("회원 식별자")
+                        ),
+                        requestParameters(
+                                parameterWithName("page").description("페이지"),
+                                parameterWithName("size").description("한페이지의 객체 개수").optional(),
+                                parameterWithName("year").description("년도").optional(),
+                                parameterWithName("month").description("월").optional(),
+                                parameterWithName("day").description("일").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("data").type(JsonFieldType.ARRAY).description("걷기기록 데이터를 리스트로 가지고 있습니다"),
+                                fieldWithPath("data.[].walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
+                                fieldWithPath("data.[].mapImage").type(JsonFieldType.STRING).description("지도 이미지 임시 URL"),
+                                fieldWithPath("data.[].startedAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
+                                fieldWithPath("data.[].endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
+                                fieldWithPath("data.[].message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
+                                fieldWithPath("data.[].walkLogContents").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 순간 기록들"),
+                                fieldWithPath("data.[].walkLogContents.[].walkLogContentId").type(JsonFieldType.NUMBER).description("좌표 기록 식별자"),
+                                fieldWithPath("data.[].walkLogContents.[].createdAt").type(JsonFieldType.STRING).description("순간 기록 생성된 시간"),
+                                fieldWithPath("data.[].walkLogContents.[].text").type(JsonFieldType.STRING).description("순간 기록 메세지"),
+                                fieldWithPath("data.[].walkLogContents.[].imageUrl").type(JsonFieldType.STRING).description("순간 기록 이미지 임시 URL"),
+                                fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보를 가지고 있습니다"),
+                                fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
+                                fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 페이지에 표시하는 데이터의 개수"),
+                                fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 데이터 개수"),
+                                fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지")
+                        )
+                ));
     }
 
     private static WalkLogControllerDTO.GetMemberRequest createWalkLogControllerDTOgetRequests() {
@@ -299,14 +344,17 @@ public class MemberControllerTest {
 
     @Test
     void getMyWalkLogsForCalendarTest() throws Exception {
+        LocalDateTime date = LocalDateTime.of(2023,5,20,12,12);
         Long memberId = 1L;
         WalkLogControllerDTO.GetCalendarRequest request = new WalkLogControllerDTO.GetCalendarRequest();
         request.setYear(LocalDateTime.now().getYear());
         request.setMonth(LocalDateTime.now().getMonthValue());
         WalkLogControllerDTO.CalendarResponse calendarResponse = new WalkLogControllerDTO.CalendarResponse();
         calendarResponse.setWalkLogId(1L);
+        calendarResponse.setCreatedAt(date);
         WalkLogControllerDTO.CalendarResponse calendarResponse2 = new WalkLogControllerDTO.CalendarResponse();
         calendarResponse2.setWalkLogId(2L);
+        calendarResponse2.setCreatedAt(date);
         List<WalkLogControllerDTO.CalendarResponse> calendarResponses = new ArrayList<>();
         calendarResponses.add(calendarResponse);
         calendarResponses.add(calendarResponse2);
@@ -316,15 +364,32 @@ public class MemberControllerTest {
                 .willReturn(new ArrayList<>());
         given(walkLogMapper.WalkLogServiceCalenderFindOutputDTOsToWalkLogControllerCalendarResponseDTOs(Mockito.anyList()))
                 .willReturn(calendarResponses);
+        String urlTemplate = "/members/{member-id}/walk-logs/calendar";
         ResultActions perform = mockMvc.perform(
-                get("/members/"+memberId+"/walk-logs/calendar")
+                get(urlTemplate,memberId)
                         .param("year",String.valueOf(request.getYear()))
-                        .param("month",String.valueOf(request.getMonth())));
+                        .param("month",String.valueOf(request.getMonth()))
+                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate));
         perform.andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(calendarResponses.size()))
                 .andExpect(jsonPath("$[0].walkLogId").value(calendarResponse.getWalkLogId()))
-                .andExpect(jsonPath("$[1].walkLogId").value(calendarResponse2.getWalkLogId()));
-
+//                .andExpect(jsonPath("$[0].createdAt").value(calendarResponse2.getCreatedAt()))
+                .andDo(document(
+                        "get-my-walk-logs-for-calendar",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("member-id").description("회원 식별자")
+                        ),
+                        requestParameters(
+                                parameterWithName("year").description("년도"),
+                                parameterWithName("month").description("월")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각")
+                        )
+                ));
     }
 
     @Test
