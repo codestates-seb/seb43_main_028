@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getMonth, getYear, startOfToday } from '../utils/date-fns'
 
 export const getHistory = async (walkLogId: string) => {
   try {
@@ -47,5 +48,48 @@ export const deleteHistoryItem = async (walkLogId: string, contentId: string) =>
   } catch (error: unknown) {
     console.log(error)
     return 'fail'
+  }
+}
+
+export const getHistoryList = async (
+  memberId: number,
+  page = 1,
+  year: null | number = null,
+  month: null | number = null,
+  day: null | number = null
+) => {
+  try {
+    const url = `/api/members/${memberId}/walk-logs`
+    const response = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+      params: { page, year, month, day },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const getHistoryCalendarList = async (
+  memberId: number,
+  year = getYear(startOfToday()),
+  month = getMonth(startOfToday()) + 1
+) => {
+  try {
+    const response = await axios.get(`/api/members/${memberId}/walk-logs/calendar`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+      params: { year, month },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return `fail`
   }
 }
