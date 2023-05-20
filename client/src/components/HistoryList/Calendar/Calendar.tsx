@@ -26,10 +26,11 @@ type MonthHistoriesType = {
 type CalendarProps = {
   date: Date
   setDate: React.Dispatch<React.SetStateAction<Date>>
+  selectDate: null | Date
+  setSelectDate: React.Dispatch<React.SetStateAction<null | Date>>
 }
 
-export default function Calendar({ date, setDate }: CalendarProps) {
-  const [selectDate, setSelectDate] = useState<Date | null>(null)
+export default function Calendar({ date, setDate, selectDate, setSelectDate }: CalendarProps) {
   const [user] = useAtom(userAtom)
 
   const getMonthHistoryQuery = useQuery({

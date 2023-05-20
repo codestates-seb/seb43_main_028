@@ -12,6 +12,7 @@ import { getDate, getMonth, getYear } from '../utils/date-fns'
 
 export default function HistoryList() {
   const [calendar, setCalendar] = useState<boolean>(false)
+  const [selectDate, setSelectDate] = useState<Date | null>(null)
   const [date, setDate] = useState<Date>(new Date())
   const [user] = useAtom(userAtom)
 
@@ -21,21 +22,19 @@ export default function HistoryList() {
 
   const { isLoading, isError, data, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery({
-      queryKey: [
-        'history',
-        calendar,
-        date,
-        {
-          memberId: user.memberId,
-          year: getYear(date),
-          month: getMonth(date) + 1,
-          day: getDate(date),
-        },
-      ],
-      queryFn: ({ pageParam, queryKey }) => {
+      queryKey: ['history', calendar, date, selectDate],
+      queryFn: ({ pageParam }) => {
+        if (calendar && selectDate) {
+          return getHistoryList(
+            user.memberId,
+            pageParam,
+            getYear(selectDate),
+            getMonth(selectDate) + 1,
+            getDate(selectDate)
+          )
+        }
         if (calendar) {
-          const { year, month } = queryKey[3] as { year: number; month: number }
-          return getHistoryList(user.memberId, pageParam, year, month)
+          return getHistoryList(user.memberId, pageParam, getYear(date), getMonth(date) + 1)
         }
         return getHistoryList(user.memberId, pageParam)
       },
@@ -81,7 +80,14 @@ export default function HistoryList() {
   return (
     <div>
       <Toggle handleCalendar={handleCalendar} calendar={calendar} />
-      {calendar && <Calendar date={date} setDate={setDate} />}
+      {calendar && (
+        <Calendar
+          date={date}
+          setDate={setDate}
+          selectDate={selectDate}
+          setSelectDate={setSelectDate}
+        />
+      )}
       <ul className={styles.historyList}>{body}</ul>
     </div>
   )

@@ -55,7 +55,8 @@ export const getHistoryList = async (
   memberId: number,
   page = 1,
   year: null | number = null,
-  month: null | number = null
+  month: null | number = null,
+  day: null | number = null
 ) => {
   try {
     const url = `/api/members/${memberId}/walk-logs`
@@ -64,7 +65,7 @@ export const getHistoryList = async (
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
       },
-      params: { page, year, month },
+      params: { page, year, month, day },
     })
     return response.data
   } catch (error: unknown) {
