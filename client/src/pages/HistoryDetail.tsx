@@ -9,7 +9,7 @@ import { differenceInSeconds } from '../utils/date-fns'
 import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
-import { deleteHistory, getHistory } from '../apis/history'
+import { deleteHistory, getHistory, patchHistoryItem } from '../apis/history'
 import { WalkLogContentsDataType, ModalOption } from '../types/History'
 import { isLoginAtom, idAtom } from '../store/authAtom'
 import Header from '../components/common/Header'
@@ -38,7 +38,7 @@ export default function HistoryDetail() {
   const handleDeleteHistory = useMutation({
     mutationFn: () => deleteHistory(id!),
     onSuccess: () => {
-      queryClient.invalidateQueries(['history'])
+      queryClient.invalidateQueries(['history', id])
       navigate('/history')
     },
   })
@@ -53,6 +53,7 @@ export default function HistoryDetail() {
     onSuccess: () => {
       queryClient.invalidateQueries(['history', id])
       setEdit(prev => !prev)
+      console.log(`####아이템 수정하기 id`, id)
     },
   })
 
@@ -143,8 +144,8 @@ export default function HistoryDetail() {
   return (
     <div>
       <Header
-        hasBackButton={false}
-        hasCloseButton
+        hasBackButton
+        hasCloseButton={false}
         headerTitle='상세 기록'
         handleCloseFn={() => {}}
       />

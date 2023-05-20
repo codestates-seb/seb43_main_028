@@ -1,5 +1,6 @@
 import styles from './Header.module.scss'
 import Icon from './Icon'
+import useRouter from '../../hooks/useRouter'
 
 type HeaderPropsType = {
   headerTitle: string
@@ -15,8 +16,9 @@ export default function Header({
   hasCloseButton,
   handleCloseFn,
 }: HeaderPropsType) {
+  const { routeTo } = useRouter()
   const toPreviousPage = () => {
-    window.history.back()
+    routeTo(-1)
   }
 
   return (
