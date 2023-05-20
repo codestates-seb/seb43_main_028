@@ -24,7 +24,7 @@ export default function GeneralLayout({ children, showTapBar }: GeneralLayoutPro
         console.log('로그인하지 않은 상태입니다.')
         return 'fail'
       }
-      const userInfoRes = await getCurrentUserInfo(`/api/members/${id}`)
+      const userInfoRes = await getCurrentUserInfo(id)
       if (userInfoRes) {
         console.log('로그인 상태 유지중')
         return 'success'
@@ -37,7 +37,7 @@ export default function GeneralLayout({ children, showTapBar }: GeneralLayoutPro
 
       const refreshRes = await refreshAccessToken()
       if (refreshRes === 'success') {
-        const newUserInfoRes = await getCurrentUserInfo(`/api/members/${id}`)
+        const newUserInfoRes = await getCurrentUserInfo(id)
         if (newUserInfoRes && isLogin) {
           console.log('refresh token을 이용해 access token 갱신')
           return 'success'
