@@ -1,0 +1,22 @@
+@use '../styles/color' as C;
+@use '../styles/utils' as U;
+@use '../styles/typography' as T;
+
+.container {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.startBtn {
+  @include T.gray900-bold-18;
+  width: calc(100% - 40px);
+  max-width: 600px;
+  height: 40px;
+  position: fixed;
+  bottom: 64px;
+  color: C.$white;
+  background: C.$gray900;
+  border-radius: 12px;
+  z-index: 3000;
+  transform: translateX(20px);
+}
