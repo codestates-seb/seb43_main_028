@@ -34,12 +34,12 @@ public class TestDataInit {
         firstMember.setNickname("거터");
         firstMember.setIntroduction("안녕하세요");
         memberRepository.save(firstMember);
-        for(int i =1; i<31;i++) {
-            WalkLog walkLog = createWalkLog(firstMember, i);
-            walkLog.setCreatedAt(LocalDateTime.now().minusMonths(i));
-            walkLogRepository.save(walkLog);
-            saveWalkLogContent(i, walkLog);
-        };
+            for (int i = 1; i < 31; i++) {
+                WalkLog walkLog = createWalkLog(firstMember, i);
+                walkLog.setCreatedAt(LocalDateTime.now().minusMonths(i));
+                walkLogRepository.save(walkLog);
+                saveWalkLogContent(i, walkLog);
+        }
 
     }
 
