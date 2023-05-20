@@ -23,7 +23,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TestDataInit {
     private final MemberRepository memberRepository;
-    private final MemberServiceImpl memberService;
     private final WalkLogRepository walkLogRepository;
     private final WalkLogContentRepository walkLogContentRepository;
     private final PasswordEncoder passwordEncoder;
