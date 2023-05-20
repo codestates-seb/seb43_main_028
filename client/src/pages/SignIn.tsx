@@ -19,7 +19,7 @@ function SignIn() {
     const email = formData.get('email')
     const password = formData.get('password')
 
-    const memberId = await signIn({ email, password, autoLogin: true })
+    const { memberId } = await signIn({ email, password, autoLogin: true })
     setId(memberId)
 
     if (memberId) {
@@ -62,7 +62,9 @@ function SignIn() {
         로그인하기
       </button>
       <div className={styles.linkWrapper}>
-        <span>비밀번호찾기</span>
+        <Link to='/findpassword'>
+          <span>비밀번호찾기</span>
+        </Link>
         <span className={styles.gray}>|</span>
         <Link to='/signup'>
           <span>회원가입하러가기</span>

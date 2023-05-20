@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Icon from '../components/common/Icon'
 import styles from './SignUp.module.scss'
 import { signUp } from '../apis/user'
 import useRouter from '../hooks/useRouter'
@@ -19,7 +18,8 @@ function SignUp() {
   const [privacyCheck, setPrivacyCheck] = useState(false)
 
   const emailReg =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
+
   const passwordReg = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{10,}$/
   const nicknameReg = /^[가-힣]{2,}$|^[a-zA-Z]{4,}$|^[가-힣a-zA-Z]{4,}$/
 
@@ -49,7 +49,6 @@ function SignUp() {
     name: emailName,
     ref: emailRef,
   } = register('email', {
-    // required: '이메일을 입력하세요',
     pattern: {
       value: emailReg,
       message: '이메일 형식이 올바르지 않습니다.',
@@ -62,7 +61,6 @@ function SignUp() {
     name: nicknameName,
     ref: nicknameRef,
   } = register('nickname', {
-    // required: '닉네임을 입력하세요',
     pattern: {
       value: nicknameReg,
       message: '닉네임은 한글 2글자 이상 또는 영어 4글자 이상이어야 합니다.',
@@ -75,7 +73,6 @@ function SignUp() {
     name: passwordName,
     ref: passwordRef,
   } = register('password', {
-    // required: '비밀번호를 입력하세요',
     minLength: {
       value: 10,
       message: '비밀번호는 총 10자 이상이어야 합니다.',

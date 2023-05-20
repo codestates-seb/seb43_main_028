@@ -17,6 +17,11 @@ type SignInPropsType = {
   autoLogin: boolean
 }
 
+type SignInResType = {
+  status: 'success' | 'fail'
+  memberId: number | null
+}
+
 export type UserInfoType = {
   defaultWalkLogPublicSetting: string
   email: string
@@ -43,15 +48,19 @@ export const signUp = async ({ nickname, email, password }: SignUpPropsType) => 
   }
 }
 
-export const signIn = async ({ email, password, autoLogin = true }: SignInPropsType) => {
+export const signIn = async ({
+  email,
+  password,
+  autoLogin = true,
+}: SignInPropsType): Promise<SignInResType> => {
   try {
     const response = await axios.post('/api/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
     axios.defaults.headers.common.Authorization = authorization
     saveRefreshTokenToLocalStorage(response.headers.refresh)
-    return response.data.memberId
+    return { status: 'success', memberId: response.data.memberId }
   } catch (error) {
-    return null
+    return { status: 'fail', memberId: null }
   }
 }
 
@@ -115,14 +124,27 @@ export const patchUserPrivacySettings = async (url: string, data: any) => {
 
 export const patchUserPassword = async (url: string, passwordData: any) => {
   try {
-    console.log(url, passwordData)
     const response = await axios.patch(url, passwordData, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    console.log('patchUserPassword')
-    console.log(response)
+    return 'success'
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const getUserTempPassword = async (url: string, email: any) => {
+  try {
+    await axios(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: email,
+    })
     return 'success'
   } catch (error: unknown) {
     console.log(error)
