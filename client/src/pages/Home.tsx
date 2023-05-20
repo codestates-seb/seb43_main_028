@@ -6,6 +6,7 @@ import MapCanvas from '../components/common/Map/MapCanvas'
 import HomeHeader from '../components/Home/HomeHeader'
 import useRouter from '../hooks/useRouter'
 import styles from './Home.module.scss'
+import { startWalkLog } from '../apis/walkLog'
 
 export default function Home() {
   const { routeTo } = useRouter()
@@ -24,8 +25,17 @@ export default function Home() {
     totalWalkLogContent: user.totalWalkLogContent,
   }
 
-  const handleStartClick = () => {
+  const startWalkLogHandler = async () => {
+    if (!isLogin) return
+    const walkLogId = await startWalkLog({ memberId: user.memberId })
+    if (!walkLogId) return
+    // TODO : walkLogId를 전역으로 저장해서 onwalk 페이지에서 사용해야 한다.
+    // TODO : 로그인/비로그인 ID를 분기해야한다.
     routeTo('/onwalk')
+  }
+
+  const handleStartClick = () => {
+    startWalkLogHandler()
   }
 
   const isSamePosition = (
@@ -34,7 +44,6 @@ export default function Home() {
   ) => a?.lat === b?.lat && a?.lng === b?.lng
 
   const watchCurrentPosition = () => {
-    console.log('워치포지션')
     watchId = navigator.geolocation.watchPosition(
       newPosition => {
         const { latitude, longitude } = newPosition.coords
@@ -51,7 +60,6 @@ export default function Home() {
   useEffect(() => {
     watchCurrentPosition()
     return () => {
-      console.log('클리어')
       navigator.geolocation.clearWatch(watchId)
     }
   }, [])
