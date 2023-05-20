@@ -28,7 +28,9 @@ jobs:
           jwt.key: ${{secrets.JWT_SECRET_KEY}}
           mail.smtp.username: ${{secrets.EMAIL_USERNAME}}
           mail.smtp.password: ${{secrets.EMAIL_PASSWORD}}
-
+          spring.datasource.url: ${{ENDPOINT}}, ${{PORT_NUMBER}}, ${{DATABASE}}
+          spring.datasource.username: ${{MY_SQL_ID}}
+          spring.datasource.password: ${{PASSWORD}}
       # Gradle wrapper 파일 실행 권한주기
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
