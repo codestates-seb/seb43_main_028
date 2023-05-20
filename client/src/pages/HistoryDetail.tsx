@@ -25,8 +25,6 @@ export default function HistoryDetail() {
   const [isLogin] = useAtom(isLoginAtom)
   const [logInId] = useAtom(idAtom)
 
-  console.log(isLogin, logInId)
-
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -44,6 +42,23 @@ export default function HistoryDetail() {
       navigate('/history')
     },
   })
+
+  const patchHistoryItemMutation = useMutation<
+    unknown,
+    unknown,
+    { contentId: string; formData: FormData },
+    unknown
+  >({
+    mutationFn: ({ contentId, formData }) => patchHistoryItem(id!, contentId, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['history', id])
+      setEdit(prev => !prev)
+    },
+  })
+
+  const editHistoryItem = (contentId: string, formData: FormData) => {
+    patchHistoryItemMutation.mutate({ contentId, formData })
+  }
 
   if (getHistoryQuery.isLoading) return <h1>Loading...</h1>
   if (getHistoryQuery.error) return <h1>Sorry, can not access to the page</h1>
@@ -63,7 +78,7 @@ export default function HistoryDetail() {
     setEdit(prev => !prev)
   }
 
-  const handleDeleteModal = () => {
+  const handleHistoryDeleteModal = () => {
     setOpenDeleteModal(prev => !prev)
     setDeleteModalOption({
       title: '걷기',
@@ -80,7 +95,6 @@ export default function HistoryDetail() {
       {
         label: '삭제하기',
         handleClick: deleteModalOption.deleteFn,
-
         id: 0,
       },
       {
@@ -99,6 +113,8 @@ export default function HistoryDetail() {
           initialImgUrl={da.imageUrl}
           initialText={da.text}
           handleCancel={handleEdit}
+          contentId={da.walkLogContentId}
+          onSubmit={editHistoryItem}
         />
       )
     }
@@ -149,7 +165,7 @@ export default function HistoryDetail() {
           {detailItems}
           {isLogin && logInId === memberId && (
             <div className={styles.deleteBtnBox}>
-              <button type='button' className={styles.deleteBtn} onClick={handleDeleteModal}>
+              <button type='button' className={styles.deleteBtn} onClick={handleHistoryDeleteModal}>
                 기록 삭제
               </button>
             </div>
