@@ -21,14 +21,16 @@ jobs:
       - name: Set yml file
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./server/src/main/resources/application.yml
+          files: ./server/src/main/resources/application*.yml
         env:
           aws-s3.access-key: ${{ secrets.AWS_S3_ACCESS_KEY }}
           aws-s3.secret-access-key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY }}
           jwt.key: ${{secrets.JWT_SECRET_KEY}}
           mail.smtp.username: ${{secrets.EMAIL_USERNAME}}
           mail.smtp.password: ${{secrets.EMAIL_PASSWORD}}
-
+          spring.datasource.url: jdbc:mysql://${{secrets.ENDPOINT}}:${{secrets.PORT_NUMBER}}/${{secrets.DATABASE}}?serverTimezone=Asia/Seoul
+          spring.datasource.username: ${{secrets.MY_SQL_ID}}
+          spring.datasource.password: ${{secrets.PASSWORD}}
       # Gradle wrapper 파일 실행 권한주기
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
