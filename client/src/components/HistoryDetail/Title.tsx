@@ -64,7 +64,6 @@ export default function Title({
     console.log(response)
     setMessage(response.message)
     setEdit(prev => !prev)
-
   }
 
   const editingForm = (
@@ -78,7 +77,6 @@ export default function Title({
           maxLength={50}
           required
         />
-
 
         <div className={styles.iconBox}>
           <Icon name='edit-gray' />

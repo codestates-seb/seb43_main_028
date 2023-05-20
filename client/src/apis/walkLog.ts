@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { axiosInstance } from './instance'
 
 type StartWalkLogResType = number | null
 
@@ -10,7 +10,7 @@ export const startWalkLog = async ({
   memberId,
 }: StartWalkLogProps): Promise<StartWalkLogResType> => {
   try {
-    const startWalkLogRes = await axios.post('/api/walk-logs', { memberId })
+    const startWalkLogRes = await axiosInstance.post('/api/walk-logs', { memberId })
     return startWalkLogRes.data.walkLogId
   } catch (error: unknown) {
     return null
