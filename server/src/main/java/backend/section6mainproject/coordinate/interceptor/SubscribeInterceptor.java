@@ -7,6 +7,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpAttributesContextHolder;
 import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +27,7 @@ public class SubscribeInterceptor implements ChannelInterceptor {
 
             Object walkLogId = SimpAttributesContextHolder.getAttributes().getAttribute("walkLogId");
             if (!destination.equals("/sub/" + walkLogId)) {
-                Map<String, Object> attr = new HashMap<>();
-                attr.put("dest", destination);
-                attr.put("requiredId", walkLogId);
-                throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND, attr);
+                throw new AccessDeniedException("Cannot Subscribe Dest");
             }
         }
 
