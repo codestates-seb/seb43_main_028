@@ -115,14 +115,27 @@ export const patchUserPrivacySettings = async (url: string, data: any) => {
 
 export const patchUserPassword = async (url: string, passwordData: any) => {
   try {
-    console.log(url, passwordData)
     const response = await axios.patch(url, passwordData, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    console.log('patchUserPassword')
-    console.log(response)
+    return 'success'
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
+export const getUserTempPassword = async (url: string, email: any) => {
+  try {
+    await axios(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: email,
+    })
     return 'success'
   } catch (error: unknown) {
     console.log(error)
