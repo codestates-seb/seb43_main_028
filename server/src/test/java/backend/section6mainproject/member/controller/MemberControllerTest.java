@@ -310,7 +310,7 @@ public class MemberControllerTest {
                                 fieldWithPath("data.[].endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
                                 fieldWithPath("data.[].message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
                                 fieldWithPath("data.[].walkLogContents").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 순간 기록들"),
-                                fieldWithPath("data.[].walkLogContents.[].walkLogContentId").type(JsonFieldType.NUMBER).description("좌표 기록 식별자"),
+                                fieldWithPath("data.[].walkLogContents.[].walkLogContentId").type(JsonFieldType.NUMBER).description("순간 기록 식별자"),
                                 fieldWithPath("data.[].walkLogContents.[].createdAt").type(JsonFieldType.STRING).description("순간 기록 생성된 시간"),
                                 fieldWithPath("data.[].walkLogContents.[].text").type(JsonFieldType.STRING).description("순간 기록 메세지"),
                                 fieldWithPath("data.[].walkLogContents.[].imageUrl").type(JsonFieldType.STRING).description("순간 기록 이미지 임시 URL"),

@@ -135,7 +135,7 @@ include::{snippets}/end-walk-log/path-parameters.adoc[]
 .request-parts
 include::{snippets}/end-walk-log/request-parts.adoc[]
 
-.request-part-content-fields
+.request-part-endPost-fields
 include::{snippets}/end-walk-log/request-part-endPost-fields.adoc[]
 
 .http-response
@@ -159,6 +159,9 @@ include::{snippets}/get-walk-log/response-fields.adoc[]
 === 걷기 기록 피드 조회
 .http-request
 include::{snippets}/get-walk-logs/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/get-my-walk-logs/request-parameters.adoc[]
 
 .http-response
 include::{snippets}/get-walk-logs/http-response.adoc[]

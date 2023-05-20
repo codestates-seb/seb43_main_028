@@ -83,8 +83,7 @@ public class WalkLogControllerTest {
     @Test
     void postWalkLogTest() throws Exception {
         WalkLogControllerDTO.PostResponse response = walkLogStubData.getResponse();
-        UsernamePasswordAuthenticationToken principal = UsernamePasswordAuthenticationToken
-                .authenticated(1L, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+
 
         given(walkLogService.createWalkLog(Mockito.any(WalkLogServiceDTO.CreateInput.class))).willReturn(new WalkLogServiceDTO.CreateOutput());
         given(walkLogMapper.walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(Mockito.any(WalkLogServiceDTO.CreateOutput.class)))
@@ -96,7 +95,6 @@ public class WalkLogControllerTest {
                         post("/walk-logs")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .principal(principal)
                 );
         // then
         actions
@@ -216,6 +214,10 @@ public class WalkLogControllerTest {
                         "get-walk-logs",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
+                        requestParameters(
+                                parameterWithName("page").description("페이지"),
+                                parameterWithName("size").description("한페이지의 객체 개수").optional()
+                        ),
                         responseFields(
                                 fieldWithPath("data").type(JsonFieldType.ARRAY).description("걷기기록 데이터를 리스트로 가지고 있습니다"),
                                 fieldWithPath("data.[].walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
