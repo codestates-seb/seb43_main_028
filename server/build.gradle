@@ -48,6 +48,10 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/software.amazon.awssdk/s3
 	implementation 'software.amazon.awssdk:s3:2.20.17'
+
+	//mysql-connector
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
 }
 
 tasks.named('test') {
