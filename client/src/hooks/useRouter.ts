@@ -6,7 +6,7 @@ const useRouter = () => {
 
   return {
     pathname,
-    routeTo: (path: string) => navigate(path),
+    routeTo: navigate,
   }
 }
 

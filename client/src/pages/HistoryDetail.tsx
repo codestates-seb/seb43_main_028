@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import Title from '../components/HistoryDetail/Title'
@@ -9,10 +9,11 @@ import { differenceInSeconds } from '../utils/date-fns'
 import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
-import { deleteHistory, getHistory } from '../apis/history'
+import { deleteHistory, getHistory, patchHistoryItem } from '../apis/history'
 import { WalkLogContentsDataType, ModalOption } from '../types/History'
 import { isLoginAtom, idAtom } from '../store/authAtom'
 import Header from '../components/common/Header'
+import useRouter from '../hooks/useRouter'
 
 export default function HistoryDetail() {
   const [edit, setEdit] = useState<boolean>(false)
@@ -26,7 +27,7 @@ export default function HistoryDetail() {
   const [logInId] = useAtom(idAtom)
 
   const { id } = useParams()
-  const navigate = useNavigate()
+  const { routeTo } = useRouter()
 
   const queryClient = useQueryClient()
 
@@ -38,8 +39,8 @@ export default function HistoryDetail() {
   const handleDeleteHistory = useMutation({
     mutationFn: () => deleteHistory(id!),
     onSuccess: () => {
-      queryClient.invalidateQueries(['history'])
-      navigate('/history')
+      queryClient.invalidateQueries(['history', id])
+      routeTo('/history')
     },
   })
 
