@@ -30,6 +30,21 @@ export const patchHistory = async (walkLogId: string, data: string) => {
   }
 }
 
+export const patchHistoryItem = async (walkLogId: string, contentId: string, data: FormData) => {
+  try {
+    const url = `/api/walk-logs/${walkLogId}/contents/${contentId}`
+    const response = await axios.patch(url, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  } catch (error: unknown) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
 export const deleteHistory = async (walkLogId: string) => {
   try {
     const response = await axios.delete(`/api/walk-logs/${walkLogId}`)

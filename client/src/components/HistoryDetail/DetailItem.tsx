@@ -54,7 +54,7 @@ export default function DetailItem({
     setImgModal(prev => !prev)
   }
 
-  const handleDeleteModal = () => {
+  const handleHistoryItemDeleteModal = () => {
     setOpenDeleteModal(prev => !prev)
     setDeleteModalOption({
       title: '순간',
@@ -83,7 +83,7 @@ export default function DetailItem({
                 <Icon name='edit-gray' size={24} />
                 수정
               </button>
-              <button type='button' className={styles.icon} onClick={handleDeleteModal}>
+              <button type='button' className={styles.icon} onClick={handleHistoryItemDeleteModal}>
                 <Icon name='trash-gray' size={24} />
                 삭제
               </button>

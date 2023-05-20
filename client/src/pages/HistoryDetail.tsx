@@ -9,7 +9,7 @@ import { differenceInSeconds } from '../utils/date-fns'
 import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
-import { deleteHistory, getHistory } from '../apis/history'
+import { deleteHistory, getHistory, patchHistoryItem } from '../apis/history'
 import { WalkLogContentsDataType, ModalOption } from '../types/History'
 import { isLoginAtom, idAtom } from '../store/authAtom'
 import Header from '../components/common/Header'
@@ -43,6 +43,18 @@ export default function HistoryDetail() {
     },
   })
 
+  const patchHistoryItemMutation = useMutation({
+    mutationFn: ({ contentId, formData }) => patchHistoryItem(id!, contentId, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['history', id])
+      setEdit(prev => !prev)
+    },
+  })
+
+  const editHistoryItem = (contentId: string, formData: FormData) => {
+    patchHistoryItemMutation.mutate({ contentId, formData })
+  }
+
   if (getHistoryQuery.isLoading) return <h1>Loading...</h1>
   if (getHistoryQuery.error) return <h1>Sorry, can not access to the page</h1>
 
@@ -61,7 +73,7 @@ export default function HistoryDetail() {
     setEdit(prev => !prev)
   }
 
-  const handleDeleteModal = () => {
+  const handleHistoryDeleteModal = () => {
     setOpenDeleteModal(prev => !prev)
     setDeleteModalOption({
       title: '걷기',
@@ -78,7 +90,6 @@ export default function HistoryDetail() {
       {
         label: '삭제하기',
         handleClick: deleteModalOption.deleteFn,
-
         id: 0,
       },
       {
@@ -97,6 +108,8 @@ export default function HistoryDetail() {
           initialImgUrl={da.imageUrl}
           initialText={da.text}
           handleCancel={handleEdit}
+          contentId={da.walkLogContentId}
+          onSubmit={editHistoryItem}
         />
       )
     }
@@ -142,7 +155,7 @@ export default function HistoryDetail() {
           {detailItems}
           {isLogin && logInId === memberId && (
             <div className={styles.deleteBtnBox}>
-              <button type='button' className={styles.deleteBtn} onClick={handleDeleteModal}>
+              <button type='button' className={styles.deleteBtn} onClick={handleHistoryDeleteModal}>
                 기록 삭제
               </button>
             </div>
