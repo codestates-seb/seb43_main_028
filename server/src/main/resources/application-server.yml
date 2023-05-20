@@ -11,6 +11,9 @@ spring:
     properties:
       hibernate:
         format_sql: true  # (3) SQL pretty print
+  servlet:
+    multipart:
+      max-file-size: 4MB
 server:
   servlet:
     encoding:
