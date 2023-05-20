@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +26,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Configuration
@@ -42,6 +44,8 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .formLogin().disable()
                 .httpBasic().disable()
+                .logout().logoutUrl("/members/logout").deleteCookies("Refresh")
+                .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value())).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new MemberAuthenticationEntryHandler())

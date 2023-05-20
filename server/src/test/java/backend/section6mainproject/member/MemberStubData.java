@@ -72,4 +72,18 @@ public class MemberStubData {
         FileInputStream inputStream = new FileInputStream("src/test/resources/testImage/" + fileFullName);
         return new MockMultipartFile("profileImage", fileFullName, contentType, inputStream);
     }
+
+    public Member getMemberWithWalkLogRecording() {
+        Member member = new Member();
+        member.setMemberId(memberId);
+        WalkLog walkLog1 = new WalkLog();
+        walkLog1.setWalkLogId(1L);
+        walkLog1.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        WalkLog walkLog2 = new WalkLog();
+        walkLog2.setWalkLogId(2L);
+        walkLog2.setWalkLogStatus(WalkLog.WalkLogStatus.RECORDING);
+        member.getWalkLogs().add(walkLog1);
+        member.getWalkLogs().add(walkLog2);
+        return member;
+    }
 }

@@ -10,6 +10,7 @@ import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.utils.CustomBeanUtils;
+import backend.section6mainproject.walklog.entity.WalkLog;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 @Transactional
 @Service
@@ -69,18 +71,14 @@ public class MemberServiceImpl implements MemberService{
        }
     }
 
-    /** 회원이 리포지토리에 존재하는지 여부를 검증하고, 회원을 반환하는 메서드.
-     * <p>Member 엔티티의 walkLogs 필드는 fetchType이 Lazy로 설정되어 있으므로, 값을 실제로 조회할 때 데이터를 호출하게 되는데,
-     *  ConnectionInterceptor가 영속성 컨텍스트 밖에 있는것으로 보여서 이 메서드에서 값을 호출했다.
-     */
+
     @Override
-    public Member findVerifiedMember(long memberId) {
+    public Member findVerifiedMember(Long memberId) {
         Optional<Member> optionalMember =
                 memberRepository.findById(memberId);
         Member findMember =
                 optionalMember.orElseThrow(() ->
                         new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        findMember.getWalkLogs().stream().forEach(walkLog -> walkLog.getWalkLogId());
         distinguishQuittedMember(findMember);
         return findMember;
     }
@@ -152,6 +150,21 @@ public class MemberServiceImpl implements MemberService{
     public MemberServiceDTO.Output findMember(Long memberId) {
         Member invokedMember = findVerifiedMember(memberId);
         return mapper.memberToOutput(invokedMember);
+    }
+
+    @Override
+    public Long findRecordingWalkLog(Long memberId) {
+        Member findMember = findVerifiedMember(memberId);
+        List<WalkLog> walkLogs = findMember.getWalkLogs();
+        Long walkLogId = null;
+        for (int i = walkLogs.size() - 1; i >= 0; i--) {
+            if(walkLogs.get(i).getWalkLogStatus() == WalkLog.WalkLogStatus.RECORDING) {
+                walkLogId = walkLogs.get(i).getWalkLogId();
+                break;
+            }
+        }
+        if(walkLogId == null) throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND);
+        return walkLogId;
     }
 
     private void distinguishQuittedMember(Member member) {

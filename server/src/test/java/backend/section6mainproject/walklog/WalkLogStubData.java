@@ -9,6 +9,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class WalkLogStubData {
 
@@ -108,7 +109,9 @@ public class WalkLogStubData {
         return endPostDTO;
     }
     public WalkLogServiceDTO.CreateInput getCreateInput(){
-        return new WalkLogServiceDTO.CreateInput(memberId);
+        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
+        createInput.setMemberId(memberId);
+        return createInput;
     }
     public WalkLogServiceDTO.CreateOutput getCreateOutput(){
         WalkLogServiceDTO.CreateOutput createOutput = new WalkLogServiceDTO.CreateOutput();
@@ -189,5 +192,22 @@ public class WalkLogStubData {
         String fileFullName = fileName + ".jpg";
         FileInputStream inputStream = new FileInputStream("src/test/resources/testImage/" + fileFullName);
         return new MockMultipartFile("mapImage", fileFullName, contentType, inputStream);
+    }
+
+    public Member getMemberForRepo() {
+        Member member = new Member();
+        member.setEmail("email@email.com");
+        member.setPassword("1q2w3e4r!abc");
+        member.setNickname(nickname);
+        member.setRoles(List.of("USER"));
+        member.setIntroduction("자기소개테스트");
+        return member;
+    }
+    public WalkLog getWalkLogForRepo(Member member){
+        WalkLog walkLog = new WalkLog();
+        walkLog.setMember(member);
+        walkLog.setMessage(message);
+        walkLog.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
+        return walkLog;
     }
 }
