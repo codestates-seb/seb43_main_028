@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import styles from './FindPassword.module.scss'
 import TempPasswordSent from '../components/FindPassword/TempPasswordSent'
 import { getUserTempPassword } from '../apis/user'
+import Header from '../components/common/Header'
 
 type FormValueType = {
   email: string
@@ -46,43 +47,51 @@ export default function FindPassword() {
   }
 
   if (isTempPasswordSent) {
-    return <TempPasswordSent setIsTempPasswordSent={setIsTempPasswordSent} userEmail={userEmail} />
+    return (
+      <>
+        <Header hasBackButton hasCloseButton={false} headerTitle='비밀번호 찾기' />
+        <TempPasswordSent setIsTempPasswordSent={setIsTempPasswordSent} userEmail={userEmail} />
+      </>
+    )
   }
   return (
-    <form
-      className={styles.formContainer}
-      onSubmit={handleSubmit((data, event) => {
-        handleFormSubmit(data, event as React.FormEvent<HTMLFormElement>)
-      })}
-    >
-      <div className={styles.inputBox}>
-        <label className={styles.label} htmlFor='email'>
-          이메일
-        </label>
-        <input
-          id='email'
-          className={styles.input}
-          placeholder='이메일을 입력해주세요.'
-          onChange={emailOnChange}
-          onBlur={emailOnBlur}
-          name={emailName}
-          ref={emailRef}
-        />
-        <div className={styles.errorWrapper}>
-          {dirtyFields.email && errors.email ? (
-            <span className={styles.error}>{errors.email.message}</span>
-          ) : (
-            <div className={styles.noError} />
-          )}
-        </div>
-      </div>
-      <button
-        className={styles.tempPwGetBtn}
-        type='submit'
-        disabled={!getValues('email') || Object.keys(errors).length > 0}
+    <>
+      <Header hasBackButton hasCloseButton={false} headerTitle='비밀번호 찾기' />
+      <form
+        className={styles.formContainer}
+        onSubmit={handleSubmit((data, event) => {
+          handleFormSubmit(data, event as React.FormEvent<HTMLFormElement>)
+        })}
       >
-        임시 비밀번호 발급 받기
-      </button>
-    </form>
+        <div className={styles.inputBox}>
+          <label className={styles.label} htmlFor='email'>
+            이메일
+          </label>
+          <input
+            id='email'
+            className={styles.input}
+            placeholder='이메일을 입력해주세요.'
+            onChange={emailOnChange}
+            onBlur={emailOnBlur}
+            name={emailName}
+            ref={emailRef}
+          />
+          <div className={styles.errorWrapper}>
+            {dirtyFields.email && errors.email ? (
+              <span className={styles.error}>{errors.email.message}</span>
+            ) : (
+              <div className={styles.noError} />
+            )}
+          </div>
+        </div>
+        <button
+          className={styles.tempPwGetBtn}
+          type='submit'
+          disabled={!getValues('email') || Object.keys(errors).length > 0}
+        >
+          임시 비밀번호 발급 받기
+        </button>
+      </form>
+    </>
   )
 }

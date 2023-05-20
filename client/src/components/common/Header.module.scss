@@ -1,0 +1,40 @@
+@use '../../styles/color' as C;
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+
+.container {
+  width: 100%;
+  height: 48px;
+  padding: 8px 20px;
+  @include U.flex-c(row, center, center);
+  background-color: C.$white;
+  border-bottom: 1px solid C.$gray200;
+}
+
+.backBtn {
+  @include U.flex-c(row, flex-start, center);
+  width: 33.3333%;
+}
+
+.noBackBtn {
+  @include U.flex-c(row, flex-start, center);
+  width: 33.3333%;
+}
+
+.headerTitle {
+  @include U.flex-c(row, center, center);
+  color: black;
+  font-size: 1.6rem;
+  width: 33.3333%;
+}
+
+.closeBtn {
+  @include U.flex-c(row, flex-end, center);
+  @include T.gray900-regular-14;
+  width: 33.3333%;
+}
+
+.noCloseBtn {
+  @include U.flex-c(row, flex-end, center);
+  width: 33.3333%;
+}
