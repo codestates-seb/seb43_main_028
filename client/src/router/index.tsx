@@ -7,7 +7,7 @@ const router = createBrowserRouter(
   routerData.map(routerElement => ({
     path: routerElement.path,
     element: (
-      <GeneralLayout showTapBar={routerElement.showTapBar}>
+      <GeneralLayout showTapBar={routerElement.showTapBar} withAuth={routerElement.withAuth}>
         <Suspense fallback={<div>Loading...</div>}>{routerElement.element}</Suspense>
       </GeneralLayout>
     ),

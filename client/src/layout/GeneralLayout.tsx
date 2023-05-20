@@ -10,14 +10,15 @@ import { TapBarContent } from '../router/routerData'
 type GeneralLayoutProps = {
   children: React.ReactNode
   showTapBar: boolean
+  withAuth: boolean
 }
 
-export default function GeneralLayout({ children, showTapBar }: GeneralLayoutProps) {
-  const [, setIsAuthChecking] = useState(true)
+export default function GeneralLayout({ children, showTapBar, withAuth }: GeneralLayoutProps) {
+  const [isAuthChecking, setIsAuthChecking] = useState(true)
   const [id, setId] = useAtom(idAtom)
   const [isLogin, setIsLogin] = useAtom(isLoginAtom)
   const [, setUser] = useAtom(userAtom)
-  const { pathname } = useRouter()
+  const { routeTo, pathname } = useRouter()
 
   useEffect(() => {
     const authHandler = async () => {
@@ -58,12 +59,14 @@ export default function GeneralLayout({ children, showTapBar }: GeneralLayoutPro
 
     authHandler().then(() => {
       setIsAuthChecking(false)
+      if (isLogin && (pathname === '/signin' || pathname === '/signup')) routeTo('/')
+      if (!isLogin && withAuth) routeTo('/signin')
     })
-  }, [pathname, id, isLogin, setIsLogin, setUser, setId])
+  }, [pathname])
 
   return (
     <>
-      {children}
+      {isAuthChecking || children}
       {showTapBar && <Tapbar tapBarContent={TapBarContent} />}
     </>
   )
