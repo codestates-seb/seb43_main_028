@@ -143,8 +143,8 @@ export default function HistoryDetail() {
   return (
     <div>
       <Header
-        hasBackButton={false}
-        hasCloseButton
+        hasBackButton
+        hasCloseButton={false}
         headerTitle='상세 기록'
         handleCloseFn={() => {}}
       />
