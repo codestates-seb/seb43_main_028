@@ -26,7 +26,10 @@ export default forwardRef(function History({ data }: HistoryItemProps, ref: Ref<
         <img src={mapImage} className={styles.map} alt='지도 이미지' />
         <div>
           <p className={styles.date}>{format(new Date(startedAt), 'yyyy년 M월 d일')}</p>
-          <p className={styles.time}>{time}</p>
+          <div className={styles.timeBox}>
+            <Icon name='time-gray' size={16} />
+            <p>{time}</p>
+          </div>
         </div>
       </div>
       <p className={styles.message}>{message}</p>

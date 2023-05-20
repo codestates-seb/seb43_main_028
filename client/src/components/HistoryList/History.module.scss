@@ -31,7 +31,9 @@
   @include T.gray900-regular-14;
 }
 
-.time {
+.timeBox {
+  @include U.flex-c(row, flex-start, center);
+  gap: 2px;
   @include T.gray600-regular-12;
 }
 
