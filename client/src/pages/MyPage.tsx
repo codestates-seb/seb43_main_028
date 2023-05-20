@@ -45,7 +45,7 @@ export default function Mypage() {
       })
 
       data.append('patch', blob)
-      const res = await patchUserPrivacySettings(`/api/members/${memberId}`, data)
+      const res = await patchUserPrivacySettings(memberId, data)
       setUser(res)
     }
   }
@@ -73,7 +73,7 @@ export default function Mypage() {
   }
 
   const handleUnregister = async () => {
-    const res = await unregisterUser(`/api/members/${memberId}`)
+    const res = await unregisterUser(memberId)
     if (res === 'success') {
       removeRefreshTokenFromLocalStorage()
       setIsLogin(false)

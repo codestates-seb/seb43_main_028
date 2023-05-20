@@ -25,7 +25,7 @@ function SignIn() {
 
     if (memberId) {
       setId(memberId)
-      const userInfoRes = await getCurrentUserInfo(`/api/members/${memberId}`)
+      const userInfoRes = await getCurrentUserInfo(memberId)
       // 전역 상태에 userInfoRes 저장
       setIsLogin(true)
       setUser(userInfoRes)

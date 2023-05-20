@@ -63,7 +63,7 @@ export default function ChangingPassword({
     const passwordData = {
       password: newPassword,
     }
-    const res = await patchUserPassword(`/api/members/${memberId}/pw`, passwordData)
+    const res = await patchUserPassword(memberId, passwordData)
     console.log(res)
     if (res === 'success') {
       console.log('성공')
