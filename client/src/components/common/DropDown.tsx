@@ -20,7 +20,6 @@ type OptionType = {
 
 function DropDown({ options }: DropDownProps) {
   const [isOptionOpened, setIsOptionOpened] = useState(false)
-  const [selectedOptionId, setSelectedOptionId] = useState(0)
   const [selectedOptionTitle, setSelectedOptionTitle] = useState(options[0].title)
 
   const handleChangeCurrentOption = (option: OptionType) => {

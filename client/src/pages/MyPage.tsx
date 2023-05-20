@@ -21,7 +21,7 @@ export default function Mypage() {
   const [isLogin, setIsLogin] = useAtom(isLoginAtom)
 
   const [user, setUser] = useAtom(userAtom)
-  const [memberId, setMemberId] = useAtom(idAtom)
+  const [memberId] = useAtom(idAtom)
 
   const [userData, setUserData] = useState<UserInfoType | null>(null)
   const [registeredAt, setRegisteredAt] = useState('')
