@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   addMonths,
   subMonths,
@@ -20,11 +21,17 @@ type MonthHistoriesType = {
   walkLogId: number
 }[]
 
-export default function Calendar() {
-  const [date, setDate] = useState<Date>(new Date())
+type CalendarProps = {
+  date: Date
+  setDate: React.Dispatch<React.SetStateAction<Date>>
+}
+
+export default function Calendar({ date, setDate }: CalendarProps) {
   const [data, setData] = useState<MonthHistoriesType>([])
   const [selectDate, setSelectDate] = useState<Date | null>(null)
   const [user] = useAtom(userAtom)
+
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     const getList = async () => {
@@ -33,8 +40,8 @@ export default function Calendar() {
         getYear(date),
         getMonth(date) + 1
       )
-      console.log('response', response)
       setData(response)
+      queryClient.invalidateQueries(['history'])
     }
     getList()
   }, [date])

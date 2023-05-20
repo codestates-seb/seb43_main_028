@@ -8,9 +8,11 @@ import Toggle from '../components/HistoryList/Toggle'
 import { getHistoryList } from '../apis/history'
 import { userAtom } from '../store/authAtom'
 import { HistoryListDataType } from '../types/History'
+import { getDate, getMonth, getYear } from '../utils/date-fns'
 
 export default function HistoryList() {
   const [calendar, setCalendar] = useState<boolean>(false)
+  const [date, setDate] = useState<Date>(new Date())
   const [user] = useAtom(userAtom)
 
   const handleCalendar = () => {
@@ -19,8 +21,24 @@ export default function HistoryList() {
 
   const { isLoading, isError, data, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery({
-      queryKey: ['posts'],
-      queryFn: ({ pageParam = 1 }) => getHistoryList(user.memberId, pageParam),
+      queryKey: [
+        'history',
+        calendar,
+        date,
+        {
+          memberId: user.memberId,
+          year: getYear(date),
+          month: getMonth(date) + 1,
+          day: getDate(date),
+        },
+      ],
+      queryFn: ({ pageParam, queryKey }) => {
+        if (calendar) {
+          const { year, month } = queryKey[3] as { year: number; month: number }
+          return getHistoryList(user.memberId, pageParam, year, month)
+        }
+        return getHistoryList(user.memberId, pageParam)
+      },
       getNextPageParam: lastPage => {
         const { page, totalPages } = lastPage.pageInfo
         return page < totalPages ? page + 1 : undefined
@@ -63,7 +81,7 @@ export default function HistoryList() {
   return (
     <div>
       <Toggle handleCalendar={handleCalendar} calendar={calendar} />
-      {calendar && <Calendar />}
+      {calendar && <Calendar date={date} setDate={setDate} />}
       <ul className={styles.historyList}>{body}</ul>
     </div>
   )
