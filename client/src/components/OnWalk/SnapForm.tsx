@@ -49,7 +49,7 @@ export default function SnapForm({
     })
 
     data.append('content', blob)
-    data.append('contentImage', image)
+    if (image) data.append('contentImage', image)
     onSubmit(contentId, data)
   }
 

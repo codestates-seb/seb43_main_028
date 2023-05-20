@@ -59,7 +59,7 @@ export default function Title({
   filteredOption.unshift(publicSetting)
 
   const dropDownOption = filteredOption.map((option, i) => {
-    const param = Object.keys(engOptionsObj).find(engOpt => engOptionsObj[engOpt] === option)
+    const param = Object.keys(engOptionsObj).find(engOpt => engOptionsObj[engOpt] === option) || ''
 
     return {
       id: i,
