@@ -102,7 +102,9 @@ public class WalkLogStubData {
         return endPostDTO;
     }
     public WalkLogServiceDTO.CreateInput getCreateInput(){
-        return new WalkLogServiceDTO.CreateInput(memberId);
+        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
+        createInput.setMemberId(memberId);
+        return createInput;
     }
     public WalkLogServiceDTO.CreateOutput getCreateOutput(){
         WalkLogServiceDTO.CreateOutput createOutput = new WalkLogServiceDTO.CreateOutput();
