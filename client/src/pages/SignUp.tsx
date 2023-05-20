@@ -15,8 +15,11 @@ type FormValueType = {
 function SignUp() {
   // 이용약관 관련 state
   const [allCheck, setAllCheck] = useState(false)
-  const [useCheck, setUseCheck] = useState(false)
+  const [termCheck, setTermCheck] = useState(false)
   const [privacyCheck, setPrivacyCheck] = useState(false)
+
+  const [isTermOfUseOpened, setIsTermOfUseOpened] = useState(false)
+  const [isPrivacyPolicyOpened, setIsPrivacyPolicyOpened] = useState(false)
 
   const emailReg =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
@@ -99,9 +102,41 @@ function SignUp() {
     })
   }
 
+  if (isTermOfUseOpened) {
+    return (
+      <>
+        <Header
+          hasBackButton={false}
+          hasCloseButton
+          headerTitle='이용약관'
+          handleCloseFn={setIsTermOfUseOpened}
+        />
+        <div className={styles.formContainer} />
+      </>
+    )
+  }
+  if (isPrivacyPolicyOpened) {
+    return (
+      <>
+        <Header
+          hasBackButton={false}
+          hasCloseButton
+          headerTitle='개인정보 처리방침'
+          handleCloseFn={setIsPrivacyPolicyOpened}
+        />
+        <div className={styles.formContainer} />
+      </>
+    )
+  }
+
   return (
     <>
-      <Header hasBackButton hasCloseButton={false} headerTitle='회원가입' />
+      <Header
+        hasBackButton
+        hasCloseButton={false}
+        headerTitle='회원가입'
+        handleCloseFn={() => {}}
+      />
       <form
         className={styles.formContainer}
         onSubmit={handleSubmit(data => {
@@ -176,15 +211,17 @@ function SignUp() {
         <TermsOfUse
           allCheck={allCheck}
           setAllCheck={setAllCheck}
-          useCheck={useCheck}
-          setUseCheck={setUseCheck}
+          termCheck={termCheck}
+          setTermCheck={setTermCheck}
           privacyCheck={privacyCheck}
           setPrivacyCheck={setPrivacyCheck}
+          setIsTermOfUseOpened={setIsTermOfUseOpened}
+          setIsPrivacyPolicyOpened={setIsPrivacyPolicyOpened}
         />
         <button
           className={styles.signupBtn}
           type='submit'
-          disabled={!allCheck || !useCheck || !privacyCheck || Object.keys(errors).length > 0}
+          disabled={!allCheck || !termCheck || !privacyCheck || Object.keys(errors).length > 0}
         >
           회원가입하기
         </button>
