@@ -4,6 +4,7 @@ import backend.section6mainproject.content.entity.WalkLogContent;
 import backend.section6mainproject.content.repository.WalkLogContentRepository;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.repository.MemberRepository;
+import backend.section6mainproject.member.service.MemberServiceImpl;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.repository.WalkLogRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,17 +17,21 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class TestDataInit {
     private final MemberRepository memberRepository;
+    private final MemberServiceImpl memberService;
     private final WalkLogRepository walkLogRepository;
     private final WalkLogContentRepository walkLogContentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
+        Optional<Member> byEmail = memberRepository.findByEmail("test@gmail.com");
+        if(byEmail.isPresent())return;
         Member firstMember = new Member();
         firstMember.setEmail("test@gmail.com");
         firstMember.setRoles(List.of("USER"));
