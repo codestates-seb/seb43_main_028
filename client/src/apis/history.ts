@@ -1,14 +1,9 @@
-import axios from 'axios'
+import { axiosInstance, fileAxios } from './instance'
 import { getMonth, getYear, startOfToday } from '../utils/date-fns'
 
 export const getHistory = async (walkLogId: string) => {
   try {
-    const response = await axios.get(`/api/walk-logs/${walkLogId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    })
+    const response = await axiosInstance.get(`/walk-logs/${walkLogId}`)
     return response.data
   } catch (error: unknown) {
     console.log(error)
@@ -18,11 +13,7 @@ export const getHistory = async (walkLogId: string) => {
 
 export const patchHistory = async (walkLogId: string, data: string) => {
   try {
-    const response = await axios.patch(`/api/walk-logs/${walkLogId}`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const response = await axiosInstance.patch(`/walk-logs/${walkLogId}`, data)
     return response.data
   } catch (error: unknown) {
     console.log(error)
@@ -32,12 +23,8 @@ export const patchHistory = async (walkLogId: string, data: string) => {
 
 export const patchHistoryItem = async (walkLogId: string, contentId: string, data: FormData) => {
   try {
-    const url = `/api/walk-logs/${walkLogId}/contents/${contentId}`
-    const response = await axios.patch(url, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    const url = `/walk-logs/${walkLogId}/contents/${contentId}`
+    const response = await fileAxios.patch(url, data)
     return response.data
   } catch (error: unknown) {
     console.log(error)
@@ -47,7 +34,7 @@ export const patchHistoryItem = async (walkLogId: string, contentId: string, dat
 
 export const deleteHistory = async (walkLogId: string) => {
   try {
-    const response = await axios.delete(`/api/walk-logs/${walkLogId}`)
+    const response = await axiosInstance.delete(`/walk-logs/${walkLogId}`)
     return response.status === 204 ? 'success' : 'fail'
   } catch (error: unknown) {
     console.log(error)
@@ -57,7 +44,7 @@ export const deleteHistory = async (walkLogId: string) => {
 
 export const deleteHistoryItem = async (walkLogId: string, contentId: string) => {
   try {
-    const response = await axios.delete(`/api/walk-logs/${walkLogId}/contents/${contentId}`)
+    const response = await axiosInstance.delete(`/walk-logs/${walkLogId}/contents/${contentId}`)
     return response.status === 204 ? 'success' : 'fail'
   } catch (error: unknown) {
     console.log(error)
@@ -73,12 +60,8 @@ export const getHistoryList = async (
   day: null | number = null
 ) => {
   try {
-    const url = `/api/members/${memberId}/walk-logs`
-    const response = await axios.get(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
+    const url = `/members/${memberId}/walk-logs`
+    const response = await axiosInstance.get(url, {
       params: { page, year, month, day },
     })
     return response.data
@@ -94,11 +77,7 @@ export const getHistoryCalendarList = async (
   month = getMonth(startOfToday()) + 1
 ) => {
   try {
-    const response = await axios.get(`/api/members/${memberId}/walk-logs/calendar`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
+    const response = await axiosInstance.get(`/members/${memberId}/walk-logs/calendar`, {
       params: { year, month },
     })
     return response.data
