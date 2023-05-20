@@ -1,3 +1,4 @@
-config:
-  import:
+spring:
+  config:
+    import:
     - classpath:/application-server.yml
