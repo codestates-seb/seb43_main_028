@@ -1,0 +1,33 @@
+@use '../../styles/color' as C;
+@use '../../styles/utils' as U;
+@use '../../styles/typography' as T;
+
+.container {
+  gap: 16px;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 640px;
+  background: C.$white;
+  z-index: 1000;
+}
+
+.login {
+  @include U.flex-c(row, left, left);
+}
+
+.nologin {
+  @include U.flex-c(column, left, left);
+}
+
+.title {
+  @include T.gray900-bold-18;
+  margin-bottom: 4px;
+}
+
+.caption {
+  @include T.gray600-regular-14;
+  @include U.flex-c(row, left, left);
+  gap: 8px;
+}
