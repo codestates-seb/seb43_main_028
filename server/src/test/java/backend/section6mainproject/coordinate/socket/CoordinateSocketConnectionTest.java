@@ -1,8 +1,10 @@
 package backend.section6mainproject.coordinate.socket;
 
+import backend.section6mainproject.TestDataInit;
 import backend.section6mainproject.auth.handler.AuthenticationSuccessHandlerUtils;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.member.entity.Member;
+import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import org.hamcrest.MatcherAssert;
@@ -26,6 +28,7 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -64,8 +67,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void connectWebSocket() throws ExecutionException, InterruptedException, TimeoutException {
         //given
-        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
-
+        given(memberService.findRecordingWalkLog(Mockito.anyLong())).willReturn(1L);
 
         //when //then
         Assertions.assertDoesNotThrow(() -> stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
@@ -76,7 +78,7 @@ class CoordinateSocketConnectionTest {
     @Test
     void connectWithNoWalkLogRecording() {
         //given
-        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(new Member());
+        given(memberService.findRecordingWalkLog(Mockito.anyLong())).willThrow(BusinessLogicException.class);
         //when //then
         Assertions.assertThrows(Exception.class, () -> stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
         }).get(2, TimeUnit.MINUTES));
@@ -86,7 +88,7 @@ class CoordinateSocketConnectionTest {
     void subscribeWebSocket() throws ExecutionException, InterruptedException, TimeoutException {
         //given
         CompletableFuture<StompHeaders> completableFuture = new CompletableFuture<>();
-        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
+        given(memberService.findRecordingWalkLog(Mockito.anyLong())).willReturn(1L);
 
         //when
         StompSession stompSession = stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
@@ -106,7 +108,7 @@ class CoordinateSocketConnectionTest {
     void subscribeWrongDest() throws ExecutionException, InterruptedException, TimeoutException {
         //given
         CompletableFuture<StompHeaders> completableFuture = new CompletableFuture<>();
-        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(getStubMember());
+        given(memberService.findRecordingWalkLog(Mockito.anyLong())).willReturn(1L);
 
         //when
         StompSession stompSession = stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {

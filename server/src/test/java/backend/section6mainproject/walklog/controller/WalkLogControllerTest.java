@@ -69,8 +69,6 @@ public class WalkLogControllerTest {
     @Test
     void postWalkLogTest() throws Exception {
         WalkLogControllerDTO.PostResponse response = stubData.getResponse();
-        UsernamePasswordAuthenticationToken principal = UsernamePasswordAuthenticationToken
-                .authenticated(1L, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
         given(walkLogService.createWalkLog(Mockito.any(WalkLogServiceDTO.CreateInput.class))).willReturn(new WalkLogServiceDTO.CreateOutput());
         given(walkLogMapper.walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(Mockito.any(WalkLogServiceDTO.CreateOutput.class)))
@@ -81,7 +79,6 @@ public class WalkLogControllerTest {
                         post("/walk-logs")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .principal(principal)
                 );
         // then
         actions
