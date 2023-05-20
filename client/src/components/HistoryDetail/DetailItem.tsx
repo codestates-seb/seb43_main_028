@@ -4,7 +4,7 @@ import { useAtom } from 'jotai'
 import Icon from '../common/Icon'
 import styles from './DetailItem.module.scss'
 import ImgModal from './ImgModal'
-import { WalkLogContentsDataType, ModalOption } from '../../types/HistoryDetail'
+import { WalkLogContentsDataType, ModalOption } from '../../types/History'
 import { deleteHistoryItem } from '../../apis/history'
 import { isLoginAtom, idAtom } from '../../store/authAtom'
 
@@ -53,7 +53,6 @@ export default function DetailItem({
   const handlePhotoModal = () => {
     setImgModal(prev => !prev)
   }
-
 
   const handleDeleteModal = () => {
     setOpenDeleteModal(prev => !prev)
