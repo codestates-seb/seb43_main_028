@@ -21,7 +21,7 @@ jobs:
       - name: Set yml file
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./server/src/main/resources/application.yml
+          files: ./server/src/main/resources/application*.yml
         env:
           aws-s3.access-key: ${{ secrets.AWS_S3_ACCESS_KEY }}
           aws-s3.secret-access-key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY }}
