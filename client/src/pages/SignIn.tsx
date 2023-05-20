@@ -37,7 +37,7 @@ function SignIn() {
 
   return (
     <>
-      <Header hasBackButton hasCloseButton={false} headerTitle='로그인' />
+      <Header hasBackButton hasCloseButton={false} headerTitle='로그인' handleCloseFn={() => {}} />
       <form className={styles.formContainer} onSubmit={logInSubmitHandler}>
         <div className={styles.inputBox}>
           <label className={styles.label}>

@@ -10,6 +10,15 @@
   padding: 20px;
 }
 
+.termContainer {
+  @include U.flex-c(column, flex-start, start);
+  background-color: #fff;
+  width: 100%;
+  height: 100dvh;
+  padding: 20px;
+  overflow-y: scroll;
+}
+
 .inputBox {
   width: 100%;
   margin-bottom: 20px;
