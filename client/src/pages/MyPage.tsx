@@ -97,15 +97,15 @@ export default function Mypage() {
 
   useEffect(() => {
     if (userData) {
-      const registeredDate = new Date(userData.createdAt)
-      const formattedData = format(registeredDate, 'yyyy-MM-dd')
-      setRegisteredAt(formattedData)
+      // const registeredDate = new Date(userData.createdAt)
+      // const formattedData = format(registeredDate, 'yyyy-MM-dd')
+      // setRegisteredAt(formattedData)
     }
   }, [userData])
 
-  if (!isLogin) {
-    routeTo('/signin')
-  }
+  // if (!isLogin) {
+  //   routeTo('/signin')
+  // }
 
   return (
     <>

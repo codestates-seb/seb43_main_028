@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAtom } from 'jotai'
 import Tapbar from '../components/common/Tapbar'
-import { idAtom, isLoginAtom } from '../store/authAtom'
+import { idAtom, isLoginAtom, userAtom } from '../store/authAtom'
 import useRouter from '../hooks/useRouter'
 import { getCurrentUserInfo, refreshAccessToken } from '../apis/user'
 import { getRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
@@ -14,43 +14,52 @@ type GeneralLayoutProps = {
 
 export default function GeneralLayout({ children, showTapBar }: GeneralLayoutProps) {
   const [, setIsAuthChecking] = useState(true)
-  const [id] = useAtom(idAtom)
-  const [isLogin] = useAtom(isLoginAtom)
+  const [id, setId] = useAtom(idAtom)
+  const [isLogin, setIsLogin] = useAtom(isLoginAtom)
+  const [, setUser] = useAtom(userAtom)
   const { pathname } = useRouter()
 
   useEffect(() => {
     const authHandler = async () => {
-      if (!isLogin) {
-        console.log('로그인하지 않은 상태입니다.')
+      const memberId = localStorage.getItem('loggedId')
+      if (!memberId) {
+        localStorage.removeItem('loggedId')
+        setIsLogin(false)
+        console.log('로그아웃')
         return 'fail'
       }
-      const userInfoRes = await getCurrentUserInfo(id)
+
+      const userInfoRes = await getCurrentUserInfo(+memberId)
       if (userInfoRes) {
+        setIsLogin(true)
+        setId(+memberId)
+        setUser(userInfoRes)
         console.log('로그인 상태 유지중')
         return 'success'
       }
 
-      if (!getRefreshTokenFromLocalStorage()) {
-        console.log('refresh token 만료. 재로그인이 필요합니다.')
-        return 'fail'
-      }
-
-      const refreshRes = await refreshAccessToken()
-      if (refreshRes === 'success') {
-        const newUserInfoRes = await getCurrentUserInfo(id)
-        if (newUserInfoRes && isLogin) {
-          console.log('refresh token을 이용해 access token 갱신')
+      const isRefreshed = await refreshAccessToken()
+      if (isRefreshed === 'success') {
+        const refreshedUserInfoRes = await getCurrentUserInfo(+memberId)
+        if (refreshedUserInfoRes) {
+          setIsLogin(true)
+          setId(+memberId)
+          setUser(refreshedUserInfoRes)
+          console.log('로그인 상태 유지중')
           return 'success'
         }
       }
-      console.log('access token 갱신 실패')
+
+      localStorage.removeItem('loggedId')
+      setIsLogin(false)
+      console.log('로그아웃')
       return 'fail'
     }
 
     authHandler().then(() => {
       setIsAuthChecking(false)
     })
-  }, [pathname, id, isLogin])
+  }, [pathname, id, isLogin, setIsLogin, setUser, setId])
 
   return (
     <>

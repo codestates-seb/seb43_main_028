@@ -76,11 +76,7 @@ export const getCurrentUserInfo = async (memberId: number): Promise<UserInfoType
 
 export const refreshAccessToken = async () => {
   try {
-    const { headers } = await axiosInstance.get('/members/refresh', {
-      headers: {
-        Refresh: getRefreshTokenFromLocalStorage(),
-      },
-    })
+    const { headers } = await axiosInstance.get('/members/refresh')
     axiosInstance.defaults.headers.common.Authorization = headers.authorization
     return 'success'
   } catch (error) {

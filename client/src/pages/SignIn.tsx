@@ -24,6 +24,7 @@ function SignIn() {
     console.log(memberId)
 
     if (memberId) {
+      localStorage.setItem('loggedId', JSON.stringify(memberId))
       setId(memberId)
       const userInfoRes = await getCurrentUserInfo(memberId)
       // 전역 상태에 userInfoRes 저장
