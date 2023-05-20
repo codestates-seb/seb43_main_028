@@ -27,7 +27,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         if((Boolean) request.getAttribute("autoLogin")){
             String refreshToken = authenticationSuccessHandlerUtils.delegateRefreshToken(member);
             Cookie cookie = new Cookie("Refresh", refreshToken);
-            cookie.setPath("/members/refresh");
+            cookie.setPath("/");
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }

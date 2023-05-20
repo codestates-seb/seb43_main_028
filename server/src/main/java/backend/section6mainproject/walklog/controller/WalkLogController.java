@@ -19,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/walk-logs")
@@ -32,8 +33,9 @@ public class WalkLogController {
     private final WalkLogMapper walkLogMapper;
     @PostMapping
     public ResponseEntity postWalkLog(Authentication authentication){
-        long memberId = Long.parseLong(authentication.getPrincipal().toString());
-        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput(memberId);
+        WalkLogServiceDTO.CreateInput createInput = new WalkLogServiceDTO.CreateInput();
+        Optional.ofNullable(authentication)
+                .ifPresent(auth -> createInput.setMemberId(Long.parseLong(auth.getPrincipal().toString())));
         WalkLogServiceDTO.CreateOutput createOutput = walkLogService.createWalkLog(createInput);
         WalkLogControllerDTO.PostResponse postResponse = walkLogMapper.walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(createOutput);
         Long walkLogId = postResponse.getWalkLogId();
