@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Icon from '../common/Icon'
@@ -54,6 +54,10 @@ export default function Title({
       setMessage(data.message)
     },
   })
+
+  useEffect(() => {
+    setMessage(text)
+  }, [text])
 
   const filteredOption = koOptions.filter(option => option !== publicSetting)
   filteredOption.unshift(publicSetting)
