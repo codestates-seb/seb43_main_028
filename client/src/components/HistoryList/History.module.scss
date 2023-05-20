@@ -2,6 +2,10 @@
 @use '../../styles/utils' as U;
 @use '../../styles/typography' as T;
 
+.containerBox {
+  width: 100%;
+}
+
 .container {
   width: 100%;
   @include U.flex-c(column, flex-start, flex-start);
@@ -27,7 +31,9 @@
   @include T.gray900-regular-14;
 }
 
-.time {
+.timeBox {
+  @include U.flex-c(row, flex-start, center);
+  gap: 2px;
   @include T.gray600-regular-12;
 }
 
