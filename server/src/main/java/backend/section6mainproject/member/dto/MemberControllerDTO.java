@@ -76,8 +76,8 @@ public class MemberControllerDTO {
         private String introduction;
         private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting;
         private String imageUrl;
-        private int totalWalkLog;
-        private int totalWalkLogContent;
+        private long totalWalkLog;
+        private long totalWalkLogContent;
         private LocalDateTime createdAt; // 회원가입일시 공개
     }
 }
