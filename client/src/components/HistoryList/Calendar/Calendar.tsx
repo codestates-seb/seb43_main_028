@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useAtom } from 'jotai'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import {
   addMonths,
   subMonths,
@@ -17,9 +17,11 @@ import { userAtom } from '../../../store/authAtom'
 import { getHistoryCalendarList } from '../../../apis/history'
 
 type MonthHistoriesType = {
-  createdAt: string
-  walkLogId: number
-}[]
+  data: {
+    createdAt: string
+    walkLogId: number
+  }[]
+}
 
 type CalendarProps = {
   date: Date
@@ -27,24 +29,19 @@ type CalendarProps = {
 }
 
 export default function Calendar({ date, setDate }: CalendarProps) {
-  const [data, setData] = useState<MonthHistoriesType>([])
   const [selectDate, setSelectDate] = useState<Date | null>(null)
   const [user] = useAtom(userAtom)
 
-  const queryClient = useQueryClient()
+  const getMonthHistoryQuery = useQuery({
+    queryKey: ['history', date],
+    queryFn: () => getHistoryCalendarList(user.memberId, getYear(date), getMonth(date) + 1),
+    enabled: !!date,
+  })
 
-  useEffect(() => {
-    const getList = async () => {
-      const response = await getHistoryCalendarList(
-        user.memberId,
-        getYear(date),
-        getMonth(date) + 1
-      )
-      setData(response)
-      queryClient.invalidateQueries(['history'])
-    }
-    getList()
-  }, [date])
+  if (getMonthHistoryQuery.isLoading) return <div>Loading...</div>
+  if (getMonthHistoryQuery.isError) return <div>Error...</div>
+
+  const { data }: MonthHistoriesType = getMonthHistoryQuery
 
   const histories = data.reduce((acc: number[], cur) => {
     const timeNum = startOfDay(new Date(cur.createdAt)).getTime()
