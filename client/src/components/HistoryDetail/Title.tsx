@@ -41,9 +41,14 @@ export default function Title({
     time: `${format(new Date(startAt), 'H:mm')} ~ ${format(new Date(endAt), 'H:mm')}`,
   }
 
-  const messageRef = useRef<HTMLInputElement>()
+  const messageRef = useRef<HTMLInputElement>(null)
 
-  const handlePatchHistory = useMutation({
+  const handlePatchHistory = useMutation<
+    { message: string; walkLogPublicSetting: 'PUBLIC' | 'PRIVATE' },
+    unknown,
+    string,
+    unknown
+  >({
     mutationFn: data => patchHistory(id, data),
     onSuccess: data => {
       setMessage(data.message)

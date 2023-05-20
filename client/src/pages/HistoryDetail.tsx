@@ -43,7 +43,12 @@ export default function HistoryDetail() {
     },
   })
 
-  const patchHistoryItemMutation = useMutation({
+  const patchHistoryItemMutation = useMutation<
+    unknown,
+    unknown,
+    { contentId: string; formData: FormData },
+    unknown
+  >({
     mutationFn: ({ contentId, formData }) => patchHistoryItem(id!, contentId, formData),
     onSuccess: () => {
       queryClient.invalidateQueries(['history', id])
