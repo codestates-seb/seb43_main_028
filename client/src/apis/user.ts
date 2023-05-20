@@ -41,7 +41,7 @@ export type UserInfoType = {
 
 export const signUp = async ({ nickname, email, password }: SignUpPropsType) => {
   try {
-    await axiosInstance.post('/api/members/sign', { nickname, email, password })
+    await axiosInstance.post('/members/sign', { nickname, email, password })
     return 'success'
   } catch (error: unknown) {
     console.log(error)
@@ -55,7 +55,7 @@ export const signIn = async ({
   autoLogin = true,
 }: SignInPropsType): Promise<SignInResType> => {
   try {
-    const response = await axiosInstance.post('/api/members/login', { email, password, autoLogin })
+    const response = await axiosInstance.post('/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
     axiosInstance.defaults.headers.common.Authorization = authorization
     saveRefreshTokenToLocalStorage(response.headers.refresh)
@@ -65,9 +65,9 @@ export const signIn = async ({
   }
 }
 
-export const getCurrentUserInfo = async (url: string): Promise<UserInfoType> => {
+export const getCurrentUserInfo = async (memberId: number): Promise<UserInfoType> => {
   try {
-    const response = await axiosInstance.get(url)
+    const response = await axiosInstance.get(`/members/${memberId}`)
     return response.data
   } catch (error) {
     throw new Error('Failed to fetch user info')
@@ -89,9 +89,9 @@ export const refreshAccessToken = async () => {
   }
 }
 
-export const patchUserProfile = async (url: string, formData: FormData) => {
+export const patchUserProfile = async (memberId: number, formData: FormData) => {
   try {
-    const response = await fileAxios.patch(url, formData)
+    const response = await fileAxios.patch(`/members/${memberId}`, formData)
     return response.data
   } catch (error: unknown) {
     console.log(error)
@@ -99,9 +99,9 @@ export const patchUserProfile = async (url: string, formData: FormData) => {
   }
 }
 
-export const patchUserPrivacySettings = async (url: string, data: any) => {
+export const patchUserPrivacySettings = async (memberId: number, data: any) => {
   try {
-    const response = await fileAxios.patch(url, data)
+    const response = await fileAxios.patch(`/members/${memberId}`, data)
     return response.data
   } catch (error: unknown) {
     console.log(error)
@@ -109,9 +109,9 @@ export const patchUserPrivacySettings = async (url: string, data: any) => {
   }
 }
 
-export const patchUserPassword = async (url: string, passwordData: any) => {
+export const patchUserPassword = async (memberId: number, passwordData: any) => {
   try {
-    await axiosInstance.patch(url, passwordData)
+    await axiosInstance.patch(`/members/${memberId}/pw`, passwordData)
     return 'success'
   } catch (error: unknown) {
     console.log(error)
@@ -119,9 +119,9 @@ export const patchUserPassword = async (url: string, passwordData: any) => {
   }
 }
 
-export const getUserTempPassword = async (url: string, email: any) => {
+export const getUserTempPassword = async (email: any) => {
   try {
-    await axiosInstance.post(url, email)
+    await axiosInstance.post('/members/tmp-pw', email)
     return 'success'
   } catch (error: unknown) {
     console.log(error)
@@ -129,9 +129,9 @@ export const getUserTempPassword = async (url: string, email: any) => {
   }
 }
 
-export const unregisterUser = async (url: string) => {
+export const unregisterUser = async (memberId: number) => {
   try {
-    await axiosInstance.delete(url)
+    await axiosInstance.delete(`/members/${memberId}`)
     return 'success'
   } catch (error) {
     console.log(error)

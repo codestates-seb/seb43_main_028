@@ -37,7 +37,7 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
     if (image) data.append('profileImage', image)
 
     if (memberId) {
-      const res = await patchUserProfile(`/api/members/${memberId}`, data)
+      const res = await patchUserProfile(memberId, data)
       setUser(res)
       // 전역 상태에 userInfoRes 저장
       setIsModalOpened(false)

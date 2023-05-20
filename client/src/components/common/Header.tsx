@@ -5,7 +5,6 @@ type HeaderPropsType = {
   headerTitle: string
   hasBackButton: boolean
   hasCloseButton: boolean
-
   handleCloseFn: React.Dispatch<React.SetStateAction<boolean>>
 }
 
