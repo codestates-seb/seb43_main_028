@@ -4,7 +4,6 @@ import { patchUserPassword } from '../../apis/user'
 
 type ChangingPasswordPropsType = {
   memberId: number
-  email: string
   setIsChangingPassword: React.Dispatch<React.SetStateAction<boolean>>
   setIsPasswordChanged: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -16,7 +15,6 @@ type FormValueType = {
 
 export default function ChangingPassword({
   memberId,
-  email,
   setIsChangingPassword,
   setIsPasswordChanged,
 }: ChangingPasswordPropsType) {
@@ -24,7 +22,6 @@ export default function ChangingPassword({
 
   const {
     register,
-    handleSubmit,
     formState: { dirtyFields, errors },
     getValues,
   } = useForm<FormValueType>({ mode: 'onChange' })
