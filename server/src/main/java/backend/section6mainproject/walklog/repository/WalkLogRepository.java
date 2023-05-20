@@ -1,6 +1,7 @@
 package backend.section6mainproject.walklog.repository;
 
 import backend.section6mainproject.walklog.entity.WalkLog;
+import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +22,9 @@ public interface WalkLogRepository extends JpaRepository<WalkLog, Long> {
     Page<WalkLog> findAllByMyWalkLogFromDay(Pageable pageable,Long memberId, int year, int month, int day);
 
     Page<WalkLog> findAllByWalkLogPublicSetting(Pageable pageable, WalkLog.WalkLogPublicSetting walkLogPublicSetting);
+
+    @Named("countWalkLog")
+    Long countByMember_MemberId(long memberId);
+
 
 }
