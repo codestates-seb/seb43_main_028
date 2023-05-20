@@ -78,6 +78,8 @@ public class WalkLogStubData {
         detailResponse.setMemberId(memberId);
         detailResponse.setNickname(nickname);
         detailResponse.setMapImage(mapImage);
+        detailResponse.setCreatedAt(LocalDateTime.now());
+        detailResponse.setEndAt(LocalDateTime.now());
         detailResponse.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PRIVATE);
         detailResponse.setMessage(message);
         return detailResponse;
@@ -88,11 +90,15 @@ public class WalkLogStubData {
         getFeedRequest.setSize(10);
         return getFeedRequest;
     }
-    public WalkLogControllerDTO.GetFeedResponse getFeedResponse(){
+    public WalkLogControllerDTO.GetFeedResponse getFeedResponse() throws IOException {
         WalkLogControllerDTO.GetFeedResponse getFeedResponse = new WalkLogControllerDTO.GetFeedResponse();
         getFeedResponse.setWalkLogId(1L);
         getFeedResponse.setMessage(message);
         getFeedResponse.setNickname(nickname);
+        getFeedResponse.setMapImage(mapImage);
+        getFeedResponse.setStartedAt(LocalDateTime.now());
+        getFeedResponse.setEndAt(LocalDateTime.now());
+        getFeedResponse.setProfileImage(mapImage);
         return getFeedResponse;
     }
 
