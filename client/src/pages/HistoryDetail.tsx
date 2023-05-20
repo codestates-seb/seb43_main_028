@@ -126,7 +126,12 @@ export default function HistoryDetail() {
 
   return (
     <div>
-      <Header hasBackButton={false} hasCloseButton headerTitle='상세 기록' />
+      <Header
+        hasBackButton={false}
+        hasCloseButton
+        headerTitle='상세 기록'
+        handleCloseFn={() => {}}
+      />
       {edit ? (
         editSnapForm
       ) : (

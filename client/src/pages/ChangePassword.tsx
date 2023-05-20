@@ -33,7 +33,12 @@ export default function ChangePassword() {
   if (isChangingPassword && !isPasswordChanged) {
     return (
       <>
-        <Header hasBackButton hasCloseButton={false} headerTitle='비밀번호 변경' />
+        <Header
+          hasBackButton
+          hasCloseButton={false}
+          headerTitle='비밀번호 변경'
+          handleCloseFn={() => {}}
+        />
         <ChangingPassword
           memberId={userId}
           email={email}
@@ -47,7 +52,12 @@ export default function ChangePassword() {
   if (!isChangingPassword && isPasswordChanged) {
     return (
       <>
-        <Header hasBackButton hasCloseButton={false} headerTitle='비밀번호 변경' />
+        <Header
+          hasBackButton
+          hasCloseButton={false}
+          headerTitle='비밀번호 변경'
+          handleCloseFn={() => {}}
+        />
         <PasswordChanged
           setIsChangingPassword={setIsChangingPassword}
           setIsPasswordChanged={setIsPasswordChanged}
@@ -58,7 +68,12 @@ export default function ChangePassword() {
 
   return (
     <>
-      <Header hasBackButton hasCloseButton={false} headerTitle='비밀번호 변경' />
+      <Header
+        hasBackButton
+        hasCloseButton={false}
+        headerTitle='비밀번호 변경'
+        handleCloseFn={() => {}}
+      />
       <form className={styles.formContainer} onSubmit={confirmPassword}>
         <div className={styles.inputBox}>
           <label className={styles.label}>

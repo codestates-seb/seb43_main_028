@@ -1,41 +1,45 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './TermsOfUse.module.scss'
 import Icon from '../common/Icon'
 
 type TermsOfUseProps = {
   allCheck: boolean
   setAllCheck: React.Dispatch<React.SetStateAction<boolean>>
-  useCheck: boolean
-  setUseCheck: React.Dispatch<React.SetStateAction<boolean>>
+  termCheck: boolean
+  setTermCheck: React.Dispatch<React.SetStateAction<boolean>>
   privacyCheck: boolean
   setPrivacyCheck: React.Dispatch<React.SetStateAction<boolean>>
+  setIsTermOfUseOpened: React.Dispatch<React.SetStateAction<boolean>>
+  setIsPrivacyPolicyOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function TermsOfUse({
   allCheck,
   setAllCheck,
-  useCheck,
-  setUseCheck,
+  termCheck,
+  setTermCheck,
   privacyCheck,
   setPrivacyCheck,
+  setIsTermOfUseOpened,
+  setIsPrivacyPolicyOpened,
 }: TermsOfUseProps) {
   const allBtnEvent = () => {
     if (allCheck === false) {
       setAllCheck(true)
-      setUseCheck(true)
+      setTermCheck(true)
       setPrivacyCheck(true)
     } else {
       setAllCheck(false)
-      setUseCheck(false)
+      setTermCheck(false)
       setPrivacyCheck(false)
     }
   }
 
   const useBtnEvent = () => {
-    if (useCheck === false) {
-      setUseCheck(true)
+    if (termCheck === false) {
+      setTermCheck(true)
     } else {
-      setUseCheck(false)
+      setTermCheck(false)
     }
   }
 
@@ -49,18 +53,18 @@ function TermsOfUse({
 
   useEffect(() => {
     setAllCheck(false)
-    setUseCheck(false)
+    setTermCheck(false)
     setPrivacyCheck(false)
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if (useCheck === true && privacyCheck === true) {
+    if (termCheck === true && privacyCheck === true) {
       setAllCheck(true)
     } else {
       setAllCheck(false)
     }
-  }, [useCheck, privacyCheck, setAllCheck])
+  }, [termCheck, privacyCheck, setAllCheck])
 
   return (
     <div className={styles.container}>
@@ -78,24 +82,46 @@ function TermsOfUse({
           <hr />
           <div className={styles.agreementItemBox}>
             <div className={styles.agreementItem}>
-              <div className={styles.checkboxWrapper}>
-                <button type='button' onClick={useBtnEvent}>
-                  {useCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
-                </button>
+              <div className={styles.leftSideElements}>
+                <div className={styles.checkboxWrapper}>
+                  <button type='button' onClick={useBtnEvent}>
+                    {termCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
+                  </button>
+                </div>
+                <label htmlFor='check2'>
+                  이용약관에 동의합니다. <span>(필수)</span>
+                </label>
               </div>
-              <label htmlFor='check2'>
-                이용약관에 동의합니다. <span>(필수)</span>
-              </label>
+              <button
+                type='button'
+                className={styles.openContentBtn}
+                onClick={() => {
+                  setIsTermOfUseOpened(true)
+                }}
+              >
+                내용보기
+              </button>
             </div>
             <div className={styles.agreementItem}>
-              <div className={styles.checkboxWrapper}>
-                <button type='button' onClick={privacyBtnEvent}>
-                  {privacyCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
-                </button>
+              <div className={styles.leftSideElements}>
+                <div className={styles.checkboxWrapper}>
+                  <button type='button' onClick={privacyBtnEvent}>
+                    {privacyCheck ? <Icon name='after-check' /> : <Icon name='before-check' />}
+                  </button>
+                </div>
+                <label htmlFor='check3'>
+                  개인정보 수집 및 이용에 동의합니다. <span>(필수)</span>
+                </label>
               </div>
-              <label htmlFor='check3'>
-                개인정보 수집 및 이용에 동의합니다. <span>(필수)</span>
-              </label>
+              <button
+                type='button'
+                className={styles.openContentBtn}
+                onClick={() => {
+                  setIsPrivacyPolicyOpened(true)
+                }}
+              >
+                내용보기
+              </button>
             </div>
           </div>
         </div>

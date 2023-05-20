@@ -49,14 +49,24 @@ export default function FindPassword() {
   if (isTempPasswordSent) {
     return (
       <>
-        <Header hasBackButton hasCloseButton={false} headerTitle='비밀번호 찾기' />
+        <Header
+          hasBackButton
+          hasCloseButton={false}
+          headerTitle='비밀번호 찾기'
+          handleCloseFn={() => {}}
+        />
         <TempPasswordSent setIsTempPasswordSent={setIsTempPasswordSent} userEmail={userEmail} />
       </>
     )
   }
   return (
     <>
-      <Header hasBackButton hasCloseButton={false} headerTitle='비밀번호 찾기' />
+      <Header
+        hasBackButton
+        hasCloseButton={false}
+        headerTitle='비밀번호 찾기'
+        handleCloseFn={() => {}}
+      />
       <form
         className={styles.formContainer}
         onSubmit={handleSubmit((data, event) => {
