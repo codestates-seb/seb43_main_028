@@ -14,6 +14,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -24,17 +25,12 @@ public class ConnectionInterceptor implements HandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        long memberId = Long.parseLong(((Authentication) request.getPrincipal()).getPrincipal().toString());
-        Member findMember = memberService.findVerifiedMember(memberId);
-        List<WalkLog> walkLogs = findMember.getWalkLogs();
-        Long walkLogId = null;
-        for (int i = walkLogs.size() - 1; i >= 0; i--) {
-            if(walkLogs.get(i).getWalkLogStatus() == WalkLog.WalkLogStatus.RECORDING) {
-                walkLogId = walkLogs.get(i).getWalkLogId();
-                break;
-            }
+        Principal principal = request.getPrincipal();
+        Long memberId = null;
+        if (principal != null) {
+            memberId = Long.parseLong(((Authentication) principal).getPrincipal().toString());
         }
-        if(walkLogId == null) throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND);
+        Long walkLogId = memberService.findRecordingWalkLog(memberId);
         attributes.put("walkLogId", walkLogId);
         return true;
     }

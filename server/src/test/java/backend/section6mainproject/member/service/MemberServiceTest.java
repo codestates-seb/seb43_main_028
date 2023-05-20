@@ -153,4 +153,19 @@ public class MemberServiceTest {
         verify(memberRepository, times(1)).save(Mockito.any(Member.class));
     }*/
 
+    @Test
+    void findRecordingWalkLog() {
+        // given
+        Member member = stubData.getMemberWithWalkLogRecording();
+        given(memberRepository.findById(Mockito.anyLong())).willReturn(Optional.of(member));
+
+        // when
+        Long walkLogId = memberService.findRecordingWalkLog(1L);
+
+        // then
+        Optional<WalkLog> result = member.getWalkLogs().stream().filter(walkLog -> walkLog.getWalkLogId() == walkLogId).findAny();
+        Assertions.assertNotNull(result.get());
+        MatcherAssert.assertThat(result.get().getWalkLogStatus(), is(WalkLog.WalkLogStatus.RECORDING));
+    }
+
 }

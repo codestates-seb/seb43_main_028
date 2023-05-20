@@ -77,7 +77,7 @@ class CoordinateControllerTest {
         subscribeFuture = new CompletableFuture<>();
         errorFuture = new CompletableFuture<>();
 
-        given(memberService.findVerifiedMember(Mockito.anyLong())).willReturn(stubData.getStubMember());
+        given(memberService.findRecordingWalkLog(Mockito.anyLong())).willReturn(1L);
 
         String accessToken = successHandlerUtils.delegateAccessToken(stubData.getStubMember());
         HttpHeaders httpHeaders = new HttpHeaders();
