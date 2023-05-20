@@ -28,7 +28,6 @@ type SnapFormProps = {
 }
 
 export default function SnapForm({ initialImgUrl, initialText, handleCancel }: SnapFormProps) {
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log('순간기록 전송')
@@ -51,7 +50,7 @@ export default function SnapForm({ initialImgUrl, initialText, handleCancel }: S
             id='text'
             name='text'
             rows={10}
-            defaultValue={initialText}
+            defaultValue={initialText === null ? '' : initialText}
           />
         </label>
       </form>
