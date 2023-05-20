@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import styles from './TermsOfUse.module.scss'
 import Icon from '../common/Icon'
 
