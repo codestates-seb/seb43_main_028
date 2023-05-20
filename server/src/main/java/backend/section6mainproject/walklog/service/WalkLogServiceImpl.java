@@ -97,9 +97,9 @@ public class WalkLogServiceImpl implements WalkLogService {
     }
 
     @Override
-    public WalkLogServiceDTO.Output findWalkLog(Long walkLogId){
-        WalkLogServiceDTO.Output output = walkLogMapper.walkLogToWalkLogServiceOutputDTO(findVerifiedWalkLog(walkLogId));
-        return output;
+    public WalkLogServiceDTO.GetOutput findWalkLog(Long walkLogId){
+        WalkLogServiceDTO.GetOutput getOutput = walkLogMapper.walkLogToWalkLogServiceGetOutPutDTO(findVerifiedWalkLog(walkLogId));
+        return getOutput;
     }
 
 

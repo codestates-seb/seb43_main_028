@@ -335,17 +335,17 @@ public class WalkLogControllerTest {
     void getWalkLogTest() throws Exception {
         //given
         WalkLog walkLog = walkLogStubData.getRecordingWalkLog(walkLogStubData.getMember());
-        WalkLogControllerDTO.DetailResponse detailResponse = walkLogStubData.getDetailResponse();
+        WalkLogControllerDTO.GetResponse getResponse = walkLogStubData.getGetResponse();
         WalkLogContentControllerDTO.Response response = walkLogContentStubData.getResponse();
         ArrayList<WalkLogContentControllerDTO.Response> responses = new ArrayList<>();
         responses.add(response);
-        detailResponse.setWalkLogContents(responses);
+        getResponse.setWalkLogContents(responses);
         List<CoordinateControllerDTO.Sub> coordinates = createCoordinateControllerDTOsub(num);
-        detailResponse.setCoordinates(coordinates);
+        getResponse.setCoordinates(coordinates);
 
-        given(walkLogService.findWalkLog(walkLog.getWalkLogId())).willReturn(new WalkLogServiceDTO.Output());
-        given(walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(Mockito.any(WalkLogServiceDTO.Output.class)))
-                .willReturn(detailResponse);
+        given(walkLogService.findWalkLog(walkLog.getWalkLogId())).willReturn(new WalkLogServiceDTO.GetOutput());
+        given(walkLogMapper.walkLogServiceGetOutPutDTOtoWalkLogControllerGetResponseDTO(Mockito.any(WalkLogServiceDTO.GetOutput.class)))
+                .willReturn(getResponse);
 
         String urlTemplate = "/walk-logs/{walk-log-id}";
         //when
@@ -371,6 +371,7 @@ public class WalkLogControllerTest {
                         responseFields(
                                 fieldWithPath("walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
                                 fieldWithPath("mapImage").type(JsonFieldType.STRING).description("지도 이미지 임시 URL"),
+                                fieldWithPath("profileImage").type(JsonFieldType.STRING).description("프로필 이미지 임시 URL"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
                                 fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),

@@ -46,13 +46,19 @@ public interface WalkLogMapper {
     WalkLogServiceDTO.FindOutput walkLogToWalkLogServiceFindOutputDTO(WalkLog walkLog); //구현중
     WalkLogServiceDTO.CreateOutput walkLogToWalkLogServiceCreatedOutputDTO(WalkLog walkLog);
     WalkLogServiceDTO.CalenderFindOutput walkLogToWalkLogServiceCalenderFindOutputDTO(WalkLog walkLog);
+
+    @Mapping(source = "member.memberId",target = "memberId")
+    @Mapping(source = "member.nickname",target = "nickname")
+    @Mapping(source = "member.profileImage",target = "profileImage")
+    @Mapping(source = "mapImage",target = "imageUrl", qualifiedByName = "signBucket")
+    @Mapping(target = "coordinates",qualifiedByName = "coordinateEntityToServiceDTO")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
+    WalkLogServiceDTO.GetOutput walkLogToWalkLogServiceGetOutPutDTO(WalkLog walkLog);
     @Mapping(source = "member.nickname",target = "nickname")
     @Mapping(source = "member.profileImage",target = "profileImage")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
     WalkLogServiceDTO.FindFeedOutput walkLogToWalkLogServiceFindFeedOutputDTO(WalkLog walkLog);
-
-    List<WalkLogServiceDTO.FindOutput> walkLogsToWalkLogServiceFindOutputDTOs(List<WalkLog> walkLogs); //임시
 
     List<WalkLogServiceDTO.CalenderFindOutput> walkLogsToWalkLogServiceCalenderFindOutputDTOs(List<WalkLog> walkLogs);
 
@@ -68,6 +74,10 @@ public interface WalkLogMapper {
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
     @Mapping(target = "mapImage",source = "imageUrl")
     WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
+
+    @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
+    WalkLogControllerDTO.GetResponse walkLogServiceGetOutPutDTOtoWalkLogControllerGetResponseDTO(WalkLogServiceDTO.GetOutput getOutput);
     WalkLogControllerDTO.GetFeedResponse walkLogServiceFindFeedOutputDTOtoWalkLogControllerGetFeedResponseDTO(WalkLogServiceDTO.FindFeedOutput findFeedOutput);
     WalkLogControllerDTO.CalendarResponse WalkLogServiceCalenderFindOutputDTOToWalkLogControllerCalendarResponseDTO(WalkLogServiceDTO.CalenderFindOutput calenderFindOutput);
     List<WalkLogControllerDTO.CalendarResponse> WalkLogServiceCalenderFindOutputDTOsToWalkLogControllerCalendarResponseDTOs(List<WalkLogServiceDTO.CalenderFindOutput> calenderFindOutputs);
