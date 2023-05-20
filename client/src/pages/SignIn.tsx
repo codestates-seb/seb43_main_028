@@ -19,7 +19,7 @@ function SignIn() {
     const email = formData.get('email')
     const password = formData.get('password')
 
-    const memberId = await signIn({ email, password, autoLogin: true })
+    const { memberId } = await signIn({ email, password, autoLogin: true })
     setId(memberId)
 
     if (memberId) {
