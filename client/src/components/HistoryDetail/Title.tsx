@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useAtom } from 'jotai'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Icon from '../common/Icon'
 import styles from './Title.module.scss'
 import { dateFormat, passedHourMinuteSecondFormat } from '../../utils/date'
@@ -43,6 +43,7 @@ export default function Title({
 
   const messageRef = useRef<HTMLInputElement>(null)
 
+  const queryClient = useQueryClient()
   const handlePatchHistory = useMutation<
     { message: string; walkLogPublicSetting: 'PUBLIC' | 'PRIVATE' },
     unknown,
@@ -52,6 +53,7 @@ export default function Title({
     mutationFn: data => patchHistory(id, data),
     onSuccess: data => {
       setMessage(data.message)
+      queryClient.invalidateQueries(['history', id])
     },
   })
 
