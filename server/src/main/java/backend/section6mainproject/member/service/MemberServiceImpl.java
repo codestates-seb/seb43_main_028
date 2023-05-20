@@ -71,10 +71,7 @@ public class MemberServiceImpl implements MemberService{
        }
     }
 
-    /** 회원이 리포지토리에 존재하는지 여부를 검증하고, 회원을 반환하는 메서드.
-     * <p>Member 엔티티의 walkLogs 필드는 fetchType이 Lazy로 설정되어 있으므로, 값을 실제로 조회할 때 데이터를 호출하게 되는데,
-     *  ConnectionInterceptor가 영속성 컨텍스트 밖에 있는것으로 보여서 이 메서드에서 값을 호출했다.
-     */
+
     @Override
     public Member findVerifiedMember(Long memberId) {
         Optional<Member> optionalMember =
