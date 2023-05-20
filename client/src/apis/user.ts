@@ -17,6 +17,11 @@ type SignInPropsType = {
   autoLogin: boolean
 }
 
+type SignInResType = {
+  status: 'success' | 'fail'
+  memberId: number | null
+}
+
 export type UserInfoType = {
   defaultWalkLogPublicSetting: string
   email: string
@@ -43,15 +48,19 @@ export const signUp = async ({ nickname, email, password }: SignUpPropsType) => 
   }
 }
 
-export const signIn = async ({ email, password, autoLogin = true }: SignInPropsType) => {
+export const signIn = async ({
+  email,
+  password,
+  autoLogin = true,
+}: SignInPropsType): Promise<SignInResType> => {
   try {
     const response = await axios.post('/api/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
     axios.defaults.headers.common.Authorization = authorization
     saveRefreshTokenToLocalStorage(response.headers.refresh)
-    return response.data.memberId
+    return { status: 'success', memberId: response.data.memberId }
   } catch (error) {
-    return null
+    return { status: 'fail', memberId: null }
   }
 }
 
