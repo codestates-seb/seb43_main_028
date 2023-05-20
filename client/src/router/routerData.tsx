@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 import ChangePassword from '../pages/ChangePassword'
+import FindPassword from '../pages/FindPassword'
 
 const Home = lazy(() => import('../pages/Home'))
 const Feed = lazy(() => import('../pages/Feed'))
@@ -115,6 +116,15 @@ export const routerData: RouterElement[] = [
     path: '/changepassword',
     label: '비밀번호변경',
     element: <ChangePassword />,
+    onTapBar: false,
+    showTapBar: false,
+    withAuth: false,
+  },
+  {
+    id: 9,
+    path: '/findpassword',
+    label: '비밀번호찾기',
+    element: <FindPassword />,
     onTapBar: false,
     showTapBar: false,
     withAuth: false,

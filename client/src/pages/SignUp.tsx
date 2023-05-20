@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Icon from '../components/common/Icon'
 import styles from './SignUp.module.scss'
 import { signUp } from '../apis/user'
 import useRouter from '../hooks/useRouter'
