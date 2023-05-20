@@ -54,8 +54,7 @@ export default function DetailItem({
     setImgModal(prev => !prev)
   }
 
-  const handleDeleteModal = () => {
-
+  const handleHistoryItemDeleteModal = () => {
     setOpenDeleteModal(prev => !prev)
     setDeleteModalOption({
       title: '순간',
