@@ -16,7 +16,7 @@ export const getHistory = async (walkLogId: string) => {
   }
 }
 
-export const patchHistoryMessage = async (walkLogId: string, data: string) => {
+export const patchHistory = async (walkLogId: string, data: string) => {
   try {
     const response = await axios.patch(`/api/walk-logs/${walkLogId}`, data, {
       headers: {
@@ -33,7 +33,6 @@ export const patchHistoryMessage = async (walkLogId: string, data: string) => {
 export const deleteHistory = async (walkLogId: string) => {
   try {
     const response = await axios.delete(`/api/walk-logs/${walkLogId}`)
-    console.log('삭제 결과', response)
     return response.status === 204 ? 'success' : 'fail'
   } catch (error: unknown) {
     console.log(error)

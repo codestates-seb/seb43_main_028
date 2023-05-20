@@ -25,8 +25,6 @@ export default function HistoryDetail() {
   const [isLogin] = useAtom(isLoginAtom)
   const [logInId] = useAtom(idAtom)
 
-  console.log(isLogin, logInId)
-
   const { id } = useParams()
   const navigate = useNavigate()
 
