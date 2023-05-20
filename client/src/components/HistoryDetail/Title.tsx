@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useAtom } from 'jotai'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Icon from '../common/Icon'
@@ -41,8 +41,6 @@ export default function Title({
     time: `${format(new Date(startAt), 'H:mm')} ~ ${format(new Date(endAt), 'H:mm')}`,
   }
 
-  const messageRef = useRef<HTMLInputElement>(null)
-
   const queryClient = useQueryClient()
   const handlePatchHistory = useMutation<
     { message: string; walkLogPublicSetting: 'PUBLIC' | 'PRIVATE' },
@@ -52,8 +50,8 @@ export default function Title({
   >({
     mutationFn: data => patchHistory(id, data),
     onSuccess: data => {
-      setMessage(data.message)
       queryClient.invalidateQueries(['history', id])
+      setMessage(data.message)
     },
   })
 
@@ -82,9 +80,10 @@ export default function Title({
 
   const handleMessageSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const formData = new FormData(event.currentTarget)
     const patchData = JSON.stringify({
-      message: messageRef.current ? messageRef.current.value : '',
-      walkLogPublicSetting: 'PRIVATE',
+      message: formData.get('message'),
+      walkLogPublicSetting: setting,
     })
     handlePatchHistory.mutate(patchData)
     setEdit(prev => !prev)
@@ -95,9 +94,9 @@ export default function Title({
       <label>
         <input
           type='text'
+          name='message'
           className={styles.editing}
           defaultValue={message}
-          ref={messageRef}
           maxLength={50}
           required
         />
