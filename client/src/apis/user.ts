@@ -88,10 +88,10 @@ export const refreshAccessToken = async () => {
 export const patchUserProfile = async (memberId: number, formData: FormData) => {
   try {
     const response = await fileAxios.patch(`/members/${memberId}`, formData)
-    return response.data
+    return { resData: response.data, status: 'success' }
   } catch (error: unknown) {
     console.log(error)
-    return 'fail'
+    return { resData: null, status: 'fail' }
   }
 }
 

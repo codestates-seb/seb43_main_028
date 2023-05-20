@@ -37,13 +37,12 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
     if (image) data.append('profileImage', image)
 
     if (memberId) {
-      const res = await patchUserProfile(memberId, data)
-      setUser(res)
+      const { resData } = await patchUserProfile(memberId, data)
+      if (resData) setUser(resData)
       // 전역 상태에 userInfoRes 저장
       setIsModalOpened(false)
       return
     }
-
     alert('프로필 수정에 실패했습니다.')
   }
 

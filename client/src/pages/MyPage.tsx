@@ -23,7 +23,7 @@ export default function Mypage() {
   const [user, setUser] = useAtom(userAtom)
   const [memberId] = useAtom(idAtom)
 
-  const [userData, setUserData] = useState<UserInfoType | null>(null)
+  // const [userData, setUserData] = useState<UserInfoType | null>(null)
   const [registeredAt, setRegisteredAt] = useState('')
   const [isModalOpened, setIsModalOpened] = useState(false)
   const [isUnregisterModalOpened, setIsUnregisterModalOpened] = useState(false)
@@ -38,7 +38,7 @@ export default function Mypage() {
     setIsModalOpened(true)
   }
   const handleSetPrivacySettings = async (param: string) => {
-    if (userData) {
+    if (user) {
       const data = new FormData()
       const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: param })], {
         type: 'application/json',
@@ -91,17 +91,19 @@ export default function Mypage() {
     })
   }
 
-  useEffect(() => {
-    setUserData(user)
-  }, [user])
+  // useEffect(() => {
+  //   setUserData(user)
+  // }, [user])
 
   useEffect(() => {
-    if (userData) {
-      // const registeredDate = new Date(userData.createdAt)
-      // const formattedData = format(registeredDate, 'yyyy-MM-dd')
-      // setRegisteredAt(formattedData)
+    if (user) {
+      console.log(user)
+      const registeredDate = new Date(user.createdAt)
+      console.log(registeredDate)
+      const formattedData = format(registeredDate, 'yyyy-MM-dd')
+      setRegisteredAt(formattedData)
     }
-  }, [userData])
+  }, [user])
 
   // if (!isLogin) {
   //   routeTo('/signin')
@@ -114,26 +116,22 @@ export default function Mypage() {
         <div className={styles.profileBox}>
           <div className={styles.infoBox}>
             <div className={styles.userInfo}>
-              <div className={styles.userName}>{userData?.nickname}</div>
-              <div className={styles.userEmail}>{userData?.email}</div>
+              <div className={styles.userName}>{user?.nickname}</div>
+              <div className={styles.userEmail}>{user?.email}</div>
               <div className={styles.userRegisteredAt}>
                 <span>회원 가입일:</span>
                 <span>{registeredAt}</span>
               </div>
             </div>
             <div className={styles.imageWrapper}>
-              {!userData?.imageUrl ? (
+              {!user?.imageUrl ? (
                 <Icon name='no-profile' size={64} />
               ) : (
-                <img
-                  className={styles.userProfileImage}
-                  src={userData?.imageUrl}
-                  alt='your profile'
-                />
+                <img className={styles.userProfileImage} src={user?.imageUrl} alt='your profile' />
               )}
             </div>
           </div>
-          <div className={styles.userText}>{userData?.introduction}</div>
+          <div className={styles.userText}>{user?.introduction}</div>
           <button className={styles.editProfileBtn} type='button' onClick={handleOpenEditProfile}>
             프로필 수정하기
           </button>
