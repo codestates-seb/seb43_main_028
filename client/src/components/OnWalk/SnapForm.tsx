@@ -24,14 +24,33 @@ function Header({ onCancel }: HeaderProps) {
 type SnapFormProps = {
   initialImgUrl: string | null
   initialText: string | null
+  contentId: string
   handleCancel: () => void
+  onSubmit: (contentId: string, formData: FormData) => void
 }
 
-export default function SnapForm({ initialImgUrl, initialText, handleCancel }: SnapFormProps) {
-
+export default function SnapForm({
+  initialImgUrl,
+  initialText,
+  contentId,
+  handleCancel,
+  onSubmit,
+}: SnapFormProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log('순간기록 전송')
+
+    const formData = new FormData(event.currentTarget)
+    const text = formData.get('text')
+    const image = formData.get('image')
+
+    const data = new FormData()
+    const blob = new Blob([JSON.stringify({ text })], {
+      type: 'application/json',
+    })
+
+    data.append('content', blob)
+    if (image) data.append('contentImage', image)
+    onSubmit(contentId, data)
   }
 
   // const handleCancel = () => {
@@ -51,7 +70,7 @@ export default function SnapForm({ initialImgUrl, initialText, handleCancel }: S
             id='text'
             name='text'
             rows={10}
-            defaultValue={initialText}
+            defaultValue={initialText === null ? '' : initialText}
           />
         </label>
       </form>
