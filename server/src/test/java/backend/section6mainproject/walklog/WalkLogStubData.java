@@ -146,12 +146,14 @@ public class WalkLogStubData {
         getResponse.setMemberId(memberId);
         getResponse.setNickname(nickname);
         getResponse.setMapImage(mapImage);
+        getResponse.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
         getResponse.setCreatedAt(LocalDateTime.now());
         getResponse.setEndAt(LocalDateTime.now());
         getResponse.setProfileImage(mapImage);
         getResponse.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PRIVATE);
         getResponse.setMessage(message);
-        return getResponse;    }
+        return getResponse;
+    }
     public WalkLogServiceDTO.ExitInput getExitInput() throws IOException {
         WalkLogServiceDTO.ExitInput exitInput = new WalkLogServiceDTO.ExitInput();
         exitInput.setMessage(message);

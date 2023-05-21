@@ -128,7 +128,7 @@ public class WalkLogControllerDTO {
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
         private String mapImage;
-
+        private WalkLogStatus walkLogStatus;
         private String message;
         private Long memberId;
         private String nickname;

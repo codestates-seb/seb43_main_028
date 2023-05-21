@@ -135,6 +135,7 @@ public class WalkLogServiceDTO {
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
         private String imageUrl;
+        private WalkLog.WalkLogStatus walkLogStatus;
 
         private String message;
         private Long memberId;
