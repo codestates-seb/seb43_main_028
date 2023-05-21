@@ -25,10 +25,6 @@ public class AnonymousWalkLog extends Auditable {
     private Long walkLogId;
     @Column(nullable = false)
     private String userId;
-    @Column(nullable = false)
-    private LocalDateTime endAt = LocalDateTime.now();
-    @Column(length = 50)
-    private String message;
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private WalkLog.WalkLogStatus walkLogStatus = WalkLog.WalkLogStatus.RECORDING;

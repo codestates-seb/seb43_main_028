@@ -6,5 +6,7 @@ import backend.section6mainproject.walklog.entity.AnonymousWalkLog;
 public interface AnonymousWalkLogService {
     AnonymousWalkLogServiceDTO.CreateOutput createWalkLog();
 
+    AnonymousWalkLogServiceDTO.Output findWalkLog(String userId);
+
     AnonymousWalkLog findVerifiedWalkLogByUserId(String userId);
 }
