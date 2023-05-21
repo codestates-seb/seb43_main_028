@@ -41,7 +41,7 @@ export default function SnapForm({
 
     const formData = new FormData(event.currentTarget)
     const text = formData.get('text')
-    const image = formData.get('image')
+    const image: File = formData.get('image')
 
     const data = new FormData()
     const blob = new Blob([JSON.stringify({ text })], {
@@ -49,7 +49,7 @@ export default function SnapForm({
     })
 
     data.append('content', blob)
-    if (image) data.append('contentImage', image)
+    if (image.name) data.append('contentImage', image)
     onSubmit(contentId, data)
   }
 
