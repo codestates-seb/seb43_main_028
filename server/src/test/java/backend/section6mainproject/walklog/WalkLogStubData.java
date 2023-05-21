@@ -132,6 +132,26 @@ public class WalkLogStubData {
         output.setMessage(message);
         return output;
     }
+    public WalkLogServiceDTO.GetOutput getGetOutput(){
+        WalkLogServiceDTO.GetOutput getOutput = new WalkLogServiceDTO.GetOutput();
+        getOutput.setWalkLogId(walkLogId);
+        getOutput.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
+        getOutput.setMessage(message);
+        return getOutput;
+
+    }
+    public WalkLogControllerDTO.GetResponse getGetResponse(){
+        WalkLogControllerDTO.GetResponse getResponse = new WalkLogControllerDTO.GetResponse();
+        getResponse.setWalkLogId(walkLogId);
+        getResponse.setMemberId(memberId);
+        getResponse.setNickname(nickname);
+        getResponse.setMapImage(mapImage);
+        getResponse.setCreatedAt(LocalDateTime.now());
+        getResponse.setEndAt(LocalDateTime.now());
+        getResponse.setProfileImage(mapImage);
+        getResponse.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PRIVATE);
+        getResponse.setMessage(message);
+        return getResponse;    }
     public WalkLogServiceDTO.ExitInput getExitInput() throws IOException {
         WalkLogServiceDTO.ExitInput exitInput = new WalkLogServiceDTO.ExitInput();
         exitInput.setMessage(message);
