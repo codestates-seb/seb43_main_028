@@ -128,6 +128,17 @@ export const getUserTempPassword = async (email: any) => {
   }
 }
 
+export const logoutUser = async () => {
+  try {
+    await axiosInstance.post(`/members/logout`)
+    delete axiosInstance.defaults.headers.common.Authorization
+    return 'success'
+  } catch (error) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
 export const unregisterUser = async (memberId: number) => {
   try {
     await axiosInstance.delete(`/members/${memberId}`)
