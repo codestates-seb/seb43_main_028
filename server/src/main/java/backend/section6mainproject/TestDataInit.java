@@ -30,7 +30,7 @@ public class TestDataInit {
     @PostConstruct
     public void init() {
         Optional<Member> byEmail = memberRepository.findByEmail("test@gmail.com");
-        if(byEmail.isPresent())return;
+        if(byEmail.isPresent()) return;
         Member firstMember = new Member();
         firstMember.setEmail("test@gmail.com");
         firstMember.setRoles(List.of("USER"));
