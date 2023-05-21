@@ -85,7 +85,7 @@ public class MemberController {
 
     @PatchMapping("/{member-id}/pw")
     public ResponseEntity patchMemberPassword(@PathVariable("member-id") @Positive Long memberId,
-                                              @RequestBody MemberControllerDTO.PatchPw patchPw) {
+                                              @RequestBody @Valid MemberControllerDTO.PatchPw patchPw) {
         MemberServiceDTO.UpdatePwInput pwInput = memberMapper.patchPwToUpdatePwInput(patchPw);
         pwInput.setMemberId(memberId); // 멤버를 식별할 수 있는 id값을 세팅해준다.
 
