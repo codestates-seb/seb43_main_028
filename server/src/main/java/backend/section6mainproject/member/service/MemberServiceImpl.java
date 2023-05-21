@@ -75,7 +75,7 @@ public class MemberServiceImpl implements MemberService{
     private void verifyExistsNickname(String nickname) {
         Optional<Member> findMember = memberRepository.findByNickname(nickname);
         if(findMember.isPresent()) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NICKNAME_NOT_UNIQUE);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
     }
 
