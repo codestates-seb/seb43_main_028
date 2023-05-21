@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
-import { signIn, getCurrentUserInfo } from '../apis/user'
+import { signIn, getUserInfo, getCurrentUserInfo } from '../apis/user'
 import styles from './SignIn.module.scss'
 import { idAtom, isLoginAtom, userAtom } from '../store/authAtom'
 import useRouter from '../hooks/useRouter'
@@ -8,7 +8,7 @@ import Header from '../components/common/Header'
 
 function SignIn() {
   const { routeTo } = useRouter()
-  const [, setUser] = useAtom(userAtom)
+  const [user, setUser] = useAtom(userAtom)
   const [, setId] = useAtom(idAtom)
   const [, setIsLogin] = useAtom(isLoginAtom)
 
@@ -21,19 +21,19 @@ function SignIn() {
     const password = formData.get('password')
 
     const { memberId } = await signIn({ email, password, autoLogin: true })
-    console.log(memberId)
 
     if (memberId) {
       setId(memberId)
-      const userInfoRes = await getCurrentUserInfo(memberId)
+      const { userInfo } = await getUserInfo()
       // 전역 상태에 userInfoRes 저장
       setIsLogin(true)
-      setUser(userInfoRes)
+      setUser(userInfo)
       routeTo('/')
       return
     }
     alert('Sorry, you failed to log in.')
   }
+  console.log(user)
 
   return (
     <>

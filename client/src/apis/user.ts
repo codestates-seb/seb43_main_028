@@ -1,9 +1,4 @@
 import { AxiosError } from 'axios'
-import {
-  saveRefreshTokenToLocalStorage,
-  getRefreshTokenFromLocalStorage,
-  removeRefreshTokenFromLocalStorage,
-} from '../utils/refreshTokenHandler'
 import { axiosInstance, fileAxios } from './instance'
 
 type SignUpPropsType = {
@@ -58,10 +53,19 @@ export const signIn = async ({
     const response = await axiosInstance.post('/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
     axiosInstance.defaults.headers.common.Authorization = authorization
-    saveRefreshTokenToLocalStorage(response.headers.refresh)
     return { status: 'success', memberId: response.data.memberId }
   } catch (error) {
     return { status: 'fail', memberId: null }
+  }
+}
+
+export const getUserInfo = async () => {
+  try {
+    const response = await axiosInstance.get('/members/profile')
+    return { status: 'success', userInfo: response.data }
+  } catch (error) {
+    console.error(error)
+    return { status: 'fail', userInfo: null }
   }
 }
 
@@ -76,15 +80,10 @@ export const getCurrentUserInfo = async (memberId: number): Promise<UserInfoType
 
 export const refreshAccessToken = async () => {
   try {
-    const { headers } = await axiosInstance.get('/members/refresh', {
-      headers: {
-        Refresh: getRefreshTokenFromLocalStorage(),
-      },
-    })
+    const { headers } = await axiosInstance.get('/members/refresh')
     axiosInstance.defaults.headers.common.Authorization = headers.authorization
     return 'success'
   } catch (error) {
-    removeRefreshTokenFromLocalStorage()
     return 'fail'
   }
 }
@@ -92,20 +91,20 @@ export const refreshAccessToken = async () => {
 export const patchUserProfile = async (memberId: number, formData: FormData) => {
   try {
     const response = await fileAxios.patch(`/members/${memberId}`, formData)
-    return response.data
+    return { status: 'success', resData: response.data }
   } catch (error: unknown) {
     console.log(error)
-    return 'fail'
+    return { status: 'fail', resData: null }
   }
 }
 
 export const patchUserPrivacySettings = async (memberId: number, data: any) => {
   try {
     const response = await fileAxios.patch(`/members/${memberId}`, data)
-    return response.data
+    return { status: 'success', resData: response.data }
   } catch (error: unknown) {
     console.log(error)
-    return 'fail'
+    return { status: 'fail', resData: null }
   }
 }
 
