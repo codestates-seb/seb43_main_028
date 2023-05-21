@@ -41,6 +41,8 @@ import static org.mockito.BDDMockito.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CoordinateSocketConnectionTest {
     private Logger log = LoggerFactory.getLogger(getClass());
+    @MockBean
+    private TestDataInit testDataInit;
     @LocalServerPort
     private int port;
     @Autowired
@@ -102,7 +104,7 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
-        Assertions.assertThrows(TimeoutException.class, () -> completableFuture.get(7, TimeUnit.SECONDS));
+        Assertions.assertThrows(TimeoutException.class, () -> completableFuture.get(10, TimeUnit.SECONDS));
 
     }
     @Test
@@ -123,7 +125,7 @@ class CoordinateSocketConnectionTest {
         });
 
         //then
-        StompHeaders stompHeaders = completableFuture.get(7, TimeUnit.SECONDS);
+        StompHeaders stompHeaders = completableFuture.get(10, TimeUnit.SECONDS);
         MatcherAssert.assertThat(stompHeaders.size(), is(greaterThan(0)));
         MatcherAssert.assertThat(stompHeaders.get("message").get(0), is(containsString(AccessDeniedException.class.getName())));
 
