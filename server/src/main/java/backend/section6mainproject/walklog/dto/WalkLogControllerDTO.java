@@ -4,6 +4,7 @@ import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
 import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
 
+import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -117,6 +118,25 @@ public class WalkLogControllerDTO {
         private LocalDateTime endAt;
         private String message;
         private List<WalkLogContentServiceDTO.Output> walkLogContents;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class GetResponse {
+        private Long walkLogId;
+        private LocalDateTime createdAt;
+        private LocalDateTime endAt;
+        private String mapImage;
+
+        private String message;
+        private Long memberId;
+        private String nickname;
+        private String profileImage;
+
+        private WalkLog.WalkLogPublicSetting walkLogPublicSetting;
+        private List<CoordinateControllerDTO.Sub> coordinates;
+        private List<WalkLogContentControllerDTO.Response> walkLogContents;
 
     }
 

@@ -121,6 +121,26 @@ public class WalkLogServiceDTO {
         private String nickname;
 
 
+
+        private WalkLog.WalkLogPublicSetting walkLogPublicSetting;
+        private List<CoordinateServiceDTO.Output> coordinates;
+        private List<WalkLogContentServiceDTO.Output> walkLogContents;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class GetOutput {
+        private Long walkLogId;
+        private LocalDateTime createdAt;
+        private LocalDateTime endAt;
+        private String imageUrl;
+
+        private String message;
+        private Long memberId;
+        private String nickname;
+        private String profileImage;
+
         private WalkLog.WalkLogPublicSetting walkLogPublicSetting;
         private List<CoordinateServiceDTO.Output> coordinates;
         private List<WalkLogContentServiceDTO.Output> walkLogContents;

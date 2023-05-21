@@ -97,9 +97,9 @@ public class WalkLogServiceImpl implements WalkLogService {
     }
 
     @Override
-    public WalkLogServiceDTO.Output findWalkLog(Long walkLogId){
-        WalkLogServiceDTO.Output output = walkLogMapper.walkLogToWalkLogServiceOutputDTO(findVerifiedWalkLog(walkLogId));
-        return output;
+    public WalkLogServiceDTO.GetOutput findWalkLog(Long walkLogId){
+        WalkLogServiceDTO.GetOutput getOutput = walkLogMapper.walkLogToWalkLogServiceGetOutPutDTO(findVerifiedWalkLog(walkLogId));
+        return getOutput;
     }
 
 
@@ -110,11 +110,6 @@ public class WalkLogServiceImpl implements WalkLogService {
         return walkLogMapper.walkLogsToWalkLogServiceCalenderFindOutputDTOs(myWalkLogFromMonthForCalendar);
     }
 
-    @Override
-    public PageInfo createPageInfo(Page<WalkLogServiceDTO.FindOutput> findsOutputs) {
-        return new PageInfo(findsOutputs.getNumber() + 1,
-                findsOutputs.getSize(), findsOutputs.getTotalElements(), findsOutputs.getTotalPages());
-    }
 
     @Override
     public Page<WalkLogServiceDTO.FindOutput> findMyWalkLogs(WalkLogServiceDTO.FindInput findInput){//년월일 int타입으로 나눠서 리팩토링하기
