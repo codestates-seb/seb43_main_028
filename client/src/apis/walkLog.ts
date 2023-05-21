@@ -17,4 +17,13 @@ export const startWalkLog = async ({
   }
 }
 
+export const getAllPublicWalkLogs = async () => {
+  try {
+    const allPublicWalkLogs = await axiosInstance.get('/walk-logs')
+    console.log(allPublicWalkLogs)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const aaa = true
