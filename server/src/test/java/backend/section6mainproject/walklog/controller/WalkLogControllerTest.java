@@ -343,7 +343,7 @@ public class WalkLogControllerTest {
         List<CoordinateControllerDTO.Sub> coordinates = createCoordinateControllerDTOsub(num);
         getResponse.setCoordinates(coordinates);
 
-        given(walkLogService.findWalkLog(walkLog.getWalkLogId())).willReturn(new WalkLogServiceDTO.GetOutput());
+        given(walkLogService.findWalkLog(Mockito.anyLong())).willReturn(new WalkLogServiceDTO.GetOutput());
         given(walkLogMapper.walkLogServiceGetOutPutDTOtoWalkLogControllerGetResponseDTO(Mockito.any(WalkLogServiceDTO.GetOutput.class)))
                 .willReturn(getResponse);
 

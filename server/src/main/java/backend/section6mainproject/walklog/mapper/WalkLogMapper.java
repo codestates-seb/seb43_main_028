@@ -49,7 +49,7 @@ public interface WalkLogMapper {
 
     @Mapping(source = "member.memberId",target = "memberId")
     @Mapping(source = "member.nickname",target = "nickname")
-    @Mapping(source = "member.profileImage",target = "profileImage")
+    @Mapping(source = "member.profileImage",target = "profileImage",qualifiedByName = "signBucket")
     @Mapping(source = "mapImage",target = "imageUrl", qualifiedByName = "signBucket")
     @Mapping(target = "coordinates",qualifiedByName = "coordinateEntityToServiceDTO")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
@@ -72,7 +72,6 @@ public interface WalkLogMapper {
     WalkLogControllerDTO.PostResponse walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(WalkLogServiceDTO.CreateOutput walkLogServiceCreateOutputDTO);
     @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
-    @Mapping(target = "mapImage",source = "imageUrl")
     WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
 
     @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
