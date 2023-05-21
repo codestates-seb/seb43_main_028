@@ -19,8 +19,8 @@ type TitleProps = {
   setting: 'PUBLIC' | 'PRIVATE'
 }
 
-const koOptions: ['전체 공개', '나만 보기'] = ['전체 공개', '나만 보기']
-const engOptionsObj = { PUBLIC: koOptions[0], PRIVATE: koOptions[1] }
+const koOptions = ['전체 공개', '나만 보기'] as const
+const engOptionsObj = { PUBLIC: '전체 공개', PRIVATE: '나만 보기' } as const
 export default function Title({
   id,
   memberId,
@@ -61,7 +61,10 @@ export default function Title({
   filteredOption.unshift(publicSetting)
 
   const dropDownOption = filteredOption.map((option, i) => {
-    const param = Object.keys(engOptionsObj).find(engOpt => engOptionsObj[engOpt] === option) || ''
+    const param =
+      Object.keys(engOptionsObj).find(
+        engOpt => engOptionsObj[engOpt as 'PUBLIC' | 'PRIVATE'] === option
+      ) || ''
 
     return {
       id: i,
