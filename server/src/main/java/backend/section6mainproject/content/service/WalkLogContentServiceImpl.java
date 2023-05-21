@@ -46,11 +46,10 @@ public class WalkLogContentServiceImpl implements WalkLogContentService {
     public WalkLogContentServiceDTO.Output updateWalkLogContent(WalkLogContentServiceDTO.UpdateInput updateInput) {
         WalkLogContent findWalkLogContent = findVerifiedWalkLogContentInternal(updateInput.getWalkLogContentId());
         Optional.ofNullable(updateInput.getText()).ifPresent(text -> findWalkLogContent.setText(text));
-        if(!ObjectUtils.isEmpty(updateInput.getContentImage())) {
             storageService.delete(findWalkLogContent.getImageKey());
             String imageKey = storageService.store(updateInput.getContentImage(), "content");
-            findWalkLogContent.setImageKey(imageKey);
-        }
+            if(imageKey != null) findWalkLogContent.setImageKey(imageKey);
+
         return mapper.entityToServiceOutputDTO(walkLogContentRepository.save(findWalkLogContent));
     }
 
