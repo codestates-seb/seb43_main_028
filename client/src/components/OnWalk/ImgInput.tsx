@@ -27,6 +27,7 @@ export default function ImgInput({ initialValue }: ImgInputProps) {
   }
 
   useEffect(() => {
+    if (!imgFile && !preview) return setPreview('')
     if (!imgFile) return setPreview(initialValue)
 
     const nextPreview = URL.createObjectURL(imgFile)
