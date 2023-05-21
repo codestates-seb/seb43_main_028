@@ -3,6 +3,7 @@ package backend.section6mainproject.exception;
 import lombok.Getter;
 
 public enum ExceptionCode {
+    INVALID_PARAM_PAGE(400, "Param page Should Exist & greater than 0"),
     WRONG_MONTH_INPUT(400,"Not Input Year"),
     WRONG_DAY_INPUT(400,"Month or Year Not Input"),
     WALK_LOG_ALREADY_RECORDING(400,"WalkLog already recording"),

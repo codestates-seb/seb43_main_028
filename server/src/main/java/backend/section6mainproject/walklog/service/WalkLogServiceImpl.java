@@ -148,10 +148,18 @@ public class WalkLogServiceImpl implements WalkLogService {
     }
     @Override
     public Page<WalkLogServiceDTO.FindFeedOutput> findFeedWalkLogs(WalkLogServiceDTO.FindFeedInput findFeedInput){
+        isPageValid(findFeedInput);
         PageRequest pageRequest = PageRequest.of(findFeedInput.getPage() - 1, findFeedInput.getSize(),Sort.by("walkLogId").descending());
         return walkLogRepository.findAllByWalkLogPublicSetting(pageRequest, WalkLog.WalkLogPublicSetting.PUBLIC)
                 .map(walkLogMapper::walkLogToWalkLogServiceFindFeedOutputDTO);
     }
+
+    private static void isPageValid(WalkLogServiceDTO.FindFeedInput findFeedInput) {
+        if(findFeedInput.getPage() == 0) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_PARAM_PAGE);
+        }
+    }
+
     @Override
     public void deleteWalkLog(Long walkLogId){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLogId);

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -68,7 +69,6 @@ public class WalkLogControllerDTO {
     @NoArgsConstructor
     public static class GetFeedRequest {
         @NotNull
-        @Positive
         private int page;
         private Integer size = 10;
 

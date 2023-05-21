@@ -3,7 +3,6 @@ package backend.section6mainproject.advice;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
