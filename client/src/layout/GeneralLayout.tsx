@@ -23,37 +23,32 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
     const authHandler = async () => {
       const { userInfo } = await getUserInfo()
       if (userInfo === null) {
-        console.log('userInfo 요청 실패')
         const isRefreshed = await refreshAccessToken()
         if (isRefreshed === 'success') {
-          console.log('refresh 요청')
           const { userInfo } = await getUserInfo()
           if (userInfo) {
             setIsLogin(true)
             setId(userInfo.memberId)
             setUser(userInfo)
-            console.log('로그인 상태 유지중')
             return 'login'
           }
         } else {
           setIsLogin(false)
-          console.log('로그아웃')
           return 'logout'
         }
       } else {
         setIsLogin(true)
         setId(userInfo.memberId)
         setUser(userInfo)
-        console.log('로그인 상태 유지중')
         return 'login'
       }
     }
-    authHandler().then(() => {
+    authHandler().then(loginStatus => {
       setIsAuthChecking(false)
-      if (!isLogin && withAuth) routeTo('/signin')
+      if (!isLogin && withAuth && loginStatus === 'logout') routeTo('/signin')
       if (isLogin && (pathname === '/signin' || pathname === '/signup')) routeTo('/')
     })
-  }, [pathname])
+  }, [pathname, isLogin, withAuth])
 
   return (
     <>
