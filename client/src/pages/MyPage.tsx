@@ -9,7 +9,6 @@ import styles from './MyPage.module.scss'
 import { UserInfoType, patchUserPrivacySettings, unregisterUser } from '../apis/user'
 import Icon from '../components/common/Icon'
 import Modal from '../components/common/Modal'
-import { removeRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
 
 type ModalOption = {
   title: string
@@ -88,7 +87,6 @@ export default function Mypage() {
   const handleUnregister = async () => {
     const res = await unregisterUser(memberId)
     if (res === 'success') {
-      removeRefreshTokenFromLocalStorage()
       setIsLogin(false)
     }
   }

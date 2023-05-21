@@ -3,8 +3,7 @@ import { useAtom } from 'jotai'
 import Tapbar from '../components/common/Tapbar'
 import { idAtom, isLoginAtom, userAtom } from '../store/authAtom'
 import useRouter from '../hooks/useRouter'
-import { getCurrentUserInfo, refreshAccessToken } from '../apis/user'
-import { getRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
+import { getUserInfo, refreshAccessToken } from '../apis/user'
 import { TapBarContent } from '../router/routerData'
 
 type GeneralLayoutProps = {
@@ -15,53 +14,44 @@ type GeneralLayoutProps = {
 
 export default function GeneralLayout({ children, showTapBar, withAuth }: GeneralLayoutProps) {
   const [isAuthChecking, setIsAuthChecking] = useState(true)
-  const [id, setId] = useAtom(idAtom)
   const [isLogin, setIsLogin] = useAtom(isLoginAtom)
   const [, setUser] = useAtom(userAtom)
+  const [id, setId] = useAtom(idAtom)
   const { routeTo, pathname } = useRouter()
 
   useEffect(() => {
     const authHandler = async () => {
-      const memberId = localStorage.getItem('loggedId')
-      if (!memberId) {
-        localStorage.removeItem('loggedId')
-        setIsLogin(false)
-        console.log('로그아웃')
-        return 'fail'
-      }
-
-      const userInfoRes = await getCurrentUserInfo(+memberId)
-      if (userInfoRes) {
-        setIsLogin(true)
-        setId(+memberId)
-        setUser(userInfoRes)
-        console.log('로그인 상태 유지중')
-        return 'success'
-      }
-
-      const isRefreshed = await refreshAccessToken()
-      if (isRefreshed === 'success') {
-        const refreshedUserInfoRes = await getCurrentUserInfo(+memberId)
-        if (refreshedUserInfoRes) {
-          setIsLogin(true)
-          setId(+memberId)
-          setUser(refreshedUserInfoRes)
-          console.log('로그인 상태 유지중')
-          return 'success'
+      const { userInfo } = await getUserInfo()
+      if (userInfo === null) {
+        console.log('userInfo 요청 실패')
+        const isRefreshed = await refreshAccessToken()
+        if (isRefreshed === 'success') {
+          console.log('refresh 요청')
+          const { userInfo } = await getUserInfo()
+          if (userInfo) {
+            setIsLogin(true)
+            setId(userInfo.memberId)
+            setUser(userInfo)
+            console.log('로그인 상태 유지중')
+            return 'login'
+          }
+        } else {
+          setIsLogin(false)
+          console.log('로그아웃')
+          return 'logout'
         }
+      } else {
+        setIsLogin(true)
+        setId(userInfo.memberId)
+        setUser(userInfo)
+        console.log('로그인 상태 유지중')
+        return 'login'
       }
-
-      localStorage.removeItem('loggedId')
-      setIsLogin(false)
-      console.log('로그아웃')
-      return 'fail'
     }
-
     authHandler().then(() => {
       setIsAuthChecking(false)
-      console.log(isLogin)
-      // if (!isLogin && withAuth) routeTo('/signin')
-      // if (isLogin && (pathname === '/signin' || pathname === '/signup')) routeTo('/')
+      if (!isLogin && withAuth) routeTo('/signin')
+      if (isLogin && (pathname === '/signin' || pathname === '/signup')) routeTo('/')
     })
   }, [pathname])
 
