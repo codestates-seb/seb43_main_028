@@ -110,11 +110,6 @@ public class WalkLogServiceImpl implements WalkLogService {
         return walkLogMapper.walkLogsToWalkLogServiceCalenderFindOutputDTOs(myWalkLogFromMonthForCalendar);
     }
 
-    @Override
-    public PageInfo createPageInfo(Page<WalkLogServiceDTO.FindOutput> findsOutputs) {
-        return new PageInfo(findsOutputs.getNumber() + 1,
-                findsOutputs.getSize(), findsOutputs.getTotalElements(), findsOutputs.getTotalPages());
-    }
 
     @Override
     public Page<WalkLogServiceDTO.FindOutput> findMyWalkLogs(WalkLogServiceDTO.FindInput findInput){//년월일 int타입으로 나눠서 리팩토링하기

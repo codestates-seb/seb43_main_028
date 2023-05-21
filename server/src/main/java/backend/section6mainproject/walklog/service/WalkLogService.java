@@ -20,7 +20,6 @@ public interface WalkLogService {
     List<WalkLogServiceDTO.CalenderFindOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindInput totalFindsInput);
     Page<WalkLogServiceDTO.FindFeedOutput> findFeedWalkLogs(WalkLogServiceDTO.FindFeedInput findFeedInput);
     WalkLog findVerifiedWalkLog(Long walkLogId);
-    PageInfo createPageInfo(Page<WalkLogServiceDTO.FindOutput> findsOutputs);
 
 
 }
