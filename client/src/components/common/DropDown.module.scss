@@ -22,20 +22,13 @@
   padding: 10px;
   height: 32px;
   border: 1px solid C.$gray900;
-  @include U.flex-c(row, center, center);
-  gap: 6px;
+  @include U.flex-c(row, space-between, center);
   border-radius: 4px;
-  &.open {
-    border-radius: 4px 4px 0 0;
-  }
 }
 
-.buttonWrapper {
-  @include U.flex-c(row, center, center);
-}
-
-.openBtn {
-  @include U.flex-c(row, center, center);
+.open {
+  @extend .listTitle;
+  border-radius: 4px 4px 0 0;
 }
 
 .listBox {

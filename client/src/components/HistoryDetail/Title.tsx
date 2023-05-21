@@ -19,8 +19,6 @@ type TitleProps = {
   setting: 'PUBLIC' | 'PRIVATE'
 }
 
-const koOptions: ['전체 공개', '나만 보기'] = ['전체 공개', '나만 보기']
-const engOptionsObj = { PUBLIC: koOptions[0], PRIVATE: koOptions[1] }
 export default function Title({
   id,
   memberId,
@@ -32,7 +30,6 @@ export default function Title({
 }: TitleProps) {
   const [edit, setEdit] = useState(false)
   const [message, setMessage] = useState(text)
-  const [publicSetting, setPublicSetting] = useState(engOptionsObj[setting])
   const [isLogin] = useAtom(isLoginAtom)
   const [logInId] = useAtom(idAtom)
   const formattedTime = {
@@ -59,29 +56,6 @@ export default function Title({
     setMessage(text)
   }, [text])
 
-  const filteredOption = koOptions.filter(option => option !== publicSetting)
-  filteredOption.unshift(publicSetting)
-
-  const dropDownOption = filteredOption.map((option, i) => {
-    const param = Object.keys(engOptionsObj).find(engOpt => engOptionsObj[engOpt] === option) || ''
-
-    return {
-      id: i,
-      title: option,
-      param,
-      handleClick: (paramOpt: string) => {
-        const patchData = JSON.stringify({
-          message,
-          walkLogPublicSetting: paramOpt,
-        })
-        handlePatchHistory.mutate(patchData)
-        if (handlePatchHistory.isSuccess) {
-          setPublicSetting(option)
-        }
-      },
-    }
-  })
-
   const handleMessageSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
@@ -91,6 +65,15 @@ export default function Title({
     })
     handlePatchHistory.mutate(patchData)
     setEdit(prev => !prev)
+  }
+
+  const handlePublicSettingSubmit = async (selectOption: string) => {
+    const patchData = JSON.stringify({
+      message,
+      walkLogPublicSetting: selectOption,
+    })
+
+    handlePatchHistory.mutate(patchData)
   }
 
   const editingForm = (
@@ -121,7 +104,9 @@ export default function Title({
           <div className={styles.nickName}>{nickname}</div>
         </div>
       )}
-      {isLogin && logInId === memberId && <DropDown options={dropDownOption} />}
+      {isLogin && logInId === memberId && (
+        <DropDown currentSetting={setting} onSubmit={handlePublicSettingSubmit} />
+      )}
       <div className={styles.timeBox}>
         <div className={styles.iconBox}>
           <Icon name='calendar-gray' size={16} />
