@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
-import { signIn, getUserInfo, getCurrentUserInfo } from '../apis/user'
+import { signIn, getUserInfo } from '../apis/user'
 import styles from './SignIn.module.scss'
 import { idAtom, isLoginAtom, userAtom } from '../store/authAtom'
 import useRouter from '../hooks/useRouter'
