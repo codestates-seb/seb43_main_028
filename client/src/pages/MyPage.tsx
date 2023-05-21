@@ -9,13 +9,14 @@ import styles from './MyPage.module.scss'
 import { UserInfoType, patchUserPrivacySettings, unregisterUser } from '../apis/user'
 import Icon from '../components/common/Icon'
 import Modal from '../components/common/Modal'
-import { removeRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
-import useRouter from '../hooks/useRouter'
 
 type ModalOption = {
   title: string
   unregisterFn: () => void
 }
+
+const koOptions: ['전체 공개', '나만 보기'] = ['전체 공개', '나만 보기']
+const engOptionsObj = { PUBLIC: koOptions[0], PRIVATE: koOptions[1] }
 
 export default function Mypage() {
   const [isLogin, setIsLogin] = useAtom(isLoginAtom)
@@ -23,7 +24,7 @@ export default function Mypage() {
   const [user, setUser] = useAtom(userAtom)
   const [memberId] = useAtom(idAtom)
 
-  const [userData, setUserData] = useState<UserInfoType | null>(null)
+  // const [userData, setUserData] = useState<UserInfoType | null>(null)
   const [registeredAt, setRegisteredAt] = useState('')
   const [isModalOpened, setIsModalOpened] = useState(false)
   const [isUnregisterModalOpened, setIsUnregisterModalOpened] = useState(false)
@@ -31,29 +32,40 @@ export default function Mypage() {
     title: '',
     unregisterFn: () => {},
   })
+  const [publicSetting, setPublicSetting] = useState(
+    engOptionsObj[user.defaultWalkLogPublicSetting as keyof typeof engOptionsObj]
+  )
 
-  const { routeTo } = useRouter()
+  const filteredOption = koOptions.filter(option => option !== publicSetting)
+  filteredOption.unshift(publicSetting)
+
+  const dropDownOption = filteredOption.map((option, i) => {
+    const param =
+      Object.keys(engOptionsObj).find(
+        engOpt => engOptionsObj[engOpt as keyof typeof engOptionsObj] === option
+      ) || ''
+
+    return {
+      id: i,
+      title: option,
+      param,
+      handleClick: async (paramOpt: string) => {
+        if (user) {
+          const data = new FormData()
+          const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: paramOpt })], {
+            type: 'application/json',
+          })
+          data.append('patch', blob)
+          const { resData } = await patchUserPrivacySettings(memberId, data)
+          setUser(resData)
+        }
+      },
+    }
+  })
 
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)
   }
-  const handleSetPrivacySettings = async (param: string) => {
-    if (userData) {
-      const data = new FormData()
-      const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: param })], {
-        type: 'application/json',
-      })
-
-      data.append('patch', blob)
-      const res = await patchUserPrivacySettings(memberId, data)
-      setUser(res)
-    }
-  }
-
-  const selectOptions = [
-    { id: 1, title: '나만 보기', handleClick: handleSetPrivacySettings, param: 'PRIVATE' },
-    { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings, param: 'PUBLIC' },
-  ]
 
   const modalData = {
     title: unregisterModalOption.title,
@@ -75,7 +87,6 @@ export default function Mypage() {
   const handleUnregister = async () => {
     const res = await unregisterUser(memberId)
     if (res === 'success') {
-      removeRefreshTokenFromLocalStorage()
       setIsLogin(false)
     }
   }
@@ -92,20 +103,12 @@ export default function Mypage() {
   }
 
   useEffect(() => {
-    setUserData(user)
-  }, [user])
-
-  useEffect(() => {
-    if (userData) {
-      const registeredDate = new Date(userData.createdAt)
+    if (user) {
+      const registeredDate = new Date(user.createdAt)
       const formattedData = format(registeredDate, 'yyyy-MM-dd')
       setRegisteredAt(formattedData)
     }
-  }, [userData])
-
-  if (!isLogin) {
-    routeTo('/signin')
-  }
+  }, [user])
 
   return (
     <>
@@ -114,26 +117,22 @@ export default function Mypage() {
         <div className={styles.profileBox}>
           <div className={styles.infoBox}>
             <div className={styles.userInfo}>
-              <div className={styles.userName}>{userData?.nickname}</div>
-              <div className={styles.userEmail}>{userData?.email}</div>
+              <div className={styles.userName}>{user?.nickname}</div>
+              <div className={styles.userEmail}>{user?.email}</div>
               <div className={styles.userRegisteredAt}>
                 <span>회원 가입일:</span>
                 <span>{registeredAt}</span>
               </div>
             </div>
             <div className={styles.imageWrapper}>
-              {!userData?.imageUrl ? (
+              {!user?.imageUrl ? (
                 <Icon name='no-profile' size={64} />
               ) : (
-                <img
-                  className={styles.userProfileImage}
-                  src={userData?.imageUrl}
-                  alt='your profile'
-                />
+                <img className={styles.userProfileImage} src={user?.imageUrl} alt='your profile' />
               )}
             </div>
           </div>
-          <div className={styles.userText}>{userData?.introduction}</div>
+          <div className={styles.userText}>{user?.introduction}</div>
           <button className={styles.editProfileBtn} type='button' onClick={handleOpenEditProfile}>
             프로필 수정하기
           </button>
@@ -141,7 +140,7 @@ export default function Mypage() {
         <div className={styles.configBox}>
           <div className={styles.configTitle}>걷기 기록 공개 설정</div>
           <div className={styles.selectWrapper}>
-            <DropDown options={selectOptions} />
+            <DropDown options={dropDownOption} />
           </div>
           <div className={styles.configMessage}>
             전체공개 시 내 걷기 기록이 피드 탭에서 모든 유저에게 보입니다.
