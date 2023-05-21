@@ -12,7 +12,8 @@ public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member Not Found"),// 존재하지 않는 회원
     WALK_LOG_NOT_FOUND(404,"WalkLog Not Found"),//존재하지 않는 걷기 기록
     WALK_LOG_CONTENT_NOT_FOUND(404, "WalkLogContent Not Found"), //존재하지 않는 걷기 기록 컨텐츠
-    MEMBER_EXISTS(409, "Member exists");
+    MEMBER_EXISTS(409, "Member exists"),
+    MEMBER_NICKNAME_NOT_UNIQUE(409, "Member Nickname Not Unique");
 
     @Getter
     private final int status;

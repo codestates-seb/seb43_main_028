@@ -48,6 +48,7 @@ public class MemberServiceImpl implements MemberService{
         Member member = mapper.createInputToMember(createInput);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         verifyExistsEmail(member.getEmail());
+        verifyExistsNickname(member.getNickname());
 
         encodeMemberCredential(member);
         member.setRoles(authorityUtils.getRoles());
@@ -71,6 +72,13 @@ public class MemberServiceImpl implements MemberService{
        }
     }
 
+    private void verifyExistsNickname(String nickname) {
+        Optional<Member> findMember = memberRepository.findByNickname(nickname);
+        if(findMember.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NICKNAME_NOT_UNIQUE);
+        }
+    }
+
 
     @Override
     public Member findVerifiedMember(Long memberId) {
@@ -84,6 +92,9 @@ public class MemberServiceImpl implements MemberService{
     }
     @Override
     public MemberServiceDTO.Output updateMember(MemberServiceDTO.UpdateInput updateInput) {
+        if(updateInput.getNickname() != null) {
+            verifyExistsNickname(updateInput.getNickname());
+        }
         //먼저 컨트롤러에서 던져진 서비스계층용 DTO 파라미터 patchRequest를 Member 엔티티로 변환한다.
         Member member = mapper.updateInputToMember(updateInput);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
