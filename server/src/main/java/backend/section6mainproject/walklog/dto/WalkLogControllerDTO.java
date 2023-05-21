@@ -69,6 +69,7 @@ public class WalkLogControllerDTO {
     @NoArgsConstructor
     public static class GetFeedRequest {
         @NotNull
+        @Positive
         private int page;
         private Integer size = 10;
 
