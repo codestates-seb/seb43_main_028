@@ -7,11 +7,11 @@ import backend.section6mainproject.content.repository.WalkLogContentRepository;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.helper.image.StorageService;
-import backend.section6mainproject.utils.CustomBeanUtils;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Optional;
 
@@ -46,9 +46,12 @@ public class WalkLogContentServiceImpl implements WalkLogContentService {
     public WalkLogContentServiceDTO.Output updateWalkLogContent(WalkLogContentServiceDTO.UpdateInput updateInput) {
         WalkLogContent findWalkLogContent = findVerifiedWalkLogContentInternal(updateInput.getWalkLogContentId());
         Optional.ofNullable(updateInput.getText()).ifPresent(text -> findWalkLogContent.setText(text));
-        storageService.delete(findWalkLogContent.getImageKey());
         String imageKey = storageService.store(updateInput.getContentImage(), "content");
-        findWalkLogContent.setImageKey(imageKey);
+        if(imageKey != null) {
+            storageService.delete(findWalkLogContent.getImageKey());
+            findWalkLogContent.setImageKey(imageKey);
+        }
+
         return mapper.entityToServiceOutputDTO(walkLogContentRepository.save(findWalkLogContent));
     }
 
