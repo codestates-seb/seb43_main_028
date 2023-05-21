@@ -4,7 +4,6 @@ import { getAllPublicWalkLogs } from '../apis/walkLog'
 import styles from './Feed.module.scss'
 import FeedItem from '../components/Feed/FeedItem'
 
-type FeedsType = [] | null
 type FeedType = {
   walkLogId: number | null
   mapImage: string | null
