@@ -6,6 +6,17 @@ type StartWalkLogProps = {
   memberId: number
 }
 
+type GetAllPublicWalkLogsParamType = number
+type GetAllPublicWalkLogsResType = {
+  data: []
+  pageInfo: {
+    page: number
+    size: number
+    totalElements: number
+    totalPages: number
+  }
+} | null
+
 export const startWalkLog = async ({
   memberId,
 }: StartWalkLogProps): Promise<StartWalkLogResType> => {
@@ -17,12 +28,14 @@ export const startWalkLog = async ({
   }
 }
 
-export const getAllPublicWalkLogs = async () => {
+export const getAllPublicWalkLogs = async (page = 1): Promise<GetAllPublicWalkLogsResType> => {
   try {
-    const allPublicWalkLogs = await axiosInstance.get('/walk-logs')
-    console.log(allPublicWalkLogs)
+    const response = await axiosInstance.get('/walk-logs', { params: { page } })
+    const allPublicWalkLogs = response.data
+    return allPublicWalkLogs
   } catch (error) {
     console.error(error)
+    return null
   }
 }
 

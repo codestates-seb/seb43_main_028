@@ -14,6 +14,9 @@ import getWeeksInMonth from 'date-fns/getWeeksInMonth'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
 import getYear from 'date-fns/getYear'
 import getMonth from 'date-fns/getMonth'
+import differenceInDays from 'date-fns/differenceInDays'
+import differenceInMonths from 'date-fns/differenceInMonths'
+import differenceInYears from 'date-fns/differenceInYears'
 
 export {
   endOfMonth,
@@ -32,4 +35,7 @@ export {
   differenceInSeconds,
   getYear,
   getMonth,
+  differenceInDays,
+  differenceInMonths,
+  differenceInYears,
 }
