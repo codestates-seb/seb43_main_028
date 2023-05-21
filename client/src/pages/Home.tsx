@@ -25,17 +25,18 @@ export default function Home() {
   }
 
   const handleStartClick = async () => {
-    // if (!isLogin) {
-    //   // TODO : 비로그인 시 동작
-    //   return
-    // }
+    if (!isLogin) {
+      // TODO : 비로그인 시 동작
+      console.log('비로그인 시작 x')
+      return
+    }
     const { walkLogId } = await startWalkLog(user.memberId)
     if (walkLogId === -1) {
       // TODO : 시작 실패 메시지
       console.log('시작 실패')
       return
     }
-    routeTo('/onwalk')
+    routeTo(`/onwalk/${walkLogId}`)
   }
 
   const watchCurrentPosition = () => {
