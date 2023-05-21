@@ -196,14 +196,14 @@ public class WalkLogServiceImplTest {
 
     @Test
     public void findWalkLogTest(){
-        WalkLogServiceDTO.Output output = stubData.getOutput();
+        WalkLogServiceDTO.GetOutput getOutput = stubData.getGetOutput();
 
         given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(new WalkLog()));
-        given(walkLogMapper.walkLogToWalkLogServiceOutputDTO(Mockito.any(WalkLog.class))).willReturn(output);
+        given(walkLogMapper.walkLogToWalkLogServiceGetOutPutDTO(Mockito.any(WalkLog.class))).willReturn(getOutput);
 
-        WalkLogServiceDTO.Output result = walkLogService.findWalkLog(1L);
+        WalkLogServiceDTO.GetOutput result = walkLogService.findWalkLog(1L);
 
-        Assertions.assertEquals(output, result);
+        Assertions.assertEquals(getOutput, result);
     }
 
     @Test
