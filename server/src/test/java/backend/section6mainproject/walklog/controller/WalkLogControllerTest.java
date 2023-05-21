@@ -372,6 +372,7 @@ public class WalkLogControllerTest {
                                 fieldWithPath("walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
                                 fieldWithPath("mapImage").type(JsonFieldType.STRING).description("지도 이미지 임시 URL"),
                                 fieldWithPath("profileImage").type(JsonFieldType.STRING).description("프로필 이미지 임시 URL"),
+                                fieldWithPath("walkLogStatus").type(JsonFieldType.STRING).description("걷기 기록 상태(STOP, RECORDING"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
                                 fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
