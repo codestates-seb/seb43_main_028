@@ -155,7 +155,7 @@ public class WalkLogServiceImpl implements WalkLogService {
     }
 
     private static void isPageValid(WalkLogServiceDTO.FindFeedInput findFeedInput) {
-        if(findFeedInput.getPage() == 0) {
+        if(findFeedInput.getPage() <= 0) {
             throw new BusinessLogicException(ExceptionCode.INVALID_PARAM_PAGE);
         }
     }
