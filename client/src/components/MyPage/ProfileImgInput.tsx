@@ -6,10 +6,15 @@ import Icon from '../common/Icon'
 type ProfileImgInputProps = {
   imgFile: File | undefined
   setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>
+  profileImage: string
 }
 
-export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInputProps) {
-  const [preview, setPreview] = useState<string>('')
+export default function ProfileImgInput({
+  imgFile,
+  setImgFile,
+  profileImage,
+}: ProfileImgInputProps) {
+  const [preview, setPreview] = useState<string>(profileImage)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const imageCompress = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,14 +54,15 @@ export default function ProfileImgInput({ imgFile, setImgFile }: ProfileImgInput
   }
 
   useEffect(() => {
-    if (!imgFile) return setPreview('')
+    if (!imgFile && !preview) return setPreview('')
+    if (!imgFile) return setPreview(profileImage)
 
     const nextPreview = URL.createObjectURL(imgFile)
     setPreview(nextPreview)
 
     return () => {
       URL.revokeObjectURL(nextPreview)
-      setPreview('')
+      setPreview(profileImage)
     }
   }, [imgFile])
 
