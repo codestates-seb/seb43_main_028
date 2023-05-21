@@ -1,60 +1,58 @@
 import { useState, useEffect } from 'react'
 import { useAtom } from 'jotai'
 import Tapbar from '../components/common/Tapbar'
-import { idAtom, isLoginAtom } from '../store/authAtom'
+import { idAtom, isLoginAtom, userAtom } from '../store/authAtom'
 import useRouter from '../hooks/useRouter'
-import { getCurrentUserInfo, refreshAccessToken } from '../apis/user'
-import { getRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
+import { getUserInfo, refreshAccessToken } from '../apis/user'
 import { TapBarContent } from '../router/routerData'
 
 type GeneralLayoutProps = {
   children: React.ReactNode
   showTapBar: boolean
+  withAuth: boolean
 }
 
-export default function GeneralLayout({ children, showTapBar }: GeneralLayoutProps) {
-  const [, setIsAuthChecking] = useState(true)
-  const [id] = useAtom(idAtom)
-  const [isLogin] = useAtom(isLoginAtom)
-  const { pathname } = useRouter()
+export default function GeneralLayout({ children, showTapBar, withAuth }: GeneralLayoutProps) {
+  const [isAuthChecking, setIsAuthChecking] = useState(true)
+  const [isLogin, setIsLogin] = useAtom(isLoginAtom)
+  const [, setUser] = useAtom(userAtom)
+  const [id, setId] = useAtom(idAtom)
+  const { routeTo, pathname } = useRouter()
 
   useEffect(() => {
     const authHandler = async () => {
-      if (!isLogin) {
-        console.log('로그인하지 않은 상태입니다.')
-        return 'fail'
-      }
-      const userInfoRes = await getCurrentUserInfo(id)
-      if (userInfoRes) {
-        console.log('로그인 상태 유지중')
-        return 'success'
-      }
-
-      if (!getRefreshTokenFromLocalStorage()) {
-        console.log('refresh token 만료. 재로그인이 필요합니다.')
-        return 'fail'
-      }
-
-      const refreshRes = await refreshAccessToken()
-      if (refreshRes === 'success') {
-        const newUserInfoRes = await getCurrentUserInfo(id)
-        if (newUserInfoRes && isLogin) {
-          console.log('refresh token을 이용해 access token 갱신')
-          return 'success'
+      const { userInfo } = await getUserInfo()
+      if (userInfo === null) {
+        const isRefreshed = await refreshAccessToken()
+        if (isRefreshed === 'success') {
+          const { userInfo } = await getUserInfo()
+          if (userInfo) {
+            setIsLogin(true)
+            setId(userInfo.memberId)
+            setUser(userInfo)
+            return 'login'
+          }
+        } else {
+          setIsLogin(false)
+          return 'logout'
         }
+      } else {
+        setIsLogin(true)
+        setId(userInfo.memberId)
+        setUser(userInfo)
+        return 'login'
       }
-      console.log('access token 갱신 실패')
-      return 'fail'
     }
-
-    authHandler().then(() => {
+    authHandler().then(loginStatus => {
       setIsAuthChecking(false)
+      if (!isLogin && withAuth && loginStatus === 'logout') routeTo('/signin')
+      if (isLogin && (pathname === '/signin' || pathname === '/signup')) routeTo('/')
     })
-  }, [pathname, id, isLogin])
+  }, [pathname, isLogin, withAuth])
 
   return (
     <>
-      {children}
+      {isAuthChecking || children}
       {showTapBar && <Tapbar tapBarContent={TapBarContent} />}
     </>
   )
