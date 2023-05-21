@@ -19,3 +19,4 @@ export const startWalkLog = async (memberId: number): Promise<StartWalkLogResTyp
   }
 }
 
+}
