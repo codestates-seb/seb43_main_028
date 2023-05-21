@@ -15,10 +15,12 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 @Transactional
 @Service
@@ -99,14 +101,12 @@ public class MemberServiceImpl implements MemberService{
         Member member = mapper.updateInputToMember(updateInput);
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         Member findMember = findVerifiedMember(member.getMemberId());
-        //기존 회원의 프로필이미지가 있다면 삭제
-        storageService.delete(findMember.getProfileImage());
-
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
-
         String profile = storageService.store(updateInput.getProfileImage(), "profile");
-
-        updatedMember.setProfileImage(profile);
+        if(profile != null) {
+            storageService.delete(findMember.getProfileImage());
+            updatedMember.setProfileImage(profile);
+        }
         memberRepository.save(updatedMember);
         //컨트롤러로 다시 던지기 전에 mapper로 변환해서 응답용DTO를 전달해준다.
         return mapper.memberToOutput(updatedMember);
