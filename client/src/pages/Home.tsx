@@ -17,8 +17,6 @@ export default function Home() {
   const user = useAtomValue(userAtom)
   const mapRef = useMapRef()
 
-  let watchId: number
-
   const userInfo = {
     nickname: user.nickname,
     imageUrl: user.imageUrl,
@@ -41,7 +39,7 @@ export default function Home() {
   }
 
   const watchCurrentPosition = () => {
-    watchId = navigator.geolocation.watchPosition(
+    const watchId = navigator.geolocation.watchPosition(
       newPosition => {
         const { latitude, longitude } = newPosition.coords
         const watchedPosition = { lat: latitude, lng: longitude }
@@ -52,12 +50,19 @@ export default function Home() {
       error => console.log(error),
       { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
     )
+
+    return {
+      watchId,
+      clearWatchPosition: () => {
+        navigator.geolocation.clearWatch(watchId)
+      },
+    }
   }
 
   useEffect(() => {
-    watchCurrentPosition()
+    const { clearWatchPosition } = watchCurrentPosition()
     return () => {
-      navigator.geolocation.clearWatch(watchId)
+      clearWatchPosition()
     }
   }, [])
 
