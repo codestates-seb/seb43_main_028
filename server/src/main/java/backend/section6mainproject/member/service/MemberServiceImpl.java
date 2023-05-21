@@ -102,9 +102,11 @@ public class MemberServiceImpl implements MemberService{
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         Member findMember = findVerifiedMember(member.getMemberId());
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
-        storageService.delete(findMember.getProfileImage());
         String profile = storageService.store(updateInput.getProfileImage(), "profile");
-        if(profile != null) updatedMember.setProfileImage(profile);
+        if(profile != null) {
+            storageService.delete(findMember.getProfileImage());
+            updatedMember.setProfileImage(profile);
+        }
         memberRepository.save(updatedMember);
         //컨트롤러로 다시 던지기 전에 mapper로 변환해서 응답용DTO를 전달해준다.
         return mapper.memberToOutput(updatedMember);
