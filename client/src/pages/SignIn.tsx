@@ -21,7 +21,6 @@ function SignIn() {
     const password = formData.get('password')
 
     const { memberId } = await signIn({ email, password, autoLogin: true })
-    console.log(memberId)
 
     if (memberId) {
       localStorage.setItem('loggedId', JSON.stringify(memberId))

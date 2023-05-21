@@ -10,12 +10,14 @@ import { UserInfoType, patchUserPrivacySettings, unregisterUser } from '../apis/
 import Icon from '../components/common/Icon'
 import Modal from '../components/common/Modal'
 import { removeRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
-import useRouter from '../hooks/useRouter'
 
 type ModalOption = {
   title: string
   unregisterFn: () => void
 }
+
+const koOptions: ['전체 공개', '나만 보기'] = ['전체 공개', '나만 보기']
+const engOptionsObj = { PUBLIC: koOptions[0], PRIVATE: koOptions[1] }
 
 export default function Mypage() {
   const [isLogin, setIsLogin] = useAtom(isLoginAtom)
@@ -31,29 +33,40 @@ export default function Mypage() {
     title: '',
     unregisterFn: () => {},
   })
+  const [publicSetting, setPublicSetting] = useState(
+    engOptionsObj[user.defaultWalkLogPublicSetting as keyof typeof engOptionsObj]
+  )
 
-  const { routeTo } = useRouter()
+  const filteredOption = koOptions.filter(option => option !== publicSetting)
+  filteredOption.unshift(publicSetting)
+
+  const dropDownOption = filteredOption.map((option, i) => {
+    const param =
+      Object.keys(engOptionsObj).find(
+        engOpt => engOptionsObj[engOpt as keyof typeof engOptionsObj] === option
+      ) || ''
+
+    return {
+      id: i,
+      title: option,
+      param,
+      handleClick: async (paramOpt: string) => {
+        if (user) {
+          const data = new FormData()
+          const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: paramOpt })], {
+            type: 'application/json',
+          })
+          data.append('patch', blob)
+          const { resData } = await patchUserPrivacySettings(memberId, data)
+          setUser(resData)
+        }
+      },
+    }
+  })
 
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)
   }
-  const handleSetPrivacySettings = async (param: string) => {
-    if (user) {
-      const data = new FormData()
-      const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: param })], {
-        type: 'application/json',
-      })
-
-      data.append('patch', blob)
-      const res = await patchUserPrivacySettings(memberId, data)
-      setUser(res)
-    }
-  }
-
-  const selectOptions = [
-    { id: 1, title: '나만 보기', handleClick: handleSetPrivacySettings, param: 'PRIVATE' },
-    { id: 2, title: '전체 공개', handleClick: handleSetPrivacySettings, param: 'PUBLIC' },
-  ]
 
   const modalData = {
     title: unregisterModalOption.title,
@@ -91,23 +104,13 @@ export default function Mypage() {
     })
   }
 
-  // useEffect(() => {
-  //   setUserData(user)
-  // }, [user])
-
   useEffect(() => {
     if (user) {
-      console.log(user)
       const registeredDate = new Date(user.createdAt)
-      console.log(registeredDate)
       const formattedData = format(registeredDate, 'yyyy-MM-dd')
       setRegisteredAt(formattedData)
     }
   }, [user])
-
-  // if (!isLogin) {
-  //   routeTo('/signin')
-  // }
 
   return (
     <>
@@ -139,7 +142,7 @@ export default function Mypage() {
         <div className={styles.configBox}>
           <div className={styles.configTitle}>걷기 기록 공개 설정</div>
           <div className={styles.selectWrapper}>
-            <DropDown options={selectOptions} />
+            <DropDown options={dropDownOption} />
           </div>
           <div className={styles.configMessage}>
             전체공개 시 내 걷기 기록이 피드 탭에서 모든 유저에게 보입니다.

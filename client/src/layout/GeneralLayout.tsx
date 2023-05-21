@@ -59,8 +59,9 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
 
     authHandler().then(() => {
       setIsAuthChecking(false)
-      // if (isLogin && (pathname === '/signin' || pathname === '/signup')) routeTo('/')
+      console.log(isLogin)
       // if (!isLogin && withAuth) routeTo('/signin')
+      // if (isLogin && (pathname === '/signin' || pathname === '/signup')) routeTo('/')
     })
   }, [pathname])
 

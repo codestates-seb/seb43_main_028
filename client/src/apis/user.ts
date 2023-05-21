@@ -98,10 +98,10 @@ export const patchUserProfile = async (memberId: number, formData: FormData) => 
 export const patchUserPrivacySettings = async (memberId: number, data: any) => {
   try {
     const response = await fileAxios.patch(`/members/${memberId}`, data)
-    return response.data
+    return { resData: response.data, status: 'success' }
   } catch (error: unknown) {
     console.log(error)
-    return 'fail'
+    return { resData: null, status: 'fail' }
   }
 }
 

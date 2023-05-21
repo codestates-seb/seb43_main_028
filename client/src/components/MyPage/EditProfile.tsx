@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import styles from './EditProfile.module.scss'
 import ProfileImgInput from './ProfileImgInput'
 import { idAtom, userAtom } from '../../store/authAtom'
-import { patchUserProfile } from '../../apis/user'
+import { UserInfoType, patchUserProfile } from '../../apis/user'
 
 type EditProfilePropsType = {
   setIsModalOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -13,7 +13,7 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
   const [imgFile, setImgFile] = useState<File | undefined>()
 
   const [memberId] = useAtom(idAtom)
-  const [, setUser] = useAtom(userAtom)
+  const [user, setUser] = useAtom(userAtom)
 
   const handleCloseEditProfile = () => {
     setIsModalOpened(false)
@@ -70,16 +70,27 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
         자기소개는 60자 이하로 입력가능합니다.
       </div>
       <div className={styles.editProfileImgBox}>
-        <ProfileImgInput imgFile={imgFile} setImgFile={setImgFile} />
+        <ProfileImgInput
+          imgFile={imgFile}
+          setImgFile={setImgFile}
+          profileImage={user.imageUrl ? user.imageUrl : ''}
+        />
       </div>
       <div className={styles.editName}>
-        <input type='text' placeholder='이름' name='nickname' className={styles.editNameInput} />
+        <input
+          type='text'
+          placeholder='이름'
+          name='nickname'
+          className={styles.editNameInput}
+          defaultValue={user.nickname}
+        />
       </div>
       <div className={styles.editIntroduction}>
         <textarea
           placeholder='자기소개'
           name='introduction'
           className={styles.editIntroductionInput}
+          defaultValue={user.introduction}
         />
       </div>
     </form>
