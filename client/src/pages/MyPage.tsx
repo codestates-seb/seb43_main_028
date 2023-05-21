@@ -6,7 +6,7 @@ import { userAtom, idAtom, isLoginAtom } from '../store/authAtom'
 import DropDown from '../components/common/DropDown'
 import EditProfile from '../components/MyPage/EditProfile'
 import styles from './MyPage.module.scss'
-import { UserInfoType, patchUserPrivacySettings, unregisterUser } from '../apis/user'
+import { patchUserPrivacySettings, unregisterUser } from '../apis/user'
 import Icon from '../components/common/Icon'
 import Modal from '../components/common/Modal'
 
@@ -19,7 +19,7 @@ const koOptions: ['전체 공개', '나만 보기'] = ['전체 공개', '나만 
 const engOptionsObj = { PUBLIC: koOptions[0], PRIVATE: koOptions[1] }
 
 export default function Mypage() {
-  const [isLogin, setIsLogin] = useAtom(isLoginAtom)
+  const [, setIsLogin] = useAtom(isLoginAtom)
 
   const [user, setUser] = useAtom(userAtom)
   const [memberId] = useAtom(idAtom)
@@ -32,7 +32,7 @@ export default function Mypage() {
     title: '',
     unregisterFn: () => {},
   })
-  const [publicSetting, setPublicSetting] = useState(
+  const [publicSetting] = useState(
     engOptionsObj[user.defaultWalkLogPublicSetting as keyof typeof engOptionsObj]
   )
 

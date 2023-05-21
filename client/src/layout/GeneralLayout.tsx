@@ -16,7 +16,7 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
   const [isAuthChecking, setIsAuthChecking] = useState(true)
   const [isLogin, setIsLogin] = useAtom(isLoginAtom)
   const [, setUser] = useAtom(userAtom)
-  const [id, setId] = useAtom(idAtom)
+  const [, setId] = useAtom(idAtom)
   const { routeTo, pathname } = useRouter()
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
 
   return (
     <>
-      {isAuthChecking || children}
+      {isAuthChecking ? <div>사용자 체크 중</div> : children}
       {showTapBar && <Tapbar tapBarContent={TapBarContent} />}
     </>
   )

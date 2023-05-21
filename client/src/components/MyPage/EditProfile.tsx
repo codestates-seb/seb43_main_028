@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useAtom } from 'jotai'
 import styles from './EditProfile.module.scss'
 import ProfileImgInput from './ProfileImgInput'
 import { idAtom, userAtom } from '../../store/authAtom'
-import { UserInfoType, patchUserProfile } from '../../apis/user'
+import { patchUserProfile } from '../../apis/user'
 
 type EditProfilePropsType = {
   setIsModalOpened: React.Dispatch<React.SetStateAction<boolean>>
