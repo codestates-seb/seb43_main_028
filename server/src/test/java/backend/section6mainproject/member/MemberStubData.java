@@ -5,6 +5,7 @@ import backend.section6mainproject.member.dto.MemberServiceDTO;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.walklog.entity.WalkLog;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.FileInputStream;
@@ -15,9 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class MemberStubData {
-    private MemberRepository memberRepository;
     private Long memberId = 1L;
-    private String email = "test@gmail.com";
+    private String email = "test01@gmail.com";
     private String plainPassword = "testdot01!";
     private String nickname = "거터";
     private Member.MemberStatus memberStatus = Member.MemberStatus.MEMBER_ACTIVE;
@@ -38,6 +38,21 @@ public class MemberStubData {
         member.setWalkLogs(walkLogs);
         member.setRoles(roles);
         member.setPassword(plainPassword);
+        return member;
+    }
+
+    public Member getUpdatedMember() {
+        Member member = new Member();
+        member.setMemberId(memberId);
+        member.setEmail(email);
+        member.setNickname("나무");
+        member.setMemberStatus(memberStatus);
+        member.setDefaultWalkLogPublicSetting(defaultWalkLogPublicSetting);
+        member.setIntroduction("물레물레물레");
+        member.setWalkLogs(walkLogs);
+        member.setRoles(roles);
+        member.setPassword(plainPassword);
+        member.setProfileImage("");
         return member;
     }
 

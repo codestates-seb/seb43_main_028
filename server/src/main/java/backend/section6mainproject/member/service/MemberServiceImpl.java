@@ -67,14 +67,14 @@ public class MemberServiceImpl implements MemberService{
         member.setPassword(encodedPassword);
     }
 
-    private void verifyExistsEmail(String email) {
+    public void verifyExistsEmail(String email) {
        Optional<Member> findMember = memberRepository.findByEmail(email);
        if(findMember.isPresent()) {
            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
        }
     }
 
-    private void verifyExistsNickname(String nickname) {
+    public void verifyExistsNickname(String nickname) {
         Optional<Member> findMember = memberRepository.findByNickname(nickname);
         if(findMember.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
@@ -178,7 +178,7 @@ public class MemberServiceImpl implements MemberService{
         return walkLogId;
     }
 
-    private void distinguishQuittedMember(Member member) {
+    public void distinguishQuittedMember(Member member) {
         if(member.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }

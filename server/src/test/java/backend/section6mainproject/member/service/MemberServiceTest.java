@@ -13,29 +13,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import backend.section6mainproject.content.WalkLogContentStubData;
-import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
-import backend.section6mainproject.content.entity.WalkLogContent;
-import backend.section6mainproject.content.mapper.WalkLogContentMapper;
-import backend.section6mainproject.content.repository.WalkLogContentRepository;
 import backend.section6mainproject.exception.BusinessLogicException;
-import backend.section6mainproject.helper.image.StorageService;
 import backend.section6mainproject.walklog.entity.WalkLog;
-import backend.section6mainproject.walklog.service.WalkLogService;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
@@ -52,9 +38,9 @@ public class MemberServiceTest {
     @Mock
     private MemberMapper mapper;
     @Mock
-    private CustomAuthorityUtils authorityUtils;
-    @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private CustomAuthorityUtils authorityUtils;
     @Mock
     private CustomBeanUtils<Member> beanUtils;
 
@@ -98,6 +84,28 @@ public class MemberServiceTest {
 
     }
 
+    /*@Test
+    void updateMemberTest() throws Exception {
+        MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
+        Member findMember = stubData.getMember();
+        MemberServiceDTO.Output output = stubData.getMemberOutput();
+        output.setNickname(updateInput.getNickname());
+
+        //given(memberRepository.findByNickname(Mockito.anyString())).willReturn(Optional.of(findMember));
+        given(mapper.updateInputToMember(Mockito.any(MemberServiceDTO.UpdateInput.class))).willReturn(new Member());
+        given(memberRepository.findById(output.getMemberId())).willReturn(Optional.of(findMember));
+        given(beanUtils.copyNonNullProperties(Mockito.any(Member.class), Mockito.any(Member.class))).willReturn(new Member());
+        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("profileImage");
+        doNothing().when(storageService).delete(findMember.getProfileImage());
+        given(memberRepository.save(Mockito.any(Member.class))).willReturn(new Member());
+        given(mapper.memberToOutput(Mockito.any(Member.class))).willReturn(output);
+
+        MemberServiceDTO.Output result = memberService.updateMember(updateInput);
+
+        Assertions.assertEquals(updateInput.getNickname(), result.getNickname());
+
+    }*/
+
     @Test
     void updateMemberPasswordTest() throws Exception {
         Long memberId = 1L;
@@ -118,40 +126,47 @@ public class MemberServiceTest {
         verify(memberRepository, times(1)).save(priorMember);
     }
 
-    /*@Test
-    void updateMemberTest() throws Exception {
-        MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
+    @Test
+    void deleteMemberTest() throws Exception {
+
+        Member member = stubData.getMember();
+        when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
+        given(memberRepository.save(Mockito.any(Member.class))).willReturn(member);
+
+        memberService.deleteMember(member.getMemberId());
+
+        verify(memberRepository, times(1)).save(Mockito.any(Member.class));
+    }
+
+    @Test
+    void ShouldThrowExceptionWhenVerifyExistsEmailTest() throws Exception {
         Member findMember = stubData.getMember();
-        MemberServiceDTO.Output output = stubData.getMemberOutput();
-        findMember.setNickname(updateInput.getNickname());
+        String email = "test01@gmail.com";
 
-        given(mapper.updateInputToMember(Mockito.any(MemberServiceDTO.UpdateInput.class))).willReturn(findMember);
-        //doNothing().when(storageService).delete(findMember.getProfileImage());
-        given(beanUtils.copyNonNullProperties(Mockito.any(Member.class), Mockito.any(Member.class))).willReturn(new Member());
-        //given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("");
-        given(memberRepository.save(Mockito.any(Member.class))).willReturn(new Member());
-        given(mapper.memberToOutput(Mockito.any(Member.class))).willReturn(output);
+        given(memberRepository.findByEmail(Mockito.anyString())).willReturn(Optional.of(findMember));
 
-        Assertions.assertEquals(updateInput.getNickname(), findMember.getNickname());
+        Assertions.assertThrows(BusinessLogicException.class, () -> memberService.verifyExistsEmail(email));
+    }
 
-    }*/
+    @Test
+    void ShouldThrowExceptionWhenVerifyExistsNicknameTest() {
+        Member findMember = stubData.getMember();
+        String email = "test001@gmail.com";
 
+        given(memberRepository.findByNickname(Mockito.anyString())).willReturn(Optional.of(findMember));
 
-    /*@Test
-    @Disabled
-    void deleteMember() throws Exception {
-        //given
+        Assertions.assertThrows(BusinessLogicException.class, () -> memberService.verifyExistsNickname(email));
+
+    }
+
+    @Test
+    void ShouldThrowExceptionWhendistinguishQuittedMemberTest() {
         Member member = stubData.getMember();
         member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
 
-        //when
-        when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
-        given(memberRepository.save(Mockito.any(Member.class))).willReturn(member);
-        memberService.deleteMember(member.getMemberId());
+        Assertions.assertThrows(BusinessLogicException.class, () -> memberService.distinguishQuittedMember(member));
 
-        //then
-        verify(memberRepository, times(1)).save(Mockito.any(Member.class));
-    }*/
+    }
 
     @Test
     void findRecordingWalkLog() {

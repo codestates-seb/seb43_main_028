@@ -5,7 +5,6 @@ import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.member.MemberStubData;
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
-import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static backend.section6mainproject.util.ApiDocumentUtils.*;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -49,7 +47,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
