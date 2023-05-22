@@ -20,7 +20,7 @@ function SignIn() {
     const email = formData.get('email')
     const password = formData.get('password')
 
-    const { memberId } = await signIn({ email, password, autoLogin: true })
+    const { status, memberId } = await signIn({ email, password, autoLogin: true })
 
     if (memberId) {
       setId(memberId)
@@ -31,7 +31,8 @@ function SignIn() {
       routeTo('/')
       return
     }
-    alert('가입되지 않은 이메일이거나 잘못된 비밀번호입니다.')
+    if (status === 'invalid-info') alert('가입되지 않은 이메일이거나 잘못된 비밀번호입니다.')
+    if (status === 'unknown-error') alert('잠시 후 다시 시도해주세요.')
   }
   console.log(user)
 
