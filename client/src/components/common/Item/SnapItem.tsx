@@ -10,6 +10,7 @@ interface SnapItemProps {
 }
 
 export default function SnapItem({ walkLogContentId, imageUrl, seconds, content }: SnapItemProps) {
+  console.log(walkLogContentId)
   return (
     <div className={styles.container}>
       <div className={styles.imgWrapper}>
