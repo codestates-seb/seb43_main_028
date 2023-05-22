@@ -8,6 +8,8 @@ import {
   differenceInDays,
   differenceInMonths,
   differenceInYears,
+  differenceInHours,
+  differenceInMinutes,
 } from './date-fns'
 
 const A_MINUTE = 1000 * 60
@@ -92,15 +94,33 @@ export function getWeekRows(date: Date): (0 | Date)[][] {
 
 export function getTimeAgo(date: Date): string {
   const today = new Date()
+  const diffInMinutes = differenceInMinutes(today, date)
+
+  if (diffInMinutes < 1) {
+    return '방금 전'
+  }
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}분 전`
+  }
+
+  const diffInHours = differenceInHours(today, date)
+
+  if (diffInHours < 24) {
+    return `${diffInHours}시간 전`
+  }
+
   const diffInDays = differenceInDays(today, date)
-  const diffInMonths = differenceInMonths(today, date)
-  const diffInYears = differenceInYears(today, date)
 
   if (diffInDays <= 30) {
     return `${diffInDays}일 전`
   }
+
+  const diffInMonths = differenceInMonths(today, date)
+
   if (diffInMonths <= 12) {
     return `${diffInMonths}달 전`
   }
+
+  const diffInYears = differenceInYears(today, date)
   return `${diffInYears}년 전`
 }

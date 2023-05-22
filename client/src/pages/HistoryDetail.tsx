@@ -149,6 +149,7 @@ export default function HistoryDetail() {
         hasCloseButton={false}
         headerTitle='상세 기록'
         handleCloseFn={() => {}}
+        path='-1'
       />
       {edit ? (
         editSnapForm

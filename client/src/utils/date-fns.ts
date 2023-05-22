@@ -17,6 +17,8 @@ import getMonth from 'date-fns/getMonth'
 import differenceInDays from 'date-fns/differenceInDays'
 import differenceInMonths from 'date-fns/differenceInMonths'
 import differenceInYears from 'date-fns/differenceInYears'
+import differenceInHours from 'date-fns/differenceInHours'
+import differenceInMinutes from 'date-fns/differenceInMinutes'
 
 export {
   endOfMonth,
@@ -38,4 +40,6 @@ export {
   differenceInDays,
   differenceInMonths,
   differenceInYears,
+  differenceInHours,
+  differenceInMinutes,
 }
