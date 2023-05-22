@@ -33,10 +33,7 @@ type StartWalkLogResType = {
   walkLogId: number
 }
 
-export const startWalkLog = async ({
-  memberId,
-}: StartWalkLogProps): Promise<StartWalkLogResType> => {
-
+export const startWalkLog = async (memberId: number): Promise<StartWalkLogResType> => {
   try {
     const {
       data: { walkLogId },
@@ -59,7 +56,6 @@ export const getWalkLog = async (walkLogId: number): Promise<WalkLogType | null>
     return null
   }
 }
-
 
 type StopWalkLogProps = {
   walkLogId: string
@@ -102,4 +98,3 @@ export const getAllPublicWalkLogs = async (page = 1): Promise<GetAllPublicWalkLo
     return null
   }
 }
-
