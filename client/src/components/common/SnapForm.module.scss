@@ -2,7 +2,7 @@
 @use '../../styles/typography' as T;
 @use '../../styles/color' as C;
 
-.container {
+.snapFormContainer {
   position: fixed;
   top: 0;
   @include U.size(100%, 100dvh);
