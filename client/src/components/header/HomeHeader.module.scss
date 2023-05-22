@@ -31,3 +31,13 @@
   @include U.flex-c(row, left, left);
   gap: 8px;
 }
+
+.profile {
+  @include U.size(48px, 48px);
+  overflow: hidden;
+  border-radius: 48px;
+  img {
+    @include U.size(48px, 48px);
+    object-fit: cover;
+  }
+}

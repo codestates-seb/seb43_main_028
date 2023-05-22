@@ -1,0 +1,48 @@
+@use '../../../styles/utils' as U;
+@use '../../../styles/color' as C;
+@use '../../../styles/typography' as T;
+
+.container {
+  @include U.flex-c(row, flex-start, flex-start);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.infoBox {
+  @include U.flex-c(column, flex-start, flex-start);
+  gap: 4px;
+  width: calc(100% - 128px);
+}
+
+.imgWrapper {
+  @include U.flex-c();
+  @include U.size(120px, 80px);
+  background: C.$gray100;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.createdTime {
+  @include U.flex-c(row, left);
+  @include T.gray600-regular-12;
+  gap: 2px;
+}
+
+.content {
+  @include T.gray900-regular-14;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.buttonsWrapper {
+  @include U.flex-c(row, flex-start, flex-start);
+  gap: 16px;
+  button {
+    @include U.flex-c(row, center, center);
+    gap: 2px;
+    @include T.gray600-regular-14;
+  }
+}
