@@ -152,6 +152,8 @@ public class WalkLogServiceImpl implements WalkLogService {
     @Override
     public void deleteWalkLog(Long walkLogId){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLogId);
+        storageService.delete(findWalkLog.getMapImage());
+        findWalkLog.getWalkLogContents().stream().forEach(content -> storageService.delete(content.getImageKey()));
         walkLogRepository.delete(findWalkLog);
     }
 

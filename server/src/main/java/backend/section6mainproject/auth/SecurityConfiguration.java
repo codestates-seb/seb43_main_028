@@ -41,7 +41,6 @@ public class SecurityConfiguration {
         http
                 .headers().frameOptions().sameOrigin().and()
                 .csrf().disable()
-                .cors(Customizer.withDefaults())
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().logoutUrl("/members/logout").deleteCookies("Refresh")

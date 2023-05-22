@@ -47,7 +47,7 @@ public class WalkLogContentServiceImpl implements WalkLogContentService {
         WalkLogContent findWalkLogContent = findVerifiedWalkLogContentInternal(updateInput.getWalkLogContentId());
         Optional.ofNullable(updateInput.getText()).ifPresent(text -> findWalkLogContent.setText(text));
         String imageKey = storageService.store(updateInput.getContentImage(), "content");
-        if(imageKey != null) {
+        if(imageKey != null || storageService.isEmptyFile(updateInput.getContentImage())) {
             storageService.delete(findWalkLogContent.getImageKey());
             findWalkLogContent.setImageKey(imageKey);
         }
