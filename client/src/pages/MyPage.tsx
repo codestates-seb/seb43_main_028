@@ -21,9 +21,6 @@ type LogoutModalOptionType = {
   logoutFn: () => void
 }
 
-const koOptions: ['전체 공개', '나만 보기'] = ['전체 공개', '나만 보기']
-const engOptionsObj = { PUBLIC: koOptions[0], PRIVATE: koOptions[1] }
-
 export default function Mypage() {
   const { routeTo } = useRouter()
   const [, setIsLogin] = useAtom(isLoginAtom)
@@ -31,7 +28,6 @@ export default function Mypage() {
   const [user, setUser] = useAtom(userAtom)
   const [memberId] = useAtom(idAtom)
 
-  // const [userData, setUserData] = useState<UserInfoType | null>(null)
   const [registeredAt, setRegisteredAt] = useState('')
   const [isModalOpened, setIsModalOpened] = useState(false)
   const [isUnregisterModalOpened, setIsUnregisterModalOpened] = useState(false)
@@ -44,36 +40,18 @@ export default function Mypage() {
     title: '',
     logoutFn: () => {},
   })
-  const [publicSetting] = useState(
-    engOptionsObj[user.defaultWalkLogPublicSetting as keyof typeof engOptionsObj]
-  )
 
-  const filteredOption = koOptions.filter(option => option !== publicSetting)
-  filteredOption.unshift(publicSetting)
-
-  const dropDownOption = filteredOption.map((option, i) => {
-    const param =
-      Object.keys(engOptionsObj).find(
-        engOpt => engOptionsObj[engOpt as keyof typeof engOptionsObj] === option
-      ) || ''
-
-    return {
-      id: i,
-      title: option,
-      param,
-      handleClick: async (paramOpt: string) => {
-        if (user) {
-          const data = new FormData()
-          const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: paramOpt })], {
-            type: 'application/json',
-          })
-          data.append('patch', blob)
-          const { resData } = await patchUserPrivacySettings(memberId, data)
-          setUser(resData)
-        }
-      },
+  const handleChangePublicSetting = async (paramOpt: string) => {
+    if (user) {
+      const data = new FormData()
+      const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: paramOpt })], {
+        type: 'application/json',
+      })
+      data.append('patch', blob)
+      const { resData } = await patchUserPrivacySettings(memberId, data)
+      setUser(resData)
     }
-  })
+  }
 
   const handleOpenEditProfile = () => {
     setIsModalOpened(true)
@@ -188,7 +166,10 @@ export default function Mypage() {
         <div className={styles.configBox}>
           <div className={styles.configTitle}>걷기 기록 공개 설정</div>
           <div className={styles.selectWrapper}>
-            <DropDown options={dropDownOption} />
+            <DropDown
+              currentSetting={user.defaultWalkLogPublicSetting}
+              onSubmit={handleChangePublicSetting}
+            />
           </div>
           <div className={styles.configMessage}>
             전체공개 시 내 걷기 기록이 피드 탭에서 모든 유저에게 보입니다.
