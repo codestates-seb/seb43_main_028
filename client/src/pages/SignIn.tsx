@@ -5,7 +5,6 @@ import styles from './SignIn.module.scss'
 import { idAtom, isLoginAtom, userAtom } from '../store/authAtom'
 import useRouter from '../hooks/useRouter'
 import Header from '../components/common/Header'
-import DrawPolyline from '../components/HistoryList/DrawPolyline'
 
 function SignIn() {
   const { routeTo } = useRouter()
