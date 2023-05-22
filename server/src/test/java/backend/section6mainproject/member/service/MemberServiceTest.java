@@ -16,12 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 

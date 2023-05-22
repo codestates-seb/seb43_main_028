@@ -3,9 +3,7 @@ package backend.section6mainproject.member;
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
 import backend.section6mainproject.member.entity.Member;
-import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.walklog.entity.WalkLog;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.FileInputStream;
@@ -13,17 +11,18 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class MemberStubData {
     private Long memberId = 1L;
     private String email = "test01@gmail.com";
     private String plainPassword = "testdot01!";
     private String nickname = "거터";
+    private String updatedNickname = "나무";
     private Member.MemberStatus memberStatus = Member.MemberStatus.MEMBER_ACTIVE;
     private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting = WalkLog.WalkLogPublicSetting.PRIVATE;
     private String introduction = "안녕하세요";
-    private String profileImage = null;
+    private String updatedIntroduction = "물레물레물레";
+    private String profileImage = "/test/image/test.jpg";
     private List<String> roles = new ArrayList<>();
     private List<WalkLog> walkLogs = new ArrayList<>();
 
@@ -38,6 +37,7 @@ public class MemberStubData {
         member.setWalkLogs(walkLogs);
         member.setRoles(roles);
         member.setPassword(plainPassword);
+        member.setProfileImage(profileImage);
         return member;
     }
 
@@ -45,15 +45,22 @@ public class MemberStubData {
         Member member = new Member();
         member.setMemberId(memberId);
         member.setEmail(email);
-        member.setNickname("나무");
+        member.setNickname(updatedNickname);
         member.setMemberStatus(memberStatus);
         member.setDefaultWalkLogPublicSetting(defaultWalkLogPublicSetting);
-        member.setIntroduction("물레물레물레");
+        member.setIntroduction(updatedIntroduction);
         member.setWalkLogs(walkLogs);
         member.setRoles(roles);
         member.setPassword(plainPassword);
-        member.setProfileImage("");
+        member.setProfileImage(profileImage);
         return member;
+    }
+    public MemberControllerDTO.Post getPost(){
+        MemberControllerDTO.Post post = new MemberControllerDTO.Post();
+        post.setEmail(email);
+        post.setPassword(plainPassword);
+        post.setNickname(nickname);
+        return post;
     }
     public MemberControllerDTO.GetNewPw getGetNewPw() {
         MemberControllerDTO.GetNewPw getNewPw = new MemberControllerDTO.GetNewPw();

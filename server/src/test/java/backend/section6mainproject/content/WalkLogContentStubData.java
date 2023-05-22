@@ -9,12 +9,15 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class WalkLogContentStubData {
     private String text = "걷기 중 순간기록 중입니다.";
     private Long walkLogContentId = 1L;
     private Long walkLogId = 1L;
     private String imageUrl = "/test/image/test.jpg";
+    private LocalDateTime date = LocalDateTime.of(2023,5,22,12,12);
+
 
     public Long getWalkLogId() {
         return walkLogId;
@@ -63,9 +66,18 @@ public class WalkLogContentStubData {
     public WalkLogContentServiceDTO.CreateOutput getCreateOutput() {
         return new WalkLogContentServiceDTO.CreateOutput(walkLogContentId);
     }
+    public ArrayList<WalkLogContentServiceDTO.Output> getOutputs(){
+        ArrayList<WalkLogContentServiceDTO.Output> outputs = new ArrayList<>();
+        WalkLogContentServiceDTO.Output output1 = getOutput();
+        WalkLogContentServiceDTO.Output output2
+                = new WalkLogContentServiceDTO.Output(2L, date, "메세지2", imageUrl);
+        outputs.add(output1);
+        outputs.add(output2);
+        return outputs;
+    }
 
     public WalkLogContentServiceDTO.Output getOutput() {
-        return new WalkLogContentServiceDTO.Output(walkLogContentId, LocalDateTime.now(), text, imageUrl);
+        return new WalkLogContentServiceDTO.Output(walkLogContentId, date, text, imageUrl);
     }
 
     public WalkLogContent getWalkLogContent() {
