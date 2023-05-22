@@ -53,6 +53,7 @@ export const signIn = async ({
     const response = await axiosInstance.post('/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
     axiosInstance.defaults.headers.common.Authorization = authorization
+    fileAxios.defaults.headers.common.Authorization = authorization
     return { status: 'success', memberId: response.data.memberId }
   } catch (error) {
     return { status: 'fail', memberId: null }
@@ -82,6 +83,7 @@ export const refreshAccessToken = async () => {
   try {
     const { headers } = await axiosInstance.get('/members/refresh')
     axiosInstance.defaults.headers.common.Authorization = headers.authorization
+    fileAxios.defaults.headers.common.Authorization = headers.authorization
     return 'success'
   } catch (error) {
     return 'fail'
