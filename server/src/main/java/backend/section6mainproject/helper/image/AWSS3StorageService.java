@@ -135,4 +135,10 @@ public class AWSS3StorageService implements StorageService {
         }
         return null;
     }
+
+    @Override
+    public boolean isEmptyFile(MultipartFile image) {
+        if(image == null) return false;
+        return image.isEmpty();
+    }
 }
