@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import ImgInput from './ImgInput'
 import styles from './SnapForm.module.scss'
 
@@ -8,6 +8,7 @@ type SnapFormProps = {
   initialText?: string | null
   handleCancel: () => void
   handleSubmit: (formData: FormData) => void
+  style?: React.CSSProperties
 }
 
 export default function SnapForm({
@@ -16,21 +17,27 @@ export default function SnapForm({
   initialText = null,
   handleCancel,
   handleSubmit,
+  style,
 }: SnapFormProps) {
+  const [preview, setPreview] = useState<string | null>(initialImgUrl)
+
   const snapSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
     const text = formData.get('text')
-    const image = formData.get('image')
+    const image = formData.get('image') as File
 
     const data = new FormData()
     const blob = new Blob([JSON.stringify({ text })], {
       type: 'application/json',
     })
 
+    if ((!image.name && !preview) || (image.name && preview)) {
+      data.append('contentImage', image)
+    }
     data.append('content', blob)
-    if (image) data.append('contentImage', image)
+
     handleSubmit(data)
   }
 
@@ -42,7 +49,7 @@ export default function SnapForm({
   })
 
   return (
-    <div className={styles.container}>
+    <div className={styles.snapFormContainer} style={style}>
       <form onSubmit={snapSubmitHandler}>
         <div className={styles.header}>
           <h1>순간기록 {titleSuffix}</h1>
@@ -55,7 +62,7 @@ export default function SnapForm({
             </button>
           </div>
         </div>
-        <ImgInput initialValue={initialImgUrl} />
+        <ImgInput initialImgUrl={initialImgUrl} preview={preview} setPreview={setPreview} />
         <textarea
           className={styles.textInput}
           id='text'
