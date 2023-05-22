@@ -121,7 +121,6 @@ public class WalkLogServiceImplTest {
         assertThat(result).isNotNull();
         assertThat(result.getWalkLogId()).isEqualTo(walkLog.getWalkLogId());
         assertThat(result.getMessage()).isEqualTo(output.getMessage());
-//        assertThat(result.getWalkLogPublicSetting()).isEqualTo(String.valueOf(output.getWalkLogPublicSetting()));
     }
     @Test
     public void shouldThrowExceptionWhenWalkLogNotFoundTest() {
