@@ -5,6 +5,8 @@ import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +19,8 @@ import static backend.section6mainproject.walklog.entity.WalkLog.*;
 @Setter
 @NoArgsConstructor
 @Entity
+@Where(clause = "member_status <> 'MEMBER_QUIT'")
+@SQLDelete(sql = "UPDATE member SET member_status = 'MEMBER_QUIT' WHERE member_id = ?")
 public class Member extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +49,7 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<WalkLog> walkLogs = new ArrayList<>();
 
     public enum MemberStatus {
