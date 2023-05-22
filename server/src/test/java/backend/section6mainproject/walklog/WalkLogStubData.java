@@ -18,20 +18,20 @@ public class WalkLogStubData {
     private WalkLogContentStubData walkLogContentStubData;
     public static final String MEMBER_PASSWORD = "1q2w3e4r!abc";
     public static final String INTRODUCTION = "자기소개테스트";
-    private  Long MEMBER_ID = 1L;
-    private String MEMBER_EMAIL = "email@email.com";
-    private  Long WALK_LOG_ID = 1L;
-    private Long ANOTHER_WALK_LOG_ID = 2L;
-    private  String MESSAGE = "안녕하세요";
-    private  String NICKNAME = "테스트닉네임";
-    private  String MAP_IMAGE = "/test/image/test.jpg";
-    private String REGION = "03948";
-    private  int PAGE = 1;
-    private  int SIZE = 10;
-    private LocalDateTime DATE = LocalDateTime.of(2023,5,22,12,12);
-    private int YEAR = 2023;
-    private int MONTH = 5;
-    private int DAY = 22;
+    private final Long MEMBER_ID = 1L;
+    private final String MEMBER_EMAIL = "email@email.com";
+    private final Long WALK_LOG_ID = 1L;
+    private final Long ANOTHER_WALK_LOG_ID = 2L;
+    private final String MESSAGE = "안녕하세요";
+    private final String NICKNAME = "테스트닉네임";
+    private final String MAP_IMAGE = "/test/image/test.jpg";
+    private final String REGION = "03948";
+    private final int PAGE = 1;
+    private final int SIZE = 10;
+    private final LocalDateTime DATE = LocalDateTime.of(2023,5,22,12,12);
+    private final int YEAR = 2023;
+    private final int MONTH = 5;
+    private final int DAY = 22;
 
     public Long getWalkLogId() {
         return WALK_LOG_ID;
