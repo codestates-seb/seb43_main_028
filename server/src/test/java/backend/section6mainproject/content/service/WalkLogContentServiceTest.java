@@ -10,7 +10,6 @@ import backend.section6mainproject.helper.image.StorageService;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
