@@ -14,9 +14,10 @@ type ModalProps = {
     options: OptionType[]
   }
   onClose: () => void
+  style?: React.CSSProperties
 }
 
-function Modal({ modalData, onClose }: ModalProps) {
+function Modal({ modalData, onClose, style }: ModalProps) {
   const { title, options } = modalData
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function Modal({ modalData, onClose }: ModalProps) {
   })
 
   return (
-    <>
+    <div className={styles.modalContainer} style={style}>
       <div role='presentation' className={styles.modalBackground} onClick={onClose} />
       <div className={styles.modal}>
         <div className={styles.modalTop}>
@@ -48,7 +49,7 @@ function Modal({ modalData, onClose }: ModalProps) {
           })}
         </ul>
       </div>
-    </>
+    </div>
   )
 }
 
