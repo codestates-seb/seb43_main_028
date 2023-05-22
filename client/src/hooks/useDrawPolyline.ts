@@ -1,16 +1,12 @@
-import { useEffect, useRef } from 'react'
-import styles from './DrawPolyline.module.scss'
+import { useEffect, useRef, useState } from 'react'
 
 type CoordinateType = {
   lat: number
   lng: number
-}
+}[]
 
-type Props = {
-  coordinates: CoordinateType[]
-}
-
-export default function DrawPolyline({ coordinates }: Props) {
+const useDrawPolyline = (coordinates: CoordinateType) => {
+  const [img, setImg] = useState<string | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
   useEffect(() => {
@@ -59,11 +55,13 @@ export default function DrawPolyline({ coordinates }: Props) {
     canvas.height = 64
 
     drawLines()
-  }, [coordinates])
 
-  return (
-    <div className={styles.canvasWrapper}>
-      <canvas ref={canvasRef} id='myCanvas' />
-    </div>
-  )
+    const polylineImg = canvas.toDataURL('image/png')
+
+    setImg(polylineImg)
+  }, [coordinates, canvasRef])
+
+  return { img, canvasRef }
 }
+
+export default useDrawPolyline
