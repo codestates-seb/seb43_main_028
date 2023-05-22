@@ -70,6 +70,7 @@ export default function HistoryDetail() {
     memberId,
     message,
     nickname,
+    profileImage,
     walkLogContents,
     walkLogId,
     walkLogPublicSetting,
@@ -157,6 +158,7 @@ export default function HistoryDetail() {
             id={walkLogId}
             memberId={memberId}
             nickname={nickname}
+            profileImage={profileImage}
             startAt={createdAt}
             endAt={endAt}
             text={message}
