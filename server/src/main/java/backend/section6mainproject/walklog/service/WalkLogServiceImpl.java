@@ -26,7 +26,6 @@ import java.util.Optional;
 public class WalkLogServiceImpl implements WalkLogService {
 
     private final WalkLogRepository walkLogRepository;
-    private final WalkLogContentRepository walkLogContentRepository;
     private final MemberService memberService;
     private final CustomBeanUtils<WalkLog> beanUtils;
     private final WalkLogMapper walkLogMapper;
@@ -44,7 +43,9 @@ public class WalkLogServiceImpl implements WalkLogService {
     }
 
     private void checkWalkLogRecording(Member member) {
-        Optional<WalkLog> first = findWalkLogByMemberId(member.getMemberId()).stream()
+        Optional<WalkLog> first =
+                walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(member.getMemberId())
+                .stream()
                 .filter(walkLog -> walkLog.getWalkLogStatus().equals(WalkLog.WalkLogStatus.RECORDING))
                 .findFirst();
         if(first.isPresent())
@@ -98,15 +99,6 @@ public class WalkLogServiceImpl implements WalkLogService {
         return getOutput;
     }
 
-
-    @Override
-    public List<WalkLogServiceDTO.CalenderFindOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindInput totalFindsInput){
-        List<WalkLog> myWalkLogFromMonthForCalendar =
-                walkLogRepository.findMyWalkLogFromMonthForCalendar(totalFindsInput.getMemberId(), totalFindsInput.getYear(), totalFindsInput.getMonth());
-        return walkLogMapper.walkLogsToWalkLogServiceCalenderFindOutputDTOs(myWalkLogFromMonthForCalendar);
-    }
-
-
     @Override
     public Page<WalkLogServiceDTO.FindOutput> findMyWalkLogs(WalkLogServiceDTO.FindInput findInput){
         Long memberId = findInput.getMemberId();
@@ -119,7 +111,7 @@ public class WalkLogServiceImpl implements WalkLogService {
         checkInputError(year, month, day);
         if(year == null)
             return walkLogRepository.findAllByMember_MemberId(pageRequest, memberId)
-                            .map(walkLogMapper::walkLogToWalkLogServiceFindOutputDTO);
+                    .map(walkLogMapper::walkLogToWalkLogServiceFindOutputDTO);
         else if (month == null)
             return walkLogRepository.findAllByMyWalkLogFromYear(pageRequest,memberId,year)
                     .map(walkLogMapper::walkLogToWalkLogServiceFindOutputDTO);
@@ -130,6 +122,15 @@ public class WalkLogServiceImpl implements WalkLogService {
             return walkLogRepository.findAllByMyWalkLogFromDay(pageRequest,memberId, year, month, day)
                     .map(walkLogMapper::walkLogToWalkLogServiceFindOutputDTO);
     }
+
+
+    @Override
+    public List<WalkLogServiceDTO.CalenderFindOutput> findMyMonthWalkLogs(WalkLogServiceDTO.CalenderFindInput totalFindsInput){
+        List<WalkLog> myWalkLogFromMonthForCalendar =
+                walkLogRepository.findMyWalkLogFromMonthForCalendar(totalFindsInput.getMemberId(), totalFindsInput.getYear(), totalFindsInput.getMonth());
+        return walkLogMapper.walkLogsToWalkLogServiceCalenderFindOutputDTOs(myWalkLogFromMonthForCalendar);
+    }
+
 
     private static void checkInputError(Integer year, Integer month, Integer day) {
         if(year == null){
@@ -162,9 +163,5 @@ public class WalkLogServiceImpl implements WalkLogService {
         Optional<WalkLog> findWalkLogById = walkLogRepository.findById(walkLogId);
         return findWalkLogById.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND));
-    }
-    private List<WalkLog> findWalkLogByMemberId(Long memberId){
-        return walkLogRepository.findAllByMember_MemberIdOrderByWalkLogIdDesc(memberId);
-
     }
 }
