@@ -66,14 +66,14 @@ public class MemberServiceImpl implements MemberService{
     }
 
     private void verifyExistsEmail(String email) {
-       Optional<Member> findMember = memberRepository.findByEmail(email);
+       Optional<Member> findMember = memberRepository.findByEmailAll(email);
        if(findMember.isPresent()) {
            throw new BusinessLogicException(ExceptionCode.MEMBER_EMAIL_EXISTS);
        }
     }
 
     private void verifyExistsNickname(String nickname) {
-        Optional<Member> findMember = memberRepository.findByNickname(nickname);
+        Optional<Member> findMember = memberRepository.findByNicknameAll(nickname);
         if(findMember.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NICKNAME_EXISTS);
         }
@@ -151,8 +151,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void deleteMember(Long memberId) {
         Member findMember = findVerifiedMember(memberId);
-        findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
-        memberRepository.save(findMember);
+        memberRepository.delete(findMember);
     }
 
     @Override

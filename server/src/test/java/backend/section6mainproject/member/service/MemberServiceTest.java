@@ -125,19 +125,17 @@ public class MemberServiceTest {
         verify(memberRepository, times(1)).save(priorMember);
     }
 
+
     @Test
     void deleteMemberTest() throws Exception {
 
         Member member = stubData.getMember();
         when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
-        given(memberRepository.save(Mockito.any(Member.class))).willReturn(member);
 
         memberService.deleteMember(member.getMemberId());
 
-        verify(memberRepository, times(1)).save(Mockito.any(Member.class));
+        verify(memberRepository, times(1)).delete(Mockito.any(Member.class));
     }
-
-
 
     @Test
     void findRecordingWalkLog() {

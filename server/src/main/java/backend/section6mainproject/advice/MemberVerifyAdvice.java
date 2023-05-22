@@ -42,7 +42,7 @@ public class MemberVerifyAdvice {
         Long authenticatedMemberId = getAuthenticatedMemberId(request);
         long memberId = extractIdFromUri(request, "/members/");
 
-        Optional<Member> optionalMember = memberRepository.findByMemberIdAndMemberStatus(memberId, Member.MemberStatus.MEMBER_ACTIVE);
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
         optionalMember.ifPresentOrElse(member -> {
             if (member.getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
         }, () -> {
