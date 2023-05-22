@@ -19,6 +19,9 @@ export default function Header({
 }: HeaderPropsType) {
   const { routeTo } = useRouter()
   const toPreviousPage = () => {
+    if (path === '-1') {
+      routeTo(-1)
+    }
     routeTo(path)
   }
 

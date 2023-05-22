@@ -76,7 +76,7 @@ export default function HistoryList() {
   })
 
   return (
-    <div>
+    <div className={styles.container}>
       <Toggle handleCalendar={handleCalendar} calendar={calendar} />
       {calendar && (
         <Calendar
