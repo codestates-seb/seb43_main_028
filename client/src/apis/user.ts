@@ -123,8 +123,19 @@ export const patchUserProfile = async (memberId: number, formData: FormData) => 
     const response = await fileAxios.patch(`/members/${memberId}`, formData)
     return { status: 'success', resData: response.data }
   } catch (error: unknown) {
-    return { status: 'fail', resData: null }
+    const axiosError = error as AxiosError
+    if (axiosError.response?.data) {
+      const responseData = axiosError.response.data
+      if (typeof responseData === 'object') {
+        if ('status' in responseData) {
+          if (responseData.status === 409) {
+            return { status: 'nickname-exists', resData: null }
+          }
+        }
+      }
+    }
   }
+  return { status: 'unknown-error', resData: null }
 }
 
 export const patchUserPrivacySettings = async (memberId: number, data: any) => {
