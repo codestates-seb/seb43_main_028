@@ -1,0 +1,34 @@
+@use '../styles/utils' as U;
+@use '../styles/color' as C;
+@use '../styles/typography' as T;
+
+.container {
+  @include U.flex-c(column);
+  gap: 16px;
+}
+
+.snapBox {
+  @include U.flex-c(column);
+  gap: 20px;
+  margin: 0 20px 20px;
+  padding: 24px 20px;
+  background: C.$white;
+  border-radius: 12px;
+  @include U.box-shadow(4px);
+}
+
+.snaplist {
+  @include U.flex-c(column, flex-start, flex-start);
+  gap: 16px;
+  width: 100%;
+}
+
+.snapbutton {
+  @include U.size(100%, 48px);
+  @include U.flex-c(row, center, center);
+  @include T.gray900-bold-18;
+  gap: 2px;
+  background: C.$white;
+  border: 1px solid C.$gray900;
+  border-radius: 12px;
+}
