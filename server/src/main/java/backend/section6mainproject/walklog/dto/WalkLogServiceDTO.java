@@ -38,6 +38,7 @@ public class WalkLogServiceDTO {
     public static class ExitInput {
         private Long walkLogId;
         private String message;
+        private String region;
         private WalkLog.WalkLogPublicSetting walkLogPublicSetting;
         private MultipartFile mapImage;
 
@@ -115,6 +116,7 @@ public class WalkLogServiceDTO {
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
         private String imageUrl;
+        private String region;
 
         private String message;
         private Long memberId;

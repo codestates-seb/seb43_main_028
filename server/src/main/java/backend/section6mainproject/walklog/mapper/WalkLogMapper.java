@@ -55,7 +55,7 @@ public interface WalkLogMapper {
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     WalkLogServiceDTO.GetOutput walkLogToWalkLogServiceGetOutPutDTO(WalkLog walkLog);
     @Mapping(source = "member.nickname",target = "nickname")
-    @Mapping(source = "member.profileImage",target = "profileImage")
+    @Mapping(source = "member.profileImage",target = "profileImage",qualifiedByName = "signBucket")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
     @Mapping(source = "mapImage",target = "mapImage",qualifiedByName = "signBucket")
