@@ -53,7 +53,6 @@ export const signIn = async ({
     const response = await axiosInstance.post('/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
     axiosInstance.defaults.headers.common.Authorization = authorization
-    fileAxios.defaults.headers.common.Authorization = authorization
     return { status: 'success', memberId: response.data.memberId }
   } catch (error) {
     return { status: 'fail', memberId: null }
