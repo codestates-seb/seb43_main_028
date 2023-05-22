@@ -86,11 +86,23 @@ export default function AfterWalk() {
   return (
     <div>
       <WalkHeader type='AFTER' startedAt={walkLog.createdAt} />
-      <form onSubmit={handleStopClick}>
+      <form className={styles.stopWalkForm} onSubmit={handleStopClick}>
         {/* 맵 이미지 넣기 */}
-        <DropDown currentSetting={pubilcOption} onSubmit={updatePublicOption} />
-        <input type='text' name='message' id='message' placeholder='한줄메세지 작성' required />
-        <button type='submit'>완료</button>
+        <div className={styles.publicOptionBox}>
+          <span>기록공개 설정</span>
+          <DropDown currentSetting={pubilcOption} onSubmit={updatePublicOption} />
+        </div>
+        <input
+          className={styles.messageInput}
+          type='text'
+          name='message'
+          id='message'
+          placeholder='한줄메세지 작성'
+          required
+        />
+        <button className={styles.stopWalkFormButton} type='submit'>
+          완료
+        </button>
       </form>
       {/* 지도 */}
       <div className={styles.snapBox}>

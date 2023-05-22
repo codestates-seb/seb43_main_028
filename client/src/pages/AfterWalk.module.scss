@@ -24,12 +24,36 @@
   position: relative;
 }
 
-.snapbutton {
-  @include U.size(100%, 48px);
-  @include U.flex-c(row, center, center);
-  @include T.gray900-bold-18;
-  gap: 2px;
+.stopWalkForm {
+  padding: 12px 20px 24px;
   background: C.$white;
-  border: 1px solid C.$gray900;
+}
+
+.messageInput {
+  @include U.size(100%, 48px);
+  border: none;
+  appearance: none;
+  background: C.$gray100;
   border-radius: 12px;
+  padding: 0 20px;
+  margin: 24px 0 12px;
+  &::placeholder {
+    color: C.$gray400;
+  }
+  &:focus {
+    border: 1px solid C.$gray600;
+  }
+}
+.stopWalkFormButton {
+  @include U.size(100%, 48px);
+  @include T.gray900-bold-18;
+  background: C.$gray900;
+  border-radius: 12px;
+  color: C.$white;
+}
+.publicOptionBox {
+  span {
+    @include T.gray900-bold-16;
+  }
+  @include U.flex-c(row, space-between, center);
 }
