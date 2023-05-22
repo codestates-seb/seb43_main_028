@@ -28,6 +28,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         if((Boolean) request.getAttribute("autoLogin")){
             String refreshToken = authenticationSuccessHandlerUtils.delegateRefreshToken(member);
             ResponseCookie cookie = ResponseCookie.from("Refresh", refreshToken)
+                    .domain(".would-you-walk.com")
                     .path("/")
                     .sameSite("None")
                     .httpOnly(true)
