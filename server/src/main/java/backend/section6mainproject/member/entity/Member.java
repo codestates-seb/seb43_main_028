@@ -5,6 +5,7 @@ import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import static backend.section6mainproject.walklog.entity.WalkLog.*;
 @Setter
 @NoArgsConstructor
 @Entity
+@Where(clause = "member_status <> 'MEMBER_QUIT'")
 public class Member extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
