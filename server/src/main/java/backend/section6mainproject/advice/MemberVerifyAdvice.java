@@ -53,8 +53,8 @@ public class MemberVerifyAdvice {
     /**
      * 걷기 기록 수정, 걷기 기록 삭제, 걷기 기록 종료, 걷기 기록 조회(PRIVATE), 걷기 중 순간기록 등록 주체 검증
      */
-    @Before("execution(* patchWalkLog(..)) || execution(!void deleteWalkLog(..))|| execution(* endWalkLog(..)) || " +
-            "execution(* getWalkLog(..)) || execution(* postContent(..))")
+    @Before("execution(* patchWalkLog(..)) || execution(!void deleteWalkLog(..))|| execution(* endWalkLog(Long, ..)) || " +
+            "execution(* getWalkLog(long)) || execution(* postContent(..))")
     public void verifyWalkLog(JoinPoint joinPoint) {
         log.info("verifying walkLog is working : {}", joinPoint.getSignature());
         String methodName = joinPoint.getSignature().getName();

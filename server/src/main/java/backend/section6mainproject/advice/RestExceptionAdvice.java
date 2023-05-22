@@ -3,11 +3,11 @@ package backend.section6mainproject.advice;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,7 +33,7 @@ public class RestExceptionAdvice {
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    //JPA에서 제약 조건 위반 예외 처리,(ex : DB에 저장할려는데 유효성 검사 실패)
+    // Path variable이 유효성 검사를 통과하지 못했을 때 예외 발생
     public ErrorResponse handleConstraintViolationException(
             ConstraintViolationException e){
         final ErrorResponse response = ErrorResponse.of(e.getConstraintViolations());
@@ -46,6 +46,12 @@ public class RestExceptionAdvice {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode()
                 .getStatus()));
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity handleBindException(BindException e) {
+        final ErrorResponse response = ErrorResponse.of(e.getBindingResult());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)

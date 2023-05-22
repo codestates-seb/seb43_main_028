@@ -11,7 +11,6 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-//브랜치 병합 후 점검할것
 @Mapper(componentModel = "spring",uses = {CoordinateMapper.class, WalkLogContentMapper.class, StorageService.class})
 public interface WalkLogMapper {
     //Controller To Service
@@ -60,7 +59,6 @@ public interface WalkLogMapper {
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
     @Mapping(source = "mapImage",target = "mapImage",qualifiedByName = "signBucket")
-    @Mapping(source = "member.profileImage",target = "profileImage",qualifiedByName = "signBucket")
     WalkLogServiceDTO.FindFeedOutput walkLogToWalkLogServiceFindFeedOutputDTO(WalkLog walkLog);
 
     List<WalkLogServiceDTO.CalenderFindOutput> walkLogsToWalkLogServiceCalenderFindOutputDTOs(List<WalkLog> walkLogs);
@@ -75,6 +73,7 @@ public interface WalkLogMapper {
     WalkLogControllerDTO.PostResponse walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(WalkLogServiceDTO.CreateOutput walkLogServiceCreateOutputDTO);
     @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
+    @Mapping(source = "imageUrl",target = "mapImage")
     WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
 
     @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
