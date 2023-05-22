@@ -105,7 +105,7 @@ export default function Title({
           {profileImage ? (
             <img src={profileImage} alt='profile' />
           ) : (
-            <Icon name='no-profile' size={16} />
+            <Icon name='no-profile' size={48} />
           )}
           <div>{nickname}</div>
         </div>
