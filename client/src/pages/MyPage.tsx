@@ -6,19 +6,26 @@ import { userAtom, idAtom, isLoginAtom } from '../store/authAtom'
 import DropDown from '../components/common/DropDown'
 import EditProfile from '../components/MyPage/EditProfile'
 import styles from './MyPage.module.scss'
-import { patchUserPrivacySettings, unregisterUser } from '../apis/user'
+import { logoutUser, patchUserPrivacySettings, unregisterUser } from '../apis/user'
 import Icon from '../components/common/Icon'
 import Modal from '../components/common/Modal'
+import useRouter from '../hooks/useRouter'
 
-type ModalOption = {
+type UnregisterModalOptionType = {
   title: string
   unregisterFn: () => void
+}
+
+type LogoutModalOptionType = {
+  title: string
+  logoutFn: () => void
 }
 
 const koOptions: ['전체 공개', '나만 보기'] = ['전체 공개', '나만 보기']
 const engOptionsObj = { PUBLIC: koOptions[0], PRIVATE: koOptions[1] }
 
 export default function Mypage() {
+  const { routeTo } = useRouter()
   const [, setIsLogin] = useAtom(isLoginAtom)
 
   const [user, setUser] = useAtom(userAtom)
@@ -28,9 +35,14 @@ export default function Mypage() {
   const [registeredAt, setRegisteredAt] = useState('')
   const [isModalOpened, setIsModalOpened] = useState(false)
   const [isUnregisterModalOpened, setIsUnregisterModalOpened] = useState(false)
-  const [unregisterModalOption, setUnregisterModalOption] = useState<ModalOption>({
+  const [unregisterModalOption, setUnregisterModalOption] = useState<UnregisterModalOptionType>({
     title: '',
     unregisterFn: () => {},
+  })
+  const [isLogoutModalOpened, setIsLogoutModalOpened] = useState(false)
+  const [logoutModalOption, setLogoutModalOption] = useState<LogoutModalOptionType>({
+    title: '',
+    logoutFn: () => {},
   })
   const [publicSetting] = useState(
     engOptionsObj[user.defaultWalkLogPublicSetting as keyof typeof engOptionsObj]
@@ -67,7 +79,7 @@ export default function Mypage() {
     setIsModalOpened(true)
   }
 
-  const modalData = {
+  const unregisterModalData = {
     title: unregisterModalOption.title,
     options: [
       {
@@ -98,6 +110,42 @@ export default function Mypage() {
       unregisterFn: () => {
         handleUnregister()
         setIsUnregisterModalOpened(prev => !prev)
+      },
+    })
+  }
+
+  const logoutModalData = {
+    title: logoutModalOption.title,
+    options: [
+      {
+        label: '확인',
+        handleClick: logoutModalOption.logoutFn,
+
+        id: 0,
+      },
+      {
+        label: '취소',
+        handleClick: () => setIsLogoutModalOpened(prev => !prev),
+        id: 1,
+      },
+    ],
+  }
+
+  const handleLogout = async () => {
+    const res = await logoutUser()
+    if (res === 'success') {
+      setIsLogin(false)
+      routeTo('/')
+    }
+  }
+
+  const handleLogoutModal = () => {
+    setIsLogoutModalOpened(prev => !prev)
+    setLogoutModalOption({
+      title: '로그아웃',
+      logoutFn: () => {
+        handleLogout()
+        setIsLogoutModalOpened(prev => !prev)
       },
     })
   }
@@ -146,17 +194,28 @@ export default function Mypage() {
             전체공개 시 내 걷기 기록이 피드 탭에서 모든 유저에게 보입니다.
           </div>
         </div>
-        <div className={styles.setLinkWrapper}>
+        <div className={styles.setLinkWrapper900}>
           <Link to='/changepassword'>비밀번호 변경하기</Link>
         </div>
-        <div className={styles.setLinkWrapper}>
+        <div className={styles.setLinkWrapper900}>
+          <button type='button' onClick={handleLogoutModal}>
+            로그아웃
+          </button>
+        </div>
+        <div className={styles.setLinkWrapper600}>
           <button type='button' onClick={handleUnregisterModal}>
             회원 탈퇴하기
           </button>
         </div>
       </div>
       {isUnregisterModalOpened && (
-        <Modal modalData={modalData} onClose={() => setIsUnregisterModalOpened(prev => !prev)} />
+        <Modal
+          modalData={unregisterModalData}
+          onClose={() => setIsUnregisterModalOpened(prev => !prev)}
+        />
+      )}
+      {isLogoutModalOpened && (
+        <Modal modalData={logoutModalData} onClose={() => setIsLogoutModalOpened(prev => !prev)} />
       )}
     </>
   )
