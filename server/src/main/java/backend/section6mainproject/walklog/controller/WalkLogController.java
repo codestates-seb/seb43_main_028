@@ -71,8 +71,6 @@ public class WalkLogController {
     }
     @GetMapping("/{walk-log-id}")
     public ResponseEntity getWalkLog(@PathVariable("walk-log-id") @Positive long walkLogId){
-        //get은 RequestBody가 존재하지 않는다 그럼에도 불구하고 Client To Controller DTO를 만들 필요성이 있을까?
-
         WalkLogControllerDTO.GetResponse getResponse =
                 walkLogMapper.walkLogServiceGetOutPutDTOtoWalkLogControllerGetResponseDTO(walkLogService.findWalkLog(walkLogId));
         return new ResponseEntity<>(getResponse, HttpStatus.OK);

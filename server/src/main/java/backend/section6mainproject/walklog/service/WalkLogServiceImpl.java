@@ -1,8 +1,6 @@
 package backend.section6mainproject.walklog.service;
 
-import backend.section6mainproject.content.entity.WalkLogContent;
 import backend.section6mainproject.content.repository.WalkLogContentRepository;
-import backend.section6mainproject.dto.PageInfo;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.exception.ExceptionCode;
 import backend.section6mainproject.helper.image.StorageService;
