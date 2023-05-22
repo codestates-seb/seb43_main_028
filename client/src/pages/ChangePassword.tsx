@@ -38,6 +38,7 @@ export default function ChangePassword() {
           hasCloseButton={false}
           headerTitle='비밀번호 변경'
           handleCloseFn={() => {}}
+          path='/mypage'
         />
         <ChangingPassword
           memberId={userId}
@@ -56,6 +57,7 @@ export default function ChangePassword() {
           hasCloseButton={false}
           headerTitle='비밀번호 변경'
           handleCloseFn={() => {}}
+          path='/mypage'
         />
         <PasswordChanged
           setIsChangingPassword={setIsChangingPassword}
@@ -72,6 +74,7 @@ export default function ChangePassword() {
         hasCloseButton={false}
         headerTitle='비밀번호 변경'
         handleCloseFn={() => {}}
+        path='/mypage'
       />
       <form className={styles.formContainer} onSubmit={confirmPassword}>
         <div className={styles.inputBox}>
