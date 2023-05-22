@@ -4,7 +4,6 @@ import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
 import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.coordinate.dto.CoordinateControllerDTO;
 
-import backend.section6mainproject.coordinate.dto.CoordinateServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +32,7 @@ public class WalkLogControllerDTO {
     @Setter
     @NoArgsConstructor
     public static class Patch{
-        @Size(max = 100) //한줄메시지기 때문에 길지않아도 된다고 판단했습니다.
+        @Size(max = 100)
         private String message;
         private WalkLogPublicSetting walkLogPublicSetting;
     }

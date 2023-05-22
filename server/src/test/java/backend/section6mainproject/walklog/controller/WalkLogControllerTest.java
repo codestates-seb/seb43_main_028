@@ -14,14 +14,12 @@ import backend.section6mainproject.walklog.service.WalkLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpMethod;
@@ -30,8 +28,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
 import org.springframework.restdocs.generate.RestDocumentationGenerator;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -278,7 +274,6 @@ public class WalkLogControllerTest {
 
         //then
         perform
-                //예상되는 결과는 status가 isok
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(detailResponse.getMessage()))
                 .andDo(document(
