@@ -36,8 +36,7 @@ public class MemberControllerDTO {
         @NotSpace(message = "닉네임을 입력해주세요.")
         private String nickname;
 
-        @NotSpace(message = "자기소개문구는 공백일 수 없습니다.")
-        @Size(min = 1, max = 100) //자기소개 글자수 제한
+        @Size(max = 100) //자기소개 글자수 제한
         private String introduction;
 
         private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting;
