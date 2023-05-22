@@ -14,7 +14,7 @@ type SignInPropsType = {
 }
 
 type SignInResType = {
-  status: 'success' | 'fail'
+  status: 'success' | 'fail' | 'invalid-info' | 'unknown-error'
   memberId: number | null
 }
 
@@ -39,8 +39,23 @@ export const signUp = async ({ nickname, email, password }: SignUpPropsType) => 
     await axiosInstance.post('/members/sign', { nickname, email, password })
     return 'success'
   } catch (error: unknown) {
-    console.log(error)
-    return (error as AxiosError)?.response?.status === 409 ? '409-fail' : 'fail'
+    const axiosError = error as AxiosError
+
+    if (axiosError.response?.data) {
+      const responseData = axiosError.response.data
+
+      if (typeof responseData === 'object') {
+        if ('message' in responseData) {
+          if (responseData.message === 'Member Email exists') {
+            return 'email-exists'
+          }
+          if (responseData.message === 'Member Nickname exists') {
+            return 'nickname-exists'
+          }
+        }
+      }
+    }
+    return 'unknown-error'
   }
 }
 
@@ -55,8 +70,21 @@ export const signIn = async ({
     axiosInstance.defaults.headers.common.Authorization = authorization
     fileAxios.defaults.headers.common.Authorization = authorization
     return { status: 'success', memberId: response.data.memberId }
-  } catch (error) {
-    return { status: 'fail', memberId: null }
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError
+
+    if (axiosError.response?.data) {
+      const responseData = axiosError.response.data
+
+      if (typeof responseData === 'object') {
+        if ('status' in responseData) {
+          if (responseData.status === 401) {
+            return { status: 'invalid-info', memberId: null }
+          }
+        }
+      }
+    }
+    return { status: 'unknown-error', memberId: null }
   }
 }
 
@@ -95,9 +123,19 @@ export const patchUserProfile = async (memberId: number, formData: FormData) => 
     const response = await fileAxios.patch(`/members/${memberId}`, formData)
     return { status: 'success', resData: response.data }
   } catch (error: unknown) {
-    console.log(error)
-    return { status: 'fail', resData: null }
+    const axiosError = error as AxiosError
+    if (axiosError.response?.data) {
+      const responseData = axiosError.response.data
+      if (typeof responseData === 'object') {
+        if ('status' in responseData) {
+          if (responseData.status === 409) {
+            return { status: 'nickname-exists', resData: null }
+          }
+        }
+      }
+    }
   }
+  return { status: 'unknown-error', resData: null }
 }
 
 export const patchUserPrivacySettings = async (memberId: number, data: any) => {

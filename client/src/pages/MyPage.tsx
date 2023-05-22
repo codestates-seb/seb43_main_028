@@ -26,6 +26,7 @@ export default function Mypage() {
   const [, setIsLogin] = useAtom(isLoginAtom)
 
   const [user, setUser] = useAtom(userAtom)
+  const [isLogin] = useAtom(isLoginAtom)
   const [memberId] = useAtom(idAtom)
 
   const [registeredAt, setRegisteredAt] = useState('')
@@ -129,7 +130,7 @@ export default function Mypage() {
   }
 
   useEffect(() => {
-    if (user) {
+    if (user.createdAt && isLogin) {
       const registeredDate = new Date(user.createdAt)
       const formattedData = format(registeredDate, 'yyyy-MM-dd')
       setRegisteredAt(formattedData)
