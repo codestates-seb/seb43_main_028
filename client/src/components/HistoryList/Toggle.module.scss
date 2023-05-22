@@ -1,7 +1,12 @@
 @use '../../styles/color' as C;
 
+.container {
+  width: 100%;
+  padding: 20px 20px 0 20px;
+}
+
 .toggleBox {
-  margin: 20px 20px 16px;
+  width: 100%;
   display: flex;
   border-radius: 8px;
   overflow: hidden;

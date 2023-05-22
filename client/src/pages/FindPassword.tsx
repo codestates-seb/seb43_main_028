@@ -54,6 +54,7 @@ export default function FindPassword() {
           hasCloseButton={false}
           headerTitle='비밀번호 찾기'
           handleCloseFn={() => {}}
+          path='/signin'
         />
         <TempPasswordSent setIsTempPasswordSent={setIsTempPasswordSent} userEmail={userEmail} />
       </>
@@ -66,6 +67,7 @@ export default function FindPassword() {
         hasCloseButton={false}
         headerTitle='비밀번호 찾기'
         handleCloseFn={() => {}}
+        path='/signin'
       />
       <form
         className={styles.formContainer}
