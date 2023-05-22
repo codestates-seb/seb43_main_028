@@ -45,6 +45,7 @@ public class WalkLogControllerDTO {
     public static class EndPost {
         @Size(max = 100)
         private String message;
+        private String region;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
     @Getter
@@ -148,6 +149,7 @@ public class WalkLogControllerDTO {
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
         private String mapImage;
+        private String region;
         @Size(max = 100)
         private String message;
         private Long memberId;

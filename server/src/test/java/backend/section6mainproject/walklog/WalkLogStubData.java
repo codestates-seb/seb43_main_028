@@ -19,6 +19,7 @@ public class WalkLogStubData {
     private  String message = "안녕하세요";
     private  String nickname = "테스트닉네임";
     private  String mapImage = "/test/image/test.jpg";
+    private String region = "03948";
     private  int page = 1;
     private  int size = 10;
     private  WalkLog.WalkLogStatus walkLogStatus = WalkLog.WalkLogStatus.STOP;
@@ -78,6 +79,7 @@ public class WalkLogStubData {
         detailResponse.setMemberId(memberId);
         detailResponse.setNickname(nickname);
         detailResponse.setMapImage(mapImage);
+        detailResponse.setRegion(region);
         detailResponse.setCreatedAt(LocalDateTime.now());
         detailResponse.setEndAt(LocalDateTime.now());
         detailResponse.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PRIVATE);
@@ -105,6 +107,7 @@ public class WalkLogStubData {
     public WalkLogControllerDTO.EndPost getEndPost(){
         WalkLogControllerDTO.EndPost endPostDTO = new WalkLogControllerDTO.EndPost();
         endPostDTO.setMessage(message);
+        endPostDTO.setRegion(region);
         endPostDTO.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
         return endPostDTO;
     }

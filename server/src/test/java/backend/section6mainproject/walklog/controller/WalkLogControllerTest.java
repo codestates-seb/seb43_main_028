@@ -286,9 +286,10 @@ public class WalkLogControllerTest {
                         requestParts(
                                 partWithName("mapImage").description("걸은 위치를 이어 그린 지도").optional(),
                                 partWithName("endPost").description("걷기 기록종료시 필요한 JSON 데이터")
-                        ),
+                                ),
                         requestPartFields("endPost",
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("한줄 메세지").optional(),
+                                fieldWithPath("region").type(JsonFieldType.STRING).description("우편번호 메세지"),
                                 fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).
                                         description("걷기 기록 공개 설정(PUBLIC, PRIVATE)").optional()
                         ),
@@ -297,6 +298,7 @@ public class WalkLogControllerTest {
                                 fieldWithPath("mapImage").type(JsonFieldType.STRING).description("지도 이미지 임시 URL"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
                                 fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
+                                fieldWithPath("region").type(JsonFieldType.STRING).description("우편번호"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
                                 fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                 fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
