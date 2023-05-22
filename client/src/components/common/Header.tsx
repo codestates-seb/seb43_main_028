@@ -7,6 +7,7 @@ type HeaderPropsType = {
   hasBackButton: boolean
   hasCloseButton: boolean
   handleCloseFn: React.Dispatch<React.SetStateAction<boolean>>
+  path: string
 }
 
 export default function Header({
@@ -14,10 +15,11 @@ export default function Header({
   hasBackButton,
   hasCloseButton,
   handleCloseFn,
+  path,
 }: HeaderPropsType) {
   const { routeTo } = useRouter()
   const toPreviousPage = () => {
-    routeTo(-1)
+    routeTo(path)
   }
 
   return (

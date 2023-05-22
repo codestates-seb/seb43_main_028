@@ -112,6 +112,7 @@ function SignUp() {
           hasCloseButton
           headerTitle='이용약관'
           handleCloseFn={setIsTermOfUseOpened}
+          path='/signin'
         />
         <div className={styles.termContainer}>
           안고, 바이며, 있을 이 없으면 불어 인간의 할지니, 듣는다. 하였으며, 착목한는 얼마나 석가는
@@ -160,6 +161,7 @@ function SignUp() {
           hasCloseButton
           headerTitle='개인정보 처리방침'
           handleCloseFn={setIsPrivacyPolicyOpened}
+          path=''
         />
         <div className={styles.termContainer}>
           안고, 바이며, 있을 이 없으면 불어 인간의 할지니, 듣는다. 하였으며, 착목한는 얼마나 석가는
@@ -208,6 +210,7 @@ function SignUp() {
         hasCloseButton={false}
         headerTitle='회원가입'
         handleCloseFn={() => {}}
+        path='/signin'
       />
       <form
         className={styles.formContainer}
