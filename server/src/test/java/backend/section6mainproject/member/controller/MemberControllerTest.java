@@ -1,13 +1,13 @@
 package backend.section6mainproject.member.controller;
 
 import backend.section6mainproject.advice.StompExceptionAdvice;
-import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
+import backend.section6mainproject.content.WalkLogContentStubData;
 import backend.section6mainproject.member.MemberStubData;
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
-import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
+import backend.section6mainproject.walklog.WalkLogStubData;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
 import backend.section6mainproject.walklog.entity.WalkLog;
@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static backend.section6mainproject.util.ApiDocumentUtils.*;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -49,7 +48,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -63,7 +61,8 @@ public class MemberControllerTest {
     private MockMvc mockMvc;
 
     private ObjectMapper objectMapper;
-    private MemberStubData stubData;
+    private MemberStubData memberStubData;
+    private WalkLogStubData walkLogStubData;
 
     @MockBean
     private WalkLogMapper walkLogMapper;
@@ -77,17 +76,15 @@ public class MemberControllerTest {
     @BeforeEach
     void init() {
         objectMapper = new ObjectMapper();
-        stubData = new MemberStubData();
+        memberStubData = new MemberStubData();
+        walkLogStubData = new WalkLogStubData();
     }
 
 
     @Test
     void postMemberTest() throws Exception {
         //given 테스트에 필요한 객체들을 준비한다.
-        MemberControllerDTO.Post post = new MemberControllerDTO.Post();
-        post.setEmail("test@gmail.com");
-        post.setPassword("testdot01!");
-        post.setNickname("거터");
+        MemberControllerDTO.Post post = memberStubData.getPost();
 
         String content = objectMapper.writeValueAsString(post);
 
@@ -145,7 +142,7 @@ public class MemberControllerTest {
 
         String patch = objectMapper.writeValueAsString(originalPatch);
         // Create a MockMultipartFile for the profileImage
-        MockMultipartFile profileImageFile = stubData.getImage();
+        MockMultipartFile profileImageFile = memberStubData.getImage();
 
 
         MockPart part = new MockPart("patch", patch.getBytes(StandardCharsets.UTF_8));
@@ -248,30 +245,18 @@ public class MemberControllerTest {
     void getMyWalkLogsTest() throws Exception {
         //given
         Long memberId = 1L;
-        WalkLogControllerDTO.GetMemberRequest getMemberRequest = createWalkLogControllerDTOgetRequests();
-        WalkLogServiceDTO.FindInput findInput = createWalkLogServiceDTOfindsInput();
-        ArrayList<WalkLogServiceDTO.FindOutput> findOutputs = new ArrayList<>();
-        WalkLogServiceDTO.FindOutput findOutput = new WalkLogServiceDTO.FindOutput();
-        findOutputs.add(findOutput);
-        findOutputs.add(findOutput);
-        WalkLogControllerDTO.Response response = new WalkLogControllerDTO.Response();
-        response.setWalkLogId(1L);
-        response.setMessage("메세지");
-        response.setMapImage("/test/image/test.jpg");
-        response.setStartedAt(LocalDateTime.now());
-        response.setEndAt(LocalDateTime.now());
-        ArrayList<WalkLogContentServiceDTO.Output> outputs = new ArrayList<>();
-        WalkLogContentServiceDTO.Output output = new WalkLogContentServiceDTO.Output(1L, LocalDateTime.now(), "메세지1", "/test/image/test.jpg");
-        WalkLogContentServiceDTO.Output output2 = new WalkLogContentServiceDTO.Output(2L, LocalDateTime.now(), "메세지2", "/test/image/test.jpg");
-        outputs.add(output);
-        outputs.add(output2);
-        response.setWalkLogContents(outputs);
+        WalkLogControllerDTO.GetMemberRequest getMemberRequest = walkLogStubData.getGetMemberRequest();
+        WalkLogServiceDTO.FindInput findInput = walkLogStubData.getFindInput();
+        ArrayList<WalkLogServiceDTO.FindOutput> findOutputs = walkLogStubData.getFindOutputs();
+        WalkLogControllerDTO.Response response = walkLogStubData.getResponse();
+
         given(walkLogMapper.walkLogControllerGetRequestDTOtoWalkLogServiceFindInputDTO(Mockito.any(WalkLogControllerDTO.GetMemberRequest.class)))
                 .willReturn(findInput);
         given(walkLogService.findMyWalkLogs(Mockito.any(WalkLogServiceDTO.FindInput.class)))
                 .willReturn(new PageImpl<>(findOutputs));
         given(walkLogMapper.walkLogServiceFindOutputDTOtoWalkLogControllerResponseDTO(Mockito.any(WalkLogServiceDTO.FindOutput.class)))
                 .willReturn(response);
+
         String urlTemplate = "/members/{member-id}/walk-logs";
 
         //when
@@ -323,48 +308,23 @@ public class MemberControllerTest {
                 ));
     }
 
-    private static WalkLogControllerDTO.GetMemberRequest createWalkLogControllerDTOgetRequests() {
-        WalkLogControllerDTO.GetMemberRequest getMemberRequest = new WalkLogControllerDTO.GetMemberRequest();
-        getMemberRequest.setSize(3);
-        getMemberRequest.setPage(1);
-        getMemberRequest.setYear(LocalDateTime.now().getYear());
-        getMemberRequest.setMonth(LocalDateTime.now().getMonthValue());
-        getMemberRequest.setDay(LocalDateTime.now().getDayOfMonth());
-        return getMemberRequest;
-    }
-    private static WalkLogServiceDTO.FindInput createWalkLogServiceDTOfindsInput() {
-        WalkLogServiceDTO.FindInput findInput = new WalkLogServiceDTO.FindInput();
-        findInput.setSize(1);
-        findInput.setPage(3);
-        findInput.setYear(LocalDateTime.now().getYear());
-        findInput.setMonth(LocalDateTime.now().getMonthValue());
-        findInput.setDay(LocalDateTime.now().getDayOfMonth());
-        return findInput;
-    }
 
     @Test
     void getMyWalkLogsForCalendarTest() throws Exception {
-        LocalDateTime date = LocalDateTime.of(2023,5,20,12,12);
         Long memberId = 1L;
-        WalkLogControllerDTO.GetCalendarRequest request = new WalkLogControllerDTO.GetCalendarRequest();
-        request.setYear(LocalDateTime.now().getYear());
-        request.setMonth(LocalDateTime.now().getMonthValue());
-        WalkLogControllerDTO.CalendarResponse calendarResponse = new WalkLogControllerDTO.CalendarResponse();
-        calendarResponse.setWalkLogId(1L);
-        calendarResponse.setCreatedAt(date);
-        WalkLogControllerDTO.CalendarResponse calendarResponse2 = new WalkLogControllerDTO.CalendarResponse();
-        calendarResponse2.setWalkLogId(2L);
-        calendarResponse2.setCreatedAt(date);
-        List<WalkLogControllerDTO.CalendarResponse> calendarResponses = new ArrayList<>();
-        calendarResponses.add(calendarResponse);
-        calendarResponses.add(calendarResponse2);
+        WalkLogControllerDTO.GetCalendarRequest request = walkLogStubData.getGetCalendarRequest();
+        List<WalkLogControllerDTO.CalendarResponse> calendarResponses = walkLogStubData.getCalendarResponses();
+
         given(walkLogMapper.walkLogControllerGetCalenderRequestDTOtoWalkLogServiceCalenderFindInputDTO(Mockito.any(WalkLogControllerDTO.GetCalendarRequest.class)))
                 .willReturn(new WalkLogServiceDTO.CalenderFindInput());
         given(walkLogService.findMyMonthWalkLogs(Mockito.any(WalkLogServiceDTO.CalenderFindInput.class)))
                 .willReturn(new ArrayList<>());
         given(walkLogMapper.WalkLogServiceCalenderFindOutputDTOsToWalkLogControllerCalendarResponseDTOs(Mockito.anyList()))
                 .willReturn(calendarResponses);
+
+
         String urlTemplate = "/members/{member-id}/walk-logs/calendar";
+
         ResultActions perform = mockMvc.perform(
                 get(urlTemplate,memberId)
                         .param("year",String.valueOf(request.getYear()))
@@ -372,8 +332,7 @@ public class MemberControllerTest {
                         .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate));
         perform.andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(calendarResponses.size()))
-                .andExpect(jsonPath("$[0].walkLogId").value(calendarResponse.getWalkLogId()))
-//                .andExpect(jsonPath("$[0].createdAt").value(calendarResponse2.getCreatedAt()))
+                .andExpect(jsonPath("$[0].walkLogId").value(calendarResponses.get(0).getWalkLogId()))
                 .andDo(document(
                         "get-my-walk-logs-for-calendar",
                         getRequestPreProcessor(),
@@ -415,6 +374,35 @@ public class MemberControllerTest {
                         getResponsePreProcessor(),
                         pathParameters(
                                 parameterWithName("member-id").description("회원 식별자")
+                        )
+                ));
+    }
+
+    @Test
+    void getTemporaryPasswordTest() throws Exception {
+        String urlTemplate = "/members/tmp-pw";
+        MemberControllerDTO.GetNewPw getNewPw = memberStubData.getGetNewPw();
+        MemberServiceDTO.FindNewPwInput findNewPwInput = new MemberServiceDTO.FindNewPwInput();
+        findNewPwInput.setEmail(getNewPw.getEmail());
+
+        String content = objectMapper.writeValueAsString(getNewPw);
+
+        given(mapper.getNewPwToFindNewPw(Mockito.any(MemberControllerDTO.GetNewPw.class))).willReturn(findNewPwInput);
+        doNothing().when(memberService).getTemporaryPasswordThroughEmail(findNewPwInput);
+
+        ResultActions actions = mockMvc.perform(post(urlTemplate)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(content)
+                .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate)
+        );
+        actions.andExpect(status().isOk())
+                .andDo(document(
+                        "get-temp-pw",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestFields(
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("비밀번호찾기에 사용할 이메일")
                         )
                 ));
     }

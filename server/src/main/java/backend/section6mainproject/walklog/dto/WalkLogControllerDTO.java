@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -45,6 +46,8 @@ public class WalkLogControllerDTO {
     public static class EndPost {
         @Size(max = 100)
         private String message;
+        @Pattern(regexp = "^[0-9]{5}$", message = "우편번호는 5자리의 숫자로 이루어져야 합니다.")
+        private String region;
         private WalkLogPublicSetting walkLogPublicSetting;
     }
     @Getter
@@ -54,7 +57,7 @@ public class WalkLogControllerDTO {
     public static class GetMemberRequest {
         @NotNull
         @Positive
-        private int page;
+        private int page = 1;
         private Integer size = 10;
         private Integer day;
         private Integer month;
@@ -148,6 +151,7 @@ public class WalkLogControllerDTO {
         private LocalDateTime createdAt;
         private LocalDateTime endAt;
         private String mapImage;
+        private String region;
         @Size(max = 100)
         private String message;
         private Long memberId;

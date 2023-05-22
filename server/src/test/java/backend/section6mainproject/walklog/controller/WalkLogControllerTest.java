@@ -13,6 +13,7 @@ import backend.section6mainproject.walklog.mapper.WalkLogMapper;
 import backend.section6mainproject.walklog.service.WalkLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class WalkLogControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private WalkLogService walkLogService;
-    private Double num = 2.424;
+    private Double COORDINATE = 2.424;
 
     @BeforeEach
     void init() {
@@ -76,9 +77,10 @@ public class WalkLogControllerTest {
         walkLogStubData = new WalkLogStubData();
         walkLogContentStubData = new WalkLogContentStubData();
     }
+    @DisplayName("걷기 기록 생성 테스트")
     @Test
     void postWalkLogTest() throws Exception {
-        WalkLogControllerDTO.PostResponse response = walkLogStubData.getResponse();
+        WalkLogControllerDTO.PostResponse response = walkLogStubData.getPostResponse();
 
 
         given(walkLogService.createWalkLog(Mockito.any(WalkLogServiceDTO.CreateInput.class))).willReturn(new WalkLogServiceDTO.CreateOutput());
@@ -106,6 +108,7 @@ public class WalkLogControllerTest {
                 ));
     }
 
+    @DisplayName("걷기 기록 수정 테스트")
     @Test
     void patchWalkLogTest() throws Exception {
         //given
@@ -116,7 +119,7 @@ public class WalkLogControllerTest {
         ArrayList<WalkLogContentControllerDTO.Response> responses = new ArrayList<>();
         responses.add(response);
         detailResponse.setWalkLogContents(responses);
-        List<CoordinateControllerDTO.Sub> coordinates = createCoordinateControllerDTOsub(num);
+        List<CoordinateControllerDTO.Sub> coordinates = createCoordinateControllerDTOsub(COORDINATE);
         detailResponse.setCoordinates(coordinates);
 
         String jsonPatchWalkLogDto = objectMapper.writeValueAsString(patch);
@@ -157,6 +160,88 @@ public class WalkLogControllerTest {
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
                                 fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
+                                fieldWithPath("region").type(JsonFieldType.STRING).description("우편번호"),
+                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).description("걷기 기록 공개 설정(PUBLIC, PRIVATE)"),
+
+                                fieldWithPath("coordinates").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 좌표 기록들"),
+                                fieldWithPath("coordinates.[].coordinateId").type(JsonFieldType.NUMBER).description("좌표 기록 식별자"),
+                                fieldWithPath("coordinates.[].lat").type(JsonFieldType.NUMBER).description("좌표 위도"),
+                                fieldWithPath("coordinates.[].lng").type(JsonFieldType.NUMBER).description("좌표 경도"),
+                                fieldWithPath("coordinates.[].createdAt").type(JsonFieldType.STRING).description("좌표 기록 생성된 시간"),
+
+                                fieldWithPath("walkLogContents").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 순간 기록들"),
+                                fieldWithPath("walkLogContents.[].walkLogContentId").type(JsonFieldType.NUMBER).description("순간 기록 식별자"),
+                                fieldWithPath("walkLogContents.[].createdAt").type(JsonFieldType.STRING).description("순간 기록 생성된 시간"),
+                                fieldWithPath("walkLogContents.[].text").type(JsonFieldType.STRING).description("순간 기록 메세지"),
+                                fieldWithPath("walkLogContents.[].imageUrl").type(JsonFieldType.STRING).description("순간 기록 이미지 임시 URL")
+                        )
+                ));
+    }
+    @DisplayName("걷기 기록 종료 테스트")
+    @Test
+    void endWalkLogTest() throws Exception {
+        //given
+        WalkLogControllerDTO.EndPost endPostDTO = walkLogStubData.getEndPost();
+        WalkLogControllerDTO.DetailResponse detailResponse = walkLogStubData.getDetailResponse();
+        WalkLogContentControllerDTO.Response response = walkLogContentStubData.getResponse();
+        ArrayList<WalkLogContentControllerDTO.Response> responses = new ArrayList<>();
+        responses.add(response);
+        detailResponse.setWalkLogContents(responses);
+        List<CoordinateControllerDTO.Sub> coordinates = createCoordinateControllerDTOsub(COORDINATE);
+        detailResponse.setCoordinates(coordinates);
+
+        String jsonEndWalkLogDTO = objectMapper.writeValueAsString(endPostDTO);
+        MockMultipartFile mapImageFile = walkLogStubData.getImage();
+        MockPart part = new MockPart("endPost", jsonEndWalkLogDTO.getBytes(StandardCharsets.UTF_8));
+        part.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+
+        given(walkLogMapper.walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(Mockito.any(WalkLogControllerDTO.EndPost.class))).
+                willReturn(new WalkLogServiceDTO.ExitInput());
+        given(walkLogService.exitWalkLog(Mockito.any(WalkLogServiceDTO.ExitInput.class))).willReturn(new WalkLogServiceDTO.Output());
+        given(walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(Mockito.any(WalkLogServiceDTO.Output.class)))
+                .willReturn(detailResponse);
+
+        String urlTemplate = "/walk-logs/{walk-log-id}";
+
+        //when
+        ResultActions perform = mockMvc
+                .perform(MockMvcRequestBuilders.multipart(HttpMethod.POST,urlTemplate, walkLogStubData.getWalkLogId())
+                        .file(mapImageFile)
+                        .part(part)
+                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate)
+
+                );
+
+        //then
+        perform
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(detailResponse.getMessage()))
+                .andDo(document(
+                        "end-walk-log",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("walk-log-id").description("걷기 기록 식별자")
+                        ),
+                        requestParts(
+                                partWithName("mapImage").description("걸은 위치를 이어 그린 지도").optional(),
+                                partWithName("endPost").description("걷기 기록종료시 필요한 JSON 데이터")
+                                ),
+                        requestPartFields("endPost",
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("한줄 메세지").optional(),
+                                fieldWithPath("region").type(JsonFieldType.STRING).description("우편번호 메세지"),
+                                fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).
+                                        description("걷기 기록 공개 설정(PUBLIC, PRIVATE)").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
+                                fieldWithPath("mapImage").type(JsonFieldType.STRING).description("지도 이미지 임시 URL"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
+                                fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
+                                fieldWithPath("region").type(JsonFieldType.STRING).description("우편번호"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
                                 fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                 fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
                                 fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).description("걷기 기록 공개 설정(PUBLIC, PRIVATE)"),
@@ -176,6 +261,71 @@ public class WalkLogControllerTest {
                 ));
     }
 
+    @DisplayName("걷기 기록 조회 테스트")
+    @Test
+    void getWalkLogTest() throws Exception {
+        //given
+        WalkLog walkLog = walkLogStubData.getRecordingWalkLog(walkLogStubData.getMember());
+        WalkLogControllerDTO.GetResponse getResponse = walkLogStubData.getGetResponse();
+        WalkLogContentControllerDTO.Response response = walkLogContentStubData.getResponse();
+        ArrayList<WalkLogContentControllerDTO.Response> responses = new ArrayList<>();
+        responses.add(response);
+        getResponse.setWalkLogContents(responses);
+        List<CoordinateControllerDTO.Sub> coordinates = createCoordinateControllerDTOsub(COORDINATE);
+        getResponse.setCoordinates(coordinates);
+
+        given(walkLogService.findWalkLog(Mockito.anyLong())).willReturn(new WalkLogServiceDTO.GetOutput());
+        given(walkLogMapper.walkLogServiceGetOutPutDTOtoWalkLogControllerGetResponseDTO(Mockito.any(WalkLogServiceDTO.GetOutput.class)))
+                .willReturn(getResponse);
+
+        String urlTemplate = "/walk-logs/{walk-log-id}";
+        //when
+        ResultActions perform = mockMvc.perform(
+                get(urlTemplate, walkLog.getWalkLogId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate));
+        //then
+        perform.andExpect(status().isOk())
+                .andExpect(jsonPath("$.walkLogId").value(walkLog.getWalkLogId()))
+                .andExpect(jsonPath("$.message").value(walkLog.getMessage()))
+                .andExpect(jsonPath("$.memberId").value(walkLog.getMember().getMemberId()))
+                .andExpect(jsonPath("$.nickname").value(walkLog.getMember().getNickname()))
+                .andDo(document(
+                        "get-walk-log",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("walk-log-id").description("걷기기록 식별자")
+                        ),
+                        responseFields(
+                                fieldWithPath("walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
+                                fieldWithPath("mapImage").type(JsonFieldType.STRING).description("지도 이미지 임시 URL"),
+                                fieldWithPath("profileImage").type(JsonFieldType.STRING).description("프로필 이미지 임시 URL"),
+                                fieldWithPath("walkLogStatus").type(JsonFieldType.STRING).description("걷기 기록 상태(STOP, RECORDING"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
+                                fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
+                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).description("걷기 기록 공개 설정(PUBLIC, PRIVATE)"),
+
+                                fieldWithPath("coordinates").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 좌표 기록들"),
+                                fieldWithPath("coordinates.[].coordinateId").type(JsonFieldType.NUMBER).description("좌표 기록 식별자"),
+                                fieldWithPath("coordinates.[].lat").type(JsonFieldType.NUMBER).description("좌표 위도"),
+                                fieldWithPath("coordinates.[].lng").type(JsonFieldType.NUMBER).description("좌표 경도"),
+                                fieldWithPath("coordinates.[].createdAt").type(JsonFieldType.STRING).description("좌표 기록 생성된 시간"),
+
+                                fieldWithPath("walkLogContents").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 순간 기록들"),
+                                fieldWithPath("walkLogContents.[].walkLogContentId").type(JsonFieldType.NUMBER).description("순간 기록 식별자"),
+                                fieldWithPath("walkLogContents.[].createdAt").type(JsonFieldType.STRING).description("순간 기록 생성된 시간"),
+                                fieldWithPath("walkLogContents.[].text").type(JsonFieldType.STRING).description("순간 기록 메세지"),
+                                fieldWithPath("walkLogContents.[].imageUrl").type(JsonFieldType.STRING).description("순간 기록 이미지 임시 URL")
+
+                        )
+                ));
+    }
+    @DisplayName("걷기 기록 전체조회(피드조회) 테스트")
     @Test
     void getWalkLogsTest() throws Exception {
         //given
@@ -235,162 +385,11 @@ public class WalkLogControllerTest {
                                 fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 페이지에 표시하는 데이터의 개수"),
                                 fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("전체 데이터 개수"),
                                 fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지")
-                                )
-                ));
-    }
-    @Test
-    void endWalkLogTest() throws Exception {
-        //given
-        WalkLogControllerDTO.EndPost endPostDTO = walkLogStubData.getEndPost();
-        WalkLogControllerDTO.DetailResponse detailResponse = walkLogStubData.getDetailResponse();
-        WalkLogContentControllerDTO.Response response = walkLogContentStubData.getResponse();
-        ArrayList<WalkLogContentControllerDTO.Response> responses = new ArrayList<>();
-        responses.add(response);
-        detailResponse.setWalkLogContents(responses);
-        List<CoordinateControllerDTO.Sub> coordinates = createCoordinateControllerDTOsub(num);
-        detailResponse.setCoordinates(coordinates);
-
-        String jsonEndWalkLogDTO = objectMapper.writeValueAsString(endPostDTO);
-        MockMultipartFile mapImageFile = walkLogStubData.getImage();
-        MockPart part = new MockPart("endPost", jsonEndWalkLogDTO.getBytes(StandardCharsets.UTF_8));
-        part.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
-        given(walkLogMapper.walkLogControllerEndPostDTOtoWalkLogServiceExitInputDTO(Mockito.any(WalkLogControllerDTO.EndPost.class))).
-                willReturn(new WalkLogServiceDTO.ExitInput());
-        given(walkLogService.exitWalkLog(Mockito.any(WalkLogServiceDTO.ExitInput.class))).willReturn(new WalkLogServiceDTO.Output());
-        given(walkLogMapper.walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(Mockito.any(WalkLogServiceDTO.Output.class)))
-                .willReturn(detailResponse);
-
-        String urlTemplate = "/walk-logs/{walk-log-id}";
-
-        //when
-        ResultActions perform = mockMvc
-                .perform(MockMvcRequestBuilders.multipart(HttpMethod.POST,urlTemplate, walkLogStubData.getWalkLogId())
-                        .file(mapImageFile)
-                        .part(part)
-                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate)
-
-                );
-
-        //then
-        perform
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(detailResponse.getMessage()))
-                .andDo(document(
-                        "end-walk-log",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor(),
-                        pathParameters(
-                                parameterWithName("walk-log-id").description("걷기 기록 식별자")
-                        ),
-                        requestParts(
-                                partWithName("mapImage").description("걸은 위치를 이어 그린 지도").optional(),
-                                partWithName("endPost").description("걷기 기록종료시 필요한 JSON 데이터")
-                        ),
-                        requestPartFields("endPost",
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("한줄 메세지").optional(),
-                                fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).
-                                        description("걷기 기록 공개 설정(PUBLIC, PRIVATE)").optional()
-                        ),
-                        responseFields(
-                                fieldWithPath("walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
-                                fieldWithPath("mapImage").type(JsonFieldType.STRING).description("지도 이미지 임시 URL"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
-                                fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
-                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
-                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                                fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).description("걷기 기록 공개 설정(PUBLIC, PRIVATE)"),
-
-                                fieldWithPath("coordinates").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 좌표 기록들"),
-                                fieldWithPath("coordinates.[].coordinateId").type(JsonFieldType.NUMBER).description("좌표 기록 식별자"),
-                                fieldWithPath("coordinates.[].lat").type(JsonFieldType.NUMBER).description("좌표 위도"),
-                                fieldWithPath("coordinates.[].lng").type(JsonFieldType.NUMBER).description("좌표 경도"),
-                                fieldWithPath("coordinates.[].createdAt").type(JsonFieldType.STRING).description("좌표 기록 생성된 시간"),
-
-                                fieldWithPath("walkLogContents").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 순간 기록들"),
-                                fieldWithPath("walkLogContents.[].walkLogContentId").type(JsonFieldType.NUMBER).description("순간 기록 식별자"),
-                                fieldWithPath("walkLogContents.[].createdAt").type(JsonFieldType.STRING).description("순간 기록 생성된 시간"),
-                                fieldWithPath("walkLogContents.[].text").type(JsonFieldType.STRING).description("순간 기록 메세지"),
-                                fieldWithPath("walkLogContents.[].imageUrl").type(JsonFieldType.STRING).description("순간 기록 이미지 임시 URL")
                         )
                 ));
     }
 
-    private static List<CoordinateControllerDTO.Sub> createCoordinateControllerDTOsub(Double num) {
-        List<CoordinateControllerDTO.Sub> coordinates = new ArrayList<>();
-        CoordinateControllerDTO.Sub sub = new CoordinateControllerDTO.Sub(1L, num, num, LocalDateTime.now());
-        CoordinateControllerDTO.Sub sub2 = new CoordinateControllerDTO.Sub(2L, num, num, LocalDateTime.now());
-        coordinates.add(sub);
-        coordinates.add(sub2);
-        return coordinates;
-    }
-
-    @Test
-    void getWalkLogTest() throws Exception {
-        //given
-        WalkLog walkLog = walkLogStubData.getRecordingWalkLog(walkLogStubData.getMember());
-        WalkLogControllerDTO.GetResponse getResponse = walkLogStubData.getGetResponse();
-        WalkLogContentControllerDTO.Response response = walkLogContentStubData.getResponse();
-        ArrayList<WalkLogContentControllerDTO.Response> responses = new ArrayList<>();
-        responses.add(response);
-        getResponse.setWalkLogContents(responses);
-        List<CoordinateControllerDTO.Sub> coordinates = createCoordinateControllerDTOsub(num);
-        getResponse.setCoordinates(coordinates);
-
-        given(walkLogService.findWalkLog(Mockito.anyLong())).willReturn(new WalkLogServiceDTO.GetOutput());
-        given(walkLogMapper.walkLogServiceGetOutPutDTOtoWalkLogControllerGetResponseDTO(Mockito.any(WalkLogServiceDTO.GetOutput.class)))
-                .willReturn(getResponse);
-
-        String urlTemplate = "/walk-logs/{walk-log-id}";
-        //when
-        ResultActions perform = mockMvc.perform(
-                get(urlTemplate, walkLog.getWalkLogId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate));
-        //then
-        perform.andExpect(status().isOk())
-                .andExpect(jsonPath("$.walkLogId").value(walkLog.getWalkLogId()))
-//                .andExpect(jsonPath("$.endTime").value(equalTo(walkLog.getEndTime()))) jsonPath에서 시간뒤에 00이더 붙음
-                .andExpect(jsonPath("$.message").value(walkLog.getMessage()))
-                .andExpect(jsonPath("$.memberId").value(walkLog.getMember().getMemberId()))
-                .andExpect(jsonPath("$.nickname").value(walkLog.getMember().getNickname()))
-                .andDo(document(
-                        "get-walk-log",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor(),
-                        pathParameters(
-                                parameterWithName("walk-log-id").description("걷기기록 식별자")
-                        ),
-                        responseFields(
-                                fieldWithPath("walkLogId").type(JsonFieldType.NUMBER).description("걷기 기록 식별자"),
-                                fieldWithPath("mapImage").type(JsonFieldType.STRING).description("지도 이미지 임시 URL"),
-                                fieldWithPath("profileImage").type(JsonFieldType.STRING).description("프로필 이미지 임시 URL"),
-                                fieldWithPath("walkLogStatus").type(JsonFieldType.STRING).description("걷기 기록 상태(STOP, RECORDING"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("걷기 기록이 생성된 시각"),
-                                fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
-                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
-                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                                fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).description("걷기 기록 공개 설정(PUBLIC, PRIVATE)"),
-
-                                fieldWithPath("coordinates").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 좌표 기록들"),
-                                fieldWithPath("coordinates.[].coordinateId").type(JsonFieldType.NUMBER).description("좌표 기록 식별자"),
-                                fieldWithPath("coordinates.[].lat").type(JsonFieldType.NUMBER).description("좌표 위도"),
-                                fieldWithPath("coordinates.[].lng").type(JsonFieldType.NUMBER).description("좌표 경도"),
-                                fieldWithPath("coordinates.[].createdAt").type(JsonFieldType.STRING).description("좌표 기록 생성된 시간"),
-
-                                fieldWithPath("walkLogContents").type(JsonFieldType.ARRAY).description("해당 걷기 기록에 기록된 순간 기록들"),
-                                fieldWithPath("walkLogContents.[].walkLogContentId").type(JsonFieldType.NUMBER).description("순간 기록 식별자"),
-                                fieldWithPath("walkLogContents.[].createdAt").type(JsonFieldType.STRING).description("순간 기록 생성된 시간"),
-                                fieldWithPath("walkLogContents.[].text").type(JsonFieldType.STRING).description("순간 기록 메세지"),
-                                fieldWithPath("walkLogContents.[].imageUrl").type(JsonFieldType.STRING).description("순간 기록 이미지 임시 URL")
-
-                        )
-                ));
-    }
-
+    @DisplayName("걷기 기록 삭제 테스트")
     @Test
     void deleteWalkLogTest() throws Exception {
         //given
@@ -415,5 +414,14 @@ public class WalkLogControllerTest {
                         )
                 ));
 
+    }
+
+    private static List<CoordinateControllerDTO.Sub> createCoordinateControllerDTOsub(Double num) {
+        List<CoordinateControllerDTO.Sub> coordinates = new ArrayList<>();
+        CoordinateControllerDTO.Sub sub = new CoordinateControllerDTO.Sub(1L, num, num, LocalDateTime.now());
+        CoordinateControllerDTO.Sub sub2 = new CoordinateControllerDTO.Sub(2L, num, num, LocalDateTime.now());
+        coordinates.add(sub);
+        coordinates.add(sub2);
+        return coordinates;
     }
 }

@@ -3,6 +3,7 @@ package backend.section6mainproject.auth.handler;
 import backend.section6mainproject.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,10 +28,13 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
         if((Boolean) request.getAttribute("autoLogin")){
             String refreshToken = authenticationSuccessHandlerUtils.delegateRefreshToken(member);
-            Cookie cookie = new Cookie("Refresh", refreshToken);
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
+            ResponseCookie cookie = ResponseCookie.from("Refresh", refreshToken)
+                    .path("/")
+                    .domain(".would-you-walk.com")
+                    .httpOnly(true)
+                    .maxAge(Duration.ofDays(7))
+                    .build();
+            response.addHeader("Set-Cookie", cookie.toString());
         }
 
         setMemberIdToBody(response, member);

@@ -27,6 +27,7 @@ public class WalkLog extends Auditable {
     @Column(length = 50)
     private String message;
     private String mapImage;
+    private String region;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
