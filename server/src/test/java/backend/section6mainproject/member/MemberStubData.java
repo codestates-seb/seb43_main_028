@@ -55,6 +55,11 @@ public class MemberStubData {
         member.setProfileImage("");
         return member;
     }
+    public MemberControllerDTO.GetNewPw getGetNewPw() {
+        MemberControllerDTO.GetNewPw getNewPw = new MemberControllerDTO.GetNewPw();
+        getNewPw.setEmail(email);
+        return getNewPw;
+    }
 
     public MemberServiceDTO.CreateInput getCreateInput() throws Exception {
         MemberServiceDTO.CreateInput createInput = new MemberServiceDTO.CreateInput();

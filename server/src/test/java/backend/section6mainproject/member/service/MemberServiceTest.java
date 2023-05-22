@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import backend.section6mainproject.exception.BusinessLogicException;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -80,9 +82,28 @@ public class MemberServiceTest {
 
         MemberServiceDTO.Output actualMemberOutput = memberService.findMember(1L);
 
-        Assertions.assertEquals(output.getIntroduction(), actualMemberOutput.getIntroduction());
+        assertEquals(output.getIntroduction(), actualMemberOutput.getIntroduction());
 
     }
+
+    /*@Test
+    void updateMember_shouldUpdateMember() throws Exception {
+        // Given
+        MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
+        Member member = stubData.getMember();
+
+        when(memberRepository.findById(member.getMemberId())).thenReturn(Optional.of(member));
+        when(mapper.updateInputToMember(updateInput)).thenReturn(member);
+        when(storageService.store(updateInput.getProfileImage(), "profile")).thenReturn("newProfileImage");
+        when(beanUtils.copyNonNullProperties(member, member)).thenReturn(member);
+
+        // When
+        MemberServiceDTO.Output output = memberService.updateMember(updateInput);
+
+        // Then
+        assertEquals(updateInput.getNickname(), output.getNickname());
+        assertEquals(updateInput.getIntroduction(), output.getIntroduction());
+    }*/
 
     /*@Test
     void updateMemberTest() throws Exception {

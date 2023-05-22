@@ -417,6 +417,35 @@ public class MemberControllerTest {
     }
 
     @Test
+    void getTemporaryPasswordTest() throws Exception {
+        String urlTemplate = "/members/tmp-pw";
+        MemberControllerDTO.GetNewPw getNewPw = stubData.getGetNewPw();
+        MemberServiceDTO.FindNewPwInput findNewPwInput = new MemberServiceDTO.FindNewPwInput();
+        findNewPwInput.setEmail(getNewPw.getEmail());
+
+        String content = objectMapper.writeValueAsString(getNewPw);
+
+        given(mapper.getNewPwToFindNewPw(Mockito.any(MemberControllerDTO.GetNewPw.class))).willReturn(findNewPwInput);
+        doNothing().when(memberService).getTemporaryPasswordThroughEmail(findNewPwInput);
+
+        ResultActions actions = mockMvc.perform(post(urlTemplate)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(content)
+                .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate)
+        );
+        actions.andExpect(status().isOk())
+                .andDo(document(
+                        "get-temp-pw",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestFields(
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("비밀번호찾기에 사용할 이메일")
+                        )
+                ));
+    }
+
+    @Test
     void patchMemberPasswordTest() throws Exception {
         // given
         Long memberId = 1L;
