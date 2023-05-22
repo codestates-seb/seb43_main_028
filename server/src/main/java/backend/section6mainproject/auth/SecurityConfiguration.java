@@ -41,6 +41,7 @@ public class SecurityConfiguration {
         http
                 .headers().frameOptions().sameOrigin().and()
                 .csrf().disable()
+                .cors(Customizer.withDefaults())
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().logoutUrl("/members/logout").deleteCookies("Refresh")
@@ -83,11 +84,10 @@ public class SecurityConfiguration {
         }
     }
 
-    // 테스트 시에만 사용하세요
-//    @Bean
+    @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedOrigins(List.of("https://www.would-you-walk.com"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setExposedHeaders(List.of("Authorization", "Refresh"));
         corsConfiguration.setAllowedMethods(List.of("POST", "GET", "PATCH", "DELETE", "OPTIONS"));
