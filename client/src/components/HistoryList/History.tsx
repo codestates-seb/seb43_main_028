@@ -10,6 +10,7 @@ import { HistoryListDataType } from '../../types/History'
 type HistoryItemProps = {
   data: HistoryListDataType
 }
+
 export default forwardRef(function History({ data }: HistoryItemProps, ref: Ref<HTMLDivElement>) {
   const [moreContent, setMore] = useState(false)
   const { walkLogId, mapImage, startedAt, endAt, message, walkLogContents } = data

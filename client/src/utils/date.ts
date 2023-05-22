@@ -5,6 +5,9 @@ import {
   startOfMonth,
   getWeeksInMonth,
   eachDayOfInterval,
+  differenceInDays,
+  differenceInMonths,
+  differenceInYears,
 } from './date-fns'
 
 const A_MINUTE = 1000 * 60
@@ -85,4 +88,19 @@ export function getWeekRows(date: Date): (0 | Date)[][] {
     .map((_, i) => [...allDates].splice(i * 7, 7))
 
   return rows
+}
+
+export function getTimeAgo(date: Date): string {
+  const today = new Date()
+  const diffInDays = differenceInDays(today, date)
+  const diffInMonths = differenceInMonths(today, date)
+  const diffInYears = differenceInYears(today, date)
+
+  if (diffInDays <= 30) {
+    return `${diffInDays}일 전`
+  }
+  if (diffInMonths <= 12) {
+    return `${diffInMonths}달 전`
+  }
+  return `${diffInYears}년 전`
 }
