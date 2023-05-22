@@ -3,21 +3,29 @@ import styles from './DropDown.module.scss'
 import Icon from './Icon'
 
 type DropDownProps = {
-  currentSetting: keyof typeof engOptionsObj
+  currentSetting: 'PUBLIC' | 'PRIVATE'
   onSubmit: (option: string) => void
 }
 
-const options = ['전체 공개', '나만 보기']
-const engOptionsObj = { PUBLIC: options[0], PRIVATE: options[1] }
-function DropDown({ currentSetting, onSubmit }: DropDownProps) {
-  const [isOptionOpened, setIsOptionOpened] = useState(false)
-  const [selectedOptionTitle, setSelectedOptionTitle] = useState(engOptionsObj[currentSetting])
+type OptionType = '전체 공개' | '나만 보기'
 
-  const handleChangeCurrentOption = (option: string) => {
+const options: OptionType[] = ['전체 공개', '나만 보기']
+const engOptionsObj: { [key: string]: OptionType } = {
+  PUBLIC: '전체 공개',
+  PRIVATE: '나만 보기',
+}
+function DropDown({ currentSetting, onSubmit }: DropDownProps) {
+  const [isOptionOpened, setIsOptionOpened] = useState<boolean>(false)
+  const [selectedOptionTitle, setSelectedOptionTitle] = useState<OptionType>(
+    engOptionsObj[currentSetting]
+  )
+
+  const handleChangeCurrentOption = (option: OptionType) => {
     setSelectedOptionTitle(option)
     setIsOptionOpened(false)
 
-    const engOption = Object.keys(engOptionsObj).find(engOpt => engOptionsObj[engOpt] === option)
+    const engOption = Object.keys(engOptionsObj).find(key => engOptionsObj[key] === option)
+
     if (engOption) onSubmit(engOption)
   }
 
