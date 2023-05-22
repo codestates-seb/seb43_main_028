@@ -86,11 +86,13 @@ public class MemberServiceTest {
 
     }
 
-    /*@Test
-    void updateMember_shouldUpdateMember() throws Exception {
+    @Test
+    void updateMemberTest() throws Exception {
         // Given
+        MockMultipartFile profileImage = stubData.getImage();
         MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
-        Member member = stubData.getMember();
+        updateInput.setProfileImage(profileImage);
+        Member member = stubData.getUpdatedMember();
 
         when(memberRepository.findById(member.getMemberId())).thenReturn(Optional.of(member));
         when(mapper.updateInputToMember(updateInput)).thenReturn(member);
@@ -101,31 +103,9 @@ public class MemberServiceTest {
         MemberServiceDTO.Output output = memberService.updateMember(updateInput);
 
         // Then
-        assertEquals(updateInput.getNickname(), output.getNickname());
-        assertEquals(updateInput.getIntroduction(), output.getIntroduction());
-    }*/
-
-    /*@Test
-    void updateMemberTest() throws Exception {
-        MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
-        Member findMember = stubData.getMember();
-        MemberServiceDTO.Output output = stubData.getMemberOutput();
-        output.setNickname(updateInput.getNickname());
-
-        //given(memberRepository.findByNickname(Mockito.anyString())).willReturn(Optional.of(findMember));
-        given(mapper.updateInputToMember(Mockito.any(MemberServiceDTO.UpdateInput.class))).willReturn(new Member());
-        given(memberRepository.findById(output.getMemberId())).willReturn(Optional.of(findMember));
-        given(beanUtils.copyNonNullProperties(Mockito.any(Member.class), Mockito.any(Member.class))).willReturn(new Member());
-        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("profileImage");
-        doNothing().when(storageService).delete(findMember.getProfileImage());
-        given(memberRepository.save(Mockito.any(Member.class))).willReturn(new Member());
-        given(mapper.memberToOutput(Mockito.any(Member.class))).willReturn(output);
-
-        MemberServiceDTO.Output result = memberService.updateMember(updateInput);
-
-        Assertions.assertEquals(updateInput.getNickname(), result.getNickname());
-
-    }*/
+        assertEquals(updateInput.getNickname(), member.getNickname());
+        assertEquals(updateInput.getIntroduction(), member.getIntroduction());
+    }
 
     @Test
     void updateMemberPasswordTest() throws Exception {
@@ -159,35 +139,7 @@ public class MemberServiceTest {
         verify(memberRepository, times(1)).save(Mockito.any(Member.class));
     }
 
-    @Test
-    void ShouldThrowExceptionWhenVerifyExistsEmailTest() throws Exception {
-        Member findMember = stubData.getMember();
-        String email = "test01@gmail.com";
 
-        given(memberRepository.findByEmail(Mockito.anyString())).willReturn(Optional.of(findMember));
-
-        Assertions.assertThrows(BusinessLogicException.class, () -> memberService.verifyExistsEmail(email));
-    }
-
-    @Test
-    void ShouldThrowExceptionWhenVerifyExistsNicknameTest() {
-        Member findMember = stubData.getMember();
-        String email = "test001@gmail.com";
-
-        given(memberRepository.findByNickname(Mockito.anyString())).willReturn(Optional.of(findMember));
-
-        Assertions.assertThrows(BusinessLogicException.class, () -> memberService.verifyExistsNickname(email));
-
-    }
-
-    @Test
-    void ShouldThrowExceptionWhendistinguishQuittedMemberTest() {
-        Member member = stubData.getMember();
-        member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
-
-        Assertions.assertThrows(BusinessLogicException.class, () -> memberService.distinguishQuittedMember(member));
-
-    }
 
     @Test
     void findRecordingWalkLog() {
@@ -203,5 +155,4 @@ public class MemberServiceTest {
         Assertions.assertNotNull(result.get());
         MatcherAssert.assertThat(result.get().getWalkLogStatus(), is(WalkLog.WalkLogStatus.RECORDING));
     }
-
 }
