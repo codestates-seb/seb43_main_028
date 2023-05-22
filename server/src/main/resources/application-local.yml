@@ -45,3 +45,7 @@ jwt:
   key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 60
   refresh-token-expiration-days: 7
+decorator:
+  datasource:
+     p6spy:
+      enable-logging: true
