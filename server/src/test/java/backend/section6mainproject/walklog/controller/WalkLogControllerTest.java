@@ -158,7 +158,6 @@ public class WalkLogControllerTest {
                                 fieldWithPath("endAt").type(JsonFieldType.STRING).description("걷기 기록 종료한 시각"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("걷기 종료후 생성한 한줄 메시지"),
                                 fieldWithPath("region").type(JsonFieldType.STRING).description("우편번호"),
-                                fieldWithPath("region").type(JsonFieldType.STRING).description("우편번호"),
                                 fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                 fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
                                 fieldWithPath("walkLogPublicSetting").type(JsonFieldType.STRING).description("걷기 기록 공개 설정(PUBLIC, PRIVATE)"),
