@@ -39,8 +39,23 @@ export const signUp = async ({ nickname, email, password }: SignUpPropsType) => 
     await axiosInstance.post('/members/sign', { nickname, email, password })
     return 'success'
   } catch (error: unknown) {
-    console.log(error)
-    return (error as AxiosError)?.response?.status === 409 ? '409-fail' : 'fail'
+    const axiosError = error as AxiosError
+
+    if (axiosError.response?.data) {
+      const responseData = axiosError.response.data
+
+      if (typeof responseData === 'object') {
+        if ('message' in responseData) {
+          if (responseData.message === 'Member Email exists') {
+            return 'email-exists'
+          }
+          if (responseData.message === 'Member Nickname exists') {
+            return 'nickname-exists'
+          }
+        }
+      }
+    }
+    return 'unknown-error'
   }
 }
 

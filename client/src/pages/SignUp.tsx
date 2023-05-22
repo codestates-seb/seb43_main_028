@@ -94,8 +94,10 @@ function SignUp() {
     signUp(data).then(res => {
       if (res === 'success') {
         routeTo('/signin')
-      } else if (res === '409-fail') {
-        alert('This email has already been registered.')
+      } else if (res === 'email-exists') {
+        alert('이미 가입된 이메일입니다.')
+      } else if (res === 'nickname-exists') {
+        alert('이미 존재하는 닉네임입니다.')
       } else {
         alert('Sorry, you failed to sign up.')
       }
