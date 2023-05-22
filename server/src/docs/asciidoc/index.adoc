@@ -104,6 +104,16 @@ include::{snippets}/patch-member-pw/request-fields.adoc[]
 .http-response
 include::{snippets}/patch-member-pw/http-response.adoc[]
 
+=== 회원 임시 비밀번호 요청
+.http-request
+include::{snippets}/get-temp-pw/http-request.adoc[]
+
+.request-fields
+include::{snippets}/get-temp-pw/request-fields.adoc[]
+
+.http-response
+include::{snippets}/get-temp-pw/http-response.adoc[]
+
 == WalkLogController
 === 걷기 시작(걷기 기록 등록)
 .http-request
