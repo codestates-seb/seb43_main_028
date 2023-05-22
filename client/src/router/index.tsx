@@ -1,5 +1,4 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { Suspense } from 'react'
 import GeneralLayout from '../layout/GeneralLayout'
 import { routerData } from './routerData'
 
@@ -8,7 +7,7 @@ const router = createBrowserRouter(
     path: routerElement.path,
     element: (
       <GeneralLayout showTapBar={routerElement.showTapBar} withAuth={routerElement.withAuth}>
-        <Suspense fallback={<div>Loading...</div>}>{routerElement.element}</Suspense>
+        {routerElement.element}
       </GeneralLayout>
     ),
   }))

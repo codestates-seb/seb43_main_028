@@ -11,8 +11,6 @@ import { HistoryListDataType } from '../types/History'
 import { getDate, getMonth, getYear } from '../utils/date-fns'
 import HistoryListLoading from './loadingPage/HistoryListLoading'
 import HistoryLoading from './loadingPage/HistoryLoading'
-import OnWalkLoading from './loadingPage/onWalkLoading'
-import AfterWalkLoading from './loadingPage/AfterWalkLoading'
 
 export default function HistoryList() {
   const [calendar, setCalendar] = useState<boolean>(false)
