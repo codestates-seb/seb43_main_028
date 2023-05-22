@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import imageCompression from 'browser-image-compression'
 import styles from './ProfileImgInput.module.scss'
 import Icon from '../common/Icon'
@@ -7,14 +7,17 @@ type ProfileImgInputProps = {
   imgFile: File | undefined
   setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>
   profileImage: string
+  preview: string | null
+  setPreview: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function ProfileImgInput({
   imgFile,
   setImgFile,
   profileImage,
+  preview,
+  setPreview,
 }: ProfileImgInputProps) {
-  const [preview, setPreview] = useState<string>(profileImage)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const imageCompress = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +52,6 @@ export default function ProfileImgInput({
   }
 
   const handleCameraClick = () => {
-    console.log(inputRef.current)
     inputRef.current?.click()
   }
 

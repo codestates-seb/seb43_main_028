@@ -14,6 +14,7 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
 
   const [memberId] = useAtom(idAtom)
   const [user, setUser] = useAtom(userAtom)
+  const [preview, setPreview] = useState<string>(user.imageUrl)
 
   const handleCloseEditProfile = () => {
     setIsModalOpened(false)
@@ -25,16 +26,31 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
     const nickname = formData.get('nickname')
     const introduction = formData.get('introduction')
     const image = formData.get('image')
-
     const data = new FormData()
 
-    const blob = new Blob([JSON.stringify({ nickname, introduction })], {
-      type: 'application/json',
-    })
+    if (nickname === user.nickname) {
+      const blob = new Blob([JSON.stringify({ introduction })], {
+        type: 'application/json',
+      })
+      data.append('patch', blob)
+    } else {
+      const blob = new Blob([JSON.stringify({ nickname, introduction })], {
+        type: 'application/json',
+      })
 
-    data.append('patch', blob)
+      data.append('patch', blob)
+    }
 
-    if (image) data.append('profileImage', image)
+    // 기존 프로필 사진을 지우고 텍스트를 수정해서 보낸 경우
+    // image === null
+    if (image instanceof File && !image.name && !preview) {
+      data.append('profileImage', image)
+    }
+
+    // 이미지를 수정한 경우
+    if (image instanceof File && image.name && preview) {
+      data.append('profileImage', image)
+    }
 
     if (memberId) {
       const { resData } = await patchUserProfile(memberId, data)
@@ -74,6 +90,8 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
           imgFile={imgFile}
           setImgFile={setImgFile}
           profileImage={user.imageUrl ? user.imageUrl : ''}
+          preview={preview}
+          setPreview={setPreview}
         />
       </div>
       <div className={styles.editName}>
