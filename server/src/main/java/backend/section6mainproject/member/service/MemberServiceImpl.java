@@ -103,7 +103,7 @@ public class MemberServiceImpl implements MemberService{
         Member findMember = findVerifiedMember(member.getMemberId());
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
         String profile = storageService.store(updateInput.getProfileImage(), "profile");
-        if(profile != null) {
+        if(profile != null || storageService.isEmptyFile(updateInput.getProfileImage())) {
             storageService.delete(findMember.getProfileImage());
             updatedMember.setProfileImage(profile);
         }

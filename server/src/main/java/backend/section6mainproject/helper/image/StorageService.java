@@ -30,4 +30,6 @@ public interface StorageService {
     @Named("signBucket")
     String signBucket(String key);
 
+    boolean isEmptyFile(MultipartFile image);
+
 }
