@@ -50,8 +50,8 @@ public class RestExceptionAdvice {
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity handleBindException(BindException e) {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getBindingResult().toString());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        final ErrorResponse response = ErrorResponse.of(e.getBindingResult());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
