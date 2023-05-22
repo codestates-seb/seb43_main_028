@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAtomValue } from 'jotai'
 import useRouter from '../hooks/useRouter'
-import { getWalkLog, WalkLogType, WalkLogContentType } from '../apis/walkLog'
+import { getWalkLog, WalkLogType, WalkLogContentType, stopWalkLog } from '../apis/walkLog'
 import WalkHeader from '../components/header/WalkHeader'
 import styles from './AfterWalk.module.scss'
 import SnapItem from '../components/common/Item/SnapItem'
@@ -45,9 +45,12 @@ export default function AfterWalk() {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const message = formData.get('message') as string
-
-    console.log(message)
-    console.log(pubilcOption)
+    const data = {
+      endPost: { message, walkLogPublicSetting: pubilcOption },
+      mapImage: null,
+    }
+    if (walkLogId === undefined) return
+    const response = await stopWalkLog({ walkLogId, data })
   }
 
   const handleEditSnap = async (snapId: number, data: FormData) => {
