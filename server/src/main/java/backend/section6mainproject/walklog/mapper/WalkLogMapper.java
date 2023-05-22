@@ -43,6 +43,7 @@ public interface WalkLogMapper {
     WalkLogServiceDTO.Output walkLogToWalkLogServiceOutputDTO(WalkLog walkLog);
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
+    @Mapping(source = "mapImage",target = "mapImage", qualifiedByName = "signBucket")
     WalkLogServiceDTO.FindOutput walkLogToWalkLogServiceFindOutputDTO(WalkLog walkLog); //구현중
     WalkLogServiceDTO.CreateOutput walkLogToWalkLogServiceCreatedOutputDTO(WalkLog walkLog);
     WalkLogServiceDTO.CalenderFindOutput walkLogToWalkLogServiceCalenderFindOutputDTO(WalkLog walkLog);
@@ -58,6 +59,7 @@ public interface WalkLogMapper {
     @Mapping(source = "member.profileImage",target = "profileImage")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     @Mapping(target = "startedAt", source = "createdAt")
+    @Mapping(source = "mapImage",target = "mapImage",qualifiedByName = "signBucket")
     WalkLogServiceDTO.FindFeedOutput walkLogToWalkLogServiceFindFeedOutputDTO(WalkLog walkLog);
 
     List<WalkLogServiceDTO.CalenderFindOutput> walkLogsToWalkLogServiceCalenderFindOutputDTOs(List<WalkLog> walkLogs);
@@ -72,6 +74,7 @@ public interface WalkLogMapper {
     WalkLogControllerDTO.PostResponse walkLogServiceCreateOutPutDTOtoWalkLogControllerPostResponseDTO(WalkLogServiceDTO.CreateOutput walkLogServiceCreateOutputDTO);
     @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentServiceDTOToControllerDTO")
+    @Mapping(source = "imageUrl",target = "mapImage")
     WalkLogControllerDTO.DetailResponse walkLogServiceOutputDTOtoWalkLogControllerDetailResponseDTO(WalkLogServiceDTO.Output output);
 
     @Mapping(target = "coordinates",qualifiedByName = "coordinateServiceDTOToControllerDTO")
