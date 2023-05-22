@@ -27,6 +27,8 @@ module.exports = {
     '@typescript-eslint/no-unused-expressions': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     'consistent-return': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'import/prefer-default-export': 'off',
     'jsx-a11y/label-has-associated-control': [
       2,
       {

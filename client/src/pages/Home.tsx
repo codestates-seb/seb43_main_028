@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useAtomValue } from 'jotai'
 import { userAtom, isLoginAtom } from '../store/authAtom'
-import useMapRef from '../hooks/useMapRef'
-import MapCanvas from '../components/common/Map/MapCanvas'
-import HomeHeader from '../components/Home/HomeHeader'
-import useRouter from '../hooks/useRouter'
-import styles from './Home.module.scss'
 import { startWalkLog } from '../apis/walkLog'
+import useMapRef from '../hooks/useMapRef'
+import useRouter from '../hooks/useRouter'
+import MapCanvas from '../components/common/Map/MapCanvas'
+import HomeHeader from '../components/header/HomeHeader'
+import { isSamePosition } from '../utils/position'
+import styles from './Home.module.scss'
 
 export default function Home() {
   const { routeTo } = useRouter()
@@ -16,8 +17,6 @@ export default function Home() {
   const user = useAtomValue(userAtom)
   const mapRef = useMapRef()
 
-  let watchId: number
-
   const userInfo = {
     nickname: user.nickname,
     imageUrl: user.imageUrl,
@@ -25,26 +24,23 @@ export default function Home() {
     totalWalkLogContent: user.totalWalkLogContent,
   }
 
-  const startWalkLogHandler = async () => {
-    if (!isLogin) return
-    const walkLogId = await startWalkLog({ memberId: user.memberId })
-    if (!walkLogId) return
-    // TODO : walkLogId를 전역으로 저장해서 onwalk 페이지에서 사용해야 한다.
-    // TODO : 로그인/비로그인 ID를 분기해야한다.
-    routeTo('/onwalk')
+  const handleStartClick = async () => {
+    if (!isLogin) {
+      // TODO : 비로그인 시 동작
+      console.log('비로그인 시작 x')
+      return
+    }
+    const { walkLogId } = await startWalkLog(user.memberId)
+    if (walkLogId === -1) {
+      // TODO : 시작 실패 메시지
+      console.log('시작 실패')
+      return
+    }
+    routeTo(`/onwalk/${walkLogId}`)
   }
-
-  const handleStartClick = () => {
-    startWalkLogHandler()
-  }
-
-  const isSamePosition = (
-    a: google.maps.LatLngLiteral | null,
-    b: google.maps.LatLngLiteral | null
-  ) => a?.lat === b?.lat && a?.lng === b?.lng
 
   const watchCurrentPosition = () => {
-    watchId = navigator.geolocation.watchPosition(
+    const watchId = navigator.geolocation.watchPosition(
       newPosition => {
         const { latitude, longitude } = newPosition.coords
         const watchedPosition = { lat: latitude, lng: longitude }
@@ -55,12 +51,19 @@ export default function Home() {
       error => console.log(error),
       { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
     )
+
+    return {
+      watchId,
+      clearWatchPosition: () => {
+        navigator.geolocation.clearWatch(watchId)
+      },
+    }
   }
 
   useEffect(() => {
-    watchCurrentPosition()
+    const { clearWatchPosition } = watchCurrentPosition()
     return () => {
-      navigator.geolocation.clearWatch(watchId)
+      clearWatchPosition()
     }
   }, [])
 

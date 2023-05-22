@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
 
 type UserAtomType = {
-  defaultWalkLogPublicSetting: string
+  defaultWalkLogPublicSetting: 'PRIVATE' | 'PUBLIC'
   email: string
   imageUrl: string
   introduction: string

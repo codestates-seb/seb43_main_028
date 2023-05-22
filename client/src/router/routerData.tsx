@@ -77,7 +77,7 @@ export const routerData: RouterElement[] = [
   },
   {
     id: 5,
-    path: '/onwalk',
+    path: '/onwalk/:id',
     label: '걷기중',
     element: <OnWalk />,
     onTapBar: false,
