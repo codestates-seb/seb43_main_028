@@ -12,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,11 +29,10 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         if((Boolean) request.getAttribute("autoLogin")){
             String refreshToken = authenticationSuccessHandlerUtils.delegateRefreshToken(member);
             ResponseCookie cookie = ResponseCookie.from("Refresh", refreshToken)
-                    .domain("would-you-walk.com")
+                    .domain(".would-you-walk.com")
                     .path("/")
-                    .sameSite("None")
                     .httpOnly(true)
-                    .secure(true)
+                    .maxAge(Duration.ofDays(7))
                     .build();
             response.addHeader("Set-Cookie", cookie.toString());
         }
