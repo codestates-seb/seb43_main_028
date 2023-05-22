@@ -1,0 +1,43 @@
+@use '../../styles/utils' as U;
+@use '../../styles/color' as C;
+@use '../../styles/typography' as T;
+
+.container {
+  @include U.flex-c(column, center, flex-start);
+  width: 100%;
+  gap: 24px;
+  padding: 20px 24px;
+  background: C.$white;
+}
+
+.infoBox {
+  @include U.flex-c(row, left);
+  gap: 16px;
+}
+
+.profileBox {
+  @include U.size(48px);
+  border-radius: 48px;
+  overflow: hidden;
+  background-color: C.$gray200;
+}
+
+.createAt {
+  @include T.gray600-regular-12;
+  @include U.flex-c(row, left);
+  gap: 8px;
+}
+
+.text {
+  @include T.gray900-bold-20;
+}
+
+.btn {
+  @include U.flex-c();
+  gap: 8px;
+  @include T.white-bold-18;
+  @include U.size(100%, 48px);
+  border-radius: 12px;
+  background: C.$gray900;
+  color: C.$white;
+}
