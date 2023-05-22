@@ -8,7 +8,7 @@ import Header from '../components/common/Header'
 
 function SignIn() {
   const { routeTo } = useRouter()
-  const [user, setUser] = useAtom(userAtom)
+  const [, setUser] = useAtom(userAtom)
   const [, setId] = useAtom(idAtom)
   const [, setIsLogin] = useAtom(isLoginAtom)
 
@@ -37,7 +37,13 @@ function SignIn() {
 
   return (
     <>
-      <Header hasBackButton hasCloseButton={false} headerTitle='로그인' handleCloseFn={() => {}} />
+      <Header
+        hasBackButton
+        hasCloseButton={false}
+        headerTitle='로그인'
+        handleCloseFn={() => {}}
+        path='/'
+      />
       <form className={styles.formContainer} onSubmit={logInSubmitHandler}>
         <div className={styles.inputBox}>
           <label className={styles.label}>
