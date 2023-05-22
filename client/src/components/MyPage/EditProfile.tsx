@@ -53,13 +53,18 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
     }
 
     if (memberId) {
-      const { resData } = await patchUserProfile(memberId, data)
-      if (resData) setUser(resData)
-      // 전역 상태에 userInfoRes 저장
-      setIsModalOpened(false)
-      return
+      const { status, resData } = await patchUserProfile(memberId, data)
+      if (status === 'success' && resData) {
+        setUser(resData)
+        setIsModalOpened(false)
+        return
+      }
+      if (status === 'nickname-exists') {
+        alert('이미 존재하는 닉네임입니다.')
+        return
+      }
+      alert('잠시 후 다시 시도해주세요.')
     }
-    alert('프로필 수정에 실패했습니다.')
   }
 
   return (
