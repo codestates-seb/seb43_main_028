@@ -39,8 +39,6 @@ import static org.mockito.BDDMockito.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CoordinateSocketConnectionTest {
     private Logger log = LoggerFactory.getLogger(getClass());
-    @MockBean
-    private TestDataInit testDataInit;
     @LocalServerPort
     private int port;
     @Autowired

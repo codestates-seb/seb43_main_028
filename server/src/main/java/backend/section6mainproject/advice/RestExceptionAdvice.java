@@ -33,7 +33,7 @@ public class RestExceptionAdvice {
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    //JPA에서 제약 조건 위반 예외 처리,(ex : DB에 저장할려는데 유효성 검사 실패)
+    // Path variable이 유효성 검사를 통과하지 못했을 때 예외 발생
     public ErrorResponse handleConstraintViolationException(
             ConstraintViolationException e){
         final ErrorResponse response = ErrorResponse.of(e.getConstraintViolations());

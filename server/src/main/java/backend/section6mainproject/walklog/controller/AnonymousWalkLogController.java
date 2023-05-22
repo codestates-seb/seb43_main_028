@@ -43,4 +43,10 @@ public class AnonymousWalkLogController {
         AnonymousWalkLogServiceDTO.Output output = walkLogService.findWalkLog(userId);
         return ResponseEntity.ok(mapper.ServiceOutputDTOToControllerResponseDTO(output));
     }
+
+    @PostMapping("/{user-id}")
+    public ResponseEntity<?> endWalkLog(@NotNull @PathVariable("user-id") String userId) {
+        walkLogService.exitWalkLog(userId);
+        return ResponseEntity.noContent().build();
+    }
 }
