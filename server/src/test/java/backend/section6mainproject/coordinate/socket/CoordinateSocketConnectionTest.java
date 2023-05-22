@@ -1,6 +1,5 @@
 package backend.section6mainproject.coordinate.socket;
 
-import backend.section6mainproject.TestDataInit;
 import backend.section6mainproject.auth.handler.AuthenticationSuccessHandlerUtils;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.member.entity.Member;

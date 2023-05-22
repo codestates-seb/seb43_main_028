@@ -1,5 +1,6 @@
 package backend.section6mainproject.walklog;
 
+import backend.section6mainproject.content.WalkLogContentStubData;
 import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
 import backend.section6mainproject.walklog.dto.WalkLogServiceDTO;
@@ -9,11 +10,16 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WalkLogStubData {
 
+    private WalkLogContentStubData walkLogContentStubData;
+    public static final String MEMBER_PASSWORD = "1q2w3e4r!abc";
+    public static final String INTRODUCTION = "자기소개테스트";
     private  Long MEMBER_ID = 1L;
+    private String MEMBER_EMAIL = "email@email.com";
     private  Long WALK_LOG_ID = 1L;
     private Long ANOTHER_WALK_LOG_ID = 2L;
     private  String MESSAGE = "안녕하세요";
@@ -22,7 +28,10 @@ public class WalkLogStubData {
     private String REGION = "03948";
     private  int PAGE = 1;
     private  int SIZE = 10;
-    private  WalkLog.WalkLogStatus walkLogStatus = WalkLog.WalkLogStatus.STOP;
+    private LocalDateTime DATE = LocalDateTime.of(2023,5,22,12,12);
+    private int YEAR = 2023;
+    private int MONTH = 5;
+    private int DAY = 22;
 
     public Long getWalkLogId() {
         return WALK_LOG_ID;
@@ -31,10 +40,10 @@ public class WalkLogStubData {
     public Member getMember() {
         Member member = new Member();
         member.setMemberId(MEMBER_ID);
-        member.setEmail("email@email.com");
-        member.setPassword("1q2w3e4r!abc");
+        member.setEmail(MEMBER_EMAIL);
+        member.setPassword(MEMBER_PASSWORD);
         member.setNickname(NICKNAME);
-        member.setIntroduction("자기소개테스트");
+        member.setIntroduction(INTRODUCTION);
         return member;
     }
     public WalkLog getRecordingWalkLog(Member member){
@@ -62,7 +71,7 @@ public class WalkLogStubData {
         return walkLog;
     }
 
-    public WalkLogControllerDTO.PostResponse getResponse() {
+    public WalkLogControllerDTO.PostResponse getPostResponse() {
         WalkLogControllerDTO.PostResponse response = new WalkLogControllerDTO.PostResponse();
         response.setWalkLogId(1L);
         return response;
@@ -88,13 +97,13 @@ public class WalkLogStubData {
     }
     public WalkLogControllerDTO.GetFeedRequest getFeedRequest(){
         WalkLogControllerDTO.GetFeedRequest getFeedRequest = new WalkLogControllerDTO.GetFeedRequest();
-        getFeedRequest.setPage(1);
-        getFeedRequest.setSize(10);
+        getFeedRequest.setPage(PAGE);
+        getFeedRequest.setSize(SIZE);
         return getFeedRequest;
     }
     public WalkLogControllerDTO.GetFeedResponse getFeedResponse() throws IOException {
         WalkLogControllerDTO.GetFeedResponse getFeedResponse = new WalkLogControllerDTO.GetFeedResponse();
-        getFeedResponse.setWalkLogId(1L);
+        getFeedResponse.setWalkLogId(WALK_LOG_ID);
         getFeedResponse.setMessage(MESSAGE);
         getFeedResponse.setNickname(NICKNAME);
         getFeedResponse.setMapImage(MAP_IMAGE);
@@ -150,8 +159,8 @@ public class WalkLogStubData {
         getResponse.setNickname(NICKNAME);
         getResponse.setMapImage(MAP_IMAGE);
         getResponse.setWalkLogStatus(WalkLog.WalkLogStatus.STOP);
-        getResponse.setCreatedAt(LocalDateTime.now());
-        getResponse.setEndAt(LocalDateTime.now());
+        getResponse.setCreatedAt(DATE);
+        getResponse.setEndAt(DATE);
         getResponse.setProfileImage(MAP_IMAGE);
         getResponse.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PRIVATE);
         getResponse.setMessage(MESSAGE);
@@ -161,7 +170,7 @@ public class WalkLogStubData {
         WalkLogServiceDTO.ExitInput exitInput = new WalkLogServiceDTO.ExitInput();
         exitInput.setMessage(MESSAGE);
         exitInput.setWalkLogPublicSetting(WalkLog.WalkLogPublicSetting.PUBLIC);
-        exitInput.setWalkLogId(1L);
+        exitInput.setWalkLogId(WALK_LOG_ID);
         exitInput.setMapImage(getImage());
         return exitInput;
     }
@@ -170,17 +179,20 @@ public class WalkLogStubData {
         findInput.setMemberId(MEMBER_ID);
         findInput.setPage(PAGE);
         findInput.setSize(SIZE);
-        findInput.setYear(LocalDateTime.now().getYear());
-        findInput.setMonth(LocalDateTime.now().getMonthValue());
-        findInput.setDay(LocalDateTime.now().getDayOfMonth());
+        findInput.setYear(YEAR);
+        findInput.setMonth(MONTH);
+        findInput.setDay(DAY);
         return findInput;
     }
     public WalkLogServiceDTO.FindOutput getFindOutput(){
+        walkLogContentStubData = new WalkLogContentStubData();
         WalkLogServiceDTO.FindOutput findOutput = new WalkLogServiceDTO.FindOutput();
         findOutput.setWalkLogId(WALK_LOG_ID);
         findOutput.setMessage(MESSAGE);
-        findOutput.setStartedAt(LocalDateTime.now());
-        findOutput.setEndAt(LocalDateTime.now());
+        findOutput.setStartedAt(DATE);
+        findOutput.setEndAt(DATE);
+        findOutput.setWalkLogContents(walkLogContentStubData.getOutputs());
+
         return findOutput;
     }
 
@@ -201,14 +213,66 @@ public class WalkLogStubData {
     public WalkLogServiceDTO.CalenderFindInput getCalenderFindInput(){
         WalkLogServiceDTO.CalenderFindInput calenderFindInput = new WalkLogServiceDTO.CalenderFindInput();
         calenderFindInput.setMemberId(MEMBER_ID);
-        calenderFindInput.setYear(LocalDateTime.now().getYear());
-        calenderFindInput.setMonth(LocalDateTime.now().getMonthValue());
+        calenderFindInput.setYear(YEAR);
+        calenderFindInput.setMonth(MONTH);
         return calenderFindInput;
     }
     public WalkLogServiceDTO.CalenderFindOutput getCalenderFindOutput(Long id){
         WalkLogServiceDTO.CalenderFindOutput calenderFindOutput = new WalkLogServiceDTO.CalenderFindOutput();
         calenderFindOutput.setWalkLogId(id);
         return calenderFindOutput;
+    }
+    public WalkLogControllerDTO.GetMemberRequest getGetMemberRequest(){
+        WalkLogControllerDTO.GetMemberRequest getMemberRequest = new WalkLogControllerDTO.GetMemberRequest();
+        getMemberRequest.setPage(PAGE);
+        getMemberRequest.setSize(SIZE);
+        getMemberRequest.setYear(YEAR);
+        getMemberRequest.setMonth(MONTH);
+        getMemberRequest.setDay(DAY);
+        return getMemberRequest;
+    }
+    public WalkLogControllerDTO.Response getResponse(){
+        walkLogContentStubData = new WalkLogContentStubData();
+        WalkLogControllerDTO.Response response = new WalkLogControllerDTO.Response();
+        response.setWalkLogId(WALK_LOG_ID);
+        response.setMessage(MESSAGE);
+        response.setMapImage(MAP_IMAGE);
+        response.setStartedAt(DATE);
+        response.setEndAt(DATE);
+        response.setWalkLogContents(walkLogContentStubData.getOutputs());
+        return response;
+    }
+   public ArrayList<WalkLogServiceDTO.FindOutput> getFindOutputs(){
+       ArrayList<WalkLogServiceDTO.FindOutput> findOutputs = new ArrayList<>();
+        WalkLogServiceDTO.FindOutput findOutput1 = getFindOutput();
+        WalkLogServiceDTO.FindOutput findOutput2 = getFindOutput();
+        findOutput2.setWalkLogId(ANOTHER_WALK_LOG_ID);
+        findOutputs.add(findOutput1);
+        findOutputs.add(findOutput2);
+        return findOutputs;
+    }
+
+    public WalkLogControllerDTO.GetCalendarRequest getGetCalendarRequest(){
+        WalkLogControllerDTO.GetCalendarRequest request = new WalkLogControllerDTO.GetCalendarRequest();
+        request.setYear(YEAR);
+        request.setMonth(MONTH);
+        return request;
+    }
+
+    public WalkLogControllerDTO.CalendarResponse getCalendarResponse(){
+        WalkLogControllerDTO.CalendarResponse calendarResponse = new WalkLogControllerDTO.CalendarResponse();
+        calendarResponse.setWalkLogId(WALK_LOG_ID);
+        calendarResponse.setCreatedAt(DATE);
+        return calendarResponse;
+    }
+    public List<WalkLogControllerDTO.CalendarResponse> getCalendarResponses(){
+        List<WalkLogControllerDTO.CalendarResponse> calendarResponses = new ArrayList<>();
+        WalkLogControllerDTO.CalendarResponse calendarResponse1 = getCalendarResponse();
+        WalkLogControllerDTO.CalendarResponse calendarResponse2 = getCalendarResponse();
+        calendarResponse2.setWalkLogId(ANOTHER_WALK_LOG_ID);
+        calendarResponses.add(calendarResponse1);
+        calendarResponses.add(calendarResponse2);
+        return calendarResponses;
     }
 
         public MockMultipartFile getImage() throws IOException {

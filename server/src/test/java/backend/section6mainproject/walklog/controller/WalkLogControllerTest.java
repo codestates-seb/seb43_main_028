@@ -80,7 +80,7 @@ public class WalkLogControllerTest {
     @DisplayName("걷기 기록 생성 테스트")
     @Test
     void postWalkLogTest() throws Exception {
-        WalkLogControllerDTO.PostResponse response = walkLogStubData.getResponse();
+        WalkLogControllerDTO.PostResponse response = walkLogStubData.getPostResponse();
 
 
         given(walkLogService.createWalkLog(Mockito.any(WalkLogServiceDTO.CreateInput.class))).willReturn(new WalkLogServiceDTO.CreateOutput());
@@ -288,7 +288,6 @@ public class WalkLogControllerTest {
         //then
         perform.andExpect(status().isOk())
                 .andExpect(jsonPath("$.walkLogId").value(walkLog.getWalkLogId()))
-//                .andExpect(jsonPath("$.endTime").value(equalTo(walkLog.getEndTime()))) jsonPath에서 시간뒤에 00이더 붙음
                 .andExpect(jsonPath("$.message").value(walkLog.getMessage()))
                 .andExpect(jsonPath("$.memberId").value(walkLog.getMember().getMemberId()))
                 .andExpect(jsonPath("$.nickname").value(walkLog.getMember().getNickname()))
