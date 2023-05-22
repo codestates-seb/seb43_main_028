@@ -15,12 +15,10 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 @Transactional
 @Service
@@ -70,14 +68,14 @@ public class MemberServiceImpl implements MemberService{
     private void verifyExistsEmail(String email) {
        Optional<Member> findMember = memberRepository.findByEmail(email);
        if(findMember.isPresent()) {
-           throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+           throw new BusinessLogicException(ExceptionCode.MEMBER_EMAIL_EXISTS);
        }
     }
 
     private void verifyExistsNickname(String nickname) {
         Optional<Member> findMember = memberRepository.findByNickname(nickname);
         if(findMember.isPresent()) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NICKNAME_EXISTS);
         }
     }
 
