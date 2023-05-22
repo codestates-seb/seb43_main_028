@@ -1,0 +1,7 @@
+@use '../../styles/typography' as T;
+@use '../../styles/utils' as U;
+
+.timer {
+  @include T.babygreen-bold-18;
+  min-width: 54px;
+}
