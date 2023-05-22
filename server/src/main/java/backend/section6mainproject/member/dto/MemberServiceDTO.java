@@ -40,7 +40,6 @@ public class MemberServiceDTO {
         @NotSpace(message = "닉네임을 입력해주세요.")
         private String nickname;
 
-        @NotSpace(message = "자기소개문구는 공백일 수 없습니다.")
         private String introduction;
 
         private WalkLog.WalkLogPublicSetting defaultWalkLogPublicSetting; // 비밀번호와 달리 공개설정은 거시적으로 멤버프로필에 들어간다고 볼 수 있어서 UpdateInput 하나로 퉁침
