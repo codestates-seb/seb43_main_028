@@ -54,7 +54,7 @@ public class WalkLogControllerDTO {
     public static class GetMemberRequest {
         @NotNull
         @Positive
-        private int page;
+        private int page = 1;
         private Integer size = 10;
         private Integer day;
         private Integer month;

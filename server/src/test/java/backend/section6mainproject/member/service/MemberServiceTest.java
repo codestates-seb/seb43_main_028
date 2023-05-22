@@ -16,29 +16,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import backend.section6mainproject.content.WalkLogContentStubData;
-import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
-import backend.section6mainproject.content.entity.WalkLogContent;
-import backend.section6mainproject.content.mapper.WalkLogContentMapper;
-import backend.section6mainproject.content.repository.WalkLogContentRepository;
 import backend.section6mainproject.exception.BusinessLogicException;
-import backend.section6mainproject.helper.image.StorageService;
 import backend.section6mainproject.walklog.entity.WalkLog;
-import backend.section6mainproject.walklog.service.WalkLogService;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,9 +40,9 @@ public class MemberServiceTest {
     @Mock
     private MemberMapper mapper;
     @Mock
-    private CustomAuthorityUtils authorityUtils;
-    @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private CustomAuthorityUtils authorityUtils;
     @Mock
     private CustomBeanUtils<Member> beanUtils;
 
@@ -94,8 +82,29 @@ public class MemberServiceTest {
 
         MemberServiceDTO.Output actualMemberOutput = memberService.findMember(1L);
 
-        Assertions.assertEquals(output.getIntroduction(), actualMemberOutput.getIntroduction());
+        assertEquals(output.getIntroduction(), actualMemberOutput.getIntroduction());
 
+    }
+
+    @Test
+    void updateMemberTest() throws Exception {
+        // Given
+        MockMultipartFile profileImage = stubData.getImage();
+        MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
+        updateInput.setProfileImage(profileImage);
+        Member member = stubData.getUpdatedMember();
+
+        when(memberRepository.findById(member.getMemberId())).thenReturn(Optional.of(member));
+        when(mapper.updateInputToMember(updateInput)).thenReturn(member);
+        when(storageService.store(updateInput.getProfileImage(), "profile")).thenReturn("newProfileImage");
+        when(beanUtils.copyNonNullProperties(member, member)).thenReturn(member);
+
+        // When
+        MemberServiceDTO.Output output = memberService.updateMember(updateInput);
+
+        // Then
+        assertEquals(updateInput.getNickname(), member.getNickname());
+        assertEquals(updateInput.getIntroduction(), member.getIntroduction());
     }
 
     @Test
@@ -118,40 +127,19 @@ public class MemberServiceTest {
         verify(memberRepository, times(1)).save(priorMember);
     }
 
-    /*@Test
-    void updateMemberTest() throws Exception {
-        MemberServiceDTO.UpdateInput updateInput = stubData.getUpdateInput();
-        Member findMember = stubData.getMember();
-        MemberServiceDTO.Output output = stubData.getMemberOutput();
-        findMember.setNickname(updateInput.getNickname());
+    @Test
+    void deleteMemberTest() throws Exception {
 
-        given(mapper.updateInputToMember(Mockito.any(MemberServiceDTO.UpdateInput.class))).willReturn(findMember);
-        //doNothing().when(storageService).delete(findMember.getProfileImage());
-        given(beanUtils.copyNonNullProperties(Mockito.any(Member.class), Mockito.any(Member.class))).willReturn(new Member());
-        //given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("");
-        given(memberRepository.save(Mockito.any(Member.class))).willReturn(new Member());
-        given(mapper.memberToOutput(Mockito.any(Member.class))).willReturn(output);
-
-        Assertions.assertEquals(updateInput.getNickname(), findMember.getNickname());
-
-    }*/
-
-
-    /*@Test
-    @Disabled
-    void deleteMember() throws Exception {
-        //given
         Member member = stubData.getMember();
-        member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
-
-        //when
         when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
         given(memberRepository.save(Mockito.any(Member.class))).willReturn(member);
+
         memberService.deleteMember(member.getMemberId());
 
-        //then
         verify(memberRepository, times(1)).save(Mockito.any(Member.class));
-    }*/
+    }
+
+
 
     @Test
     void findRecordingWalkLog() {
@@ -167,5 +155,4 @@ public class MemberServiceTest {
         Assertions.assertNotNull(result.get());
         MatcherAssert.assertThat(result.get().getWalkLogStatus(), is(WalkLog.WalkLogStatus.RECORDING));
     }
-
 }
