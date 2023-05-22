@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import styles from './SnapForm.module.scss'
 import ImgInput from './ImgInput'
 
@@ -36,12 +37,14 @@ export default function SnapForm({
   handleCancel,
   onSubmit,
 }: SnapFormProps) {
+  const [preview, setPreview] = useState<string | null>(initialImgUrl)
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
-    const text = formData.get('text')
-    const image: File = formData.get('image')
+    const text = formData.get('text') ? formData.get('text') : null
+    const image = formData.get('image')
 
     const data = new FormData()
     const blob = new Blob([JSON.stringify({ text })], {
@@ -49,7 +52,14 @@ export default function SnapForm({
     })
 
     data.append('content', blob)
-    if (image.name) data.append('contentImage', image)
+
+    if (image instanceof File && !image.name && !preview) {
+      data.append('contentImage', image)
+    }
+
+    if (image instanceof File && image.name && preview) {
+      data.append('contentImage', image)
+    }
     onSubmit(contentId, data)
   }
 
@@ -62,7 +72,7 @@ export default function SnapForm({
       <form onSubmit={handleSubmit}>
         <div>
           <Header onCancel={handleCancel} />
-          <ImgInput initialValue={initialImgUrl} />
+          <ImgInput initialImgUrl={initialImgUrl} preview={preview} setPreview={setPreview} />
         </div>
         <label htmlFor='text'>
           <textarea

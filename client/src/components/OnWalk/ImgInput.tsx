@@ -3,22 +3,23 @@ import styles from './ImgInput.module.scss'
 import Icon from '../common/Icon'
 
 type ImgInputProps = {
-  initialValue: string | null
+  initialImgUrl: string | null
+  preview: string | null
+  setPreview: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-export default function ImgInput({ initialValue }: ImgInputProps) {
-  const [preview, setPreview] = useState<string | null>(initialValue)
-  const [imgFile, setImgFile] = useState<File | undefined>()
+export default function ImgInput({ initialImgUrl, preview, setPreview }: ImgInputProps) {
+  const [imgFile, setImgFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImgFile(event.target.files?.[0])
+    setImgFile(event.target.files?.[0] || null)
   }
 
   const handleClear = () => {
     if (!inputRef.current) return
     inputRef.current.value = ''
-    setImgFile(undefined)
+    setImgFile(null)
     setPreview('')
   }
 
@@ -28,14 +29,14 @@ export default function ImgInput({ initialValue }: ImgInputProps) {
 
   useEffect(() => {
     if (!imgFile && !preview) return setPreview('')
-    if (!imgFile) return setPreview(initialValue)
+    if (!imgFile) return setPreview(initialImgUrl)
 
     const nextPreview = URL.createObjectURL(imgFile)
     setPreview(nextPreview)
 
     return () => {
       URL.revokeObjectURL(nextPreview)
-      setPreview(initialValue)
+      setPreview(initialImgUrl)
     }
   }, [imgFile])
 
