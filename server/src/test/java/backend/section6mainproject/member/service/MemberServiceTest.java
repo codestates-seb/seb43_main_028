@@ -137,21 +137,16 @@ public class MemberServiceTest {
     }*/
 
 
-    /*@Test
-    @Disabled
-    void deleteMember() throws Exception {
-        //given
-        Member member = stubData.getMember();
-        member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
+    @Test
+    void deleteMemberTest() throws Exception {
 
-        //when
+        Member member = stubData.getMember();
         when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
-        given(memberRepository.save(Mockito.any(Member.class))).willReturn(member);
+
         memberService.deleteMember(member.getMemberId());
 
-        //then
-        verify(memberRepository, times(1)).save(Mockito.any(Member.class));
-    }*/
+        verify(memberRepository, times(1)).delete(Mockito.any(Member.class));
+    }
 
     @Test
     void findRecordingWalkLog() {
