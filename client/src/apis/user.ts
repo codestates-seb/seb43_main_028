@@ -71,6 +71,7 @@ export const signIn = async ({
     fileAxios.defaults.headers.common.Authorization = authorization
     return { status: 'success', memberId: response.data.memberId }
   } catch (error) {
+    console.log(error)
     return { status: 'fail', memberId: null }
   }
 }
@@ -110,7 +111,6 @@ export const patchUserProfile = async (memberId: number, formData: FormData) => 
     const response = await fileAxios.patch(`/members/${memberId}`, formData)
     return { status: 'success', resData: response.data }
   } catch (error: unknown) {
-    console.log(error)
     return { status: 'fail', resData: null }
   }
 }

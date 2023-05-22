@@ -90,7 +90,7 @@ function SignUp() {
     },
   })
 
-  const submitSignUpData = (data: any) => {
+  const submitSignUpData = (data: FormValueType) => {
     signUp(data).then(res => {
       if (res === 'success') {
         routeTo('/signin')
@@ -99,7 +99,7 @@ function SignUp() {
       } else if (res === 'nickname-exists') {
         alert('이미 존재하는 닉네임입니다.')
       } else {
-        alert('Sorry, you failed to sign up.')
+        alert('가입에 실패했습니다. 잠시 후 다시 시도해주세요.')
       }
     })
   }

@@ -31,7 +31,7 @@ function SignIn() {
       routeTo('/')
       return
     }
-    alert('Sorry, you failed to log in.')
+    alert('가입되지 않은 이메일이거나 잘못된 비밀번호입니다.')
   }
   console.log(user)
 
