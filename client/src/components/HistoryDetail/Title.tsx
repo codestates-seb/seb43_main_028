@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Icon from '../common/Icon'
@@ -19,8 +19,6 @@ type TitleProps = {
   setting: 'PUBLIC' | 'PRIVATE'
 }
 
-const koOptions = ['전체 공개', '나만 보기'] as const
-const engOptionsObj = { PUBLIC: '전체 공개', PRIVATE: '나만 보기' } as const
 export default function Title({
   id,
   memberId,
@@ -32,7 +30,6 @@ export default function Title({
 }: TitleProps) {
   const [edit, setEdit] = useState(false)
   const [message, setMessage] = useState(text)
-  const [publicSetting, setPublicSetting] = useState(engOptionsObj[setting])
   const [isLogin] = useAtom(isLoginAtom)
   const [logInId] = useAtom(idAtom)
   const formattedTime = {
@@ -40,8 +37,6 @@ export default function Title({
     timer: passedHourMinuteSecondFormat(new Date(endAt).getTime() - new Date(startAt).getTime()),
     time: `${format(new Date(startAt), 'H:mm')} ~ ${format(new Date(endAt), 'H:mm')}`,
   }
-
-  const messageRef = useRef<HTMLInputElement>(null)
 
   const queryClient = useQueryClient()
   const handlePatchHistory = useMutation<
@@ -52,45 +47,33 @@ export default function Title({
   >({
     mutationFn: data => patchHistory(id, data),
     onSuccess: data => {
-      setMessage(data.message)
       queryClient.invalidateQueries(['history', id])
+      setMessage(data.message)
     },
   })
 
-  const filteredOption = koOptions.filter(option => option !== publicSetting)
-  filteredOption.unshift(publicSetting)
-
-  const dropDownOption = filteredOption.map((option, i) => {
-    const param =
-      Object.keys(engOptionsObj).find(
-        engOpt => engOptionsObj[engOpt as 'PUBLIC' | 'PRIVATE'] === option
-      ) || ''
-
-    return {
-      id: i,
-      title: option,
-      param,
-      handleClick: (paramOpt: string) => {
-        const patchData = JSON.stringify({
-          message,
-          walkLogPublicSetting: paramOpt,
-        })
-        handlePatchHistory.mutate(patchData)
-        if (handlePatchHistory.isSuccess) {
-          setPublicSetting(option)
-        }
-      },
-    }
-  })
+  useEffect(() => {
+    setMessage(text)
+  }, [text])
 
   const handleMessageSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const formData = new FormData(event.currentTarget)
     const patchData = JSON.stringify({
-      message: messageRef.current ? messageRef.current.value : '',
-      walkLogPublicSetting: 'PRIVATE',
+      message: formData.get('message'),
+      walkLogPublicSetting: setting,
     })
     handlePatchHistory.mutate(patchData)
     setEdit(prev => !prev)
+  }
+
+  const handlePublicSettingSubmit = async (selectOption: string) => {
+    const patchData = JSON.stringify({
+      message,
+      walkLogPublicSetting: selectOption,
+    })
+
+    handlePatchHistory.mutate(patchData)
   }
 
   const editingForm = (
@@ -98,9 +81,9 @@ export default function Title({
       <label>
         <input
           type='text'
+          name='message'
           className={styles.editing}
           defaultValue={message}
-          ref={messageRef}
           maxLength={50}
           required
         />
@@ -121,7 +104,9 @@ export default function Title({
           <div className={styles.nickName}>{nickname}</div>
         </div>
       )}
-      {isLogin && logInId === memberId && <DropDown options={dropDownOption} />}
+      {isLogin && logInId === memberId && (
+        <DropDown currentSetting={setting} onSubmit={handlePublicSettingSubmit} />
+      )}
       <div className={styles.timeBox}>
         <div className={styles.iconBox}>
           <Icon name='calendar-gray' size={16} />
