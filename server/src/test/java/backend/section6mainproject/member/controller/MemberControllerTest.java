@@ -5,7 +5,6 @@ import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.member.MemberStubData;
 import backend.section6mainproject.member.dto.MemberControllerDTO;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
-import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.walklog.dto.WalkLogControllerDTO;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static backend.section6mainproject.util.ApiDocumentUtils.*;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -49,7 +47,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -415,6 +412,35 @@ public class MemberControllerTest {
                         getResponsePreProcessor(),
                         pathParameters(
                                 parameterWithName("member-id").description("회원 식별자")
+                        )
+                ));
+    }
+
+    @Test
+    void getTemporaryPasswordTest() throws Exception {
+        String urlTemplate = "/members/tmp-pw";
+        MemberControllerDTO.GetNewPw getNewPw = stubData.getGetNewPw();
+        MemberServiceDTO.FindNewPwInput findNewPwInput = new MemberServiceDTO.FindNewPwInput();
+        findNewPwInput.setEmail(getNewPw.getEmail());
+
+        String content = objectMapper.writeValueAsString(getNewPw);
+
+        given(mapper.getNewPwToFindNewPw(Mockito.any(MemberControllerDTO.GetNewPw.class))).willReturn(findNewPwInput);
+        doNothing().when(memberService).getTemporaryPasswordThroughEmail(findNewPwInput);
+
+        ResultActions actions = mockMvc.perform(post(urlTemplate)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(content)
+                .requestAttr(RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE, urlTemplate)
+        );
+        actions.andExpect(status().isOk())
+                .andDo(document(
+                        "get-temp-pw",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestFields(
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("비밀번호찾기에 사용할 이메일")
                         )
                 ));
     }
