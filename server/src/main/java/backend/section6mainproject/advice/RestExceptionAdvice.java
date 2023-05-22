@@ -3,11 +3,11 @@ package backend.section6mainproject.advice;
 import backend.section6mainproject.exception.BusinessLogicException;
 import backend.section6mainproject.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,6 +46,12 @@ public class RestExceptionAdvice {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode()
                 .getStatus()));
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity handleBindException(BindException e) {
+        final ErrorResponse response = ErrorResponse.of(e.getBindingResult());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)

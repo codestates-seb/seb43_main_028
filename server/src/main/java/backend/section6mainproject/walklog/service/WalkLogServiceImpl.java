@@ -148,6 +148,7 @@ public class WalkLogServiceImpl implements WalkLogService {
         return walkLogRepository.findAllByWalkLogPublicSetting(pageRequest, WalkLog.WalkLogPublicSetting.PUBLIC)
                 .map(walkLogMapper::walkLogToWalkLogServiceFindFeedOutputDTO);
     }
+
     @Override
     public void deleteWalkLog(Long walkLogId){
         WalkLog findWalkLog = findVerifiedWalkLog(walkLogId);
