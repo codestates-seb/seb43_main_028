@@ -21,6 +21,7 @@
   @include U.flex-c(column, flex-start, flex-start);
   gap: 16px;
   width: 100%;
+  position: relative;
 }
 
 .snapbutton {

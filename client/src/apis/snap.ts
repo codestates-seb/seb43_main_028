@@ -13,23 +13,30 @@ export const createSnap = async ({ walkLogId, data }: CreateSnapProps) => {
   }
 }
 
-export const patchHistoryItem = async (walkLogId: string, contentId: string, data: FormData) => {
+type DeleteSnapProps = {
+  walkLogId: string
+  snapId: number
+}
+export const deleteSnap = async ({ walkLogId, snapId }: DeleteSnapProps) => {
   try {
-    const url = `/walk-logs/${walkLogId}/contents/${contentId}`
-    const response = await fileAxios.patch(url, data)
-    return response.data
+    const response = await axiosInstance.delete(`/walk-logs/${walkLogId}/contents/${snapId}`)
+    return response.status === 204 ? 'success' : 'fail'
   } catch (error: unknown) {
-    console.log(error)
     return 'fail'
   }
 }
 
-export const deleteHistoryItem = async (walkLogId: string, contentId: string) => {
+type EditSnapProps = {
+  walkLogId: string
+  snapId: number
+  data: FormData
+}
+export const editSnap = async ({ walkLogId, snapId, data }: EditSnapProps) => {
   try {
-    const response = await axiosInstance.delete(`/walk-logs/${walkLogId}/contents/${contentId}`)
-    return response.status === 204 ? 'success' : 'fail'
+    const url = `/walk-logs/${walkLogId}/contents/${snapId}`
+    const response = await fileAxios.patch(url, data)
+    return response.data
   } catch (error: unknown) {
-    console.log(error)
-    return 'fail'
+    return null
   }
 }
