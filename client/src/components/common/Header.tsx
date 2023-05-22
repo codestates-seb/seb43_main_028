@@ -20,7 +20,7 @@ export default function Header({
   const { routeTo } = useRouter()
   const toPreviousPage = () => {
     if (path === '-1') {
-      routeTo(-1)
+      routeTo(+path)
     }
     routeTo(path)
   }
