@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class TestDataInit {
     private final MemberRepository memberRepository;

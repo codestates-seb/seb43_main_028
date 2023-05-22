@@ -7,6 +7,6 @@ public interface AnonymousWalkLogService {
     AnonymousWalkLogServiceDTO.CreateOutput createWalkLog();
 
     AnonymousWalkLogServiceDTO.Output findWalkLog(String userId);
-
+    void exitWalkLog(String userId);
     AnonymousWalkLog findVerifiedWalkLogByUserId(String userId);
 }
