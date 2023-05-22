@@ -3,6 +3,8 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { getAllPublicWalkLogs } from '../apis/walkLog'
 import styles from './Feed.module.scss'
 import FeedItem from '../components/Feed/FeedItem'
+import FeedLoading from './loadingPage/FeedLoading'
+import HistoryLoading from './loadingPage/HistoryLoading'
 
 type FeedType = {
   walkLogId: number | null
@@ -48,7 +50,7 @@ export default function Feed() {
     [isFetchingNextPage, fetchNextPage, hasNextPage]
   )
 
-  if (isLoading) return <h1>Loading...</h1>
+  if (isLoading) return <FeedLoading />
   if (isError) return <h1>Fail...</h1>
 
   const body = data?.pages.map(page => {
@@ -60,5 +62,10 @@ export default function Feed() {
     })
   })
 
-  return <div className={styles.container}>{body}</div>
+  return (
+    <>
+      <div className={styles.container}>{body}</div>
+      {isFetchingNextPage && <HistoryLoading />}
+    </>
+  )
 }
