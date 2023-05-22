@@ -70,8 +70,6 @@ public class WalkLogServiceImpl implements WalkLogService {
     public WalkLogServiceDTO.Output exitWalkLog(WalkLogServiceDTO.ExitInput exitInput){
         WalkLog findWalkLog = findVerifiedWalkLog(exitInput.getWalkLogId());
         checkWalkLogStatusRecording(findWalkLog);
-        //WalkLogContent들을 조회
-        //만약 walkLogContrent들이 존재하면 리스트들을 돌면서 가장 첫번째 파일의 이미지 url주소를 mapImage에 반환
         String mapImage = storageService.store(exitInput.getMapImage(), "mapImage");
         WalkLog walkLog = walkLogMapper.walkLogServiceExitInputDTOtoWalkLog(exitInput);
         WalkLog exitedWalkLog =
@@ -110,7 +108,7 @@ public class WalkLogServiceImpl implements WalkLogService {
 
 
     @Override
-    public Page<WalkLogServiceDTO.FindOutput> findMyWalkLogs(WalkLogServiceDTO.FindInput findInput){//년월일 int타입으로 나눠서 리팩토링하기
+    public Page<WalkLogServiceDTO.FindOutput> findMyWalkLogs(WalkLogServiceDTO.FindInput findInput){
         Long memberId = findInput.getMemberId();
         Integer year = findInput.getYear();
         Integer month = findInput.getMonth();
