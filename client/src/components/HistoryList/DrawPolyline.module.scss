@@ -1,0 +1,10 @@
+.canvasWrapper {
+  width: 64px;
+  height: 64px;
+  padding: 0px;
+  border: 1px solid red;
+
+  canvas {
+    border-radius: 50%;
+  }
+}
