@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import { isLoginAtom } from '../../store/authAtom'
 import styles from './PasswordChanged.module.scss'

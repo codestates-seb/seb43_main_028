@@ -8,7 +8,7 @@ import Header from '../components/common/Header'
 
 function SignIn() {
   const { routeTo } = useRouter()
-  const [user, setUser] = useAtom(userAtom)
+  const [, setUser] = useAtom(userAtom)
   const [, setId] = useAtom(idAtom)
   const [, setIsLogin] = useAtom(isLoginAtom)
 
