@@ -1,6 +1,10 @@
 @use '../../styles/utils' as U;
 @use '../../styles/color' as C;
 
+.modalContainer {
+  position: absolute;
+}
+
 .modalBackground {
   position: fixed;
   top: 0;
