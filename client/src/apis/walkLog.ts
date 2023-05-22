@@ -1,25 +1,6 @@
-import { axiosInstance } from './instance'
+import { axiosInstance, fileAxios } from './instance'
 
-type StartWalkLogResType = {
-  walkLogId: number
-}
-
-export const startWalkLog = async (memberId: number): Promise<StartWalkLogResType> => {
-  try {
-    const {
-      data: { walkLogId },
-    } = await axiosInstance.post('/walk-logs', { memberId })
-    return {
-      walkLogId,
-    }
-  } catch (error: unknown) {
-    return {
-      walkLogId: -1,
-    }
-  }
-}
-
-type WalkLogContentType = {
+export type WalkLogContentType = {
   walkLogContentId: number
   text: string
   createdAt: string
@@ -48,11 +29,51 @@ export type WalkLogType = {
   walkLogContents: WalkLogContentType[]
 }
 
+type StartWalkLogResType = {
+  walkLogId: number
+}
+
+export const startWalkLog = async (memberId: number): Promise<StartWalkLogResType> => {
+  try {
+    const {
+      data: { walkLogId },
+    } = await axiosInstance.post('/walk-logs', { memberId })
+    return {
+      walkLogId,
+    }
+  } catch (error: unknown) {
+    return {
+      walkLogId: -1,
+    }
+  }
+}
+
 export const getWalkLog = async (walkLogId: number): Promise<WalkLogType | null> => {
   try {
     const { data } = await axiosInstance.get(`/walk-logs/${walkLogId}`)
     return data as WalkLogType
   } catch (error: unknown) {
     return null
+  }
+}
+
+type StopWalkLogProps = {
+  walkLogId: string
+  data: {
+    endPost: {
+      message: string
+      walkLogPublicSetting: 'PRIVATE' | 'PUBLIC'
+    }
+    mapImage: File | null
+  }
+}
+
+export const stopWalkLog = async ({ walkLogId, data }: StopWalkLogProps): Promise<boolean> => {
+  try {
+    const response = await fileAxios.post(`/walk-logs/${walkLogId}`, { ...data })
+    console.log(response)
+    return true
+  } catch (error: unknown) {
+    return false
   }
 }
