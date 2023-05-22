@@ -10,12 +10,17 @@
   gap: 8px;
 }
 
-.profile {
-  border-radius: 50%;
-}
-
-.nickName {
+.profileNicknameBox {
+  @include U.flex-c(row, flex-start);
   @include T.gray900-bold-18;
+  gap: 12px;
+  img {
+    @include U.size(64px);
+    @include U.flex-c(row, center, center);
+    border-radius: 50%;
+    overflow: hidden;
+    object-fit: fill;
+  }
 }
 
 .timeBox {

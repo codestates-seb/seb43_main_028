@@ -13,6 +13,7 @@ type TitleProps = {
   id: string
   memberId: number
   nickname: string
+  profileImage: string
   startAt: string
   endAt: string
   text: string
@@ -23,6 +24,7 @@ export default function Title({
   id,
   memberId,
   nickname,
+  profileImage,
   startAt,
   endAt,
   text,
@@ -99,9 +101,13 @@ export default function Title({
   return (
     <div className={styles.container}>
       {logInId !== memberId && (
-        <div>
-          <img src='' className={styles.profile} alt='profile' />
-          <div className={styles.nickName}>{nickname}</div>
+        <div className={styles.profileNicknameBox}>
+          {profileImage ? (
+            <img src={profileImage} alt='profile' />
+          ) : (
+            <Icon name='no-profile' size={48} />
+          )}
+          <div>{nickname}</div>
         </div>
       )}
       {isLogin && logInId === memberId && (
