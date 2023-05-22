@@ -1,0 +1,10 @@
+@use '../styles/color' as C;
+@use '../styles/utils' as U;
+@use '../styles/typography' as T;
+
+.container {
+  @include U.flex-c(column, flex-start, start);
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+}
