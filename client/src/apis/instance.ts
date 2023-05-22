@@ -5,6 +5,7 @@ export const axiosInstance = axios.create({
   timeout: 3000,
   headers: {
     'Content-Type': 'application/json',
+    withCredentials: 'true',
     'ngrok-skip-browser-warning': '69420',
   },
 })
@@ -14,5 +15,6 @@ export const fileAxios = axios.create({
   timeout: 3000,
   headers: {
     'Content-Type': 'multipart/form-data',
+    withCredentials: 'true',
   },
 })
