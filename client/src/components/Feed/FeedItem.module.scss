@@ -21,11 +21,17 @@
   gap: 12px;
 }
 
-.profileImage {
-  @include U.flex-c(row, center, center);
+.imgWrapper {
   width: 64px;
   height: 64px;
   border-radius: 50%;
+  overflow: hidden;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .itemInfoBox {
