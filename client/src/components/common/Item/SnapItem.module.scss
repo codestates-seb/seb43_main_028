@@ -6,12 +6,13 @@
   @include U.flex-c(row, flex-start, flex-start);
   flex-wrap: wrap;
   gap: 8px;
+  width: 100%;
 }
 
 .infoBox {
-  @include U.flex-c(column, flex-start, flex-start);
-  gap: 4px;
+  @include U.flex-c(column, space-between, flex-start);
   width: calc(100% - 128px);
+  height: 80px;
 }
 
 .imgWrapper {
@@ -24,25 +25,32 @@
 
 .createdTime {
   @include U.flex-c(row, left);
-  @include T.gray600-regular-12;
+  @include T.gray600-regular-14;
   gap: 2px;
 }
 
 .content {
   @include T.gray900-regular-14;
+  width: 100%;
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-all;
 }
 
 .buttonsWrapper {
   @include U.flex-c(row, flex-start, flex-start);
-  gap: 16px;
+  gap: 12px;
   button {
     @include U.flex-c(row, center, center);
     gap: 2px;
     @include T.gray600-regular-14;
   }
+}
+
+.bottom {
+  @include U.flex-c(row, space-between, center);
+  width: 100%;
 }

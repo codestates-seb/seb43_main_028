@@ -24,6 +24,7 @@
   border: 1px solid C.$gray900;
   @include U.flex-c(row, space-between, center);
   border-radius: 4px;
+  background: C.$white;
 }
 
 .open {
@@ -33,7 +34,7 @@
 
 .listBox {
   position: absolute;
-  width: 100%;
+  width: 110px;
   background-color: C.$white;
   top: 31px;
   border: 1px solid C.$gray900;
