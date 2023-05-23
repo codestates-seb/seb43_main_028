@@ -14,6 +14,7 @@ import YearMonth from './YearMonth'
 import Dates from './Dates'
 import { userAtom } from '../../../store/authAtom'
 import { getHistoryCalendarList } from '../../../apis/history'
+import CalendarLoading from '../../../pages/loadingPage/CalendarLoading'
 
 type MonthHistoriesType = {
   data: {
@@ -38,7 +39,7 @@ export default function Calendar({ date, setDate, selectDate, setSelectDate }: C
     enabled: !!date,
   })
 
-  if (getMonthHistoryQuery.isLoading) return <div>Loading...</div>
+  if (getMonthHistoryQuery.isLoading) return <CalendarLoading />
   if (getMonthHistoryQuery.isError) return <div>Error...</div>
 
   const { data }: MonthHistoriesType = getMonthHistoryQuery
