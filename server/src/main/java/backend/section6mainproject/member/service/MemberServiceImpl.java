@@ -157,11 +157,19 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public MemberServiceDTO.Output findMember(Long memberId) {
         Member invokedMember = findVerifiedMember(memberId);
-        return mapper.memberToOutput(invokedMember);
+        MemberServiceDTO.Output output = mapper.memberToOutput(invokedMember);
+        output.setRecordingWalkLogId(findRecordingWalkLogInternal(memberId));
+        return output;
     }
 
     @Override
     public Long findRecordingWalkLog(Long memberId) {
+        Long walkLogId = findRecordingWalkLogInternal(memberId);
+        if(walkLogId == null) throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND);
+        return walkLogId;
+    }
+
+    private Long findRecordingWalkLogInternal(Long memberId) {
         Member findMember = findVerifiedMember(memberId);
         List<WalkLog> walkLogs = findMember.getWalkLogs();
         Long walkLogId = null;
@@ -171,7 +179,6 @@ public class MemberServiceImpl implements MemberService{
                 break;
             }
         }
-        if(walkLogId == null) throw new BusinessLogicException(ExceptionCode.WALK_LOG_NOT_FOUND);
         return walkLogId;
     }
 

@@ -72,6 +72,7 @@ public class MemberServiceDTO {
         private String introduction;
         private String defaultWalkLogPublicSetting;
         private String imageUrl;
+        private Long recordingWalkLogId;
         private long totalWalkLog;
         private long totalWalkLogContent;
         private LocalDateTime createdAt; // 회원가입일시 공개
