@@ -16,7 +16,7 @@ export default function Tapbar({ tapBarContent }: TapbarProps) {
             <li key={element.id} className={styles.tapItem}>
               <NavLink className={styles.tapLink} to={element.path}>
                 {({ isActive }) => (
-                  <div className={isActive ? `${styles.active}` : ''}>
+                  <div className={isActive ? `${styles.active}` : `${styles.inactive}`}>
                     <Icon name='map-color' />
                     {element.label}
                   </div>
