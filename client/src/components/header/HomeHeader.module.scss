@@ -4,7 +4,7 @@
 
 .container {
   gap: 16px;
-  padding: 20px;
+  padding: 8px 20px;
   position: fixed;
   top: 0;
   width: 100%;
@@ -35,9 +35,9 @@
 .profile {
   @include U.size(48px, 48px);
   overflow: hidden;
-  border-radius: 48px;
+  border-radius: 50%;
   img {
-    @include U.size(48px, 48px);
+    @include U.size(100%, 100%);
     object-fit: cover;
   }
 }

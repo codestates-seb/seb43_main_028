@@ -12,7 +12,11 @@ export default function SnapItem({ item }: SnapItemProps) {
 
   return (
     <li key={walkLogContentId} className={styles.container}>
-      {imageUrl && <img src={imageUrl} alt='올린 사진' />}
+      {imageUrl && (
+        <div className={styles.imgWrapper}>
+          <img src={imageUrl} alt='올린 사진' />
+        </div>
+      )}
       <div className={imageUrl ? styles.timeTextBox : styles.noImg}>
         <div className={styles.snapTimeBox}>
           <Icon name='time-gray' size={16} />

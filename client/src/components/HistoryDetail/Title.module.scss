@@ -29,10 +29,26 @@
   gap: 12px;
 }
 
+.iconBoxMargin {
+  @include T.gray600-regular-14;
+  @include U.flex-c(row, flex-start);
+  gap: 4px;
+  svg {
+    margin-bottom: 2px;
+  }
+}
+
 .iconBox {
-  @include T.gray600-regular-16;
+  @include T.gray600-regular-14;
+  @include U.flex-c(row, flex-start);
+  gap: 4px;
+}
+
+.editBtnBox {
+  @include T.gray600-regular-14;
   @include U.flex-c(row, flex-start);
   gap: 2px;
+  margin-top: 4px;
 }
 
 .formBox {

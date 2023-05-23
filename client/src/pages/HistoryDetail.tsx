@@ -126,6 +126,8 @@ export default function HistoryDetail() {
   const detailItems = walkLogContents.map((da: WalkLogContentsDataType) => {
     const createTime = format(new Date(da.createdAt), 'a h시 m분', { locale: ko })
 
+    console.log(createdAt)
+
     return (
       <DetailItem
         key={da.walkLogContentId}

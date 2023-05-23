@@ -21,10 +21,14 @@
 }
 
 .timeTextBox {
+  @include U.flex-c(column, flex-start, start);
+  gap: 4px;
   width: calc(100% - 96px);
 }
 
 .noImg {
+  @include U.flex-c(column, flex-start, start);
+  gap: 4px;
   width: 100%;
 }
 

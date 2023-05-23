@@ -7,17 +7,19 @@ import History from '../components/HistoryList/History'
 import Calendar from '../components/HistoryList/Calendar/Calendar'
 import Toggle from '../components/HistoryList/Toggle'
 import { getHistoryList } from '../apis/history'
-import { userAtom } from '../store/authAtom'
+import { isLoginAtom, userAtom } from '../store/authAtom'
 import { HistoryListDataType } from '../types/History'
 import { getDate, getMonth, getYear } from '../utils/date-fns'
 import HistoryListLoading from './loadingPage/HistoryListLoading'
 import HistoryLoading from './loadingPage/HistoryLoading'
+import HomeHeader from '../components/header/HomeHeader'
 
 export default function HistoryList() {
   const [calendar, setCalendar] = useState<boolean>(false)
   const [selectDate, setSelectDate] = useState<Date | null>(null)
   const [date, setDate] = useState<Date>(new Date())
   const [user] = useAtom(userAtom)
+  const [isLogin] = useAtom(isLoginAtom)
 
   const handleCalendar = () => {
     setCalendar(!calendar)
@@ -92,6 +94,8 @@ export default function HistoryList() {
   )
 
   return (
+    <>
+    <HomeHeader isLogin={isLogin} userInfo={user} />
     <div className={styles.container}>
       <Toggle handleCalendar={handleCalendar} calendar={calendar} />
       {calendar && (
@@ -106,5 +110,6 @@ export default function HistoryList() {
       <ul className={styles.historyList}>{historyList}</ul>
       {isFetchingNextPage && <HistoryLoading />}
     </div>
+   </>
   )
 }

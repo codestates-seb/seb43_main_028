@@ -7,6 +7,6 @@
   gap: 20px;
   width: 100%;
   padding: 20px;
-  padding-bottom: calc(constant(safe-area-inset-bottom) + 60px);
-  padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
+  padding-bottom: calc(constant(safe-area-inset-bottom) + 120px);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120px);
 }

@@ -33,9 +33,11 @@ export default forwardRef(function FeedItem({ data }: FeedItemProps, ref: Ref<HT
     <li className={styles.container}>
       <div className={styles.profileImageBox}>
         {profileImage ? (
-          <img src={profileImage} className={styles.profileImage} alt='프로필' />
+          <div className={styles.imgWrapper}>
+            <img src={profileImage} className={styles.profileImage} alt='프로필' />
+          </div>
         ) : (
-          <div className={styles.profileImage}>
+          <div className={styles.imgWrapper}>
             <Icon name='no-profile' size={64} />
           </div>
         )}
