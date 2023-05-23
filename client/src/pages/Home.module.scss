@@ -13,7 +13,8 @@
   max-width: 600px;
   height: 40px;
   position: fixed;
-  bottom: 64px;
+  bottom: calc(constant(safe-area-inset-bottom) + 64px);
+  bottom: calc(env(safe-area-inset-bottom) + 64px);
   color: C.$white;
   background: C.$gray900;
   border-radius: 12px;
