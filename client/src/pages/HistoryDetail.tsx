@@ -14,6 +14,7 @@ import { WalkLogContentsDataType, ModalOption } from '../types/History'
 import { isLoginAtom, idAtom } from '../store/authAtom'
 import Header from '../components/common/Header'
 import useRouter from '../hooks/useRouter'
+import HistoryDetailLoading from './loadingPage/HistoryDetailLoading'
 
 export default function HistoryDetail() {
   const [edit, setEdit] = useState<boolean>(false)
@@ -61,7 +62,7 @@ export default function HistoryDetail() {
     patchHistoryItemMutation.mutate({ contentId, formData })
   }
 
-  if (getHistoryQuery.isLoading) return <h1>Loading...</h1>
+  if (getHistoryQuery.isLoading) return <HistoryDetailLoading />
   if (getHistoryQuery.error) return <h1>Sorry, can not access to the page</h1>
 
   const {
