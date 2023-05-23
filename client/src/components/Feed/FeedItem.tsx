@@ -52,7 +52,7 @@ export default forwardRef(function FeedItem({ data }: FeedItemProps, ref: Ref<HT
       <ul className={styles.walkLogContentList}>
         {walkLogContents.map((item: WalkLogContentsDataType, index) => {
           if (!moreContent && index > 0) return null
-          return <SnapItem key={item.walkLogContentId} item={item} startAt={startedAt} />
+          return <SnapItem key={item.walkLogContentId} item={item} />
         })}
       </ul>
       {!moreContent && walkLogContents.length > 1 && (
