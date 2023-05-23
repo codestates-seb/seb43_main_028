@@ -45,7 +45,7 @@
 }
 
 .walkLogContentList {
-  @include U.flex-c(column);
+  @include U.flex-c(column, flex-start, flex-start);
   gap: 12px;
 }
 
