@@ -10,6 +10,8 @@
   bottom: 0;
   background: C.$white;
   border-top: 1px solid C.$gray200;
+  padding-bottom: calc(constant(safe-area-inset-bottom) + 15px);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
   z-index: 1000;
 }
 
