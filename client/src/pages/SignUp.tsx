@@ -25,7 +25,7 @@ function SignUp() {
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
 
   const passwordReg = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{10,}$/
-  const nicknameReg = /^[가-힣]{2,}$|^[a-zA-Z]{4,}$|^[가-힣a-zA-Z]{4,}$/
+  const specialCharacterReg = /[^!@#$%^&*(),.?":{}|<>]/
 
   const { routeTo } = useRouter()
 
@@ -64,9 +64,13 @@ function SignUp() {
     name: nicknameName,
     ref: nicknameRef,
   } = register('nickname', {
+    maxLength: {
+      value: 16,
+      message: '닉네임은 16자 이하여야 합니다.',
+    },
     pattern: {
-      value: nicknameReg,
-      message: '닉네임은 한글 2글자 이상 또는 영어 4글자 이상이어야 합니다.',
+      value: specialCharacterReg,
+      message: '닉네임에는 특수문자를 사용할 수 없습니다.',
     },
   })
 
