@@ -2,10 +2,7 @@ package backend.section6mainproject.auth;
 
 import backend.section6mainproject.auth.filter.JwtAuthenticationFilter;
 import backend.section6mainproject.auth.filter.JwtVerificationFilter;
-import backend.section6mainproject.auth.handler.AuthenticationSuccessHandlerUtils;
-import backend.section6mainproject.auth.handler.MemberAccessDeniedHandler;
-import backend.section6mainproject.auth.handler.MemberAuthenticationEntryHandler;
-import backend.section6mainproject.auth.handler.MemberAuthenticationSuccessHandler;
+import backend.section6mainproject.auth.handler.*;
 import backend.section6mainproject.auth.jwt.JwtTokenizer;
 import backend.section6mainproject.auth.utils.CustomAuthorityUtils;
 import backend.section6mainproject.member.repository.MemberRepository;
@@ -44,7 +41,7 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .formLogin().disable()
                 .httpBasic().disable()
-                .logout().logoutUrl("/members/logout").deleteCookies("Refresh")
+                .logout().logoutUrl("/members/logout").addLogoutHandler(new RefreshDeleteHandler())
                 .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value())).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .exceptionHandling()
