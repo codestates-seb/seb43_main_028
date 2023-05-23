@@ -1,0 +1,7 @@
+@use '../../styles/color' as C;
+
+.header {
+  background-color: C.$white;
+  height: 156px;
+  width: 100%;
+}
