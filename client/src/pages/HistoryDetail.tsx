@@ -4,8 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import Title from '../components/HistoryDetail/Title'
 import styles from './HistoryDetail.module.scss'
-import { timerFormat } from '../utils/date'
-import { differenceInSeconds } from '../utils/date-fns'
+import { ko, format } from '../utils/date-fns'
 import DetailItem from '../components/HistoryDetail/DetailItem'
 import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
@@ -125,8 +124,7 @@ export default function HistoryDetail() {
   })
 
   const detailItems = walkLogContents.map((da: WalkLogContentsDataType) => {
-    const snapTimeDiff = differenceInSeconds(new Date(da.createdAt), new Date(createdAt))
-    const snapTime = timerFormat(snapTimeDiff)
+    const createTime = format(new Date(da.createdAt), 'a h시 m분', { locale: ko })
 
     return (
       <DetailItem
@@ -134,7 +132,7 @@ export default function HistoryDetail() {
         walkLogId={String(walkLogId)}
         memberId={memberId}
         data={da}
-        snapTime={snapTime}
+        snapTime={createTime}
         onEdit={handleEdit}
         setEditId={setEditId}
         setOpenDeleteModal={setOpenDeleteModal}
