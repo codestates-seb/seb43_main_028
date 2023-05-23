@@ -5,6 +5,7 @@ import { idAtom, isLoginAtom, userAtom } from '../store/authAtom'
 import useRouter from '../hooks/useRouter'
 import { getUserInfo, refreshAccessToken } from '../apis/user'
 import { TapBarContent } from '../router/routerData'
+import Spinner from '../pages/loadingPage/Spinner'
 
 type GeneralLayoutProps = {
   children: React.ReactNode
@@ -52,7 +53,7 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
 
   return (
     <>
-      {isAuthChecking ? <div>사용자 체크 중</div> : children}
+      {isAuthChecking ? <Spinner /> : children}
       {showTapBar && <Tapbar tapBarContent={TapBarContent} />}
     </>
   )

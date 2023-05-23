@@ -1,6 +1,13 @@
-import { lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import ChangePassword from '../pages/ChangePassword'
 import FindPassword from '../pages/FindPassword'
+import HistoryDetailLoading from '../pages/loadingPage/HistoryDetailLoading'
+import HistoryListLoading from '../pages/loadingPage/HistoryListLoading'
+import HomeLoading from '../pages/loadingPage/HomeLoading'
+import FeedLoading from '../pages/loadingPage/FeedLoading'
+import MypPageLoading from '../pages/loadingPage/MyPageLoading'
+import OnWalkLoading from '../pages/loadingPage/OnWalkLoading'
+import AfterWalkLoading from '../pages/loadingPage/AfterWalkLoading'
 
 const Home = lazy(() => import('../pages/Home'))
 const Feed = lazy(() => import('../pages/Feed'))
@@ -34,7 +41,11 @@ export const routerData: RouterElement[] = [
     id: 0,
     path: '/',
     label: '홈',
-    element: <Home />,
+    element: (
+      <Suspense fallback={<HomeLoading />}>
+        <Home />
+      </Suspense>
+    ),
     onTapBar: true,
     showTapBar: true,
     withAuth: false,
@@ -43,7 +54,11 @@ export const routerData: RouterElement[] = [
     id: 3,
     path: '/history',
     label: '기록',
-    element: <HistoryList />,
+    element: (
+      <Suspense fallback={<HistoryListLoading />}>
+        <HistoryList />
+      </Suspense>
+    ),
     onTapBar: true,
     showTapBar: true,
     withAuth: true,
@@ -52,7 +67,11 @@ export const routerData: RouterElement[] = [
     id: 4,
     path: '/history/:id',
     label: '기록상세',
-    element: <HistoryDetail />,
+    element: (
+      <Suspense fallback={<HistoryDetailLoading />}>
+        <HistoryDetail />
+      </Suspense>
+    ),
     onTapBar: false,
     showTapBar: true,
     withAuth: true,
@@ -61,7 +80,11 @@ export const routerData: RouterElement[] = [
     id: 1,
     path: '/feed',
     label: '피드',
-    element: <Feed />,
+    element: (
+      <Suspense fallback={<FeedLoading />}>
+        <Feed />
+      </Suspense>
+    ),
     onTapBar: true,
     showTapBar: true,
     withAuth: false,
@@ -70,7 +93,11 @@ export const routerData: RouterElement[] = [
     id: 2,
     path: '/mypage',
     label: '내정보',
-    element: <MyPage />,
+    element: (
+      <Suspense fallback={<MypPageLoading />}>
+        <MyPage />
+      </Suspense>
+    ),
     onTapBar: true,
     showTapBar: true,
     withAuth: true,
@@ -79,7 +106,11 @@ export const routerData: RouterElement[] = [
     id: 5,
     path: '/onwalk/:id',
     label: '걷기중',
-    element: <OnWalk />,
+    element: (
+      <Suspense fallback={<OnWalkLoading />}>
+        <OnWalk />
+      </Suspense>
+    ),
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
@@ -88,7 +119,11 @@ export const routerData: RouterElement[] = [
     id: 6,
     path: '/afterwalk',
     label: '걷기완료',
-    element: <AfterWalk />,
+    element: (
+      <Suspense fallback={<AfterWalkLoading />}>
+        <AfterWalk />
+      </Suspense>
+    ),
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
@@ -97,7 +132,11 @@ export const routerData: RouterElement[] = [
     id: 7,
     path: '/signin',
     label: '로그인',
-    element: <SignIn />,
+    element: (
+      <Suspense fallback=''>
+        <SignIn />
+      </Suspense>
+    ),
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
@@ -106,7 +145,11 @@ export const routerData: RouterElement[] = [
     id: 8,
     path: '/signup',
     label: '회원가입',
-    element: <SignUp />,
+    element: (
+      <Suspense fallback=''>
+        <SignUp />
+      </Suspense>
+    ),
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
@@ -115,7 +158,11 @@ export const routerData: RouterElement[] = [
     id: 9,
     path: '/changepassword',
     label: '비밀번호변경',
-    element: <ChangePassword />,
+    element: (
+      <Suspense fallback=''>
+        <ChangePassword />
+      </Suspense>
+    ),
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
@@ -124,7 +171,11 @@ export const routerData: RouterElement[] = [
     id: 9,
     path: '/findpassword',
     label: '비밀번호찾기',
-    element: <FindPassword />,
+    element: (
+      <Suspense fallback=''>
+        <FindPassword />
+      </Suspense>
+    ),
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
@@ -133,7 +184,11 @@ export const routerData: RouterElement[] = [
     id: 10,
     path: '*',
     label: '404',
-    element: <NotFound />,
+    element: (
+      <Suspense fallback=''>
+        <NotFound />
+      </Suspense>
+    ),
     onTapBar: false,
     showTapBar: true,
     withAuth: false,

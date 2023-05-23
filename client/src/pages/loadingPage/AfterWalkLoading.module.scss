@@ -1,0 +1,77 @@
+@use '../../styles/color' as C;
+@use '../../styles/typography' as T;
+@use '../../styles/utils' as U;
+
+.header {
+  background-color: C.$white;
+  height: 295px;
+  width: 100%;
+  padding: 20px;
+}
+
+.openSettingBox {
+  @include U.flex-c(row, space-between, center);
+  height: 67px;
+}
+
+.openTitle {
+  @include T.gray900-bold-16;
+}
+
+.openOption {
+  @include T.gray600-regular-12;
+}
+
+.input {
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  width: 100%;
+  background-color: C.$gray100;
+  margin-bottom: 12px;
+}
+
+.btnBox {
+  @include U.flex-c(row, center, center);
+  gap: 16px;
+}
+
+.noSaveBtn {
+  flex-grow: 1;
+  @include U.flex-c(row, center, center);
+  border: 1px solid C.$gray900;
+  border-radius: 12px;
+  padding: 11px 0;
+}
+.noSave {
+  width: 56px;
+}
+
+.completeBtn {
+  @extend .noSaveBtn;
+  background-color: C.$gray900;
+  color: C.$white;
+}
+
+.complete {
+  width: 56px;
+  text-align: center;
+  background-color: C.$gray900;
+  color: C.$white;
+}
+
+.snapFormBox {
+  height: 380px;
+  width: 100%;
+  background-color: C.$white;
+  padding: 20px;
+  div {
+    @include T.gray900-bold-16;
+    margin-bottom: 20px;
+  }
+}
+
+.snapFrom {
+  @include U.flex-c(column, flex-start, flex-start);
+  gap: 12px;
+}
