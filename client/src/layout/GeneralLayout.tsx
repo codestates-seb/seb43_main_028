@@ -6,6 +6,7 @@ import useRouter from '../hooks/useRouter'
 import { getUserInfo, refreshAccessToken } from '../apis/user'
 import { TapBarContent } from '../router/routerData'
 import Spinner from '../pages/loadingPage/Spinner'
+import { axiosInstance } from '../apis/instance'
 
 type GeneralLayoutProps = {
   children: React.ReactNode
@@ -21,6 +22,10 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
   const { routeTo, pathname } = useRouter()
 
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken')
+    if (accessToken) {
+      axiosInstance.defaults.headers.common.Authorization = JSON.parse(accessToken)
+    }
     const authHandler = async () => {
       const { userInfo } = await getUserInfo()
       if (userInfo === null) {
