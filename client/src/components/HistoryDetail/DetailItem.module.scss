@@ -5,14 +5,20 @@
 .contentBox {
   margin: 0 20px 24px;
   background-color: C.$white;
-  overflow: hidden;
   border-radius: 12px;
+  overflow: hidden;
+  @include U.box-shadow(4px);
+}
+
+.imgWrapper {
+  height: 240px;
+  width: 100%;
+  overflow: hidden;
   img {
-    height: 240px;
     width: 100%;
+    height: 100%;
     object-fit: cover;
   }
-  @include U.box-shadow(4px);
 }
 
 .textBox {
@@ -30,12 +36,14 @@
 
 .iconsBox {
   width: 100%;
+  font-size: 1.4rem;
   @include T.gray600-regular-16;
   @include U.flex-c(row, space-between, center);
 }
 
 .editDeleteBox {
   @include U.flex-c(row, flex-start, center);
+  font-size: 1.4rem;
   gap: 16px;
 }
 
