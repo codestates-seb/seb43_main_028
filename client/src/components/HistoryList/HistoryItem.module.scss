@@ -5,10 +5,18 @@
 .container {
   @include U.flex-c(row, flex-start, flex-start);
   gap: 8px;
+}
+
+.imgWrapper {
+  @include U.size(88px, 64px);
+  @include U.flex-c(row, center, center);
+  background-color: C.$gray100;
+  border-radius: 4px;
+  overflow: hidden;
   img {
-    width: 88px;
-    height: 64px;
-    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
