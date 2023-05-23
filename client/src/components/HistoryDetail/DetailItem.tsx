@@ -68,7 +68,9 @@ export default function DetailItem({
   return (
     <article className={styles.contentBox}>
       {imageUrl && (
-        <img src={imageUrl} alt='History 사진' onClick={handlePhotoModal} role='presentation' />
+        <div className={styles.imgWrapper}>
+          <img src={imageUrl} alt='History 사진' onClick={handlePhotoModal} role='presentation' />
+        </div>
       )}
       {imageUrl && imgModal && <ImgModal imageUrl={imageUrl} onClose={handlePhotoModal} />}
       <div className={styles.textBox}>

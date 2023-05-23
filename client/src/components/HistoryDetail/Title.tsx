@@ -114,7 +114,7 @@ export default function Title({
         <DropDown currentSetting={setting} onSubmit={handlePublicSettingSubmit} />
       )}
       <div className={styles.timeBox}>
-        <div className={styles.iconBox}>
+        <div className={styles.iconBoxMargin}>
           <Icon name='calendar-gray' size={16} />
 
           <div>{formattedTime.date}</div>
@@ -131,7 +131,7 @@ export default function Title({
         <div>
           <p className={styles.message}>{message}</p>
           {isLogin && logInId === memberId && (
-            <div className={styles.iconBox}>
+            <div className={styles.editBtnBox}>
               <Icon name='edit-gray' />
               <button type='button' onClick={() => setEdit(prev => !prev)}>
                 한 줄 메시지 수정
