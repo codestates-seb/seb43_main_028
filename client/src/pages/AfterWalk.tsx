@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAtomValue } from 'jotai'
 import useRouter from '../hooks/useRouter'
+import useDrawPolyline from '../hooks/useDrawPolyline'
 import { getWalkLog, WalkLogType, WalkLogContentType, stopWalkLog } from '../apis/walkLog'
 import WalkHeader from '../components/header/WalkHeader'
 import styles from './AfterWalk.module.scss'
@@ -10,6 +11,7 @@ import { differenceInSeconds } from '../utils/date-fns'
 import { deleteSnap, editSnap } from '../apis/snap'
 import DropDown from '../components/common/DropDown'
 import { userAtom } from '../store/authAtom'
+import { convertImageFromDataURL } from '../utils/imageConvertor'
 
 export default function AfterWalk() {
   const { routeTo } = useRouter()
@@ -23,6 +25,8 @@ export default function AfterWalk() {
   const [snaps, setSnaps] = useState<WalkLogContentType[]>(walkLog?.walkLogContents || [])
 
   const createdDate = walkLog && new Date(walkLog.createdAt)
+
+  const { img, canvasRef } = useDrawPolyline(walkLog?.coordinates || [])
 
   const getWalkLogData = async () => {
     const data = await getWalkLog(Number(walkLogId))
@@ -43,14 +47,26 @@ export default function AfterWalk() {
 
   const handleStopClick = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (walkLogId === undefined) return
+    if (!img) return
+
     const formData = new FormData(event.currentTarget)
     const message = formData.get('message') as string
-    const data = {
-      endPost: { message, walkLogPublicSetting: pubilcOption },
-      mapImage: null,
-    }
-    if (walkLogId === undefined) return
+
+    const data = new FormData()
+    const blob = new Blob(
+      [JSON.stringify({ message, walkLogPublicSetting: pubilcOption, region: '29304' })],
+      { type: 'application/json' }
+    )
+
+    data.append('endPost', blob)
+    data.append('mapImage', convertImageFromDataURL(img))
+
     const response = await stopWalkLog({ walkLogId, data })
+    if (response) {
+      routeTo('/')
+    }
   }
 
   const handleEditSnap = async (snapId: number, data: FormData) => {
@@ -90,7 +106,7 @@ export default function AfterWalk() {
     <div>
       <WalkHeader type='AFTER' startedAt={walkLog.createdAt} />
       <form className={styles.stopWalkForm} onSubmit={handleStopClick}>
-        {/* 맵 이미지 넣기 */}
+        <canvas ref={canvasRef} className={styles.canvasElement} />
         <div className={styles.publicOptionBox}>
           <span>기록공개 설정</span>
           <DropDown currentSetting={pubilcOption} onSubmit={updatePublicOption} />
@@ -107,7 +123,7 @@ export default function AfterWalk() {
           완료
         </button>
       </form>
-      {/* 지도 */}
+      <div>-----------------지도 컴포넌트 추가---------------</div>
       <div className={styles.snapBox}>
         <ul className={styles.snaplist}>
           {(snaps &&
