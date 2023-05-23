@@ -128,6 +128,8 @@ export default function HistoryDetail() {
     const snapTimeDiff = differenceInSeconds(new Date(da.createdAt), new Date(createdAt))
     const snapTime = timerFormat(snapTimeDiff)
 
+    console.log(createdAt)
+
     return (
       <DetailItem
         key={da.walkLogContentId}
