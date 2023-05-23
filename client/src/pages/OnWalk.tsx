@@ -35,7 +35,7 @@ export default function OnWalk() {
 
   const stopWalk = async () => {
     if (walkLogId === undefined) return
-    console.log('종료')
+    routeTo(`/afterwalk/${walkLogId}`)
   }
 
   const submitSnap = async (formData: FormData) => {
@@ -119,7 +119,7 @@ export default function OnWalk() {
         <ul className={styles.snaplist}>
           {(snaps &&
             (snaps.length === 0 ? (
-              <div>작성하신 순간기록이 없습니다.</div>
+              <div>순간기록은 최대 5개까지 작성하실 수 있습니다.</div>
             ) : (
               snaps.map(({ walkLogContentId, text, createdAt, imageUrl }) => {
                 const seconds = differenceInSeconds(new Date(createdAt), createdDate as Date)
