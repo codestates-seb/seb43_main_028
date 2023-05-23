@@ -117,7 +117,7 @@ export const routerData: RouterElement[] = [
   },
   {
     id: 6,
-    path: '/afterwalk',
+    path: '/afterwalk/:id',
     label: '걷기완료',
     element: (
       <Suspense fallback={<AfterWalkLoading />}>

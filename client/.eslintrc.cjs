@@ -29,6 +29,7 @@ module.exports = {
     'consistent-return': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'import/prefer-default-export': 'off',
+    'no-plusplus': 'off',
     'jsx-a11y/label-has-associated-control': [
       2,
       {
