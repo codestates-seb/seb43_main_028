@@ -59,19 +59,12 @@ export const getWalkLog = async (walkLogId: number): Promise<WalkLogType | null>
 
 type StopWalkLogProps = {
   walkLogId: string
-  data: {
-    endPost: {
-      message: string
-      walkLogPublicSetting: 'PRIVATE' | 'PUBLIC'
-    }
-    mapImage: File | null
-  }
+  data: FormData
 }
 
 export const stopWalkLog = async ({ walkLogId, data }: StopWalkLogProps): Promise<boolean> => {
   try {
-    const response = await fileAxios.post(`/walk-logs/${walkLogId}`, { ...data })
-    console.log(response)
+    await fileAxios.post(`/walk-logs/${walkLogId}`, data)
     return true
   } catch (error: unknown) {
     return false

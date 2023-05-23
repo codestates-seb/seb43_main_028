@@ -15,6 +15,7 @@
   background: C.$white;
   border-radius: 12px;
   @include U.box-shadow(4px);
+  overflow: hidden;
 }
 
 .snaplist {
