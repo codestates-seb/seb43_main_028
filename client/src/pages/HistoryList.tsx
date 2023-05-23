@@ -92,21 +92,21 @@ export default function HistoryList() {
 
   return (
     <>
-    <HomeHeader isLogin={isLogin} userInfo={user} />
-    <div className={styles.container}>
-      <Toggle handleCalendar={handleCalendar} calendar={calendar} />
-      {calendar && (
-        <Calendar
-          date={date}
-          setDate={setDate}
-          selectDate={selectDate}
-          setSelectDate={setSelectDate}
-        />
-      )}
-      {data.pages[0].data.length === 0 && noHistoryMessage}
-      <ul className={styles.historyList}>{historyList}</ul>
-      {isFetchingNextPage && <HistoryLoading />}
-    </div>
-   </>
+      <HomeHeader isLogin={isLogin} userInfo={user} />
+      <div className={styles.container}>
+        <Toggle handleCalendar={handleCalendar} calendar={calendar} />
+        {calendar && (
+          <Calendar
+            date={date}
+            setDate={setDate}
+            selectDate={selectDate}
+            setSelectDate={setSelectDate}
+          />
+        )}
+        {data?.pages[0].data.length === 0 && noHistoryMessage}
+        <ul className={styles.historyList}>{historyList}</ul>
+        {isFetchingNextPage && <HistoryLoading />}
+      </div>
+    </>
   )
 }
