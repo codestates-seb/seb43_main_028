@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
+import { Link } from 'react-router-dom'
 import styles from './HistoryList.module.scss'
 import History from '../components/HistoryList/History'
 import Calendar from '../components/HistoryList/Calendar/Calendar'
@@ -67,7 +68,7 @@ export default function HistoryList() {
 
   if (isError) return <h1>Fail...</h1>
 
-  const body = data?.pages.map(page => {
+  const historyList = data?.pages.map(page => {
     return page.data.map((history: HistoryListDataType, index: number) => {
       if (page.data.length === index + 1) {
         return <History key={history.walkLogId} data={history} ref={lastHistoryRef} />
@@ -76,22 +77,36 @@ export default function HistoryList() {
     })
   })
 
+  const noHistoryMessage = (
+    <div className={styles.noHistoryBox}>
+      <p>
+        아직 기록된 순간이 없습니다.
+        <br />
+        오늘의 기록을 남겨보세요!
+      </p>
+      <Link to='/' className={styles.homeBtn}>
+        홈 화면으로 가기
+      </Link>
+    </div>
+  )
+
   return (
     <>
-      <HomeHeader isLogin={isLogin} userInfo={user} />
-      <div className={styles.container}>
-        <Toggle handleCalendar={handleCalendar} calendar={calendar} />
-        {calendar && (
-          <Calendar
-            date={date}
-            setDate={setDate}
-            selectDate={selectDate}
-            setSelectDate={setSelectDate}
-          />
-        )}
-        <ul className={styles.historyList}>{body}</ul>
-        {isFetchingNextPage && <HistoryLoading />}
-      </div>
-    </>
+    <HomeHeader isLogin={isLogin} userInfo={user} />
+    <div className={styles.container}>
+      <Toggle handleCalendar={handleCalendar} calendar={calendar} />
+      {calendar && (
+        <Calendar
+          date={date}
+          setDate={setDate}
+          selectDate={selectDate}
+          setSelectDate={setSelectDate}
+        />
+      )}
+      {data.pages[0].data.length === 0 && noHistoryMessage}
+      <ul className={styles.historyList}>{historyList}</ul>
+      {isFetchingNextPage && <HistoryLoading />}
+    </div>
+   </>
   )
 }
