@@ -6,7 +6,7 @@ import HistoryListLoading from '../pages/loadingPage/HistoryListLoading'
 import HomeLoading from '../pages/loadingPage/HomeLoading'
 import FeedLoading from '../pages/loadingPage/FeedLoading'
 import MypPageLoading from '../pages/loadingPage/MyPageLoading'
-import OnWalkLoading from '../pages/loadingPage/onWalkLoading'
+import OnWalkLoading from '../pages/loadingPage/OnWalkLoading'
 import AfterWalkLoading from '../pages/loadingPage/AfterWalkLoading'
 
 const Home = lazy(() => import('../pages/Home'))
