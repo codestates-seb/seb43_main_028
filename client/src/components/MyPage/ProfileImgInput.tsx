@@ -40,8 +40,17 @@ export default function ProfileImgInput({
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    imageCompress(event)
-    // setImgFile(event.target.files?.[0])
+    const file = event.target.files?.[0]
+    if (file) {
+      const fileSize = file.size / (1024 * 1024)
+      if (fileSize > 4) {
+        alert('4mb 이상의 파일은 업로드할 수 없습니다.')
+        return
+      }
+      imageCompress(event)
+    } else {
+      alert('파일을 찾을 수 없습니다.')
+    }
   }
 
   const handleClear = () => {
