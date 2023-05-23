@@ -28,13 +28,12 @@
 }
 .imageWrapper {
   @include U.size(64px);
-  @include U.flex-c(row, center, center);
   border-radius: 50%;
   overflow: hidden;
   img {
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: cover;
   }
 }
 
