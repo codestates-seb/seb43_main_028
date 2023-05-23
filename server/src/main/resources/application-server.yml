@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${ENDPOINT}:${PORT_NUMBER}/${DATABASE}?serverTimezone=Asia/Seoul
+    username: ${MY_SQL_ID}
+    password: ${PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update  # (1) 스키마 자동 생성
+    show-sql: true      # (2) SQL 쿼리 출력
+    properties:
+      hibernate:
+        format_sql: true  # (3) SQL pretty print
+  servlet:
+    multipart:
+      max-file-size: 4MB
+server:
+  servlet:
+    encoding:
+      force-response: true
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    auth: true
+    starttls:
+      enable: true
+  subject:
+    member:
+      reset-password: 임시비밀번호 안내 관련 이메일 입니다.
+  template:
+    name:
+      member:
+        reset: email-password-reset
+aws-s3:
+  access-key: ${AWS_S3_ACCESS_KEY}
+  secret-access-key: ${AWS_S3_SECRET_ACCESS_KEY}
+jwt:
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 60
+  refresh-token-expiration-days: 7
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
