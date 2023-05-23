@@ -34,4 +34,9 @@
 
 .active {
   @include T.gray900-bold-12;
+  @include U.flex-c(column, flex-start, center);
+}
+
+.inactive {
+  @include U.flex-c(column, flex-start, center);
 }
