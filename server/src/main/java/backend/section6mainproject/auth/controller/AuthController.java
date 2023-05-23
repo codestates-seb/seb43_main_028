@@ -1,5 +1,6 @@
 package backend.section6mainproject.auth.controller;
 
+import backend.section6mainproject.auth.AuthMapper;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
 import backend.section6mainproject.member.mapper.MemberMapper;
 import backend.section6mainproject.member.service.MemberService;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
     private final MemberService memberService;
-    private final MemberMapper mapper;
+    private final AuthMapper authMapper;
     @GetMapping("/members/refresh")
     public ResponseEntity<?> getRefreshToken() {
         return ResponseEntity.ok().build();
@@ -29,6 +30,6 @@ public class AuthController {
                 .orElseThrow(() -> new AccessDeniedException(HttpStatus.FORBIDDEN.toString()));
         long memberId = Long.parseLong(auth.getPrincipal().toString());
         MemberServiceDTO.Output output = memberService.findMember(memberId);
-        return ResponseEntity.ok(mapper.outputToResponse(output));
+        return ResponseEntity.ok(authMapper.ServiceOutputDTOToProfileDTO(output));
     }
 }
