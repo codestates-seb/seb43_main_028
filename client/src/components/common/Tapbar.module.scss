@@ -9,6 +9,7 @@
   bottom: 0;
   background: C.$white;
   border-top: 1px solid C.$gray200;
+  padding-bottom: env(safe-area-inset-bottom);
   z-index: 1000;
 }
 
