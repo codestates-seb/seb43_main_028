@@ -82,7 +82,9 @@ public class MemberStubData {
         return createOutput;
     }
     public MemberServiceDTO.Output getMemberOutput() throws Exception {
-        MemberServiceDTO.Output output = new MemberServiceDTO.Output(memberId, email, nickname, introduction, defaultWalkLogPublicSetting.toString(), null, 0, 0, LocalDateTime.now());
+        MemberServiceDTO.Output output = new MemberServiceDTO.Output(memberId,
+                email, nickname, introduction, defaultWalkLogPublicSetting.toString(),
+                null, 1L,0, 0, LocalDateTime.now());
         return output;
     }
     public MemberServiceDTO.UpdateInput getUpdateInput() throws Exception {
