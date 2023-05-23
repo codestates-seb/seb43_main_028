@@ -69,6 +69,7 @@ export const signIn = async ({
     const { authorization } = response.headers
     axiosInstance.defaults.headers.common.Authorization = authorization
     fileAxios.defaults.headers.common.Authorization = authorization
+    localStorage.setItem('accessToken', JSON.stringify(authorization))
     return { status: 'success', memberId: response.data.memberId }
   } catch (error: unknown) {
     const axiosError = error as AxiosError
@@ -109,9 +110,11 @@ export const getCurrentUserInfo = async (memberId: number): Promise<UserInfoType
 
 export const refreshAccessToken = async () => {
   try {
-    const { headers } = await axiosInstance.get('/members/refresh')
-    axiosInstance.defaults.headers.common.Authorization = headers.authorization
-    fileAxios.defaults.headers.common.Authorization = headers.authorization
+    const response = await axiosInstance.get('/members/refresh')
+    const { authorization } = response.headers
+    axiosInstance.defaults.headers.common.Authorization = authorization
+    fileAxios.defaults.headers.common.Authorization = authorization
+    localStorage.setItem('accessToken', JSON.stringify(authorization))
     return 'success'
   } catch (error) {
     return 'fail'
@@ -173,6 +176,7 @@ export const logoutUser = async () => {
     await axiosInstance.post(`/members/logout`)
     delete axiosInstance.defaults.headers.common.Authorization
     delete fileAxios.defaults.headers.common.Authorization
+    localStorage.removeItem('accessToken')
     return 'success'
   } catch (error) {
     console.log(error)
@@ -183,6 +187,9 @@ export const logoutUser = async () => {
 export const unregisterUser = async (memberId: number) => {
   try {
     await axiosInstance.delete(`/members/${memberId}`)
+    delete axiosInstance.defaults.headers.common.Authorization
+    delete fileAxios.defaults.headers.common.Authorization
+    localStorage.removeItem('accessToken')
     return 'success'
   } catch (error) {
     console.log(error)
