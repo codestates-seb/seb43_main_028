@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import styles from './Modal.module.scss'
 import Icon from './Icon'
+import UnregisterInfo from '../MyPage/UnregisterInfo'
 
 type OptionType = {
   label: string
@@ -20,6 +21,8 @@ type ModalProps = {
 function Modal({ modalData, onClose, style }: ModalProps) {
   const { title, options } = modalData
 
+  const isUnregister = title === '회원 탈퇴'
+
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
@@ -37,6 +40,7 @@ function Modal({ modalData, onClose, style }: ModalProps) {
             <Icon name='close' />
           </button>
         </div>
+        {isUnregister && <UnregisterInfo />}
         <ul className={styles.optionsContainer}>
           {options.map(({ id, label, handleClick }) => {
             return (
