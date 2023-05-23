@@ -15,6 +15,7 @@
   background: C.$white;
   border-radius: 12px;
   @include U.box-shadow(4px);
+  overflow: hidden;
 }
 
 .snaplist {
@@ -56,4 +57,10 @@
     @include T.gray900-bold-16;
   }
   @include U.flex-c(row, space-between, center);
+}
+
+.canvasElement {
+  position: absolute;
+  top: -9999px;
+  visibility: hidden;
 }
