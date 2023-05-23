@@ -451,7 +451,9 @@ public class MemberControllerTest {
     }
     private MemberServiceDTO.Output makeMemberOutput() {
         Long memberId = 1L;
-        MemberServiceDTO.Output output = new MemberServiceDTO.Output(memberId, "test@gmail.com", "거터", null, "PRIVATE", null, 0, 0, LocalDateTime.now());
+        MemberServiceDTO.Output output = new MemberServiceDTO.Output(memberId, "test@gmail.com",
+                "거터", null, "PRIVATE", null,
+                1L, 0, 0, LocalDateTime.now());
         return output;
     }
 
