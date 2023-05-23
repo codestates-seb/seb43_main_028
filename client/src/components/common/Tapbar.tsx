@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { TapBarElementType } from '../../router/routerData'
 import Icon from './Icon'
@@ -9,24 +8,8 @@ type TapbarProps = {
 }
 
 export default function Tapbar({ tapBarContent }: TapbarProps) {
-  const [isHomeBarVisible, setIsHomeBarVisible] = useState(true)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsHomeBarVisible(window.innerHeight !== document.documentElement.clientHeight)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  const containerStyle = isHomeBarVisible
-    ? { paddingBottom: 'calc(env(safe-area-inset-bottom) + 15px)' }
-    : {}
-
   return (
-    <div className={styles.container} style={containerStyle}>
+    <div className={styles.container}>
       <ul className={styles.tapList}>
         {tapBarContent.map(element => {
           return (
