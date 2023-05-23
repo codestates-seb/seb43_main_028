@@ -9,6 +9,8 @@ import { getHistoryList } from '../apis/history'
 import { userAtom } from '../store/authAtom'
 import { HistoryListDataType } from '../types/History'
 import { getDate, getMonth, getYear } from '../utils/date-fns'
+import HistoryListLoading from './loadingPage/HistoryListLoading'
+import HistoryLoading from './loadingPage/HistoryLoading'
 
 export default function HistoryList() {
   const [calendar, setCalendar] = useState<boolean>(false)
@@ -63,7 +65,7 @@ export default function HistoryList() {
     [isFetchingNextPage, fetchNextPage, hasNextPage]
   )
 
-  if (isLoading) return <h1>Loading...</h1>
+  if (isLoading) return <HistoryListLoading />
   if (isError) return <h1>Fail...</h1>
 
   const body = data?.pages.map(page => {
@@ -87,7 +89,7 @@ export default function HistoryList() {
         />
       )}
       <ul className={styles.historyList}>{body}</ul>
-      {isFetchingNextPage && <p>다음 페이지 로딩 중</p>}
+      {isFetchingNextPage && <HistoryLoading />}
     </div>
   )
 }
