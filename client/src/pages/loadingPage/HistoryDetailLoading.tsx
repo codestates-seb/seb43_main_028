@@ -10,6 +10,7 @@ function HeaderBox() {
         hasCloseButton={false}
         headerTitle='상세 기록'
         handleCloseFn={() => {}}
+        path='-1'
       />
       <div className={styles.header}>
         <ContentLoader
