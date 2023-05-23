@@ -10,12 +10,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
 
-    @Query(value = "SELECT * FROM Member WHERE email = ?", nativeQuery = true)
+    @Query(value = "SELECT * FROM member WHERE email = ?", nativeQuery = true)
     Optional<Member> findByEmailAll(String email);
 
     Optional<Member> findByNickname(String nickname);
 
-    @Query(value = "SELECT * FROM Member WHERE nickname = ?", nativeQuery = true)
+    @Query(value = "SELECT * FROM member WHERE nickname = ?", nativeQuery = true)
     Optional<Member> findByNicknameAll(String nickname);
 
 
