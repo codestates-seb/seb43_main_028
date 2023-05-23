@@ -19,6 +19,7 @@
     "date-fns": "^2.30.0",
     "jotai": "^2.0.4",
     "react": "^18.2.0",
+    "react-content-loader": "^6.2.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-router-dom": "^6.11.1",

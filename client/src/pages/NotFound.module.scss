@@ -1,0 +1,41 @@
+@use '../styles/color' as C;
+@use '../styles/utils' as U;
+@use '../styles/typography' as T;
+
+.container {
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.title {
+  font-size: 2.4rem;
+}
+.content {
+  margin: 24px 0;
+  line-height: 1.6;
+  color: C.$gray600;
+}
+
+.btnBox {
+  @include U.flex-c(row, center, center);
+  gap: 12px;
+}
+
+.link {
+  display: block;
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 12px;
+  border: 1px solid C.$gray900;
+  color: C.$gray900;
+  background-color: C.$white;
+}
+
+.goBackBtn {
+  @extend .link;
+  background-color: C.$gray900;
+  color: C.$white;
+}
