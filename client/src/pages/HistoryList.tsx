@@ -9,7 +9,6 @@ import { getHistoryList } from '../apis/history'
 import { isLoginAtom, userAtom } from '../store/authAtom'
 import { HistoryListDataType } from '../types/History'
 import { getDate, getMonth, getYear } from '../utils/date-fns'
-import HistoryListLoading from './loadingPage/HistoryListLoading'
 import HistoryLoading from './loadingPage/HistoryLoading'
 import HomeHeader from '../components/header/HomeHeader'
 
@@ -24,29 +23,28 @@ export default function HistoryList() {
     setCalendar(!calendar)
   }
 
-  const { isLoading, isError, data, isFetchingNextPage, hasNextPage, fetchNextPage } =
-    useInfiniteQuery({
-      queryKey: ['history', calendar, date, selectDate],
-      queryFn: ({ pageParam }) => {
-        if (calendar && selectDate) {
-          return getHistoryList(
-            user.memberId,
-            pageParam,
-            getYear(selectDate),
-            getMonth(selectDate) + 1,
-            getDate(selectDate)
-          )
-        }
-        if (calendar) {
-          return getHistoryList(user.memberId, pageParam, getYear(date), getMonth(date) + 1)
-        }
-        return getHistoryList(user.memberId, pageParam)
-      },
-      getNextPageParam: lastPage => {
-        const { page, totalPages } = lastPage.pageInfo
-        return page < totalPages ? page + 1 : undefined
-      },
-    })
+  const { isError, data, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['history', calendar, date, selectDate],
+    queryFn: ({ pageParam }) => {
+      if (calendar && selectDate) {
+        return getHistoryList(
+          user.memberId,
+          pageParam,
+          getYear(selectDate),
+          getMonth(selectDate) + 1,
+          getDate(selectDate)
+        )
+      }
+      if (calendar) {
+        return getHistoryList(user.memberId, pageParam, getYear(date), getMonth(date) + 1)
+      }
+      return getHistoryList(user.memberId, pageParam)
+    },
+    getNextPageParam: lastPage => {
+      const { page, totalPages } = lastPage.pageInfo
+      return page < totalPages ? page + 1 : undefined
+    },
+  })
 
   const intObserver = useRef<IntersectionObserver>()
   const lastHistoryRef = useCallback(
@@ -67,7 +65,6 @@ export default function HistoryList() {
     [isFetchingNextPage, fetchNextPage, hasNextPage]
   )
 
-  if (isLoading) return <HistoryListLoading />
   if (isError) return <h1>Fail...</h1>
 
   const body = data?.pages.map(page => {
