@@ -39,7 +39,7 @@ export default forwardRef(function History({ data }: HistoryItemProps, ref: Ref<
       <ul className={styles.walkLogContentList}>
         {walkLogContents.map((item, index) => {
           if (!moreContent && index > 0) return null
-          return <HistoryItem key={item.walkLogContentId} item={item} startAt={startedAt} />
+          return <HistoryItem key={item.walkLogContentId} item={item} />
         })}
       </ul>
       {!moreContent && walkLogContents.length > 1 && (
