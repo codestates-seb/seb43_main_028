@@ -1,5 +1,7 @@
 package backend.section6mainproject.coordinate;
 
+import backend.section6mainproject.auth.jwt.JwtTokenizer;
+import backend.section6mainproject.coordinate.interceptor.ConnectInterceptor;
 import backend.section6mainproject.coordinate.interceptor.ConnectionInterceptor;
 import backend.section6mainproject.coordinate.interceptor.SubscribeInterceptor;
 import backend.section6mainproject.member.service.MemberService;
@@ -16,6 +18,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @RequiredArgsConstructor
 public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     private final MemberService memberService;
+    private final JwtTokenizer jwtTokenizer;
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/sub");
@@ -24,13 +27,13 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new SubscribeInterceptor());
+        registration.interceptors(new SubscribeInterceptor(), new ConnectInterceptor(jwtTokenizer, memberService));
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws/walk-logs")
-                .addInterceptors(new ConnectionInterceptor(memberService))
+                .addInterceptors(new ConnectionInterceptor())
                 .setAllowedOrigins("*");
         registry.addEndpoint("/ws/anonymous/walk-logs")
                 .setAllowedOrigins("*");

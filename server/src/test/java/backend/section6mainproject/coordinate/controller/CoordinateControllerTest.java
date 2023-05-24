@@ -82,9 +82,10 @@ class CoordinateControllerTest {
         String accessToken = successHandlerUtils.delegateAccessToken(stubData.getStubMember());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(accessToken);
-        WebSocketHttpHeaders webSocketHttpHeaders = new WebSocketHttpHeaders(httpHeaders);
+        StompHeaders stompHeaders = new StompHeaders();
+        stompHeaders.add("Authorization", accessToken);
 
-        this.stompSession = stompClient.connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
+        this.stompSession = stompClient.connect(url, new WebSocketHttpHeaders(), stompHeaders, new StompSessionHandlerAdapter() {
         }).get(2, TimeUnit.SECONDS);
         stompSession.subscribe("/sub/1", new StompFrameHandler() {
             @Override
