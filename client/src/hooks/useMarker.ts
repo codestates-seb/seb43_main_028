@@ -29,5 +29,10 @@ export default function useMarker({ map, position }: UseMarkerType) {
       },
     })
     position && map.panTo(position)
+
+    return () => {
+      markerRef.current?.setMap(null)
+      markerRef.current = null
+    }
   }, [map, position])
 }
