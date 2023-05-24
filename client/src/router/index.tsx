@@ -6,7 +6,11 @@ const router = createBrowserRouter(
   routerData.map(routerElement => ({
     path: routerElement.path,
     element: (
-      <GeneralLayout showTapBar={routerElement.showTapBar} withAuth={routerElement.withAuth}>
+      <GeneralLayout
+        showTapBar={routerElement.showTapBar}
+        withAuth={routerElement.withAuth}
+        needInfo={routerElement.needInfo}
+      >
         {routerElement.element}
       </GeneralLayout>
     ),

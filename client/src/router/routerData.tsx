@@ -28,6 +28,7 @@ type RouterElement = {
   onTapBar: boolean
   showTapBar: boolean
   withAuth: boolean
+  needInfo: boolean
 }
 
 export type TapBarElementType = {
@@ -49,6 +50,7 @@ export const routerData: RouterElement[] = [
     onTapBar: true,
     showTapBar: true,
     withAuth: false,
+    needInfo: true,
   },
   {
     id: 3,
@@ -62,6 +64,7 @@ export const routerData: RouterElement[] = [
     onTapBar: true,
     showTapBar: true,
     withAuth: true,
+    needInfo: true,
   },
   {
     id: 4,
@@ -75,6 +78,7 @@ export const routerData: RouterElement[] = [
     onTapBar: false,
     showTapBar: true,
     withAuth: true,
+    needInfo: true,
   },
   {
     id: 1,
@@ -88,6 +92,7 @@ export const routerData: RouterElement[] = [
     onTapBar: true,
     showTapBar: true,
     withAuth: false,
+    needInfo: false,
   },
   {
     id: 2,
@@ -101,6 +106,7 @@ export const routerData: RouterElement[] = [
     onTapBar: true,
     showTapBar: true,
     withAuth: true,
+    needInfo: true,
   },
   {
     id: 5,
@@ -114,6 +120,7 @@ export const routerData: RouterElement[] = [
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
+    needInfo: true,
   },
   {
     id: 6,
@@ -127,6 +134,7 @@ export const routerData: RouterElement[] = [
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
+    needInfo: true,
   },
   {
     id: 7,
@@ -140,6 +148,7 @@ export const routerData: RouterElement[] = [
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
+    needInfo: false,
   },
   {
     id: 8,
@@ -153,6 +162,7 @@ export const routerData: RouterElement[] = [
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
+    needInfo: false,
   },
   {
     id: 9,
@@ -166,6 +176,7 @@ export const routerData: RouterElement[] = [
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
+    needInfo: true,
   },
   {
     id: 9,
@@ -179,6 +190,7 @@ export const routerData: RouterElement[] = [
     onTapBar: false,
     showTapBar: false,
     withAuth: false,
+    needInfo: false,
   },
   {
     id: 10,
@@ -192,6 +204,7 @@ export const routerData: RouterElement[] = [
     onTapBar: false,
     showTapBar: true,
     withAuth: false,
+    needInfo: false,
   },
 ]
 

@@ -89,6 +89,16 @@ export const signIn = async ({
   }
 }
 
+export const accessTokenVerification = async () => {
+  try {
+    await axiosInstance.post('/members/token')
+    return 'success'
+  } catch (error) {
+    console.error(error)
+    return 'fail'
+  }
+}
+
 export const getUserInfo = async () => {
   try {
     const response = await axiosInstance.get('/members/profile')
