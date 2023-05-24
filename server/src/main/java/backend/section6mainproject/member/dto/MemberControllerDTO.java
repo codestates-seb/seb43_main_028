@@ -25,7 +25,7 @@ public class MemberControllerDTO {
         @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"])[a-zA-Z\\d\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"]{10,15}$",message = "소문자,숫자,특수문자 각 1자 포함 총 10자 이상 15자 이하")
         private String password;
 
-        @Pattern(regexp = "^[A-Za-z0-9가-힣]*$", message = "닉네임은 영문, 숫자, 한글만 허용됩니다.")
+        @Pattern(regexp = "^(?!del\\d+$)[A-Za-z0-9가-힣]*$", message = "닉네임은 영문, 숫자, 한글만 허용됩니다.") // (?!del\d+$) 이 패턴을 추가함으로써 탈퇴된 회원들만의 닉네임 패턴인 del + 숫자 조합을 사용하지 못하게 block했다.
         @Size(min = 1, max = 16)
         @NotBlank(message = "닉네임을 입력해주세요.")
         private String nickname;
@@ -35,7 +35,7 @@ public class MemberControllerDTO {
     @Getter
     @Setter
     public static class Patch {
-        @Pattern(regexp = "^[A-Za-z0-9가-힣]*$", message = "닉네임은 영문, 숫자, 한글만 허용됩니다.")
+        @Pattern(regexp = "^(?!del\\d+$)[A-Za-z0-9가-힣]*$", message = "닉네임은 영문, 숫자, 한글만 허용됩니다.")
         @Size(min = 1, max = 16)
         @NotSpace(message = "닉네임을 입력해주세요.")
         private String nickname;

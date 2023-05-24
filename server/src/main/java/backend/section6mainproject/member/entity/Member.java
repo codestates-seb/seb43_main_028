@@ -20,7 +20,7 @@ import static backend.section6mainproject.walklog.entity.WalkLog.*;
 @NoArgsConstructor
 @Entity
 @Where(clause = "member_status <> 'MEMBER_QUIT'")
-@SQLDelete(sql = "UPDATE member SET member_status = 'MEMBER_QUIT' WHERE member_id = ?")
+@SQLDelete(sql = "UPDATE member SET member_status = 'MEMBER_QUIT', nickname = CONCAT('del', member_id) WHERE member_id = ?") // 탈퇴된 회원의 경우 del + memberId 형식으로 닉네임을 변경해줌으로 기존 닉네임의 점유권을 상실시킨다.
 public class Member extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
