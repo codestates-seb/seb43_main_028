@@ -21,6 +21,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByNicknameAll(String nickname);
 
     @Modifying
-    @Query("DELETE FROM Member m WHERE m.memberStatus = 'MEMBER_QUIT' AND m.quittedAt <= :cutoffDateTime")
+    @Query("DELETE FROM Member m WHERE m.memberStatus = 'MEMBER_QUIT' AND m.updatedAt <= :cutoffDateTime")
     void deleteMemberCompletely(LocalDateTime cutoffDateTime);
 }
