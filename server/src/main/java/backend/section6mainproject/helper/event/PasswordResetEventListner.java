@@ -34,7 +34,7 @@ public class PasswordResetEventListner {
     public void listen(PasswordResetEvent event) throws Exception {
         try {
             String[] to = new String[]{event.getMember().getEmail()};
-            String message = event.getMember().getNickname() + "님의 임시 비밀번호 입니다. " + event.getTmpPw();
+            String message = event.getMember().getNickname() + "님의 임시 비밀번호 " + event.getTmpPw() + " 입니다." + " 로그인 후에 바로 변경해주시기 바랍니다.";
 
             emailSender.sendEmail(to, subject, message, templateName);
         } catch (MailSendException e) {
