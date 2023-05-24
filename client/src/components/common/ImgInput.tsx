@@ -13,14 +13,14 @@ export default function ImgInput({ initialImgUrl, preview, setPreview }: ImgInpu
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const fileSize = file.size / (1024 * 1024)
+    const currentImgFile = event.target.files?.[0]
+    if (currentImgFile) {
+      const fileSize = currentImgFile.size / (1024 * 1024)
       if (fileSize > 4) {
         alert('4mb 이상의 파일은 업로드할 수 없습니다.')
         return
       }
-      setImgFile(event.target.files?.[0] || null)
+      setImgFile(currentImgFile)
     } else {
       alert('파일을 찾을 수 없습니다.')
     }
