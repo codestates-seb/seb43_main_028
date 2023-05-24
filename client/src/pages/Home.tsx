@@ -4,7 +4,7 @@ import { userAtom, isLoginAtom } from '../store/authAtom'
 import { startWalkLog } from '../apis/walkLog'
 import useMapRef from '../hooks/useMapRef'
 import useRouter from '../hooks/useRouter'
-import MapCanvas from '../components/common/Map/MapCanvas'
+import MapCanvas, { MapStyleType } from '../components/common/Map/MapCanvas'
 import HomeHeader from '../components/header/HomeHeader'
 import { isSamePosition } from '../utils/position'
 import styles from './Home.module.scss'
@@ -15,6 +15,7 @@ export default function Home() {
 
   const isLogin = useAtomValue(isLoginAtom)
   const user = useAtomValue(userAtom)
+
   const mapRef = useMapRef()
 
   const userInfo = {
@@ -26,13 +27,11 @@ export default function Home() {
 
   const handleStartClick = async () => {
     if (!isLogin) {
-      // TODO : 비로그인 시 동작
       console.log('비로그인 시작 x')
       return
     }
     const { walkLogId } = await startWalkLog(user.memberId)
     if (walkLogId === -1) {
-      // TODO : 시작 실패 메시지
       console.log('시작 실패')
       return
     }
@@ -71,7 +70,7 @@ export default function Home() {
     <div className={styles.container}>
       <HomeHeader isLogin={isLogin} userInfo={userInfo} />
       {position ? (
-        <MapCanvas ref={mapRef} style={{ width: '100%', height: '100dvh' }} position={position} />
+        <MapCanvas ref={mapRef} styleType={MapStyleType.HOME} position={position} />
       ) : (
         // TODO : 로딩 컴포넌트 만들기
         <div>

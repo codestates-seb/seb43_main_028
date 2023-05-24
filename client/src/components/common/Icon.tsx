@@ -1,6 +1,6 @@
 import SpriteIcon from '../../assets/sprite-icon.svg'
 
-type IconNameType =
+export type IconNameType =
   | 'camera-color'
   | 'camera-oval'
   | 'close'
@@ -20,6 +20,9 @@ type IconNameType =
   | 'arrow-drop-down'
   | 'calendar-gray'
   | 'search-light'
+  | 'full'
+  | 'gps'
+  | 'reduce'
 
 interface IconProps {
   name: IconNameType
