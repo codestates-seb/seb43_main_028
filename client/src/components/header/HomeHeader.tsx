@@ -16,7 +16,7 @@ export default function HomeHeader({ isLogin, userInfo }: HomeHeaderProps) {
   const { nickname, imageUrl, totalWalkLog, totalWalkLogContent } = userInfo
 
   return (
-    <div className={`${styles.container} ${isLogin ? styles.login : styles.nologin}`}>
+    <div className={styles.headerContainer}>
       <div className={styles.profile}>
         {isLogin && imageUrl ? (
           <img src={imageUrl} alt={nickname} />
@@ -38,8 +38,8 @@ export default function HomeHeader({ isLogin, userInfo }: HomeHeaderProps) {
             <div className={styles.title}>
               <Link to='/signin'>로그인/회원가입</Link>
             </div>
-            <div className={styles.caption}>로그인하고 걸은 순간을 기록으로 간직해보세요.</div>
-            <div className={styles.caption}>로그인 없이 걷기를 체험할 수 있습니다.</div>
+            <div className={styles.caption}>걸은 순간을 기록으로 간직해보세요.</div>
+            {/* <div className={styles.caption}>로그인 없이 걷기를 체험할 수 있습니다.</div> */}
           </>
         )}
       </div>
