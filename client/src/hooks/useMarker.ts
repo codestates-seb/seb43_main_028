@@ -10,6 +10,11 @@ export default function useMarker({ map, position }: UseMarkerType) {
 
   useEffect(() => {
     if (!map) return
+
+    if (markerRef.current) {
+      markerRef.current.setPosition(position)
+      return
+    }
     markerRef.current = new google.maps.Marker({
       map,
       position,
@@ -23,8 +28,6 @@ export default function useMarker({ map, position }: UseMarkerType) {
         strokeColor: 'white',
       },
     })
-    return () => {
-      markerRef.current?.setMap(null)
-    }
+    position && map.panTo(position)
   }, [map, position])
 }
