@@ -2,21 +2,6 @@ import { forwardRef } from 'react'
 import { useGoogleMap } from '@ubilabs/google-maps-react-hooks'
 import useMarker from '../../../hooks/useMarker'
 import usePolyline from '../../../hooks/usePolyline'
-
-const SEOUL_POSITION = { lat: 37.5642135, lng: 127.0016985 }
-
-const defaultMapOptions: google.maps.MapOptions = {
-  zoom: 18,
-  mapTypeControl: false,
-  streetViewControl: false,
-  gestureHandling: 'greedy',
-  zoomControl: false,
-  fullscreenControl: false,
-  scaleControl: false,
-  styles: [
-    { featureType: 'all', elementType: 'labels', stylers: [{ visibility: 'off' }] },
-    { featureType: 'road', elementType: 'geometry', stylers: [] },
-  ],
 }
 
 type MapCanvasProps = {
