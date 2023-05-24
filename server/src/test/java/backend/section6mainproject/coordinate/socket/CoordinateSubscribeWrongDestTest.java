@@ -43,7 +43,8 @@ public class CoordinateSubscribeWrongDestTest {
     @MockBean
     private MemberService memberService;
     private String url;
-    private WebSocketHttpHeaders webSocketHttpHeaders;
+    private StompHeaders stompHeaders;
+
 
     private WebSocketStompClient getStompClient() {
         WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
@@ -57,7 +58,8 @@ public class CoordinateSubscribeWrongDestTest {
         String accessToken = successHandlerUtils.delegateAccessToken(getStubMember());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(accessToken);
-        this.webSocketHttpHeaders = new WebSocketHttpHeaders(httpHeaders);
+        stompHeaders = new StompHeaders();
+        stompHeaders.add("Authorization", accessToken);
     }
 
     @Test
@@ -67,7 +69,7 @@ public class CoordinateSubscribeWrongDestTest {
         given(memberService.findRecordingWalkLog(Mockito.anyLong())).willReturn(1L);
 
         //when
-        StompSession stompSession = getStompClient().connect(url, webSocketHttpHeaders, new StompSessionHandlerAdapter() {
+        StompSession stompSession = getStompClient().connect(url, new WebSocketHttpHeaders(), stompHeaders, new StompSessionHandlerAdapter() {
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
                 log.info("headers : {}", headers);
