@@ -8,6 +8,12 @@ import java.time.LocalDateTime;
 public class ProfileControllerDTO {
     @Getter
     @AllArgsConstructor
+    public static class TokenResponse {
+        private Long memberId;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class Response {
         private Long memberId;
         private String email;
