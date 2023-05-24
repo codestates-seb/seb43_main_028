@@ -2,23 +2,14 @@
 @use '../../styles/utils' as U;
 @use '../../styles/typography' as T;
 
-.container {
+.headerContainer {
   gap: 16px;
-  padding: 8px 20px;
-  position: fixed;
-  top: 0;
+  padding: 10px 20px;
   width: 100%;
   max-width: 640px;
   background: C.$white;
   z-index: 1000;
-}
-
-.login {
-  @include U.flex-c(row, left, left);
-}
-
-.nologin {
-  @include U.flex-c(column, left, left);
+  @include U.flex-c(row, left);
 }
 
 .title {
