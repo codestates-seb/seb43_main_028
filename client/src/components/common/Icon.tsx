@@ -23,6 +23,14 @@ export type IconNameType =
   | 'full'
   | 'gps'
   | 'reduce'
+  | 'tapbar-home'
+  | 'tapbar-home-active'
+  | 'tapbar-log'
+  | 'tapbar-log-active'
+  | 'tapbar-feed'
+  | 'tapbar-feed-active'
+  | 'tapbar-my'
+  | 'tapbar-my-active'
 
 interface IconProps {
   name: IconNameType
