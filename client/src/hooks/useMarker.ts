@@ -10,9 +10,6 @@ export default function useMarker({ map, position }: UseMarkerType) {
 
   useEffect(() => {
     if (!map) return
-    // console.log(position)
-    // console.log(markerRef)
-    // console.log(markerRef.current)
     if (markerRef.current) {
       markerRef.current.setPosition(position)
       return
