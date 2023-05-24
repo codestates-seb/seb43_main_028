@@ -19,19 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@RequiredArgsConstructor
 public class ConnectionInterceptor implements HandshakeInterceptor {
-    private final MemberService memberService;
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        Principal principal = request.getPrincipal();
-        Long memberId = null;
-        if (principal != null) {
-            memberId = Long.parseLong(((Authentication) principal).getPrincipal().toString());
-        }
-        Long walkLogId = memberService.findRecordingWalkLog(memberId);
-        attributes.put("walkLogId", walkLogId);
+        String uri = request.getURI().toString();
+        attributes.put("uri", uri);
         return true;
     }
 
