@@ -8,13 +8,12 @@ type UseMarkerType = {
 export default function useMarker({ map, position }: UseMarkerType) {
   const markerRef = useRef<google.maps.Marker | null>(null)
 
+  if (markerRef.current) {
+    markerRef.current.setPosition(position)
+  }
+
   useEffect(() => {
     if (!map) return
-
-    if (markerRef.current) {
-      markerRef.current.setPosition(position)
-      return
-    }
 
     markerRef.current = new google.maps.Marker({
       map,
@@ -31,10 +30,5 @@ export default function useMarker({ map, position }: UseMarkerType) {
     })
 
     position && map.panTo(position)
-
-    return () => {
-      // markerRef.current?.setMap(null)
-      markerRef.current = null
-    }
-  }, [map, position])
+  }, [map])
 }
