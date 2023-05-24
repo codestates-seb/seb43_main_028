@@ -3,6 +3,8 @@ package backend.section6mainproject.member.service;
 import backend.section6mainproject.member.dto.MemberServiceDTO;
 import backend.section6mainproject.member.entity.Member;
 
+import java.util.List;
+
 public interface MemberService {
     MemberServiceDTO.CreateOutput createMember(MemberServiceDTO.CreateInput createInput);
 

@@ -12,17 +12,24 @@ import backend.section6mainproject.member.repository.MemberRepository;
 import backend.section6mainproject.utils.CustomBeanUtils;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Transactional
 @Service
 public class MemberServiceImpl implements MemberService{
+    private long DEFAULT_PRIVACY_POLICY_DAYS = 90;
     private int DEFAULT_MEMBER_PASSWORD_LENGTH = 10;
     private final MemberRepository memberRepository;
     private final StorageService storageService;
@@ -205,5 +212,11 @@ public class MemberServiceImpl implements MemberService{
         sb.append(charSet[idx]);
     }
         return sb.toString();
+    }
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void autoDeleteMember90DaysAfterQuit() {
+        LocalDateTime cutoffDateTime = LocalDateTime.now().minusDays(DEFAULT_PRIVACY_POLICY_DAYS);
+        memberRepository.deleteMemberCompletely(cutoffDateTime);
+
     }
 }
