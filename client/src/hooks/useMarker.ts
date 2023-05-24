@@ -8,8 +8,13 @@ type UseMarkerType = {
 export default function useMarker({ map, position }: UseMarkerType) {
   const markerRef = useRef<google.maps.Marker | null>(null)
 
+  if (markerRef.current) {
+    markerRef.current.setPosition(position)
+  }
+
   useEffect(() => {
     if (!map) return
+
     markerRef.current = new google.maps.Marker({
       map,
       position,
@@ -23,8 +28,7 @@ export default function useMarker({ map, position }: UseMarkerType) {
         strokeColor: 'white',
       },
     })
-    return () => {
-      markerRef.current?.setMap(null)
-    }
-  }, [map, position])
+
+    position && map.panTo(position)
+  }, [map])
 }
