@@ -10,11 +10,6 @@ export enum MapSize {
   LARGE = 'large',
 }
 
-type LiveMapProps = {
-  mapSize: MapSize
-  path?: google.maps.LatLngLiteral[] | null
-}
-
 const liveMarkerIcon = {
   path: google.maps.SymbolPath.CIRCLE,
   scale: 10,
@@ -24,28 +19,35 @@ const liveMarkerIcon = {
   strokeColor: 'white',
 }
 
-const LiveMap = forwardRef<HTMLDivElement, LiveMapProps>(({ mapSize, path = null }, ref) => {
-  const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
+type LiveMapProps = {
+  mapSize?: MapSize
+  path?: google.maps.LatLngLiteral[] | null
+}
 
-  const position = path ? path[path.length - 1] : null
+const LiveMap = forwardRef<HTMLDivElement, LiveMapProps>(
+  ({ mapSize = MapSize.BASIC, path = null }, ref) => {
+    const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
 
-  const map = useGoogleMap() || null
-  useMarker({ map, position, icon: liveMarkerIcon })
-  usePolyline({ map, path })
+    const position = path ? path[path.length - 1] : null
 
-  const toggleScreenSize = () => setIsFullScreenMode(prev => !prev)
-  const panToCurrentPosition = () => position && map?.panTo(position)
+    const map = useGoogleMap() || null
+    useMarker({ map, position, icon: liveMarkerIcon })
+    usePolyline({ map, path })
 
-  return (
-    <div className={isFullScreenMode ? styles.fullScreen : styles[mapSize]}>
-      <div className={styles.mapRef} ref={ref} />
-      <div className={styles.btnWrapper}>
-        <MapButton name={isFullScreenMode ? 'reduce' : 'full'} handleClick={toggleScreenSize} />
-        <MapButton name='gps' handleClick={panToCurrentPosition} />
+    const toggleScreenSize = () => setIsFullScreenMode(prev => !prev)
+    const panToCurrentPosition = () => position && map?.panTo(position)
+
+    return (
+      <div className={isFullScreenMode ? styles.fullScreen : styles[mapSize]}>
+        <div className={styles.mapRef} ref={ref} />
+        <div className={styles.btnWrapper}>
+          <MapButton name={isFullScreenMode ? 'reduce' : 'full'} handleClick={toggleScreenSize} />
+          <MapButton name='gps' handleClick={panToCurrentPosition} />
+        </div>
       </div>
-    </div>
-  )
-})
+    )
+  }
+)
 
 LiveMap.displayName = 'LiveMap'
 

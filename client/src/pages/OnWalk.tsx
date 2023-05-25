@@ -10,7 +10,7 @@ import SnapForm from '../components/common/SnapForm'
 import Modal from '../components/common/Modal'
 import { createSnap, deleteSnap, editSnap } from '../apis/snap'
 import { differenceInSeconds } from '../utils/date-fns'
-import LiveMap, { MapSize } from '../components/common/Map/LiveMap'
+import LiveMap from '../components/common/Map/LiveMap'
 import styles from './OnWalk.module.scss'
 import { getDistanceBetweenPosition } from '../utils/position'
 
@@ -143,11 +143,7 @@ export default function OnWalk() {
         handleFinishClick={() => setIsStopModalOpen(true)}
       />
 
-      {path.length > 0 ? (
-        <LiveMap ref={mapRef} mapSize={MapSize.BASIC} path={path} />
-      ) : (
-        <div>현위치 찾는중</div>
-      )}
+      {path.length > 0 ? <LiveMap ref={mapRef} path={path} /> : <div>현위치 찾는중</div>}
 
       <div className={styles.snapBox}>
         <button className={styles.snapbutton} type='button' onClick={takeSnapClick}>
