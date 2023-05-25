@@ -10,6 +10,7 @@
 
 .imgWrapper {
   @include U.size(88px, 64px);
+  @include U.flex-c(row, center, center);
   background-color: C.$gray100;
   border-radius: 4px;
   overflow: hidden;
