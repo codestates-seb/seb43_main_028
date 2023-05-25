@@ -28,7 +28,6 @@ export default function OnWalk() {
 
   const mapRef = useMapRef()
 
-  const [position, setPosition] = useState<google.maps.LatLngLiteral | null>(null)
   const [path, setPath] = useState<google.maps.LatLngLiteral[]>([])
 
   const stopModalData = {
@@ -99,8 +98,8 @@ export default function OnWalk() {
       newPosition => {
         const { latitude, longitude } = newPosition.coords
         const watchedPosition = { lat: latitude, lng: longitude }
-        if (position === null || getDistanceBetweenPosition(position, watchedPosition) > 2) {
-          setPosition(watchedPosition)
+        const lastPosition = path[path.length - 1]
+        if (!lastPosition || getDistanceBetweenPosition(lastPosition, watchedPosition) > 2) {
           setPath(prev => [...prev, watchedPosition])
         }
       },
@@ -144,8 +143,13 @@ export default function OnWalk() {
         handleFinishClick={() => setIsStopModalOpen(true)}
       />
 
-      {position ? (
-        <MapCanvas ref={mapRef} styleType={MapStyleType.WALK} position={position} path={path} />
+      {path.length > 0 ? (
+        <MapCanvas
+          ref={mapRef}
+          styleType={MapStyleType.WALK}
+          position={path[path.length - 1]}
+          path={path}
+        />
       ) : (
         <div>현위치 찾는중</div>
       )}
