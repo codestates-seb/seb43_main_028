@@ -13,6 +13,7 @@ import { differenceInSeconds } from '../utils/date-fns'
 import LiveMap from '../components/common/Map/LiveMap'
 import styles from './OnWalk.module.scss'
 import { getDistanceBetweenPosition } from '../utils/position'
+import OnWalkLoading from './loadingPage/OnWalkLoading'
 
 export default function OnWalk() {
   const { routeTo } = useRouter()
@@ -123,6 +124,8 @@ export default function OnWalk() {
     }
   }, [])
 
+  if (!walkLog) return <OnWalkLoading />
+
   return (
     <>
       {isSnapFormOpen && (
@@ -139,7 +142,7 @@ export default function OnWalk() {
 
       <WalkHeader
         type='ON'
-        startedAt='2023-05-24T20:46:36.611Z'
+        startedAt={walkLog?.createdAt}
         handleFinishClick={() => setIsStopModalOpen(true)}
       />
 
