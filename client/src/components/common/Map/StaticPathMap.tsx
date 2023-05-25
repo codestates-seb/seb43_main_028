@@ -6,15 +6,6 @@ import { MapButton } from './MapButton'
 import styles from './Map.module.scss'
 import { MapSize } from './LiveMap'
 
-const stopMarkerIcon = {
-  path: google.maps.SymbolPath.CIRCLE,
-  scale: 8,
-  fillColor: 'white',
-  fillOpacity: 1,
-  strokeWeight: 1,
-  strokeColor: '#212121',
-}
-
 type StaticPathMapProps = {
   mapSize?: MapSize
   path?: google.maps.LatLngLiteral[] | null
@@ -23,6 +14,15 @@ type StaticPathMapProps = {
 const StaticPathMap = forwardRef<HTMLDivElement, StaticPathMapProps>(
   ({ mapSize = MapSize.BASIC, path = null }, ref) => {
     const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
+
+    const stopMarkerIcon = {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 8,
+      fillColor: 'white',
+      fillOpacity: 1,
+      strokeWeight: 1,
+      strokeColor: '#212121',
+    }
 
     const startAt = path ? path[0] : null
     const endAt = path ? path[path.length - 1] : null
