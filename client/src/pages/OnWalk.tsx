@@ -12,7 +12,7 @@ import { createSnap, deleteSnap, editSnap } from '../apis/snap'
 import { differenceInSeconds } from '../utils/date-fns'
 import styles from './OnWalk.module.scss'
 import MapCanvas, { MapStyleType } from '../components/common/Map/MapCanvas'
-import { isSamePosition, getDistanceBetweenPosition } from '../utils/position'
+import { getDistanceBetweenPosition } from '../utils/position'
 
 export default function OnWalk() {
   const { routeTo } = useRouter()
@@ -94,12 +94,6 @@ export default function OnWalk() {
     }
   }
 
-  // useEffect(() => {
-  //   getWalkLogData()
-  // }, [])
-
-  // if (walkLog === null) return <div>걷기 준비 중</div>
-
   const watchCurrentPosition = () => {
     const watchId = navigator.geolocation.watchPosition(
       newPosition => {
@@ -123,39 +117,12 @@ export default function OnWalk() {
   }
 
   useEffect(() => {
+    getWalkLogData()
     const { clearWatchPosition } = watchCurrentPosition()
     return () => {
       clearWatchPosition()
     }
   }, [])
-
-  // const watchCurrentPosition = () => {
-  //   const watchId = navigator.geolocation.watchPosition(
-  //     newPosition => {
-  //       const { latitude, longitude } = newPosition.coords
-  //       const watchedPosition = { lat: latitude, lng: longitude }
-  //       if (!isSamePosition(position, watchedPosition)) {
-  //         setPosition({ lat: latitude, lng: longitude })
-  //       }
-  //     },
-  //     error => console.log(error),
-  //     { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-  //   )
-
-  //   return {
-  //     watchId,
-  //     clearWatchPosition: () => {
-  //       navigator.geolocation.clearWatch(watchId)
-  //     },
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   const { clearWatchPosition } = watchCurrentPosition()
-  //   return () => {
-  //     clearWatchPosition()
-  //   }
-  // }, [])
 
   return (
     <>
@@ -176,25 +143,12 @@ export default function OnWalk() {
         startedAt='2023-05-24T20:46:36.611Z'
         handleFinishClick={() => setIsStopModalOpen(true)}
       />
+
       {position ? (
         <MapCanvas ref={mapRef} styleType={MapStyleType.WALK} position={position} path={path} />
       ) : (
         <div>현위치 찾는중</div>
       )}
-
-      <div>
-        {position?.lat}, {position?.lng}
-        <br />
-        --------------------------------
-        <br />
-        {path.map(({ lat, lng }) => {
-          return (
-            <p key={lat}>
-              {lat}, {lng}
-            </p>
-          )
-        })}
-      </div>
 
       <div className={styles.snapBox}>
         <button className={styles.snapbutton} type='button' onClick={takeSnapClick}>

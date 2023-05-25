@@ -13,7 +13,8 @@
 
 .WALK {
   @extend .mapContainer;
-  @include U.size(100%, calc(360px));
+  @include U.size(100%, 240px);
+  margin: 16px 0;
 }
 
 .FULL {
@@ -23,6 +24,7 @@
   @include U.size(100%, 100dvh);
   max-width: 640px;
   z-index: 5000;
+  margin: 0 0;
 }
 
 .mapRef {
