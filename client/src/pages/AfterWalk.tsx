@@ -15,6 +15,7 @@ import { convertImageFromDataURL } from '../utils/imageConvertor'
 import StaticPathMap from '../components/common/Map/StaticPathMap'
 import useMapRef from '../hooks/useMapRef'
 import { dummypath } from '../utils/position'
+import AfterWalkLoading from './loadingPage/AfterWalkLoading'
 
 export default function AfterWalk() {
   const { routeTo } = useRouter()
@@ -105,7 +106,7 @@ export default function AfterWalk() {
     getWalkLogData()
   }, [])
 
-  if (walkLog === null) return <div>산책 했당~</div>
+  if (walkLog === null) return <AfterWalkLoading />
 
   return (
     <div>
