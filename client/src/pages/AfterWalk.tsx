@@ -12,6 +12,9 @@ import { deleteSnap, editSnap } from '../apis/snap'
 import DropDown from '../components/common/DropDown'
 import { userAtom } from '../store/authAtom'
 import { convertImageFromDataURL } from '../utils/imageConvertor'
+import StaticPathMap from '../components/common/Map/StaticPathMap'
+import useMapRef from '../hooks/useMapRef'
+import { dummypath } from '../utils/position'
 
 export default function AfterWalk() {
   const { routeTo } = useRouter()
@@ -27,6 +30,8 @@ export default function AfterWalk() {
   const createdDate = walkLog && new Date(walkLog.createdAt)
 
   const { img, canvasRef } = useDrawPolyline(walkLog?.coordinates || [])
+
+  const mapRef = useMapRef()
 
   const getWalkLogData = async () => {
     const data = await getWalkLog(Number(walkLogId))
@@ -123,7 +128,9 @@ export default function AfterWalk() {
           완료
         </button>
       </form>
-      <div>-----------------지도 컴포넌트 추가---------------</div>
+
+      <StaticPathMap ref={mapRef} path={dummypath} />
+
       <div className={styles.snapBox}>
         <ul className={styles.snaplist}>
           {(snaps &&

@@ -22,3 +22,13 @@ export const isSamePosition = (
   a: google.maps.LatLngLiteral | null,
   b: google.maps.LatLngLiteral | null
 ) => a?.lat === b?.lat && a?.lng === b?.lng
+
+export const dummypath = [
+  { lat: 37.5789, lng: 126.9436 },
+  { lat: 37.582, lng: 126.9518 },
+  { lat: 37.5842, lng: 126.9591 },
+  { lat: 37.5906, lng: 126.9589 },
+  { lat: 37.5939, lng: 126.9534 },
+  { lat: 37.5951, lng: 126.9514 },
+  { lat: 37.5989, lng: 126.9496 },
+]

@@ -14,6 +14,9 @@ import { isLoginAtom, idAtom } from '../store/authAtom'
 import Header from '../components/common/Header'
 import useRouter from '../hooks/useRouter'
 import HistoryDetailLoading from './loadingPage/HistoryDetailLoading'
+import StaticPathMap from '../components/common/Map/StaticPathMap'
+import useMapRef from '../hooks/useMapRef'
+import { dummypath } from '../utils/position'
 
 export default function HistoryDetail() {
   const [edit, setEdit] = useState<boolean>(false)
@@ -25,6 +28,8 @@ export default function HistoryDetail() {
   })
   const [isLogin] = useAtom(isLoginAtom)
   const [logInId] = useAtom(idAtom)
+
+  const mapRef = useMapRef()
 
   const { id } = useParams()
   const { routeTo } = useRouter()
@@ -126,8 +131,6 @@ export default function HistoryDetail() {
   const detailItems = walkLogContents.map((da: WalkLogContentsDataType) => {
     const createTime = format(new Date(da.createdAt), 'a h시 m분', { locale: ko })
 
-    console.log(createdAt)
-
     return (
       <DetailItem
         key={da.walkLogContentId}
@@ -166,7 +169,7 @@ export default function HistoryDetail() {
             text={message}
             setting={walkLogPublicSetting}
           />
-          <div className={styles.map}>지도 재사용 컴포넌츠</div>
+          <StaticPathMap ref={mapRef} path={dummypath} />
           {detailItems}
           {isLogin && logInId === memberId && (
             <div className={styles.deleteBtnBox}>

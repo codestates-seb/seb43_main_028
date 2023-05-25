@@ -73,7 +73,7 @@ export default function DetailItem({
         </div>
       )}
       {imageUrl && imgModal && <ImgModal imageUrl={imageUrl} onClose={handlePhotoModal} />}
-      <div className={styles.textBox}>
+      <pre className={styles.textBox}>
         {text}
         <div className={styles.iconsBox}>
           <div className={styles.icon}>
@@ -92,7 +92,7 @@ export default function DetailItem({
             </div>
           )}
         </div>
-      </div>
+      </pre>
     </article>
   )
 }
