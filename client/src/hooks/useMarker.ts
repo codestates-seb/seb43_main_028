@@ -3,9 +3,17 @@ import { useEffect, useRef } from 'react'
 type UseMarkerType = {
   map: google.maps.Map | null
   position: google.maps.LatLngLiteral | null
+  icon: {
+    path: google.maps.SymbolPath
+    scale: number
+    fillColor: string
+    fillOpacity: number
+    strokeWeight: number
+    strokeColor: string
+  }
 }
 
-export default function useMarker({ map, position }: UseMarkerType) {
+export default function useMarker({ map, position, icon }: UseMarkerType) {
   const markerRef = useRef<google.maps.Marker | null>(null)
 
   if (markerRef.current) {
@@ -18,15 +26,7 @@ export default function useMarker({ map, position }: UseMarkerType) {
     markerRef.current = new google.maps.Marker({
       map,
       position,
-      visible: true,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 10,
-        fillColor: '#8cff9e',
-        fillOpacity: 1,
-        strokeWeight: 4,
-        strokeColor: 'white',
-      },
+      icon,
     })
 
     position && map.panTo(position)

@@ -10,11 +10,23 @@ import SnapForm from '../components/common/SnapForm'
 import Modal from '../components/common/Modal'
 import { createSnap, deleteSnap, editSnap } from '../apis/snap'
 import { differenceInSeconds } from '../utils/date-fns'
+import LiveMap, { MapSize } from '../components/common/Map/LiveMap'
 import styles from './OnWalk.module.scss'
-import MapCanvas, { MapStyleType } from '../components/common/Map/MapCanvas'
 import { getDistanceBetweenPosition } from '../utils/position'
 
+const coordinates = [
+  { lat: 37.5747076, lng: 127.0459042 }, // 전농동
+  { lat: 37.5789, lng: 126.9436 },
+  { lat: 37.582, lng: 126.9518 },
+  { lat: 37.5842, lng: 126.9591 },
+  { lat: 37.5906, lng: 126.9589 },
+  { lat: 37.5939, lng: 126.9534 },
+  { lat: 37.5951, lng: 126.9514 },
+  { lat: 37.5989, lng: 126.9496 }, // 서울시립대학교
+]
+
 export default function OnWalk() {
+  console.log(coordinates)
   const { routeTo } = useRouter()
   const { id: walkLogId } = useParams()
 
@@ -144,12 +156,7 @@ export default function OnWalk() {
       />
 
       {path.length > 0 ? (
-        <MapCanvas
-          ref={mapRef}
-          styleType={MapStyleType.WALK}
-          position={path[path.length - 1]}
-          path={path}
-        />
+        <LiveMap ref={mapRef} mapSize={MapSize.BASIC} path={path} />
       ) : (
         <div>현위치 찾는중</div>
       )}

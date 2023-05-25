@@ -4,7 +4,7 @@ import { userAtom, isLoginAtom } from '../store/authAtom'
 import { startWalkLog } from '../apis/walkLog'
 import useMapRef from '../hooks/useMapRef'
 import useRouter from '../hooks/useRouter'
-import MapCanvas, { MapStyleType } from '../components/common/Map/MapCanvas'
+import LiveMap, { MapSize } from '../components/common/Map/LiveMap'
 import HomeHeader from '../components/header/HomeHeader'
 import { getDistanceBetweenPosition } from '../utils/position'
 import styles from './Home.module.scss'
@@ -70,7 +70,7 @@ export default function Home() {
     <div className={styles.container}>
       <HomeHeader isLogin={isLogin} userInfo={userInfo} />
       {position ? (
-        <MapCanvas ref={mapRef} styleType={MapStyleType.HOME} position={position} />
+        <LiveMap ref={mapRef} mapSize={MapSize.LARGE} path={[position]} />
       ) : (
         <div>현위치 찾는 중</div>
       )}
