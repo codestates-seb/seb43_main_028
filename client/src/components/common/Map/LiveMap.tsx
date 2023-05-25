@@ -10,15 +10,6 @@ export enum MapSize {
   LARGE = 'large',
 }
 
-const liveMarkerIcon = {
-  path: google.maps.SymbolPath.CIRCLE,
-  scale: 10,
-  fillColor: '#8cff9e',
-  fillOpacity: 1,
-  strokeWeight: 4,
-  strokeColor: 'white',
-}
-
 type LiveMapProps = {
   mapSize?: MapSize
   path?: google.maps.LatLngLiteral[] | null
@@ -27,6 +18,15 @@ type LiveMapProps = {
 const LiveMap = forwardRef<HTMLDivElement, LiveMapProps>(
   ({ mapSize = MapSize.BASIC, path = null }, ref) => {
     const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
+
+    const liveMarkerIcon = {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10,
+      fillColor: '#8cff9e',
+      fillOpacity: 1,
+      strokeWeight: 4,
+      strokeColor: 'white',
+    }
 
     const position = path ? path[path.length - 1] : null
 
