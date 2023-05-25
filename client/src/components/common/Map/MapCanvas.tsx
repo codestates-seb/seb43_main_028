@@ -18,28 +18,28 @@ type MapCanvasProps = {
   path?: google.maps.LatLngLiteral[] | null
 }
 
-const MapCanvas = forwardRef<HTMLDivElement, MapCanvasProps>((props, ref) => {
-  const { styleType, position = null, path = null } = props
+const MapCanvas = forwardRef<HTMLDivElement, MapCanvasProps>(
+  ({ styleType, position = null, path = null }, ref) => {
+    const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
 
-  const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
+    const map = useGoogleMap() || null
+    useMarker({ map, position })
+    usePolyline({ map, path })
 
-  const map = useGoogleMap() || null
-  useMarker({ map, position })
-  usePolyline({ map, path })
+    const toggleScreenSize = () => setIsFullScreenMode(prev => !prev)
+    const panToCurrentPosition = () => position && map?.panTo(position)
 
-  const toggleScreenSize = () => setIsFullScreenMode(prev => !prev)
-  const panToCurrentPosition = () => position && map?.panTo(position)
-
-  return (
-    <div className={isFullScreenMode ? styles[MapStyleType.FULL] : styles[styleType]}>
-      <div className={styles.mapRef} ref={ref} />
-      <div className={styles.btnWrapper}>
-        <MapButton name={isFullScreenMode ? 'reduce' : 'full'} handleClick={toggleScreenSize} />
-        <MapButton name='gps' handleClick={panToCurrentPosition} />
+    return (
+      <div className={isFullScreenMode ? styles[MapStyleType.FULL] : styles[styleType]}>
+        <div className={styles.mapRef} ref={ref} />
+        <div className={styles.btnWrapper}>
+          <MapButton name={isFullScreenMode ? 'reduce' : 'full'} handleClick={toggleScreenSize} />
+          <MapButton name='gps' handleClick={panToCurrentPosition} />
+        </div>
       </div>
-    </div>
-  )
-})
+    )
+  }
+)
 
 MapCanvas.displayName = 'MapCanvas'
 

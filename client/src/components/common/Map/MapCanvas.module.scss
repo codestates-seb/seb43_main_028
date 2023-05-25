@@ -8,17 +8,20 @@
 
 .HOME {
   @extend .mapContainer;
-  width: 100%;
-  height: calc(100dvh - 129px);
+  @include U.size(100%, calc(100dvh - 129px));
+}
+
+.WALK {
+  @extend .mapContainer;
+  @include U.size(100%, calc(360px));
 }
 
 .FULL {
   @extend .mapContainer;
   position: fixed;
   top: 0;
-  width: 100%;
+  @include U.size(100%, 100dvh);
   max-width: 640px;
-  height: 100dvh;
   z-index: 5000;
 }
 
