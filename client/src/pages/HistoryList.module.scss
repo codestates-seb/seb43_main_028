@@ -4,7 +4,6 @@
 .container {
   width: 100%;
   @include U.flex-c(column);
-  padding-top: 64px;
   padding-bottom: calc(constant(safe-area-inset-bottom) + 120px);
   padding-bottom: calc(env(safe-area-inset-bottom) + 120px);
 }
