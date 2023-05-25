@@ -26,8 +26,13 @@ const StaticPathMap = forwardRef<HTMLDivElement, StaticPathMapProps>(
 
     const startAt = path ? path[0] : null
     const endAt = path ? path[path.length - 1] : null
+    const middleAt = path ? path[Math.floor(path.length / 2)] : null
 
     const map = useGoogleMap() || null
+
+    map?.setZoom(14)
+    middleAt && map?.setCenter(middleAt)
+
     useMarker({ map, position: startAt, icon: stopMarkerIcon })
     useMarker({ map, position: endAt, icon: stopMarkerIcon })
     usePolyline({ map, path })

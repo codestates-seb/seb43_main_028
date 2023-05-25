@@ -24,7 +24,6 @@ export const isSamePosition = (
 ) => a?.lat === b?.lat && a?.lng === b?.lng
 
 export const dummypath = [
-  { lat: 37.5747076, lng: 127.0459042 },
   { lat: 37.5789, lng: 126.9436 },
   { lat: 37.582, lng: 126.9518 },
   { lat: 37.5842, lng: 126.9591 },
