@@ -18,30 +18,28 @@ type StaticPathMapProps = {
   path?: google.maps.LatLngLiteral[] | null
 }
 
-export const StaticPathMap = forwardRef<HTMLDivElement, StaticPathMapProps>(
-  ({ path = null }, ref) => {
-    const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
+const StaticPathMap = forwardRef<HTMLDivElement, StaticPathMapProps>(({ path = null }, ref) => {
+  const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
 
-    const startAt = path ? path[0] : null
-    const endAt = path ? path[path.length - 1] : null
+  const startAt = path ? path[0] : null
+  const endAt = path ? path[path.length - 1] : null
 
-    const map = useGoogleMap() || null
-    useMarker({ map, position: startAt, icon: stopMarkerIcon })
-    useMarker({ map, position: endAt, icon: stopMarkerIcon })
-    usePolyline({ map, path })
+  const map = useGoogleMap() || null
+  useMarker({ map, position: startAt, icon: stopMarkerIcon })
+  useMarker({ map, position: endAt, icon: stopMarkerIcon })
+  usePolyline({ map, path })
 
-    const toggleScreenSize = () => setIsFullScreenMode(prev => !prev)
+  const toggleScreenSize = () => setIsFullScreenMode(prev => !prev)
 
-    return (
-      <div className={isFullScreenMode ? styles.fullScreen : styles.basicMapSize}>
-        <div className={styles.mapRef} ref={ref} />
-        <div className={styles.btnWrapper}>
-          <MapButton name={isFullScreenMode ? 'reduce' : 'full'} handleClick={toggleScreenSize} />
-        </div>
+  return (
+    <div className={isFullScreenMode ? styles.fullScreen : styles.basicMapSize}>
+      <div className={styles.mapRef} ref={ref} />
+      <div className={styles.btnWrapper}>
+        <MapButton name={isFullScreenMode ? 'reduce' : 'full'} handleClick={toggleScreenSize} />
       </div>
-    )
-  }
-)
+    </div>
+  )
+})
 
 StaticPathMap.displayName = 'StaticPathMap'
 
