@@ -55,7 +55,6 @@ function TermsOfUse({
     setAllCheck(false)
     setTermCheck(false)
     setPrivacyCheck(false)
-    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {

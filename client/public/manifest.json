@@ -13,13 +13,13 @@
   "shortcuts": [],
   "icons": [
     {
-      "src": "icons/icon_with_bg.png",
+      "src": "icons/icon_with_bg_512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
     },
     {
-      "src": "icons/icon_with_bg.png",
+      "src": "icons/icon_with_bg_512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
