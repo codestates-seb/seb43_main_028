@@ -38,8 +38,9 @@ export default function DetailItem({
 
   const handleDeleteHistoryItem = useMutation({
     mutationFn: () => deleteHistoryItem(walkLogId, walkLogContentId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['history', walkLogId])
+    onSuccess: data => {
+      console.log('###deleteData###', data)
+      return queryClient.invalidateQueries({ queryKey: ['history', walkLogId] })
     },
   })
 

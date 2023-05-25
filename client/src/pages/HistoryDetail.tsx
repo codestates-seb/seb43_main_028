@@ -56,9 +56,10 @@ export default function HistoryDetail() {
     unknown
   >({
     mutationFn: ({ contentId, formData }) => patchHistoryItem(id!, contentId, formData),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['history', id])
+    onSuccess: data => {
+      console.log('##patchData###', data)
       setEdit(prev => !prev)
+      return queryClient.invalidateQueries({ queryKey: ['history', id] })
     },
   })
 
