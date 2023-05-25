@@ -103,7 +103,7 @@ export default function HistoryList() {
             setSelectDate={setSelectDate}
           />
         )}
-        {data?.pages[0].data.length === 0 && noHistoryMessage}
+        {data?.pages[0].data.length === 0 && !calendar && noHistoryMessage}
         <ul className={styles.historyList}>{historyList}</ul>
         {isFetchingNextPage && <HistoryLoading />}
       </div>
