@@ -80,10 +80,8 @@ class CoordinateControllerTest {
         given(memberService.findRecordingWalkLog(Mockito.anyLong())).willReturn(1L);
 
         String accessToken = successHandlerUtils.delegateAccessToken(stubData.getStubMember());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBearerAuth(accessToken);
         StompHeaders stompHeaders = new StompHeaders();
-        stompHeaders.add("Authorization", accessToken);
+        stompHeaders.add("Authorization", "Bearer " + accessToken);
 
         this.stompSession = stompClient.connect(url, new WebSocketHttpHeaders(), stompHeaders, new StompSessionHandlerAdapter() {
         }).get(2, TimeUnit.SECONDS);
