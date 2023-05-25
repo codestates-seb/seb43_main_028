@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getWalkLog, WalkLogType, WalkLogContentType } from '../apis/walkLog'
-import OnWalkHeader from '../components/header/OnWalkHeader'
+import WalkHeader from '../components/header/WalkHeader'
+import useMapRef from '../hooks/useMapRef'
 import useRouter from '../hooks/useRouter'
 import Icon from '../components/common/Icon'
 import SnapItem from '../components/common/Item/SnapItem'
@@ -9,7 +10,9 @@ import SnapForm from '../components/common/SnapForm'
 import Modal from '../components/common/Modal'
 import { createSnap, deleteSnap, editSnap } from '../apis/snap'
 import { differenceInSeconds } from '../utils/date-fns'
+import LiveMap from '../components/common/Map/LiveMap'
 import styles from './OnWalk.module.scss'
+import { getDistanceBetweenPosition } from '../utils/position'
 
 export default function OnWalk() {
   const { routeTo } = useRouter()
@@ -22,6 +25,10 @@ export default function OnWalk() {
   const [isStopModalOpen, setIsStopModalOpen] = useState(false)
 
   const createdDate = walkLog && new Date(walkLog.createdAt)
+
+  const mapRef = useMapRef()
+
+  const [path, setPath] = useState<google.maps.LatLngLiteral[]>([])
 
   const stopModalData = {
     title: '걷기를 종료하시겠어요?',
@@ -86,11 +93,35 @@ export default function OnWalk() {
     }
   }
 
+  const watchCurrentPosition = () => {
+    const watchId = navigator.geolocation.watchPosition(
+      newPosition => {
+        const { latitude, longitude } = newPosition.coords
+        const watchedPosition = { lat: latitude, lng: longitude }
+        const lastPosition = path[path.length - 1]
+        if (!lastPosition || getDistanceBetweenPosition(lastPosition, watchedPosition) > 2) {
+          setPath(prev => [...prev, watchedPosition])
+        }
+      },
+      error => console.log(error),
+      { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+    )
+
+    return {
+      watchId,
+      clearWatchPosition: () => {
+        navigator.geolocation.clearWatch(watchId)
+      },
+    }
+  }
+
   useEffect(() => {
     getWalkLogData()
+    const { clearWatchPosition } = watchCurrentPosition()
+    return () => {
+      clearWatchPosition()
+    }
   }, [])
-
-  if (walkLog === null) return <div>걷기 준비 중</div>
 
   return (
     <>
@@ -106,10 +137,13 @@ export default function OnWalk() {
         <Modal modalData={stopModalData} onClose={() => setIsStopModalOpen(false)} />
       )}
 
-      <OnWalkHeader
-        startedAt={walkLog.createdAt}
+      <WalkHeader
+        type='ON'
+        startedAt='2023-05-24T20:46:36.611Z'
         handleFinishClick={() => setIsStopModalOpen(true)}
       />
+
+      {path.length > 0 ? <LiveMap ref={mapRef} path={path} /> : <div>현위치 찾는중</div>}
 
       <div className={styles.snapBox}>
         <button className={styles.snapbutton} type='button' onClick={takeSnapClick}>
