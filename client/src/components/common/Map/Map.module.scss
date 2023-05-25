@@ -6,20 +6,25 @@
   border: 1px solid C.$gray200;
 }
 
-.HOME {
+.large {
   @extend .mapContainer;
-  width: 100%;
-  height: calc(100dvh - 129px);
+  @include U.size(100%, calc(100dvh - 129px));
 }
 
-.FULL {
+.basic {
+  @extend .mapContainer;
+  @include U.size(100%, 240px);
+  margin: 16px 0;
+}
+
+.fullScreen {
   @extend .mapContainer;
   position: fixed;
   top: 0;
-  width: 100%;
+  @include U.size(100%, 100dvh);
   max-width: 640px;
-  height: 100dvh;
   z-index: 5000;
+  margin: 0 0;
 }
 
 .mapRef {

@@ -5,7 +5,7 @@
 .container {
   @include U.flex-c(column, center, flex-start);
   width: 100%;
-  gap: 24px;
+  gap: 16px;
   padding: 20px 24px;
   background: C.$white;
 }
