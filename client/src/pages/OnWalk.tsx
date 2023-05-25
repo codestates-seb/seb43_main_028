@@ -12,7 +12,7 @@ import { createSnap, deleteSnap, editSnap } from '../apis/snap'
 import { differenceInSeconds } from '../utils/date-fns'
 import styles from './OnWalk.module.scss'
 import MapCanvas, { MapStyleType } from '../components/common/Map/MapCanvas'
-import { isSamePosition } from '../utils/position'
+import { isSamePosition, getDistanceBetweenPosition } from '../utils/position'
 
 export default function OnWalk() {
   const { routeTo } = useRouter()
@@ -105,9 +105,9 @@ export default function OnWalk() {
       newPosition => {
         const { latitude, longitude } = newPosition.coords
         const watchedPosition = { lat: latitude, lng: longitude }
-        if (!isSamePosition(position, watchedPosition)) {
+        if (position === null || getDistanceBetweenPosition(position, watchedPosition) > 2) {
           setPosition(watchedPosition)
-          setPath([...path, watchedPosition])
+          setPath(prev => [...prev, watchedPosition])
         }
       },
       error => console.log(error),

@@ -6,7 +6,7 @@ import useMapRef from '../hooks/useMapRef'
 import useRouter from '../hooks/useRouter'
 import MapCanvas, { MapStyleType } from '../components/common/Map/MapCanvas'
 import HomeHeader from '../components/header/HomeHeader'
-import { isSamePosition } from '../utils/position'
+import { getDistanceBetweenPosition } from '../utils/position'
 import styles from './Home.module.scss'
 
 export default function Home() {
@@ -43,8 +43,8 @@ export default function Home() {
       newPosition => {
         const { latitude, longitude } = newPosition.coords
         const watchedPosition = { lat: latitude, lng: longitude }
-        if (!isSamePosition(position, watchedPosition)) {
-          setPosition({ lat: latitude, lng: longitude })
+        if (position === null || getDistanceBetweenPosition(position, watchedPosition) > 2) {
+          setPosition(watchedPosition)
         }
       },
       error => console.log(error),
