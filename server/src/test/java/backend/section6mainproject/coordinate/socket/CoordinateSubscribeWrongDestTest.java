@@ -56,10 +56,8 @@ public class CoordinateSubscribeWrongDestTest {
     void init() {
         this.url = String.format("ws://localhost:%d/ws/walk-logs", port);
         String accessToken = successHandlerUtils.delegateAccessToken(getStubMember());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBearerAuth(accessToken);
         stompHeaders = new StompHeaders();
-        stompHeaders.add("Authorization", accessToken);
+        stompHeaders.add("Authorization", "Bearer " + accessToken);
     }
 
     @Test

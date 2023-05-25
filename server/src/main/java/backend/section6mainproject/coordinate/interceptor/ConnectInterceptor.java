@@ -30,10 +30,15 @@ public class ConnectInterceptor implements ChannelInterceptor {
             String accessToken = getAccessToken(headers);
             if(accessToken == null) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
             String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-            Map<String, Object> claims = jwtTokenizer.getClaims(accessToken, base64EncodedSecretKey).getBody();
-            Long memberId = Long.parseLong(((String) claims.get("sub")));
-            Long walkLogId = memberService.findRecordingWalkLog(memberId);
-            SimpAttributesContextHolder.getAttributes().setAttribute("walkLogId", walkLogId);
+            try {
+                Map<String, Object> claims = jwtTokenizer.getClaims(accessToken, base64EncodedSecretKey).getBody();
+                Long memberId = Long.parseLong(((String) claims.get("sub")));
+                Long walkLogId = memberService.findRecordingWalkLog(memberId);
+                SimpAttributesContextHolder.getAttributes().setAttribute("walkLogId", walkLogId);
+
+            } catch (Exception e) {
+                throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
+            }
         }
         return message;
     }
@@ -41,10 +46,14 @@ public class ConnectInterceptor implements ChannelInterceptor {
     private String getAccessToken(MessageHeaders headers) {
         MultiValueMap nativeHeaders = headers.get("nativeHeaders", MultiValueMap.class);
         List authList = (List) nativeHeaders.get("Authorization");
-        if (authList != null) {
-            Object authorization = authList.get(0);
-            if(authorization != null) return authorization.toString();
-        }
-        return null;
+        if(authList == null) return null;
+
+        Object authorization = authList.get(0);
+        if(authorization == null) return null;
+
+        String bearerAuth = authorization.toString();
+        if(!bearerAuth.startsWith("Bearer ")) return null;
+
+        return bearerAuth.replace("Bearer ", "");
     }
 }
