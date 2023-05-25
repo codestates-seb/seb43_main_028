@@ -29,7 +29,7 @@ export default function AfterWalk() {
 
   const createdDate = walkLog && new Date(walkLog.createdAt)
 
-  const { img, canvasRef } = useDrawPolyline(dummypath)
+  const { img, canvasRef } = useDrawPolyline(walkLog?.coordinates || [])
 
   const mapRef = useMapRef()
 
