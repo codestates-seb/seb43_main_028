@@ -12,12 +12,10 @@ export default function SnapItem({ item }: SnapItemProps) {
 
   return (
     <li key={walkLogContentId} className={styles.container}>
-      {imageUrl && (
-        <div className={styles.imgWrapper}>
-          <img src={imageUrl} alt='올린 사진' />
-        </div>
-      )}
-      <div className={imageUrl ? styles.timeTextBox : styles.noImg}>
+      <div className={styles.imgWrapper}>
+        {imageUrl ? <img src={imageUrl} alt='올린 사진' /> : <Icon name='no-image' size={24} />}
+      </div>
+      <div className={styles.timeTextBox}>
         <div className={styles.snapTimeBox}>
           <Icon name='time-gray' size={16} />
           <p> {format(new Date(createdAt), 'a h시 m분', { locale: ko })}</p>

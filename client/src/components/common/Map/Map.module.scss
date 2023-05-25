@@ -1,0 +1,41 @@
+@use '../../../styles/color' as C;
+@use '../../../styles/utils' as U;
+
+.mapContainer {
+  position: relative;
+  border: 1px solid C.$gray200;
+}
+
+.large {
+  @extend .mapContainer;
+  @include U.size(100%, calc(100dvh - 129px));
+}
+
+.basic {
+  @extend .mapContainer;
+  @include U.size(100%, 240px);
+  margin: 16px 0;
+}
+
+.fullScreen {
+  @extend .mapContainer;
+  position: fixed;
+  top: 0;
+  @include U.size(100%, 100dvh);
+  max-width: 640px;
+  z-index: 5000;
+  margin: 0 0;
+}
+
+.mapRef {
+  width: 100%;
+  height: 100%;
+}
+
+.btnWrapper {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  @include U.flex-c(column);
+  gap: 4px;
+}

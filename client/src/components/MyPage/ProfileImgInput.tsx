@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react'
-import imageCompression from 'browser-image-compression'
 import styles from './ProfileImgInput.module.scss'
 import Icon from '../common/Icon'
 
@@ -20,28 +19,18 @@ export default function ProfileImgInput({
 }: ProfileImgInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const imageCompress = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    const options = {
-      maxSizeMB: 4, // 이미지 최대 용량
-      maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
-      useWebWorker: true,
-    }
-    try {
-      if (file) {
-        const compressedFile = await imageCompression(file, options)
-        setImgFile(compressedFile)
-      } else {
-        alert('no file')
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    imageCompress(event)
-    // setImgFile(event.target.files?.[0])
+    const currentImgFile = event.target.files?.[0]
+    if (currentImgFile) {
+      const fileSize = currentImgFile.size / (1024 * 1024)
+      if (fileSize > 4) {
+        alert('4mb 이상의 파일은 업로드할 수 없습니다.')
+        return
+      }
+      setImgFile(currentImgFile)
+    } else {
+      alert('파일을 찾을 수 없습니다.')
+    }
   }
 
   const handleClear = () => {
