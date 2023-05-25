@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react'
 import { RouterProvider } from 'react-router-dom'
-
 import { GoogleMapsProvider } from '@ubilabs/google-maps-react-hooks'
 import MapRefContext from './contexts/mapRefContext'
 import router from './router'
