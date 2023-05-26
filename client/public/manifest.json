@@ -1,11 +1,11 @@
 {
   "name": "걸어볼래",
   "short_name": "걸어볼래",
-  "start_url": "https://pwa-test-gutter-ball-lay.vercel.app/",
+  "start_url": "https://www.would-you-walk.com/",
   "display": "standalone",
   "background_color": "#FEFFFE",
   "theme_color": "#FEFFFE",
-  "description": "걸어볼래 PWA",
+  "description": "바쁘다 바빠 현대 사회 속, 걸으며 생각할 수 있는 여유를 제공합니다. 본격 산책 어플리케이션 걸어볼래",
   "scope": "/",
   "dir": "auto",
   "categories": [],
