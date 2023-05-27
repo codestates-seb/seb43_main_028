@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 import { GoogleMapsProvider } from '@ubilabs/google-maps-react-hooks'
 import MapRefContext from './contexts/mapRefContext'
@@ -12,11 +12,20 @@ function App() {
     node && setMapContainer(node)
   }, [])
 
-  const [initialLoad, setInitialLoad] = useState(true)
+  const [isInitialLoad, setIsInitialLoad] = useState(false)
 
   const handleInitialLoad = () => {
-    setInitialLoad(false)
+    setIsInitialLoad(false)
   }
+
+  useEffect(() => {
+    sessionStorage.setItem('initialLoad', JSON.stringify(true))
+    const InitialLoadItem = sessionStorage.getItem('initialLoad')
+    const isInitial = InitialLoadItem ? JSON.parse(InitialLoadItem) : false
+    if (isInitial) {
+      setIsInitialLoad(true)
+    }
+  }, [])
 
   return (
     <GoogleMapsProvider
@@ -37,7 +46,7 @@ function App() {
       }}
     >
       <MapRefContext.Provider value={mapRef}>
-        {initialLoad ? (
+        {isInitialLoad ? (
           <Landing onInitialLoad={handleInitialLoad} />
         ) : (
           <RouterProvider router={router} />
