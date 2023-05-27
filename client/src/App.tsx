@@ -16,14 +16,16 @@ function App() {
 
   const handleInitialLoad = () => {
     setIsInitialLoad(false)
+    sessionStorage.setItem('initialLoad', JSON.stringify(true))
   }
 
   useEffect(() => {
-    sessionStorage.setItem('initialLoad', JSON.stringify(true))
-    const InitialLoadItem = sessionStorage.getItem('initialLoad')
-    const isInitial = InitialLoadItem ? JSON.parse(InitialLoadItem) : false
-    if (isInitial) {
-      setIsInitialLoad(true)
+    const initialLoadItem = sessionStorage.getItem('initialLoad')
+    if (initialLoadItem) {
+      const isInitial = JSON.parse(initialLoadItem)
+      setIsInitialLoad(isInitial)
+    } else {
+      sessionStorage.setItem('initialLoad', JSON.stringify(true))
     }
   }, [])
 
