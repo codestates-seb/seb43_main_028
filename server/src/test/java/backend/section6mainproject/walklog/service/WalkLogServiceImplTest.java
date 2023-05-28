@@ -171,7 +171,7 @@ public class WalkLogServiceImplTest {
 
         given(walkLogRepository.findById(Mockito.anyLong())).willReturn(Optional.of(walkLog));
         given(walkLogMapper.walkLogServiceExitInputDTOtoWalkLog(Mockito.any(WalkLogServiceDTO.ExitInput.class))).willReturn(walkLog);
-        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("mapImage");
+        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString(), Mockito.anyBoolean())).willReturn("mapImage");
         given(beanUtils.copyNonNullProperties(Mockito.any(WalkLog.class),Mockito.any(WalkLog.class))).willReturn(new WalkLog());
         given(walkLogRepository.save(Mockito.any(WalkLog.class))).willReturn(new WalkLog());
         given(walkLogMapper.walkLogToWalkLogServiceOutputDTO(Mockito.any(WalkLog.class))).willReturn(output);

@@ -54,7 +54,7 @@ class WalkLogContentServiceTest {
 
         given(mapper.serviceCreateInputDTOToEntity(Mockito.any(WalkLogContentServiceDTO.CreateInput.class))).willReturn(stubData.getWalkLogContent());
         given(walkLogService.findVerifiedWalkLog(Mockito.anyLong())).willReturn(new WalkLog());
-        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("");
+        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString(), Mockito.anyBoolean())).willReturn("");
         given(walkLogContentRepository.save(Mockito.any(WalkLogContent.class))).willReturn(new WalkLogContent());
         given(mapper.entityToServiceCreateOutputDTO(Mockito.any(WalkLogContent.class))).willReturn(createOutput);
 
@@ -83,7 +83,7 @@ class WalkLogContentServiceTest {
         WalkLogContentServiceDTO.Output output = stubData.getOutput();
 
         given(walkLogContentRepository.findById(Mockito.anyLong())).willReturn(Optional.of(stubData.getWalkLogContent()));
-        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("");
+        given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString(), Mockito.anyBoolean())).willReturn("");
         given(walkLogContentRepository.save(Mockito.any(WalkLogContent.class))).willReturn(new WalkLogContent());
         given(mapper.entityToServiceOutputDTO(Mockito.any(WalkLogContent.class))).willReturn(output);
 

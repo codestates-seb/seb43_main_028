@@ -103,7 +103,7 @@ public class MemberServiceImpl implements MemberService{
         //이제 변환된 엔티티 member를 서비스 비즈니스 계층에서 사용해도 된다.
         Member findMember = findVerifiedMember(member.getMemberId());
         Member updatedMember = beanUtils.copyNonNullProperties(member, findMember);
-        String profile = storageService.store(updateInput.getProfileImage(), "profile");
+        String profile = storageService.store(updateInput.getProfileImage(), "profile", true);
         if(profile != null || storageService.isEmptyFile(updateInput.getProfileImage())) {
             storageService.delete(findMember.getProfileImage());
             updatedMember.setProfileImage(profile);

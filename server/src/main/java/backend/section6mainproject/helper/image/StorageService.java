@@ -12,7 +12,7 @@ public interface StorageService {
      * @param directory 디렉토리명
      * @return imageKey - 디렉토리명과 파일명이 합쳐져 있습니다. 이미지 파일이 아닌 값이 들어가면 null을 반환합니다.
      */
-    String store(MultipartFile image, String directory);
+    String store(MultipartFile image, String directory, boolean thumbnailOnly);
 
     /**
      * 이미지 파일을 삭제하는 메서드

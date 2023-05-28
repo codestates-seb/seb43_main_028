@@ -94,7 +94,7 @@ public class MemberServiceTest {
 
         when(memberRepository.findById(member.getMemberId())).thenReturn(Optional.of(member));
         when(mapper.updateInputToMember(updateInput)).thenReturn(member);
-        when(storageService.store(updateInput.getProfileImage(), "profile")).thenReturn("newProfileImage");
+        when(storageService.store(updateInput.getProfileImage(), Mockito.anyString(), Mockito.anyBoolean())).thenReturn("newProfileImage");
         when(beanUtils.copyNonNullProperties(member, member)).thenReturn(member);
 
         // When
