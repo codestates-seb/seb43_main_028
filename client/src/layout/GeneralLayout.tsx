@@ -1,11 +1,11 @@
-// import { useState, useEffect } from 'react'
-// import { useAtom } from 'jotai'
-import Tapbar from '../components/common/Tapbar'
-// import { userInfoAtom } from '../store/authAtom'
+import { useState, useEffect } from 'react'
+import { useSetAtom } from 'jotai'
 // import useRouter from '../hooks/useRouter'
-// import { getCurrentUserInfo } from '../apis/user'
+import { getCurrentUserInfo } from '../apis/user'
+import { userInfoAtom } from '../store/authAtom'
 import { TapBarContent } from '../router/routerData'
-// import Spinner from '../pages/loadingPage/Spinner'
+import Tapbar from '../components/common/Tapbar'
+import Spinner from '../pages/loadingPage/Spinner'
 
 type GeneralLayoutProps = {
   children: React.ReactNode
@@ -14,20 +14,22 @@ type GeneralLayoutProps = {
 }
 
 export default function GeneralLayout({ children, showTapBar, withAuth }: GeneralLayoutProps) {
-  // const [isAuthChecking, setIsAuthChecking] = useState(true)
-  // const [, setUserInfo] = useAtom(userInfoAtom)
-  // const [isLogin, setIsLogin] = useAtom(isLoginAtom)
-  // const [, setUser] = useAtom(userAtom)
-  // const [, setId] = useAtom(idAtom)
-  // const { routeTo, pathname } = useRouter()
-
-  // const authHandler = async () => {
-  //   const userInfo = await getCurrentUserInfo()
-  //   console.log('authHandler res', userInfo)
-  //   setUserInfo(userInfo)
-  // }
   console.log('withAuth', withAuth)
 
+  const [isAuthChecking, setIsAuthChecking] = useState(true)
+  const setUserInfo = useSetAtom(userInfoAtom)
+  // const { routeTo, pathname } = useRouter()
+
+  const authHandler = async () => {
+    const userInfo = await getCurrentUserInfo()
+    setUserInfo(userInfo)
+    setIsAuthChecking(false)
+  }
+
+  useEffect(() => {
+    console.log('app useEffect 실행')
+    authHandler()
+  }, [])
   // useEffect(() => {
   // console.log('app useEffect 실행')
   // authHandler().then(() => {
@@ -63,7 +65,7 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
   // })
   // }, [])
 
-  // if (isAuthChecking) return <Spinner />
+  if (isAuthChecking) return <Spinner />
 
   return (
     <>

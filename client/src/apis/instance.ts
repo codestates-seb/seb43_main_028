@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios'
-import { getAccessTokenFromLocalStorage } from '../utils/accessTokenHandler'
+import {
+  getAccessTokenFromLocalStorage,
+  saveAccessTokenToLocalStorage,
+} from '../utils/accessTokenHandler'
 
 const axiosInstance = createAxiosInstance()
 const fileAxios = createFileAxiosInstance()
@@ -57,7 +60,6 @@ function createAuthAxiosInstance() {
 
   instance.interceptors.request.use(config => {
     const accessToken = getAccessTokenFromLocalStorage()
-    console.log('어쓰인스턴스')
     config.headers.Authorization = accessToken || ''
     return config
   })
@@ -71,17 +73,17 @@ function createAuthAxiosInstance() {
       } = error
 
       if (status === 401) {
-        const originalRequest = config
         try {
           const refreshRes = await axiosInstance.get('/members/refresh')
           if (refreshRes.status === 200) {
-            return await axios(originalRequest)
+            saveAccessTokenToLocalStorage(refreshRes.headers.authorization)
+            config.headers.Authorization = refreshRes.headers.authorization
+            return await axios(config)
           }
         } catch (error) {
-          // Handle refresh token failure
+          console.log('refresh token error')
         }
       }
-
       return Promise.reject(error)
     }
   )
