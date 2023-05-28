@@ -29,3 +29,18 @@ export const idAtom = atom<number>(0)
 
 // 로그인 여부
 export const isLoginAtom = atom<boolean>(false)
+
+export type UserInfoAtomType = {
+  createdAt: string
+  email: string
+  memberId: number
+  nickname: string
+  introduction: string | null
+  imageUrl: string | null
+  totalWalkLog: number
+  totalWalkLogContent: number
+  recordingWalkLogId: number | null
+  defaultWalkLogPublicSetting: 'PRIVATE' | 'PUBLIC'
+}
+
+export const userInfoAtom = atom<UserInfoAtomType | null>(null)
