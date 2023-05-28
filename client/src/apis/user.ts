@@ -1,5 +1,9 @@
 import { AxiosError } from 'axios'
 import { axiosInstance, fileAxios } from './instance'
+import {
+  removeAccessTokenFromLocalStorage,
+  saveAccessTokenToLocalStorage,
+} from '../utils/accessTokenHandler'
 
 type SignUpPropsType = {
   nickname: string
@@ -67,8 +71,7 @@ export const signIn = async ({
   try {
     const response = await axiosInstance.post('/members/login', { email, password, autoLogin })
     const { authorization } = response.headers
-    axiosInstance.defaults.headers.common.Authorization = authorization
-    fileAxios.defaults.headers.common.Authorization = authorization
+    saveAccessTokenToLocalStorage(authorization)
     return { status: 'success', memberId: response.data.memberId }
   } catch (error: unknown) {
     const axiosError = error as AxiosError
@@ -171,8 +174,7 @@ export const getUserTempPassword = async (email: any) => {
 export const logoutUser = async () => {
   try {
     await axiosInstance.post(`/members/logout`)
-    delete axiosInstance.defaults.headers.common.Authorization
-    delete fileAxios.defaults.headers.common.Authorization
+    removeAccessTokenFromLocalStorage()
     return 'success'
   } catch (error) {
     console.log(error)
