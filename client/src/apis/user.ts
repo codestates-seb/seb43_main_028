@@ -110,17 +110,6 @@ export const getCurrentUserInfo = async (memberId: number): Promise<UserInfoType
   }
 }
 
-export const refreshAccessToken = async () => {
-  try {
-    const { headers } = await axiosInstance.get('/members/refresh')
-    axiosInstance.defaults.headers.common.Authorization = headers.authorization
-    fileAxios.defaults.headers.common.Authorization = headers.authorization
-    return 'success'
-  } catch (error) {
-    return 'fail'
-  }
-}
-
 export const patchUserProfile = async (memberId: number, formData: FormData) => {
   try {
     const response = await fileAxios.patch(`/members/${memberId}`, formData)
