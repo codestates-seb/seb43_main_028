@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
 import { getAccessTokenFromLocalStorage } from '../utils/accessTokenHandler'
 
 export const axiosInstance = axios.create({
@@ -20,6 +20,20 @@ export const fileAxios = axios.create({
   },
   withCredentials: true,
 })
+
+axiosInstance.interceptors.response.use(
+  config => {
+    const accessToken = getAccessTokenFromLocalStorage()
+    // eslint-disable-next-line no-param-reassign
+    config.headers = {
+      Authorization: accessToken || '',
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 
 export const authInstance = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
