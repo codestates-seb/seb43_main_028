@@ -48,7 +48,7 @@ export default forwardRef(function History({ data }: HistoryItemProps, ref: Ref<
         </button>
       )}
       <Link to={`/history/${walkLogId}`} className={styles.detailBtn}>
-        자세히 보기
+        보러 가기
       </Link>
     </li>
   )

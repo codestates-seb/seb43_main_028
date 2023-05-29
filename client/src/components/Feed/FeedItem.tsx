@@ -64,7 +64,7 @@ export default forwardRef(function FeedItem({ data }: FeedItemProps, ref: Ref<HT
       )}
       <div className={styles.linkBox}>
         {/* <Icon name='search-light' size={24} /> */}
-        <Link to={`/history/${walkLogId}`} className={styles.detailBtn}>
+        <Link to={`/feed/${walkLogId}`} className={styles.detailBtn}>
           보러 가기
         </Link>
       </div>
