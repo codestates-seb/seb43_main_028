@@ -38,7 +38,7 @@ export type TapBarElementType = {
 
 export const routerData: RouterElement[] = [
   {
-    id: 0,
+    id: 1,
     path: '/',
     label: '홈',
     element: (
@@ -51,7 +51,7 @@ export const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 3,
+    id: 2,
     path: '/history',
     label: '기록',
     element: (
@@ -64,7 +64,7 @@ export const routerData: RouterElement[] = [
     withAuth: true,
   },
   {
-    id: 4,
+    id: 3,
     path: '/history/:id',
     label: '기록상세',
     element: (
@@ -77,7 +77,7 @@ export const routerData: RouterElement[] = [
     withAuth: true,
   },
   {
-    id: 1,
+    id: 4,
     path: '/feed',
     label: '피드',
     element: (
@@ -90,7 +90,7 @@ export const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 2,
+    id: 5,
     path: '/mypage',
     label: '내정보',
     element: (
@@ -103,7 +103,7 @@ export const routerData: RouterElement[] = [
     withAuth: true,
   },
   {
-    id: 5,
+    id: 6,
     path: '/onwalk/:id',
     label: '걷기중',
     element: (
@@ -116,7 +116,7 @@ export const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 6,
+    id: 7,
     path: '/afterwalk/:id',
     label: '걷기완료',
     element: (
@@ -129,7 +129,7 @@ export const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 7,
+    id: 8,
     path: '/signin',
     label: '로그인',
     element: (
@@ -142,7 +142,7 @@ export const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 8,
+    id: 9,
     path: '/signup',
     label: '회원가입',
     element: (
@@ -155,7 +155,7 @@ export const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 9,
+    id: 10,
     path: '/changepassword',
     label: '비밀번호변경',
     element: (
@@ -168,7 +168,7 @@ export const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 9,
+    id: 11,
     path: '/findpassword',
     label: '비밀번호찾기',
     element: (
@@ -181,7 +181,7 @@ export const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 10,
+    id: 12,
     path: '*',
     label: '404',
     element: (
