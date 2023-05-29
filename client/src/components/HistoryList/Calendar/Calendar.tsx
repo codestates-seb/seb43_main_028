@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useQuery } from '@tanstack/react-query'
 import {
   addMonths,
@@ -12,7 +12,7 @@ import styles from './Calendar.module.scss'
 import WeekDays from './WeekDays'
 import YearMonth from './YearMonth'
 import Dates from './Dates'
-import { userAtom } from '../../../store/authAtom'
+import { UserInfoAtomType, userInfoAtom } from '../../../store/authAtom'
 import { getHistoryCalendarList } from '../../../apis/history'
 import CalendarLoading from '../../../pages/loadingPage/CalendarLoading'
 
@@ -31,11 +31,11 @@ type CalendarProps = {
 }
 
 export default function Calendar({ date, setDate, selectDate, setSelectDate }: CalendarProps) {
-  const [user] = useAtom(userAtom)
+  const userInfo = useAtomValue(userInfoAtom) as UserInfoAtomType
 
   const getMonthHistoryQuery = useQuery({
     queryKey: ['history', date],
-    queryFn: () => getHistoryCalendarList(user.memberId, getYear(date), getMonth(date) + 1),
+    queryFn: () => getHistoryCalendarList(userInfo.memberId, getYear(date), getMonth(date) + 1),
     enabled: !!date,
   })
 
