@@ -6,35 +6,33 @@
   width: 100%;
   height: 48px;
   padding: 8px 20px;
-  @include U.flex-c(row, center, center);
+  @include U.flex-c(row, space-between, center);
   background-color: C.$white;
   border-bottom: 1px solid C.$gray200;
 }
 
 .backBtn {
   @include U.flex-c(row, flex-start, center);
-  width: 20%;
+  @include U.size(24px);
 }
 
 .noBackBtn {
   @include U.flex-c(row, flex-start, center);
-  width: 20%;
+  @include U.size(24px);
 }
 
 .headerTitle {
   @include U.flex-c(row, center, center);
   color: black;
-  font-size: 1.6rem;
-  width: 60%;
 }
 
 .closeBtn {
   @include U.flex-c(row, flex-end, center);
   @include T.gray900-regular-14;
-  width: 20%;
+  @include U.size(24px);
 }
 
 .noCloseBtn {
   @include U.flex-c(row, flex-end, center);
-  width: 20%;
+  @include U.size(24px);
 }

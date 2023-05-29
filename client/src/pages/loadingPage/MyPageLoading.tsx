@@ -21,7 +21,7 @@ function ProfileBox() {
   )
 }
 
-export default function MypPageLoading() {
+export default function MyPageLoading() {
   return (
     <div className={styles.container}>
       <ProfileBox />
