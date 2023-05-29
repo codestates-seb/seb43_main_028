@@ -16,7 +16,7 @@ function App() {
 
   const handleInitialLoad = () => {
     setIsInitialLoad(false)
-    sessionStorage.setItem('initialLoad', JSON.stringify(true))
+    sessionStorage.setItem('initialLoad', JSON.stringify(false))
   }
 
   useEffect(() => {
