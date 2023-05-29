@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import styles from './Spinner.module.scss'
 import characterIcon from '../../assets/icon_no_bg_180.png'
 
@@ -9,8 +9,8 @@ type StartTextArrElementType = {
 
 type SpinnerProps = {
   startTextArr?: StartTextArrElementType[]
-  textIndex: number
-  setTextIndex: React.Dispatch<React.SetStateAction<number>>
+  textIndex?: number
+  setTextIndex?: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function Spinner({ startTextArr, textIndex, setTextIndex }: SpinnerProps) {
@@ -20,7 +20,7 @@ export default function Spinner({ startTextArr, textIndex, setTextIndex }: Spinn
   useEffect(() => {
     if (startTextArr) {
       const randomIndex = getRandomIndex(startTextArr.length)
-      setTextIndex(randomIndex)
+      setTextIndex?.(randomIndex)
     }
   }, [])
   return (

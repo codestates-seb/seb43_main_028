@@ -14,7 +14,6 @@ import LiveMap from '../components/common/Map/LiveMap'
 import styles from './OnWalk.module.scss'
 import { getDistanceBetweenPosition } from '../utils/position'
 import OnWalkLoading from './loadingPage/OnWalkLoading'
-import Landing from '../components/common/Landing'
 import Spinner from './loadingPage/Spinner'
 
 export default function OnWalk() {

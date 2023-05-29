@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import styles from './Landing.module.scss'
 import icon from '../../assets/icon_no_bg_180.png'
 
