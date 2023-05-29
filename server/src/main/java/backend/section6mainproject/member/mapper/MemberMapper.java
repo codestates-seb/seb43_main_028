@@ -19,7 +19,7 @@ public interface MemberMapper {
     @Mapping(target = "profileImage", ignore = true)
     Member updateInputToMember(MemberServiceDTO.UpdateInput updateInput); //서비스용DTO를 엔티티로 바꾼다. 서비스 계층에서만 사용됨
     MemberServiceDTO.FindNewPwInput getNewPwToFindNewPw(MemberControllerDTO.GetNewPw getNewPw);
-    @Mapping(source = "profileImage", target = "imageUrl", qualifiedByName = "signBucket")
+    @Mapping(source = "profileImage", target = "imageUrl", qualifiedByName = "PreSignedUrlForThumbnail")
     @Mapping(target = "totalWalkLog", source = "memberId", qualifiedByName = "countWalkLog")
     @Mapping(target = "totalWalkLogContent", source = "memberId", qualifiedByName = "countWalkLogContent")
     MemberServiceDTO.Output memberToOutput(Member member); // 서비스 계층에서 API계층으로 넘길때 사용됨

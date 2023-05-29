@@ -4,6 +4,7 @@ import backend.section6mainproject.content.dto.WalkLogContentControllerDTO;
 import backend.section6mainproject.content.dto.WalkLogContentServiceDTO;
 import backend.section6mainproject.content.entity.WalkLogContent;
 import backend.section6mainproject.helper.image.StorageService;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -30,21 +31,24 @@ public interface WalkLogContentMapper {
     WalkLogContentControllerDTO.PostResponse serviceCreateOutputDTOToControllerCreateResponseDTO(WalkLogContentServiceDTO.CreateOutput createOutput);
 
     // response flow - for general
-    @Mapping(source = "imageKey", target = "imageUrl", qualifiedByName = "signBucket")
+    @Mapping(source = "imageKey", target = "imageUrl", qualifiedByName = "PreSignedUrl")
+    @Named("walkLogContentForOrigin")
     WalkLogContentServiceDTO.Output entityToServiceOutputDTO(WalkLogContent walkLogContent);
+
+    @Mapping(source = "imageKey", target = "imageUrl", qualifiedByName = "PreSignedUrlForThumbnail")
+    @Named("walkLogContentForThumbnail")
+    WalkLogContentServiceDTO.Output entityToServiceOutputDTOForThumbnail(WalkLogContent walkLogContent);
 
     WalkLogContentControllerDTO.Response serviceOutputDTOToControllerResponseDTO(WalkLogContentServiceDTO.Output output);
 
     @Named("walkLogContentEntityToServiceDTO")
+    @IterableMapping(qualifiedByName = "walkLogContentForOrigin")
     List<WalkLogContentServiceDTO.Output> entitiesToServiceOutputDTOs(List<WalkLogContent> walkLogContents);
+    @Named("walkLogContentEntityToServiceDTOForThumbnail")
+    @IterableMapping(qualifiedByName = "walkLogContentForThumbnail")
+    List<WalkLogContentServiceDTO.Output> entitiesToServiceOutputDTOsForThumbnail(List<WalkLogContent> walkLogContents);
     @Named("walkLogContentServiceDTOToControllerDTO")
     List<WalkLogContentControllerDTO.Response> serviceOutputDTOsToControllerResponseDTOs(List<WalkLogContentServiceDTO.Output> outputs);
 
 
-    // legacy codes
-
-    @Mapping(source = "imageKey", target = "imageUrl", qualifiedByName = "signBucket")
-    WalkLogContentControllerDTO.Response walkLogContentToWalkLogContentResponseDTO(WalkLogContent walkLogContent);
-    @Named("walkLogContentsToWalkLogContentResponseDTOs")
-    List<WalkLogContentControllerDTO.Response> walkLogContentsToWalkLogContentResponseDTOs(List<WalkLogContent> walkLogContents);
 }

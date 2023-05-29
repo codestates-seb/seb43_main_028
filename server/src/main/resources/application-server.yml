@@ -13,7 +13,7 @@ spring:
         format_sql: true  # (3) SQL pretty print
   servlet:
     multipart:
-      max-file-size: 4MB
+      max-file-size: 5MB
 server:
   servlet:
     encoding:

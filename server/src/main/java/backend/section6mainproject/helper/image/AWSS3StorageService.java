@@ -170,11 +170,20 @@ public class AWSS3StorageService implements StorageService {
 
 
     @Override
-    public String signBucket(String key) {
+    public String getPreSignedUrl(String key) {
+        return getPreSignedUrlInternal(key, this.bucket);
+    }
+
+    @Override
+    public String getPreSignedUrlForThumbnail(String key) {
+        return getPreSignedUrlInternal(key, this.thumbnailBucket);
+    }
+
+    private String getPreSignedUrlInternal(String key, String bucket) {
         if(key != null){
             try {
                 GetObjectRequest request = GetObjectRequest.builder()
-                        .bucket(this.bucket)
+                        .bucket(bucket)
                         .key(key)
                         .build();
                 GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
