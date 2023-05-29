@@ -4,7 +4,7 @@ import { GoogleMapsProvider } from '@ubilabs/google-maps-react-hooks'
 import MapRefContext from './contexts/mapRefContext'
 import router from './router'
 import './styles/global.scss'
-import Landing from './pages/Landing'
+import Landing from './components/common/Landing'
 
 function App() {
   const [mapContainer, setMapContainer] = useState<HTMLDivElement | null>(null)
@@ -49,7 +49,7 @@ function App() {
     >
       <MapRefContext.Provider value={mapRef}>
         {isInitialLoad ? (
-          <Landing onInitialLoad={handleInitialLoad} />
+          <Landing onInitialLoad={handleInitialLoad} label={''} />
         ) : (
           <RouterProvider router={router} />
         )}

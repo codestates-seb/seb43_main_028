@@ -14,6 +14,8 @@ import LiveMap from '../components/common/Map/LiveMap'
 import styles from './OnWalk.module.scss'
 import { getDistanceBetweenPosition } from '../utils/position'
 import OnWalkLoading from './loadingPage/OnWalkLoading'
+import Landing from '../components/common/Landing'
+import Spinner from './loadingPage/Spinner'
 
 export default function OnWalk() {
   const { routeTo } = useRouter()
@@ -24,6 +26,18 @@ export default function OnWalk() {
 
   const [isSnapFormOpen, setIsSnapFormOpen] = useState(false)
   const [isStopModalOpen, setIsStopModalOpen] = useState(false)
+
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [textIndex, setTextIndex] = useState<number>(-1)
+
+  const startTextArr = [
+    // { id: -1, text: '잠시 후 산책 기록을 시작합니다!' },
+    { id: 0, text: '오늘 하루를 정리하며 걸어보는 건 어떨까요?' },
+    { id: 1, text: '요즘 연락이 뜸했던 친구에게 전화를 걸어보는 건 어떨까요?' },
+    { id: 2, text: '내일 하루를 미리 그려보며 걷는 건 어떨까요?' },
+    { id: 3, text: '동네 친구를 불러내 함께 걸어보는 건 어떠세요?' },
+    { id: 4, text: '시간을 버리듯이 걷다 보면 오히려 많은 걸 얻게 될지도 몰라요.' },
+  ]
 
   const createdDate = walkLog && new Date(walkLog.createdAt)
 
@@ -117,6 +131,10 @@ export default function OnWalk() {
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      setTextIndex(-1)
+      setIsLoading(false)
+    }, 5000)
     getWalkLogData()
     const { clearWatchPosition } = watchCurrentPosition()
     return () => {
@@ -124,6 +142,8 @@ export default function OnWalk() {
     }
   }, [])
 
+  if (isLoading)
+    return <Spinner startTextArr={startTextArr} textIndex={textIndex} setTextIndex={setTextIndex} />
   if (!walkLog) return <OnWalkLoading />
 
   return (
