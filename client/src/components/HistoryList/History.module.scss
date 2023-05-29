@@ -50,7 +50,7 @@
 }
 
 .message {
-  @include T.gray900-bold-16;
+  @include T.gray900-bold-20;
   width: 100%;
   white-space: normal;
   overflow: hidden;
@@ -70,8 +70,8 @@
 }
 
 .detailBtn {
-  @include U.size(100%, 40px);
+  @include U.size(100%, 36px);
   @include U.flex-c(row, center, center);
-  border: 1px solid C.$gray600;
+  background: C.$gray200;
   border-radius: 10px;
 }

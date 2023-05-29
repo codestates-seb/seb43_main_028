@@ -2,12 +2,20 @@ import { Link } from 'react-router-dom'
 import Icon from '../common/Icon'
 import styles from './HomeHeader.module.scss'
 import { UserInfoAtomType } from '../../store/authAtom'
+import useRouter from '../../hooks/useRouter'
+
+const comment: { [key: string]: string } = {
+  '/': '걸은 순간을 기록으로 간직해보세요.',
+  '/history': '걸은 순간을 기록으로 간직해보세요.',
+  '/feed': '자신의 순간을 공유해보세요.',
+}
 
 type HomeHeaderProps = {
   userInfo: UserInfoAtomType | null
 }
 
 export default function HomeHeader({ userInfo }: HomeHeaderProps) {
+  const { pathname } = useRouter()
   return (
     <div className={styles.headerContainer}>
       <div className={styles.profile}>
@@ -31,7 +39,7 @@ export default function HomeHeader({ userInfo }: HomeHeaderProps) {
             <div className={styles.title}>
               <Link to='/signin'>로그인/회원가입</Link>
             </div>
-            <div className={styles.caption}>걸은 순간을 기록으로 간직해보세요.</div>
+            <div className={styles.caption}>{comment[pathname]}</div>
           </>
         )}
       </div>
