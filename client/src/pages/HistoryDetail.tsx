@@ -32,7 +32,7 @@ export default function HistoryDetail() {
   const mapRef = useMapRef()
 
   const { id } = useParams()
-  const { routeTo } = useRouter()
+  const { routeTo, pathname } = useRouter()
 
   const queryClient = useQueryClient()
 
@@ -153,7 +153,7 @@ export default function HistoryDetail() {
         hasCloseButton={false}
         headerTitle='상세 기록'
         handleCloseFn={() => {}}
-        path='-1'
+        path={pathname.includes('history') ? '/history' : '/feed'}
       />
       {edit ? (
         editSnapForm
