@@ -36,29 +36,29 @@ public interface WalkLogMapper {
     //Entity To Service
     @Mapping(source = "member.memberId",target = "memberId")
     @Mapping(source = "member.nickname",target = "nickname")
-    @Mapping(source = "mapImage",target = "imageUrl", qualifiedByName = "signBucket")
+    @Mapping(source = "mapImage",target = "imageUrl", qualifiedByName = "PreSignedUrlForThumbnail")
     @Mapping(target = "coordinates",qualifiedByName = "coordinateEntityToServiceDTO")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     WalkLogServiceDTO.Output walkLogToWalkLogServiceOutputDTO(WalkLog walkLog);
-    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTOForThumbnail")
     @Mapping(target = "startedAt", source = "createdAt")
-    @Mapping(source = "mapImage",target = "mapImage", qualifiedByName = "signBucket")
+    @Mapping(source = "mapImage",target = "mapImage", qualifiedByName = "PreSignedUrlForThumbnail")
     WalkLogServiceDTO.FindOutput walkLogToWalkLogServiceFindOutputDTO(WalkLog walkLog);
     WalkLogServiceDTO.CreateOutput walkLogToWalkLogServiceCreatedOutputDTO(WalkLog walkLog);
     WalkLogServiceDTO.CalenderFindOutput walkLogToWalkLogServiceCalenderFindOutputDTO(WalkLog walkLog);
 
     @Mapping(source = "member.memberId",target = "memberId")
     @Mapping(source = "member.nickname",target = "nickname")
-    @Mapping(source = "member.profileImage",target = "profileImage",qualifiedByName = "signBucket")
-    @Mapping(source = "mapImage",target = "imageUrl", qualifiedByName = "signBucket")
+    @Mapping(source = "member.profileImage",target = "profileImage",qualifiedByName = "PreSignedUrlForThumbnail")
+    @Mapping(source = "mapImage",target = "imageUrl", qualifiedByName = "PreSignedUrlForThumbnail")
     @Mapping(target = "coordinates",qualifiedByName = "coordinateEntityToServiceDTO")
     @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
     WalkLogServiceDTO.GetOutput walkLogToWalkLogServiceGetOutPutDTO(WalkLog walkLog);
     @Mapping(source = "member.nickname",target = "nickname")
-    @Mapping(source = "member.profileImage",target = "profileImage",qualifiedByName = "signBucket")
-    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTO")
+    @Mapping(source = "member.profileImage",target = "profileImage",qualifiedByName = "PreSignedUrlForThumbnail")
+    @Mapping(target = "walkLogContents",qualifiedByName = "walkLogContentEntityToServiceDTOForThumbnail")
     @Mapping(target = "startedAt", source = "createdAt")
-    @Mapping(source = "mapImage",target = "mapImage",qualifiedByName = "signBucket")
+    @Mapping(source = "mapImage",target = "mapImage",qualifiedByName = "PreSignedUrlForThumbnail")
     WalkLogServiceDTO.FindFeedOutput walkLogToWalkLogServiceFindFeedOutputDTO(WalkLog walkLog);
 
     List<WalkLogServiceDTO.CalenderFindOutput> walkLogsToWalkLogServiceCalenderFindOutputDTOs(List<WalkLog> walkLogs);
