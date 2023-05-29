@@ -10,6 +10,7 @@ import { logoutUser, patchUserPrivacySettings, unregisterUser } from '../apis/us
 import Icon from '../components/common/Icon'
 import Modal from '../components/common/Modal'
 import useRouter from '../hooks/useRouter'
+import MyPageLoading from './loadingPage/MyPageLoading'
 
 type UnregisterModalOptionType = {
   title: string
@@ -132,6 +133,22 @@ export default function Mypage() {
       setRegisteredAt(formattedData)
     }
   }, [userInfo])
+
+  if (!userInfo) {
+    return (
+      <div className={styles.noHistoryBox}>
+        <p>
+          <strong>내정보</strong>는 로그인 후 이용하실 수 있습니다.
+        </p>
+        <Link to='/signin' className={styles.linkBtn}>
+          로그인 하러가기
+        </Link>
+        <Link to='/signup' className={styles.linkBtn}>
+          회원가입 하러가기
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <>
