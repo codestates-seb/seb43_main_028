@@ -71,7 +71,7 @@ public class WalkLogServiceImpl implements WalkLogService {
     public WalkLogServiceDTO.Output exitWalkLog(WalkLogServiceDTO.ExitInput exitInput){
         WalkLog findWalkLog = findVerifiedWalkLog(exitInput.getWalkLogId());
         checkWalkLogStatusRecording(findWalkLog);
-        String mapImage = storageService.store(exitInput.getMapImage(), "mapImage");
+        String mapImage = storageService.store(exitInput.getMapImage(), "mapImage", true);
         WalkLog walkLog = walkLogMapper.walkLogServiceExitInputDTOtoWalkLog(exitInput);
         WalkLog exitedWalkLog =
                 beanUtils.copyNonNullProperties(walkLog, findWalkLog);

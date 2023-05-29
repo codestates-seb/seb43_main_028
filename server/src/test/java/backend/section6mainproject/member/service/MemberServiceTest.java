@@ -20,6 +20,7 @@ import backend.section6mainproject.walklog.entity.WalkLog;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -92,10 +93,10 @@ public class MemberServiceTest {
         updateInput.setProfileImage(profileImage);
         Member member = stubData.getUpdatedMember();
 
-        when(memberRepository.findById(member.getMemberId())).thenReturn(Optional.of(member));
-        when(mapper.updateInputToMember(updateInput)).thenReturn(member);
-        when(storageService.store(updateInput.getProfileImage(), "profile")).thenReturn("newProfileImage");
-        when(beanUtils.copyNonNullProperties(member, member)).thenReturn(member);
+        when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
+        when(mapper.updateInputToMember(Mockito.any(MemberServiceDTO.UpdateInput.class))).thenReturn(member);
+        when(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString(), Mockito.anyBoolean())).thenReturn("newProfileImage");
+        when(beanUtils.copyNonNullProperties(Mockito.any(Member.class), Mockito.any(Member.class))).thenReturn(member);
 
         // When
         MemberServiceDTO.Output output = memberService.updateMember(updateInput);
