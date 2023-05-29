@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useAtom } from 'jotai'
-import { userAtom, idAtom } from '../store/authAtom'
+import { useAtomValue } from 'jotai'
+import { UserInfoAtomType, userInfoAtom } from '../store/authAtom'
 import { signIn } from '../apis/user'
 import styles from './ChangePassword.module.scss'
 import ChangingPassword from '../components/ChangePassword/ChangingPassword'
@@ -12,14 +12,14 @@ export default function ChangePassword() {
   const [isPasswordChanged, setIsPasswordChanged] = useState(false)
   const [userId, setUserId] = useState(-1)
 
-  const [user] = useAtom(userAtom)
-  const [currentMemberId] = useAtom(idAtom)
-  const { email } = user
+  const userInfo = useAtomValue(userInfoAtom) as UserInfoAtomType
+  const currentMemberId = userInfo.memberId
 
   const confirmPassword = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const password = formData.get('password')
+    const { email } = userInfo
     const { memberId } = await signIn({ email, password, autoLogin: true })
 
     if (memberId === currentMemberId) {

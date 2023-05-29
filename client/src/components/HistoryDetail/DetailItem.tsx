@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import Icon from '../common/Icon'
 import styles from './DetailItem.module.scss'
 import ImgModal from './ImgModal'
 import { WalkLogContentsDataType, ModalOption } from '../../types/History'
 import { deleteHistoryItem } from '../../apis/history'
-import { isLoginAtom, idAtom } from '../../store/authAtom'
+import { userInfoAtom } from '../../store/authAtom'
 
 type DetailItemProps = {
   data: WalkLogContentsDataType
@@ -31,8 +31,7 @@ export default function DetailItem({
 }: DetailItemProps) {
   const { walkLogContentId, imageUrl, text } = data
   const [imgModal, setImgModal] = useState(false)
-  const [isLogin] = useAtom(isLoginAtom)
-  const [logInId] = useAtom(idAtom)
+  const userInfo = useAtomValue(userInfoAtom)
 
   const queryClient = useQueryClient()
 
@@ -77,7 +76,7 @@ export default function DetailItem({
           <div className={styles.icon}>
             <Icon name='time-gray' size={24} /> {snapTime}
           </div>
-          {isLogin && logInId === memberId && (
+          {userInfo && userInfo.memberId === memberId && (
             <div className={styles.editDeleteBox}>
               <button type='button' className={styles.icon} onClick={handleEditMode}>
                 <Icon name='edit-gray' size={24} />

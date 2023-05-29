@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai'
-import { isLoginAtom, userAtom } from '../../store/authAtom'
+import { userInfoAtom } from '../../store/authAtom'
 import { format } from '../../utils/date-fns'
 import Icon from '../common/Icon'
 import Timer from '../common/Timer'
@@ -11,16 +11,14 @@ interface OnWalkHeaderProps {
 }
 
 export default function OnWalkHeader({ startedAt, handleFinishClick }: OnWalkHeaderProps) {
-  const isLogin = useAtomValue(isLoginAtom)
-  const userInfo = useAtomValue(userAtom)
-
+  const userInfo = useAtomValue(userInfoAtom)
   const startedDate = new Date(startedAt)
 
   return (
     <div className={styles.container}>
       <div className={styles.infoBox}>
         <div className={styles.profileBox}>
-          {isLogin && userInfo.imageUrl ? (
+          {userInfo && userInfo.imageUrl ? (
             <img src={userInfo.imageUrl} alt={userInfo.nickname} />
           ) : (
             <Icon name='no-profile' size={48} />
@@ -32,7 +30,7 @@ export default function OnWalkHeader({ startedAt, handleFinishClick }: OnWalkHea
             <span className='time'>{format(startedDate, 'HH:mm:ss')}</span>
           </div>
           <p className={styles.text}>
-            {isLogin ? `${userInfo.totalWalkLog}번째 걷는 중이에요.` : '걷기 체험 중이에요.'}
+            {userInfo ? `${userInfo.totalWalkLog}번째 걷는 중이에요.` : '걷기 체험 중이에요.'}
           </p>
         </div>
       </div>
