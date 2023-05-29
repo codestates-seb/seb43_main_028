@@ -133,6 +133,22 @@ export default function Mypage() {
     }
   }, [userInfo])
 
+  if (!userInfo) {
+    return (
+      <div className={styles.noHistoryBox}>
+        <p>
+          <strong>내정보</strong>는 로그인 후 이용하실 수 있습니다.
+        </p>
+        <Link to='/signin' className={styles.linkBtn}>
+          로그인 하러가기
+        </Link>
+        <Link to='/signup' className={styles.linkBtn}>
+          회원가입 하러가기
+        </Link>
+      </div>
+    )
+  }
+
   return (
     <>
       {isModalOpened ? <EditProfile setIsModalOpened={setIsModalOpened} /> : null}

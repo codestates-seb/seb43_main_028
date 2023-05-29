@@ -5,7 +5,7 @@ import HistoryDetailLoading from '../pages/loadingPage/HistoryDetailLoading'
 import HistoryListLoading from '../pages/loadingPage/HistoryListLoading'
 import HomeLoading from '../pages/loadingPage/HomeLoading'
 import FeedLoading from '../pages/loadingPage/FeedLoading'
-import MypPageLoading from '../pages/loadingPage/MyPageLoading'
+import MyPageLoading from '../pages/loadingPage/MyPageLoading'
 import OnWalkLoading from '../pages/loadingPage/OnWalkLoading'
 import AfterWalkLoading from '../pages/loadingPage/AfterWalkLoading'
 
@@ -94,7 +94,7 @@ export const routerData: RouterElement[] = [
     path: '/mypage',
     label: '내정보',
     element: (
-      <Suspense fallback={<MypPageLoading />}>
+      <Suspense fallback={<MyPageLoading />}>
         <MyPage />
       </Suspense>
     ),
