@@ -1,13 +1,13 @@
 import { useCallback, useRef, useState } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { Link } from 'react-router-dom'
 import styles from './HistoryList.module.scss'
 import History from '../components/HistoryList/History'
 import Calendar from '../components/HistoryList/Calendar/Calendar'
 import Toggle from '../components/HistoryList/Toggle'
 import { getHistoryList } from '../apis/history'
-import { isLoginAtom, userAtom } from '../store/authAtom'
+import { userInfoAtom, UserInfoAtomType } from '../store/authAtom'
 import { HistoryListDataType } from '../types/History'
 import { getDate, getMonth, getYear } from '../utils/date-fns'
 import HistoryLoading from './loadingPage/HistoryLoading'
@@ -17,8 +17,7 @@ export default function HistoryList() {
   const [calendar, setCalendar] = useState<boolean>(false)
   const [selectDate, setSelectDate] = useState<Date | null>(null)
   const [date, setDate] = useState<Date>(new Date())
-  const [user] = useAtom(userAtom)
-  const [isLogin] = useAtom(isLoginAtom)
+  const userInfo = useAtomValue(userInfoAtom) as UserInfoAtomType
 
   const handleCalendar = () => {
     setCalendar(!calendar)
@@ -29,7 +28,7 @@ export default function HistoryList() {
     queryFn: ({ pageParam }) => {
       if (calendar && selectDate) {
         return getHistoryList(
-          user.memberId,
+          userInfo.memberId,
           pageParam,
           getYear(selectDate),
           getMonth(selectDate) + 1,
@@ -37,9 +36,9 @@ export default function HistoryList() {
         )
       }
       if (calendar) {
-        return getHistoryList(user.memberId, pageParam, getYear(date), getMonth(date) + 1)
+        return getHistoryList(userInfo.memberId, pageParam, getYear(date), getMonth(date) + 1)
       }
-      return getHistoryList(user.memberId, pageParam)
+      return getHistoryList(userInfo.memberId, pageParam)
     },
     getNextPageParam: lastPage => {
       const { page, totalPages } = lastPage.pageInfo
@@ -92,7 +91,7 @@ export default function HistoryList() {
 
   return (
     <>
-      <HomeHeader isLogin={isLogin} userInfo={user} />
+      <HomeHeader userInfo={userInfo} />
       <div className={styles.container}>
         <Toggle handleCalendar={handleCalendar} calendar={calendar} />
         {calendar && (

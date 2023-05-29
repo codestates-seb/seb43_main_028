@@ -10,7 +10,7 @@ import SnapItem from '../components/common/Item/SnapItem'
 import { differenceInSeconds } from '../utils/date-fns'
 import { deleteSnap, editSnap } from '../apis/snap'
 import DropDown from '../components/common/DropDown'
-import { userAtom } from '../store/authAtom'
+import { UserInfoAtomType, userInfoAtom } from '../store/authAtom'
 import { convertImageFromDataURL } from '../utils/imageConvertor'
 import StaticPathMap from '../components/common/Map/StaticPathMap'
 import useMapRef from '../hooks/useMapRef'
@@ -20,7 +20,7 @@ import AfterWalkLoading from './loadingPage/AfterWalkLoading'
 export default function AfterWalk() {
   const { routeTo } = useRouter()
   const { id: walkLogId } = useParams()
-  const userInfo = useAtomValue(userAtom)
+  const userInfo = useAtomValue(userInfoAtom) as UserInfoAtomType
 
   const [pubilcOption, setPublicOption] = useState<'PUBLIC' | 'PRIVATE'>(
     userInfo.defaultWalkLogPublicSetting
