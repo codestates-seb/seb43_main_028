@@ -149,6 +149,7 @@ export const logoutUser = async () => {
 export const unregisterUser = async (memberId: number) => {
   try {
     await axiosInstance.delete(`/members/${memberId}`)
+    removeAccessTokenFromLocalStorage()
     return 'success'
   } catch (error) {
     console.log(error)
