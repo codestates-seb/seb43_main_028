@@ -1,10 +1,13 @@
 import { useCallback, useRef } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
 import { getAllPublicWalkLogs } from '../apis/walkLog'
 import styles from './Feed.module.scss'
 import FeedItem from '../components/Feed/FeedItem'
 import FeedLoading from './loadingPage/FeedLoading'
 import HistoryLoading from './loadingPage/HistoryLoading'
+import HomeHeader from '../components/header/HomeHeader'
+import { userInfoAtom } from '../store/authAtom'
 
 type FeedType = {
   walkLogId: number | null
@@ -18,6 +21,7 @@ type FeedType = {
 }
 
 export default function Feed() {
+  const userInfo = useAtomValue(userInfoAtom)
   const { isLoading, isError, data, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery({
       queryKey: ['feeds'],
@@ -64,6 +68,7 @@ export default function Feed() {
 
   return (
     <>
+      <HomeHeader userInfo={userInfo} />
       <div className={styles.container}>{body}</div>
       {isFetchingNextPage && <HistoryLoading />}
     </>
