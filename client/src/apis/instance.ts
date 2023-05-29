@@ -56,7 +56,6 @@ function createAuthAxiosInstance() {
       return Promise.reject(error)
     }
   )
-
   return instance
 }
 

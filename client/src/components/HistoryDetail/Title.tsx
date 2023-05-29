@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Icon from '../common/Icon'
 import styles from './Title.module.scss'
@@ -7,7 +7,7 @@ import { dateFormat, passedHourMinuteSecondFormat } from '../../utils/date'
 import { format } from '../../utils/date-fns'
 import DropDown from '../common/DropDown'
 import { patchHistory } from '../../apis/history'
-import { isLoginAtom, idAtom } from '../../store/authAtom'
+import { userInfoAtom } from '../../store/authAtom'
 
 type TitleProps = {
   id: string
@@ -32,8 +32,7 @@ export default function Title({
 }: TitleProps) {
   const [edit, setEdit] = useState(false)
   const [message, setMessage] = useState(text)
-  const [isLogin] = useAtom(isLoginAtom)
-  const [logInId] = useAtom(idAtom)
+  const userInfo = useAtomValue(userInfoAtom)
   const formattedTime = {
     date: dateFormat(new Date(startAt)),
     timer: passedHourMinuteSecondFormat(new Date(endAt).getTime() - new Date(startAt).getTime()),
@@ -100,7 +99,7 @@ export default function Title({
 
   return (
     <div className={styles.container}>
-      {logInId !== memberId && (
+      {userInfo?.memberId !== memberId && (
         <div className={styles.profileNicknameBox}>
           {profileImage ? (
             <img src={profileImage} alt='profile' />
@@ -110,7 +109,7 @@ export default function Title({
           <div>{nickname}</div>
         </div>
       )}
-      {isLogin && logInId === memberId && (
+      {userInfo?.memberId === memberId && (
         <DropDown currentSetting={setting} onSubmit={handlePublicSettingSubmit} />
       )}
       <div className={styles.timeBox}>
@@ -130,7 +129,7 @@ export default function Title({
       ) : (
         <div>
           <p className={styles.message}>{message}</p>
-          {isLogin && logInId === memberId && (
+          {userInfo?.memberId === memberId && (
             <div className={styles.editBtnBox}>
               <Icon name='edit-gray' />
               <button type='button' onClick={() => setEdit(prev => !prev)}>
