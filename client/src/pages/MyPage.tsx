@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import format from 'date-fns/format'
 import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
-import { userAtom, idAtom, isLoginAtom } from '../store/authAtom'
+import { UserInfoAtomType, userInfoAtom } from '../store/authAtom'
 import DropDown from '../components/common/DropDown'
 import EditProfile from '../components/MyPage/EditProfile'
 import styles from './MyPage.module.scss'
@@ -23,11 +23,7 @@ type LogoutModalOptionType = {
 
 export default function Mypage() {
   const { routeTo } = useRouter()
-  const [, setIsLogin] = useAtom(isLoginAtom)
-
-  const [user, setUser] = useAtom(userAtom)
-  const [isLogin] = useAtom(isLoginAtom)
-  const [memberId] = useAtom(idAtom)
+  const [userInfo, setUserInfo] = useAtom(userInfoAtom)
 
   const [registeredAt, setRegisteredAt] = useState('')
   const [isModalOpened, setIsModalOpened] = useState(false)
@@ -43,14 +39,14 @@ export default function Mypage() {
   })
 
   const handleChangePublicSetting = async (paramOpt: string) => {
-    if (user) {
+    if (userInfo) {
       const data = new FormData()
       const blob = new Blob([JSON.stringify({ defaultWalkLogPublicSetting: paramOpt })], {
         type: 'application/json',
       })
       data.append('patch', blob)
-      const { resData } = await patchUserPrivacySettings(memberId, data)
-      setUser(resData)
+      const { resData } = await patchUserPrivacySettings(userInfo.memberId, data)
+      setUserInfo(resData)
     }
   }
 
@@ -76,9 +72,9 @@ export default function Mypage() {
   }
 
   const handleUnregister = async () => {
-    const res = await unregisterUser(memberId)
+    const res = await unregisterUser((userInfo as UserInfoAtomType).memberId)
     if (res === 'success') {
-      setIsLogin(false)
+      setUserInfo(null)
     }
   }
 
@@ -113,7 +109,7 @@ export default function Mypage() {
   const handleLogout = async () => {
     const res = await logoutUser()
     if (res === 'success') {
-      setIsLogin(false)
+      setUserInfo(null)
       routeTo('/')
     }
   }
@@ -130,12 +126,12 @@ export default function Mypage() {
   }
 
   useEffect(() => {
-    if (user.createdAt && isLogin) {
-      const registeredDate = new Date(user.createdAt)
+    if (userInfo?.createdAt) {
+      const registeredDate = new Date(userInfo.createdAt)
       const formattedData = format(registeredDate, 'yyyy-MM-dd')
       setRegisteredAt(formattedData)
     }
-  }, [user])
+  }, [userInfo])
 
   return (
     <>
@@ -144,22 +140,26 @@ export default function Mypage() {
         <div className={styles.profileBox}>
           <div className={styles.infoBox}>
             <div className={styles.userInfo}>
-              <div className={styles.userName}>{user?.nickname}</div>
-              <div className={styles.userEmail}>{user?.email}</div>
+              <div className={styles.userName}>{userInfo?.nickname}</div>
+              <div className={styles.userEmail}>{userInfo?.email}</div>
               <div className={styles.userRegisteredAt}>
                 <span>회원 가입일:</span>
                 <span>{registeredAt}</span>
               </div>
             </div>
             <div className={styles.imageWrapper}>
-              {!user?.imageUrl ? (
+              {!userInfo?.imageUrl ? (
                 <Icon name='no-profile' size={64} />
               ) : (
-                <img className={styles.userProfileImage} src={user?.imageUrl} alt='your profile' />
+                <img
+                  className={styles.userProfileImage}
+                  src={userInfo?.imageUrl}
+                  alt='your profile'
+                />
               )}
             </div>
           </div>
-          <div className={styles.userText}>{user?.introduction}</div>
+          <div className={styles.userText}>{userInfo?.introduction}</div>
           <button className={styles.editProfileBtn} type='button' onClick={handleOpenEditProfile}>
             프로필 수정하기
           </button>
@@ -168,7 +168,7 @@ export default function Mypage() {
           <div className={styles.configTitle}>걷기 기록 공개 설정</div>
           <div className={styles.selectWrapper}>
             <DropDown
-              currentSetting={user.defaultWalkLogPublicSetting}
+              currentSetting={(userInfo as UserInfoAtomType).defaultWalkLogPublicSetting}
               onSubmit={handleChangePublicSetting}
             />
           </div>
