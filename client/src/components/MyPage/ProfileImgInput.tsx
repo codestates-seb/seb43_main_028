@@ -23,8 +23,8 @@ export default function ProfileImgInput({
     const currentImgFile = event.target.files?.[0]
     if (currentImgFile) {
       const fileSize = currentImgFile.size / (1024 * 1024)
-      if (fileSize > 4) {
-        alert('4mb 이상의 파일은 업로드할 수 없습니다.')
+      if (fileSize > 5) {
+        alert('5mb 이상의 파일은 업로드할 수 없습니다.')
         return
       }
       setImgFile(currentImgFile)
