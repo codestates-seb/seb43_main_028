@@ -1,5 +1,5 @@
-import { useAtom } from 'jotai'
-import { isLoginAtom } from '../../store/authAtom'
+import { useSetAtom } from 'jotai'
+import { userInfoAtom } from '../../store/authAtom'
 import styles from './PasswordChanged.module.scss'
 import { logoutUser } from '../../apis/user'
 import useRouter from '../../hooks/useRouter'
@@ -13,11 +13,11 @@ export default function PasswordChanged({
   setIsChangingPassword,
   setIsPasswordChanged,
 }: PasswordChangedPropsType) {
-  const [, setIsLogin] = useAtom(isLoginAtom)
+  const setUserInfo = useSetAtom(userInfoAtom)
   const { routeTo } = useRouter()
   const handleLogout = async () => {
     await logoutUser()
-    setIsLogin(false)
+    setUserInfo(null)
     setIsChangingPassword(false)
     setIsPasswordChanged(false)
     routeTo('/signin')

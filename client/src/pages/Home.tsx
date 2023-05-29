@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAtomValue } from 'jotai'
-import { userAtom, isLoginAtom } from '../store/authAtom'
+import { userInfoAtom } from '../store/authAtom'
 import { startWalkLog } from '../apis/walkLog'
 import useMapRef from '../hooks/useMapRef'
 import useRouter from '../hooks/useRouter'
@@ -10,31 +10,15 @@ import { getDistanceBetweenPosition } from '../utils/position'
 import styles from './Home.module.scss'
 
 export default function Home() {
+  const userInfo = useAtomValue(userInfoAtom)
   const { routeTo } = useRouter()
+  const mapRef = useMapRef()
   const [position, setPosition] = useState<google.maps.LatLngLiteral | null>(null)
 
-  const isLogin = useAtomValue(isLoginAtom)
-  const user = useAtomValue(userAtom)
-
-  const mapRef = useMapRef()
-
-  const userInfo = {
-    nickname: user.nickname,
-    imageUrl: user.imageUrl,
-    totalWalkLog: user.totalWalkLog,
-    totalWalkLogContent: user.totalWalkLogContent,
-  }
-
   const handleStartClick = async () => {
-    if (!isLogin) {
-      console.log('비로그인 시작 x')
-      return
-    }
-    const { walkLogId } = await startWalkLog(user.memberId)
-    if (walkLogId === -1) {
-      console.log('시작 실패')
-      return
-    }
+    if (!userInfo) return
+    const { walkLogId } = await startWalkLog(userInfo.memberId)
+    if (walkLogId === -1) return
     routeTo(`/onwalk/${walkLogId}`)
   }
 
@@ -68,7 +52,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <HomeHeader isLogin={isLogin} userInfo={userInfo} />
+      <HomeHeader userInfo={userInfo} />
       {position ? (
         <LiveMap ref={mapRef} mapSize={MapSize.LARGE} path={[position]} />
       ) : (

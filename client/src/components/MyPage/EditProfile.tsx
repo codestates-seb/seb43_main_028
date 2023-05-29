@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useAtom } from 'jotai'
 import styles from './EditProfile.module.scss'
 import ProfileImgInput from './ProfileImgInput'
-import { idAtom, userAtom } from '../../store/authAtom'
+import { userInfoAtom } from '../../store/authAtom'
 import { patchUserProfile } from '../../apis/user'
 
 type EditProfilePropsType = {
@@ -12,9 +12,8 @@ type EditProfilePropsType = {
 function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
   const [imgFile, setImgFile] = useState<File | undefined>()
 
-  const [memberId] = useAtom(idAtom)
-  const [user, setUser] = useAtom(userAtom)
-  const [preview, setPreview] = useState<string>(user.imageUrl)
+  const [userInfo, setUserInfo] = useAtom(userInfoAtom)
+  const [preview, setPreview] = useState<string>(userInfo?.imageUrl || '')
 
   const handleCloseEditProfile = () => {
     setIsModalOpened(false)
@@ -28,7 +27,7 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
     const image = formData.get('image')
     const data = new FormData()
 
-    if (nickname === user.nickname) {
+    if (nickname === userInfo?.nickname) {
       const blob = new Blob([JSON.stringify({ introduction })], {
         type: 'application/json',
       })
@@ -41,21 +40,19 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
       data.append('patch', blob)
     }
 
-    // 기존 프로필 사진을 지우고 텍스트를 수정해서 보낸 경우
-    // image === null
     if (image instanceof File && !image.name && !preview) {
       data.append('profileImage', image)
     }
 
-    // 이미지를 수정한 경우
     if (image instanceof File && image.name && preview) {
       data.append('profileImage', image)
     }
 
-    if (memberId) {
-      const { status, resData } = await patchUserProfile(memberId, data)
+    if (userInfo?.memberId) {
+      console.log(userInfo.memberId)
+      const { status, resData } = await patchUserProfile(userInfo?.memberId, data)
       if (status === 'success' && resData) {
-        setUser(resData)
+        setUserInfo(resData)
         setIsModalOpened(false)
         return
       }
@@ -94,7 +91,7 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
         <ProfileImgInput
           imgFile={imgFile}
           setImgFile={setImgFile}
-          profileImage={user.imageUrl ? user.imageUrl : ''}
+          profileImage={userInfo?.imageUrl ? userInfo.imageUrl : ''}
           preview={preview}
           setPreview={setPreview}
         />
@@ -105,7 +102,7 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
           placeholder='이름'
           name='nickname'
           className={styles.editNameInput}
-          defaultValue={user.nickname}
+          defaultValue={userInfo?.nickname}
         />
       </div>
       <div className={styles.editIntroduction}>
@@ -113,7 +110,7 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
           placeholder='자기소개'
           name='introduction'
           className={styles.editIntroductionInput}
-          defaultValue={user.introduction}
+          defaultValue={userInfo?.introduction || ''}
         />
       </div>
     </form>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import Title from '../components/HistoryDetail/Title'
 import styles from './HistoryDetail.module.scss'
 import { ko, format } from '../utils/date-fns'
@@ -10,7 +10,7 @@ import SnapForm from '../components/OnWalk/SnapForm'
 import Modal from '../components/common/Modal'
 import { deleteHistory, getHistory, patchHistoryItem } from '../apis/history'
 import { WalkLogContentsDataType, ModalOption } from '../types/History'
-import { isLoginAtom, idAtom } from '../store/authAtom'
+import { userInfoAtom } from '../store/authAtom'
 import Header from '../components/common/Header'
 import useRouter from '../hooks/useRouter'
 import HistoryDetailLoading from './loadingPage/HistoryDetailLoading'
@@ -26,8 +26,8 @@ export default function HistoryDetail() {
     title: '',
     deleteFn: () => {},
   })
-  const [isLogin] = useAtom(isLoginAtom)
-  const [logInId] = useAtom(idAtom)
+
+  const userInfo = useAtomValue(userInfoAtom)
 
   const mapRef = useMapRef()
 
@@ -38,11 +38,11 @@ export default function HistoryDetail() {
 
   const getHistoryQuery = useQuery({
     queryKey: ['history', id],
-    queryFn: () => getHistory(id!),
+    queryFn: () => getHistory(id as string),
   })
 
   const handleDeleteHistory = useMutation({
-    mutationFn: () => deleteHistory(id!),
+    mutationFn: () => deleteHistory(id as string),
     onSuccess: () => {
       queryClient.invalidateQueries(['history', id])
       routeTo('/history')
@@ -55,7 +55,7 @@ export default function HistoryDetail() {
     { contentId: string; formData: FormData },
     unknown
   >({
-    mutationFn: ({ contentId, formData }) => patchHistoryItem(id!, contentId, formData),
+    mutationFn: ({ contentId, formData }) => patchHistoryItem(id as string, contentId, formData),
     onSuccess: () => {
       queryClient.invalidateQueries(['history', id])
       setEdit(prev => !prev)
@@ -171,7 +171,7 @@ export default function HistoryDetail() {
           />
           <StaticPathMap ref={mapRef} path={dummypath} />
           {detailItems}
-          {isLogin && logInId === memberId && (
+          {userInfo?.memberId === memberId && (
             <div className={styles.deleteBtnBox}>
               <button type='button' className={styles.deleteBtn} onClick={handleHistoryDeleteModal}>
                 기록 삭제
