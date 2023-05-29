@@ -8,7 +8,6 @@ import FeedLoading from '../pages/loadingPage/FeedLoading'
 import MypPageLoading from '../pages/loadingPage/MyPageLoading'
 import OnWalkLoading from '../pages/loadingPage/OnWalkLoading'
 import AfterWalkLoading from '../pages/loadingPage/AfterWalkLoading'
-import Landing from '../pages/Landing'
 
 const Home = lazy(() => import('../pages/Home'))
 const Feed = lazy(() => import('../pages/Feed'))
