@@ -10,7 +10,6 @@ import { logoutUser, patchUserPrivacySettings, unregisterUser } from '../apis/us
 import Icon from '../components/common/Icon'
 import Modal from '../components/common/Modal'
 import useRouter from '../hooks/useRouter'
-import MyPageLoading from './loadingPage/MyPageLoading'
 
 type UnregisterModalOptionType = {
   title: string
