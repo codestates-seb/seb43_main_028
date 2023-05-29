@@ -22,10 +22,9 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
   const authHandler = async () => {
     const userInfo = await getCurrentUserInfo()
     setUserInfo(userInfo)
+    console.log(withAuth)
 
-    if (!userInfo && withAuth) {
-      routeTo('/signin')
-    } else if (userInfo && (pathname === '/signin' || pathname === '/signup')) {
+    if (userInfo && (pathname === '/signin' || pathname === '/signup')) {
       routeTo('/')
     } else {
       setIsAuthChecking(false)
