@@ -37,7 +37,7 @@ function SignIn() {
         hasCloseButton={false}
         headerTitle='로그인'
         handleCloseFn={() => {}}
-        path='/'
+        path='-1'
       />
       <form className={styles.formContainer} onSubmit={logInSubmitHandler}>
         <div className={styles.inputBox}>

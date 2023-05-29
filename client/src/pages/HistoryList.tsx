@@ -7,7 +7,7 @@ import History from '../components/HistoryList/History'
 import Calendar from '../components/HistoryList/Calendar/Calendar'
 import Toggle from '../components/HistoryList/Toggle'
 import { getHistoryList } from '../apis/history'
-import { userInfoAtom, UserInfoAtomType } from '../store/authAtom'
+import { UserInfoAtomType, userInfoAtom } from '../store/authAtom'
 import { HistoryListDataType } from '../types/History'
 import { getDate, getMonth, getYear } from '../utils/date-fns'
 import HistoryLoading from './loadingPage/HistoryLoading'
@@ -19,9 +19,7 @@ export default function HistoryList() {
   const [date, setDate] = useState<Date>(new Date())
   const userInfo = useAtomValue(userInfoAtom) as UserInfoAtomType
 
-  const handleCalendar = () => {
-    setCalendar(!calendar)
-  }
+  const intObserver = useRef<IntersectionObserver>()
 
   const { isError, data, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ['history', calendar, date, selectDate],
@@ -46,7 +44,6 @@ export default function HistoryList() {
     },
   })
 
-  const intObserver = useRef<IntersectionObserver>()
   const lastHistoryRef = useCallback(
     (history: HTMLDivElement) => {
       if (isFetchingNextPage) return
@@ -64,6 +61,28 @@ export default function HistoryList() {
     },
     [isFetchingNextPage, fetchNextPage, hasNextPage]
   )
+
+  const handleCalendar = () => {
+    setCalendar(!calendar)
+  }
+
+  if (!userInfo) {
+    return (
+      <div className={styles.noHistoryBox}>
+        <p>
+          로그인/회원가입을 하고
+          <br />
+          오늘의 기록을 남겨보세요!
+        </p>
+        <Link to='/signin' className={styles.linkBtn}>
+          로그인 하러가기
+        </Link>
+        <Link to='/signup' className={styles.linkBtn}>
+          회원가입 하러가기
+        </Link>
+      </div>
+    )
+  }
 
   if (isError) return <h1>Fail...</h1>
 
