@@ -49,7 +49,7 @@ function App() {
     >
       <MapRefContext.Provider value={mapRef}>
         {isInitialLoad ? (
-          <Landing onInitialLoad={handleInitialLoad} label={''} />
+          <Landing onInitialLoad={handleInitialLoad} />
         ) : (
           <RouterProvider router={router} />
         )}
