@@ -49,7 +49,6 @@ function EditProfile({ setIsModalOpened }: EditProfilePropsType) {
     }
 
     if (userInfo?.memberId) {
-      console.log(userInfo.memberId)
       const { status, resData } = await patchUserProfile(userInfo?.memberId, data)
       if (status === 'success' && resData) {
         setUserInfo(resData)

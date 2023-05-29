@@ -53,7 +53,6 @@ export default function ChangingPassword({
     name: confirmPasswordName,
     ref: confirmPasswordRef,
   } = register('confirmPassword', {
-    // newPassword와 같은지 여부 판단해서 다르면 경고 메시지 출력
     validate: value => value === getValues('newPassword') || '비밀번호가 다릅니다.',
   })
 
@@ -64,9 +63,7 @@ export default function ChangingPassword({
       password: newPassword,
     }
     const res = await patchUserPassword(memberId, passwordData)
-    console.log(res)
     if (res === 'success') {
-      console.log('성공')
       setIsChangingPassword(false)
       setIsPasswordChanged(true)
     }

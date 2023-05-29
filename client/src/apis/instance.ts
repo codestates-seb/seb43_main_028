@@ -50,7 +50,7 @@ function createAuthAxiosInstance() {
             return await axios(config)
           }
         } catch (error) {
-          console.log('refresh token error')
+          return Promise.reject(error)
         }
       }
       return Promise.reject(error)

@@ -22,7 +22,6 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
   const authHandler = async () => {
     const userInfo = await getCurrentUserInfo()
     setUserInfo(userInfo)
-    console.log(withAuth)
 
     if (userInfo && (pathname === '/signin' || pathname === '/signup')) {
       routeTo('/')
@@ -33,7 +32,7 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
 
   useEffect(() => {
     authHandler()
-  }, [pathname])
+  }, [pathname, withAuth])
 
   if (isAuthChecking) return <Spinner />
 

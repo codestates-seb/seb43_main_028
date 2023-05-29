@@ -63,10 +63,6 @@ export default function SnapForm({
     onSubmit(contentId, data)
   }
 
-  // const handleCancel = () => {
-  //   console.log('순간 기록 취소')
-  // }
-
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
