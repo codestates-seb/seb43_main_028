@@ -19,13 +19,22 @@
 .noHistoryBox {
   width: 100%;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 100px;
   @include U.flex-c(column, center, center);
   gap: 20px;
+  font-size: 18px;
 }
 
 .homeBtn {
   border: 1px solid C.$gray900;
   padding: 15px;
   border-radius: 12px;
+}
+
+.linkBtn {
+  @include U.flex-c(row, center, center);
+  @include U.size(200px, 48px);
+  background: C.$gray200;
+  border-radius: 8px;
+  font-size: 16px;
 }

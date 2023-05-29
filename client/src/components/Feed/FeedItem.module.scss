@@ -37,7 +37,7 @@
 .itemInfoBox {
   @include U.flex-c(row, flex-start, center);
   gap: 12px;
-  @include T.gray900-regular-14;
+  @include T.gray600-regular-14;
 }
 
 .walkLogContentList {
@@ -46,7 +46,7 @@
 }
 
 .message {
-  @include T.gray900-bold-16;
+  @include T.gray900-bold-20;
   width: 100%;
   white-space: normal;
   overflow: hidden;
@@ -73,11 +73,8 @@
 }
 
 .detailBtn {
-  width: fit-content;
+  @include U.size(100%, 36px);
   @include U.flex-c(row, center, center);
-  color: C.$gray600;
-  font-size: 1.4rem;
-  // border: 1px solid C.$gray600;
-  padding-top: 2px;
-  border-bottom: 1px solid C.$gray600;
+  background: C.$gray200;
+  border-radius: 10px;
 }

@@ -193,6 +193,19 @@ export const routerData: RouterElement[] = [
     showTapBar: true,
     withAuth: false,
   },
+  {
+    id: 13,
+    path: '/feed/:id',
+    label: '피드상세',
+    element: (
+      <Suspense fallback={<HistoryDetailLoading />}>
+        <HistoryDetail />
+      </Suspense>
+    ),
+    onTapBar: false,
+    showTapBar: true,
+    withAuth: false,
+  },
 ]
 
 export const TapBarContent: TapBarElementType[] = routerData.reduce((prev, router) => {
