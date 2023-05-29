@@ -6,6 +6,7 @@ import backend.section6mainproject.member.entity.Member;
 import backend.section6mainproject.member.service.MemberService;
 import backend.section6mainproject.walklog.entity.WalkLog;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
@@ -19,12 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class ConnectionInterceptor implements HandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         String uri = request.getURI().toString();
         attributes.put("uri", uri);
+        log.info("connect success!");
         return true;
     }
 
