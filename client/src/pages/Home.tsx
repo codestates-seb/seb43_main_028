@@ -108,6 +108,7 @@ export default function Home() {
     if (!expires) {
       getUserOS()
     } else if (differenceInMilliseconds(new Date(), new Date(expires)) >= 0) {
+      localStorage.removeItem('pwa-carousel-expires')
       getUserOS()
     }
     return () => {
