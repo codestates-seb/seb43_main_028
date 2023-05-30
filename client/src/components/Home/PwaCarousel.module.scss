@@ -34,15 +34,41 @@
   border: 1px solid C.$gray400;
   border-radius: 12px;
   overflow: hidden;
-  min-width: 296px;
 }
 
 .carouselBtnImgBox {
-  @include U.flex-c(row, space-between, center);
+  @include U.flex-c(row, center, center);
+  position: relative;
 }
 
-.noBtn {
-  @include U.size(48px);
+.leftBtn {
+  @include U.size(32px);
+  position: absolute;
+  left: 8px;
+  background-color: rgba($color: #212121, $alpha: 0.1);
+  border-radius: 32px;
+  z-index: 4000;
+}
+
+.rightBtn {
+  @include U.size(32px);
+  position: absolute;
+  right: 8px;
+  background-color: rgba($color: #212121, $alpha: 0.1);
+  border-radius: 32px;
+  z-index: 4000;
+}
+
+.leftNoBtn {
+  position: absolute;
+  left: 8px;
+  @include U.size(32px);
+}
+
+.rightNoBtn {
+  position: absolute;
+  right: 8px;
+  @include U.size(32px);
 }
 
 .imgContainer {

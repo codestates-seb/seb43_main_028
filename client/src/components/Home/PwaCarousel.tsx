@@ -1,23 +1,55 @@
 import { useEffect, useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './PwaCarousel.module.scss'
-import { addDays } from '../../utils/date-fns'
+import { addDays, differenceInMilliseconds } from '../../utils/date-fns'
+import android1 from '../../assets/pwa-android-1.png'
+import android2 from '../../assets/pwa-android-2.png'
+import android3 from '../../assets/pwa-android-3.png'
+import ios1 from '../../assets/pwa-ios-1.png'
+import ios2 from '../../assets/pwa-ios-2.png'
+import ios3 from '../../assets/pwa-ios-3.png'
 
-export type CarouselType = {
-  id: number
-  src: string
-  text: string
-}[]
+const IOSCarousel = [
+  { id: 0, src: ios1, text: '1. 공유 버튼을 클릭합니다.' },
+  { id: 1, src: ios2, text: '2. ‘홈 화면에 추가’ 버튼을 클릭합니다.' },
+  { id: 2, src: ios3, text: '3. 기기에 바로가기 아이콘이 추가됩니다.' },
+]
+const AndroidCarousel = [
+  { id: 0, src: android1, text: '1. 설정 버튼을 클릭합니다.' },
+  { id: 1, src: android2, text: '2. ‘앱 설치’ 버튼을 클릭합니다.' },
+  { id: 2, src: android3, text: '3. 기기에 바로가기 아이콘이 추가됩니다.' },
+]
 
-type PwaCarouselProps = {
-  handleClose: () => void
-  carousel: CarouselType | null
+const getCarousel = (userOs: string) => {
+  if (/android/i.test(userOs)) {
+    return AndroidCarousel
+  }
+  if (/(iphone|ipad)/i.test(userOs)) {
+    return IOSCarousel
+  }
+  return null
 }
 
-export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps) {
+const isLocalStorageExpired = () => {
+  const expires = localStorage.getItem('pwa-carousel-expires')
+  if (!expires) {
+    return true
+  }
+  if (differenceInMilliseconds(new Date(), new Date(expires)) >= 0) {
+    localStorage.removeItem('pwa-carousel-expires')
+    return true
+  }
+  return false
+}
+
+export default function PwaCarousel() {
+  const [isShow, setIsShow] = useState<boolean>(isLocalStorageExpired())
   const [currentIdx, setCurrentIdx] = useState(0)
   const [style, setStyle] = useState({ transform: 'translate(0)' })
   const [aWeekClose, setaWeekClose] = useState(false)
+
+  const userOS = navigator.userAgent.replace(/ /g, '').toLowerCase()
+  const carousel = getCarousel(userOS)
 
   const handleWeekCloseCheck = () => {
     setaWeekClose(prev => !prev)
@@ -33,12 +65,14 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
     }
   }, [currentIdx, aWeekClose])
 
+  if (carousel === null || isShow === false) return null
+
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
         <div className={styles.title}>
-          <div> 앱 설치해서 사용하기</div>
-          <button type='button' onClick={handleClose}>
+          <div>앱 설치해서 사용하기</div>
+          <button type='button' onClick={() => setIsShow(false)}>
             <div className={styles.close}>닫기</div>
           </button>
         </div>
@@ -57,11 +91,15 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
         <div className={styles.carousel}>
           <div className={styles.carouselBtnImgBox}>
             {currentIdx > 0 ? (
-              <button type='button' onClick={() => setCurrentIdx(prev => prev - 1)}>
-                <Icon name='arrow-left' size={48} />
+              <button
+                type='button'
+                className={styles.leftBtn}
+                onClick={() => setCurrentIdx(prev => prev - 1)}
+              >
+                <Icon name='arrow-left' size={32} />
               </button>
             ) : (
-              <div className={styles.noBtn} />
+              <div className={styles.leftNoBtn} />
             )}
 
             <div className={styles.imgContainer}>
@@ -78,11 +116,15 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
             </div>
 
             {carousel && currentIdx < carousel.length - 1 ? (
-              <button type='button' onClick={() => setCurrentIdx(prev => prev + 1)}>
-                <Icon name='arrow-right' size={48} />
+              <button
+                type='button'
+                className={styles.rightBtn}
+                onClick={() => setCurrentIdx(prev => prev + 1)}
+              >
+                <Icon name='arrow-right' size={32} />
               </button>
             ) : (
-              <div className={styles.noBtn} />
+              <div className={styles.rightNoBtn} />
             )}
           </div>
         </div>
