@@ -1,0 +1,68 @@
+@use '../../styles/utils' as U;
+@use '../../styles/color' as C;
+@use '../../styles/typography' as T;
+
+.container {
+  position: absolute;
+}
+
+.modal {
+  position: fixed;
+  padding: 40px 20px;
+  top: 0;
+  bottom: 0;
+  @include U.size(100%, auto);
+  max-width: 640px;
+  background-color: C.$white;
+  z-index: 3001;
+}
+
+.title {
+  @include U.flex-c(row, space-between, center);
+  @include T.gray900-bold-18;
+}
+
+.carousel {
+  margin: 40px 0;
+  padding: 20px;
+  border: 1px solid C.$gray400;
+  border-radius: 12px;
+}
+
+.carouselBtnImgBox {
+  @include U.flex-c(row, space-between, center);
+  gap: 20px;
+}
+
+.noBtn {
+  @include U.size(24px);
+}
+
+.imgContainer {
+  overflow: hidden;
+  width: 200px;
+}
+
+.flexBox {
+  @include U.flex-c(row, flex-start, center);
+  transition: transform 1s;
+}
+
+.img {
+  @include U.size(200px, auto);
+  object-fit: contain;
+  flex: none;
+}
+
+.carouselText {
+  text-align: center;
+  margin: 20px 0;
+  @include T.gray900-regular-16;
+  width: 200px;
+  word-break: keep-all;
+}
+
+.aWeekClose {
+  @include U.flex-c(row, center, center);
+  gap: 4px;
+}
