@@ -151,7 +151,6 @@ export default function OnWalk() {
     clientWS.current.connect(
       { Authorization: getAccessTokenFromLocalStorage() },
       () => {
-        console.log('connected')
         clientWS.current?.subscribe(`/sub/${walkLogId}`, message => {
           console.log(message.body)
         })
@@ -163,6 +162,7 @@ export default function OnWalk() {
 
     return () => {
       clearWatchPosition()
+      clientWS.current?.disconnect()
     }
   }, [])
 
