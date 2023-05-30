@@ -19,20 +19,20 @@ export default function Home() {
   const [showMessage, setShowMessage] = useState(false)
 
   const handleStartClick = async () => {
+    if (!userInfo) return
     setShowMessage(true)
-    setTimeout(async () => {
-      if (!userInfo) return
 
+    setTimeout(async () => {
       if (userInfo.recordingWalkLogId) {
         return routeTo(`/onwalk/${userInfo.recordingWalkLogId}`)
       }
-
       const { walkLogId } = await startWalkLog(userInfo.memberId)
-      if (walkLogId === -1) return
-
+      if (walkLogId === -1) {
+        setShowMessage(false)
+        return
+      }
       routeTo(`/onwalk/${walkLogId}`)
     }, 3000)
-    setShowMessage(false)
   }
 
   const watchCurrentPosition = () => {
@@ -76,7 +76,7 @@ export default function Home() {
         )}
 
         {!userInfo ? (
-          <button className={styles.nologinBtn} type='button' disabled>
+          <button className={styles.nologinBtn} type='button' onClick={handleStartClick}>
             걷기는 로그인 후 가능합니다.
           </button>
         ) : (
