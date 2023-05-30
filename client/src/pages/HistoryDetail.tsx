@@ -16,7 +16,6 @@ import useRouter from '../hooks/useRouter'
 import HistoryDetailLoading from './loadingPage/HistoryDetailLoading'
 import StaticPathMap from '../components/common/Map/StaticPathMap'
 import useMapRef from '../hooks/useMapRef'
-import { dummypath } from '../utils/position'
 
 export default function HistoryDetail() {
   const [edit, setEdit] = useState<boolean>(false)
@@ -70,6 +69,7 @@ export default function HistoryDetail() {
   if (getHistoryQuery.error) return <h1>Sorry, can not access to the page</h1>
 
   const {
+    coordinates,
     createdAt,
     endAt,
     memberId,
@@ -169,7 +169,7 @@ export default function HistoryDetail() {
             text={message}
             setting={walkLogPublicSetting}
           />
-          <StaticPathMap ref={mapRef} path={dummypath} />
+          <StaticPathMap ref={mapRef} path={coordinates} />
           {detailItems}
           {userInfo?.memberId === memberId && (
             <div className={styles.deleteBtnBox}>
