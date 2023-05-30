@@ -4,26 +4,35 @@ import { userInfoAtom } from '../store/authAtom'
 import { startWalkLog } from '../apis/walkLog'
 import useMapRef from '../hooks/useMapRef'
 import useRouter from '../hooks/useRouter'
+import { getDistanceBetweenPosition } from '../utils/position'
 import LiveMap, { MapSize } from '../components/common/Map/LiveMap'
 import HomeHeader from '../components/header/HomeHeader'
-import { getDistanceBetweenPosition } from '../utils/position'
-import styles from './Home.module.scss'
 import PwaCarousel from '../components/Home/PwaCarousel'
+import StartMessage from '../components/Home/StartMessage'
+import styles from './Home.module.scss'
 
 export default function Home() {
   const userInfo = useAtomValue(userInfoAtom)
   const { routeTo } = useRouter()
   const mapRef = useMapRef()
   const [position, setPosition] = useState<google.maps.LatLngLiteral | null>(null)
+  const [showMessage, setShowMessage] = useState(false)
 
   const handleStartClick = async () => {
     if (!userInfo) return
-    if (userInfo.recordingWalkLogId) {
-      return routeTo(`/onwalk/${userInfo.recordingWalkLogId}`)
-    }
-    const { walkLogId } = await startWalkLog(userInfo.memberId)
-    if (walkLogId === -1) return
-    routeTo(`/onwalk/${walkLogId}`)
+    setShowMessage(true)
+
+    setTimeout(async () => {
+      if (userInfo.recordingWalkLogId) {
+        return routeTo(`/onwalk/${userInfo.recordingWalkLogId}`)
+      }
+      const { walkLogId } = await startWalkLog(userInfo.memberId)
+      if (walkLogId === -1) {
+        setShowMessage(false)
+        return
+      }
+      routeTo(`/onwalk/${walkLogId}`)
+    }, 3000)
   }
 
   const watchCurrentPosition = () => {
@@ -57,6 +66,7 @@ export default function Home() {
   return (
     <>
       <PwaCarousel />
+      {showMessage && <StartMessage />}
       <div className={styles.container}>
         <HomeHeader userInfo={userInfo} />
         {position ? (
@@ -66,7 +76,7 @@ export default function Home() {
         )}
 
         {!userInfo ? (
-          <button className={styles.nologinBtn} type='button' disabled>
+          <button className={styles.nologinBtn} type='button' onClick={handleStartClick}>
             걷기는 로그인 후 가능합니다.
           </button>
         ) : (

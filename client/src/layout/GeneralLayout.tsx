@@ -34,7 +34,7 @@ export default function GeneralLayout({ children, showTapBar, withAuth }: Genera
     authHandler()
   }, [pathname, withAuth])
 
-  if (isAuthChecking) return <Spinner />
+  if (isAuthChecking) return <Spinner label='사용자 확인 중...' />
 
   return (
     <>
