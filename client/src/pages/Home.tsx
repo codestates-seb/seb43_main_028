@@ -96,6 +96,7 @@ export default function Home() {
 
   const getUserOS = () => {
     const userOs = navigator.userAgent.replace(/ /g, '').toLowerCase()
+    if (!userInfo) return
     if (/android/i.test(userOs)) {
       setCarousel(AndroidCarousel)
       return setPwaModalOpen(true)
