@@ -7,27 +7,19 @@ function Header() {
       <ContentLoader
         speed={2}
         width='100%'
-        height='55'
+        height='230'
         backgroundColor='#e3e3e3'
         foregroundColor='#ecebeb'
       >
         <circle cx='24' cy='24' r='24' />
         <rect x='64' y='0' rx='3' ry='3' width='118' height='16' />
         <rect x='64' y='20' rx='3' ry='3' width='180' height='24' />
+        <rect x='0' y='64' rx='3' ry='3' width='100' height='24' />
+        <rect x='85%' y='64' rx='3' ry='3' width='44.5' height='18' />
+        <rect x='0' y='102' rx='3' ry='3' width='100%' height='55' />
+        <rect x='0' y='177' rx='3' ry='3' width='48%' height='48' />
+        <rect x='52%' y='177' rx='3' ry='3' width='48%' height='48' />
       </ContentLoader>
-      <div className={styles.openSettingBox}>
-        <p className={styles.openTitle}>기록공개 여부</p>
-        <p className={styles.openOption}>나만 보기</p>
-      </div>
-      <input className={styles.input} type='text' placeholder='한 줄 메시지 작성' disabled />
-      <div className={styles.btnBox}>
-        <div className={styles.noSaveBtn}>
-          <div className={styles.noSave}>저장안함</div>
-        </div>
-        <div className={styles.completeBtn}>
-          <div className={styles.complete}>완료</div>
-        </div>
-      </div>
     </div>
   )
 }
@@ -54,25 +46,23 @@ function SnapForm() {
 
 export default function AfterWalkLoading() {
   return (
-    <>
+    <div className={styles.container}>
       <Header />
       <ContentLoader
         speed={2}
         width='100%'
-        height='240'
+        height='290'
         backgroundColor='#e3e3e3'
         foregroundColor='#ecebeb'
       >
         <rect x='0' y='0' width='100%' height='240' />
+        <rect x='20' y='260' rx='3' ry='3' width='100' height='24' />
       </ContentLoader>
-      <div className={styles.snapFormBox}>
-        <div>순간기록</div>
-        <div className={styles.snapFrom}>
-          <SnapForm />
-          <SnapForm />
-          <SnapForm />
-        </div>
+      <div className={styles.snapFrom}>
+        <SnapForm />
+        <SnapForm />
+        <SnapForm />
       </div>
-    </>
+    </div>
   )
 }
