@@ -103,7 +103,7 @@ export default function AfterWalk() {
 
   useEffect(() => {
     getWalkLogData()
-  }, [])
+  }, [canvasRef])
 
   if (walkLog === null) return <AfterWalkLoading />
 
