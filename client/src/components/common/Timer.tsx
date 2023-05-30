@@ -10,7 +10,7 @@ type TimerProps = {
 
 export default function Timer({ startedDate }: TimerProps) {
   const diff = differenceInSeconds(new Date(), startedDate)
-  const [count, setCount] = useState(diff)
+  const [count, setCount] = useState(diff - 5)
   useInterval(() => {
     setCount(count + 1)
   })
