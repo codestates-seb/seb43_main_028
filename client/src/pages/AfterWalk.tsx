@@ -14,7 +14,6 @@ import { UserInfoAtomType, userInfoAtom } from '../store/authAtom'
 import { convertImageFromDataURL } from '../utils/imageConvertor'
 import StaticPathMap from '../components/common/Map/StaticPathMap'
 import useMapRef from '../hooks/useMapRef'
-import { dummypath } from '../utils/position'
 import AfterWalkLoading from './loadingPage/AfterWalkLoading'
 
 export default function AfterWalk() {
@@ -130,7 +129,7 @@ export default function AfterWalk() {
         </button>
       </form>
 
-      <StaticPathMap ref={mapRef} path={dummypath} />
+      <StaticPathMap ref={mapRef} path={walkLog.coordinates} />
 
       <div className={styles.snapBox}>
         <ul className={styles.snaplist}>
