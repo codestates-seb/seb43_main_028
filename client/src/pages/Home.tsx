@@ -76,7 +76,7 @@ export default function Home() {
         )}
 
         {!userInfo ? (
-          <button className={styles.nologinBtn} type='button' onClick={handleStartClick}>
+          <button className={styles.nologinBtn} type='button' disabled>
             걷기는 로그인 후 가능합니다.
           </button>
         ) : (
