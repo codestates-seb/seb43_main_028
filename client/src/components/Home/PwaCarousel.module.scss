@@ -27,18 +27,19 @@
 
 .carousel {
   margin: 20px 0;
-  padding: 20px;
+  padding: 20px 0;
   border: 1px solid C.$gray400;
   border-radius: 12px;
+  overflow: hidden;
+  min-width: 296px;
 }
 
 .carouselBtnImgBox {
   @include U.flex-c(row, space-between, center);
-  gap: 20px;
 }
 
 .noBtn {
-  @include U.size(24px);
+  @include U.size(48px);
 }
 
 .imgContainer {
