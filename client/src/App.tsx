@@ -1,10 +1,10 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { RouterProvider } from 'react-router-dom'
 import { GoogleMapsProvider } from '@ubilabs/google-maps-react-hooks'
 import MapRefContext from './contexts/mapRefContext'
 import router from './router'
 import './styles/global.scss'
-import Landing from './components/common/Landing'
+// import Landing from './components/common/Landing'
 
 function App() {
   const [mapContainer, setMapContainer] = useState<HTMLDivElement | null>(null)
@@ -12,22 +12,22 @@ function App() {
     node && setMapContainer(node)
   }, [])
 
-  const [isInitialLoad, setIsInitialLoad] = useState(false)
+  // const [isInitialLoad, setIsInitialLoad] = useState(false)
 
-  const handleInitialLoad = () => {
-    setIsInitialLoad(false)
-    sessionStorage.setItem('initialLoad', JSON.stringify(false))
-  }
+  // const handleInitialLoad = () => {
+  //   setIsInitialLoad(false)
+  //   sessionStorage.setItem('initialLoad', JSON.stringify(false))
+  // }
 
-  useEffect(() => {
-    const initialLoadItem = sessionStorage.getItem('initialLoad')
-    if (initialLoadItem) {
-      const isInitial = JSON.parse(initialLoadItem)
-      setIsInitialLoad(isInitial)
-    } else {
-      sessionStorage.setItem('initialLoad', JSON.stringify(true))
-    }
-  }, [])
+  // useEffect(() => {
+  //   const initialLoadItem = sessionStorage.getItem('initialLoad')
+  //   if (initialLoadItem) {
+  //     const isInitial = JSON.parse(initialLoadItem)
+  //     setIsInitialLoad(isInitial)
+  //   } else {
+  //     sessionStorage.setItem('initialLoad', JSON.stringify(true))
+  //   }
+  // }, [])
 
   return (
     <GoogleMapsProvider
@@ -48,11 +48,11 @@ function App() {
       }}
     >
       <MapRefContext.Provider value={mapRef}>
-        {isInitialLoad ? (
+        {/* {isInitialLoad ? (
           <Landing onInitialLoad={handleInitialLoad} />
-        ) : (
-          <RouterProvider router={router} />
-        )}
+        ) : ( */}
+        <RouterProvider router={router} />
+        {/* )} */}
       </MapRefContext.Provider>
     </GoogleMapsProvider>
   )
