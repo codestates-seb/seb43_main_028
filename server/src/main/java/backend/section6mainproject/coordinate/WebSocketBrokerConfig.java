@@ -34,10 +34,10 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws/walk-logs")
                 .addInterceptors(new ConnectionInterceptor())
-                .setAllowedOrigins("*")
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
         registry.addEndpoint("/ws/anonymous/walk-logs")
-                .setAllowedOrigins("*")
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 
