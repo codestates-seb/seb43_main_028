@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAtomValue } from 'jotai'
 import useRouter from '../hooks/useRouter'
+import useDrawPolyline from '../hooks/useDrawPolyline'
 import { getWalkLog, WalkLogType, WalkLogContentType, stopWalkLog } from '../apis/walkLog'
 import WalkHeader from '../components/header/WalkHeader'
 import styles from './AfterWalk.module.scss'
@@ -10,6 +11,7 @@ import { differenceInSeconds } from '../utils/date-fns'
 import { deleteSnap, editSnap } from '../apis/snap'
 import DropDown from '../components/common/DropDown'
 import { UserInfoAtomType, userInfoAtom } from '../store/authAtom'
+import { convertImageFromDataURL } from '../utils/imageConvertor'
 import StaticPathMap from '../components/common/Map/StaticPathMap'
 import useMapRef from '../hooks/useMapRef'
 import AfterWalkLoading from './loadingPage/AfterWalkLoading'
@@ -26,6 +28,8 @@ export default function AfterWalk() {
   const [snaps, setSnaps] = useState<WalkLogContentType[]>(walkLog?.walkLogContents || [])
 
   const createdDate = walkLog && new Date(walkLog.createdAt)
+
+  const { img, canvasRef } = useDrawPolyline(walkLog?.coordinates || [])
 
   const mapRef = useMapRef()
 
@@ -50,6 +54,7 @@ export default function AfterWalk() {
     event.preventDefault()
 
     if (walkLogId === undefined) return
+    if (!img) return
 
     const formData = new FormData(event.currentTarget)
     const message = formData.get('message') as string
@@ -61,6 +66,7 @@ export default function AfterWalk() {
     )
 
     data.append('endPost', blob)
+    data.append('mapImage', convertImageFromDataURL(img))
 
     const response = await stopWalkLog({ walkLogId, data })
     if (response) {
@@ -97,7 +103,7 @@ export default function AfterWalk() {
 
   useEffect(() => {
     getWalkLogData()
-  }, [])
+  }, [canvasRef])
 
   if (walkLog === null) return <AfterWalkLoading />
 
@@ -105,6 +111,7 @@ export default function AfterWalk() {
     <div>
       <WalkHeader type='AFTER' startedAt={walkLog.createdAt} />
       <form className={styles.stopWalkForm} onSubmit={handleStopClick}>
+        <canvas ref={canvasRef} className={styles.canvasElement} />
         <div className={styles.publicOptionBox}>
           <span>기록공개 설정</span>
           <DropDown currentSetting={pubilcOption} onSubmit={updatePublicOption} />
