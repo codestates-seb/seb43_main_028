@@ -190,7 +190,7 @@ export default function OnWalk() {
         handleFinishClick={() => setIsStopModalOpen(true)}
       />
 
-      {path.length > 0 ? <LiveMap ref={mapRef} path={path} /> : <div>현위치 찾는중</div>}
+      <LiveMap ref={mapRef} path={path.length > 0 ? path : null} />
 
       <div className={styles.snapBox}>
         <button className={styles.snapbutton} type='button' onClick={takeSnapClick}>

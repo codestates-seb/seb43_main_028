@@ -39,7 +39,7 @@ const LiveMap = forwardRef<HTMLDivElement, LiveMapProps>(
 
     return (
       <div className={isFullScreenMode ? styles.fullScreen : styles[mapSize]}>
-        <div className={styles.mapRef} ref={ref} />
+        <div className={styles.mapRef} ref={path ? ref : null} />
         <div className={styles.btnWrapper}>
           <MapButton name={isFullScreenMode ? 'reduce' : 'full'} handleClick={toggleScreenSize} />
           <MapButton name='gps' handleClick={panToCurrentPosition} />
