@@ -23,6 +23,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.web.socket.sockjs.client.SockJsClient;
+import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -47,7 +49,7 @@ public class CoordinateSubscribeWrongDestTest {
 
 
     private WebSocketStompClient getStompClient() {
-        WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
+        WebSocketStompClient stompClient = new WebSocketStompClient(new SockJsClient(List.of(new WebSocketTransport( new StandardWebSocketClient()))));
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         return stompClient;
     }
