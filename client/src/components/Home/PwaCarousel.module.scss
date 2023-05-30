@@ -25,8 +25,11 @@
   @include T.gray900-bold-18;
 }
 
+.close {
+  @include T.gray900-regular-14;
+}
+
 .carousel {
-  margin: 20px 0;
   padding: 20px 0;
   border: 1px solid C.$gray400;
   border-radius: 12px;
@@ -64,9 +67,11 @@
   @include T.gray900-regular-16;
   width: 200px;
   word-break: keep-all;
+  height: 48px;
 }
 
 .aWeekClose {
-  @include U.flex-c(row, center, center);
+  margin: 20px 0;
+  @include U.flex-c(row, flex-start, center);
   gap: 4px;
 }
