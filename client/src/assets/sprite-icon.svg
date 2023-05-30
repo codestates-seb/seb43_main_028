@@ -61,8 +61,8 @@
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="arrow-right">
     <path d="M9 6L15 12L9 18" stroke="#212121"/>
   </symbol>
-  <symbol width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="arrow-left">
-    <path d="M15 6L9 12L15 18" stroke="#212121"/>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" id="arrow-left" viewBox="0 0 24 24">
+    <path d="M15 6L9 12L15 18" stroke="#212121"></path>
   </symbol>
   <symbol width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="three-dot">
     <g clip-path="url(#clip0_562_2519)">

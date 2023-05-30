@@ -4,11 +4,14 @@
 
 .container {
   position: absolute;
+  padding-bottom: calc(constant(safe-area-inset-bottom) + 120px);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120px);
 }
 
 .modal {
+  overflow: scroll;
   position: fixed;
-  padding: 40px 20px;
+  padding: 20px;
   top: 0;
   bottom: 0;
   @include U.size(100%, auto);
@@ -23,7 +26,7 @@
 }
 
 .carousel {
-  margin: 40px 0;
+  margin: 20px 0;
   padding: 20px;
   border: 1px solid C.$gray400;
   border-radius: 12px;
@@ -56,7 +59,7 @@
 
 .carouselText {
   text-align: center;
-  margin: 20px 0;
+  margin-top: 20px;
   @include T.gray900-regular-16;
   width: 200px;
   word-break: keep-all;
