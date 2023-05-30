@@ -36,7 +36,6 @@
 
 .carouselBtnImgBox {
   @include U.flex-c(row, space-between, center);
-  // gap: 10px;
 }
 
 .noBtn {
