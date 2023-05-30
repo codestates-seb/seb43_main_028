@@ -39,8 +39,19 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
         <div className={styles.title}>
           <div> 앱 설치해서 사용하기</div>
           <button type='button' onClick={handleClose}>
-            <Icon name='close' size={24} />
+            <div className={styles.close}>닫기</div>
           </button>
+        </div>
+
+        <div className={styles.aWeekClose}>
+          <button type='button' onClick={handleWeekCloseCheck}>
+            {aWeekClose ? (
+              <Icon name='after-check' size={24} />
+            ) : (
+              <Icon name='before-check' size={24} />
+            )}
+          </button>
+          <div>7일간 이 창을 띄우지 않습니다.</div>
         </div>
 
         <div className={styles.carousel}>
@@ -74,17 +85,6 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
               <div className={styles.noBtn} />
             )}
           </div>
-        </div>
-
-        <div className={styles.aWeekClose}>
-          <button type='button' onClick={handleWeekCloseCheck}>
-            {aWeekClose ? (
-              <Icon name='after-check' size={24} />
-            ) : (
-              <Icon name='before-check' size={24} />
-            )}
-          </button>
-          <div>7일간 이 창을 띄우지 않습니다.</div>
         </div>
       </div>
     </div>
