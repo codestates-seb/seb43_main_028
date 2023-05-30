@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Stomp, CompatClient } from '@stomp/stompjs'
+import SockJS from 'sockjs-client'
 import { getWalkLog, WalkLogType, WalkLogContentType } from '../apis/walkLog'
 import WalkHeader from '../components/header/WalkHeader'
 import useMapRef from '../hooks/useMapRef'
@@ -13,8 +15,9 @@ import { differenceInSeconds } from '../utils/date-fns'
 import LiveMap from '../components/common/Map/LiveMap'
 import styles from './OnWalk.module.scss'
 import { getDistanceBetweenPosition } from '../utils/position'
+import { getAccessTokenFromLocalStorage } from '../utils/accessTokenHandler'
 import OnWalkLoading from './loadingPage/OnWalkLoading'
-import Spinner from './loadingPage/Spinner'
+// import Spinner from './loadingPage/Spinner'
 
 export default function OnWalk() {
   const { routeTo } = useRouter()
@@ -26,23 +29,25 @@ export default function OnWalk() {
   const [isSnapFormOpen, setIsSnapFormOpen] = useState(false)
   const [isStopModalOpen, setIsStopModalOpen] = useState(false)
 
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [textIndex, setTextIndex] = useState<number>(-1)
+  // const [isLoading, setIsLoading] = useState<boolean>(true)
+  // const [textIndex, setTextIndex] = useState<number>(-1)
 
-  const startTextArr = [
-    // { id: -1, text: '잠시 후 산책 기록을 시작합니다!' },
-    { id: 0, text: '오늘 하루를 정리하며 걸어보는 건 어떨까요?' },
-    { id: 1, text: '요즘 연락이 뜸했던 친구에게 전화를 걸어보는 건 어떨까요?' },
-    { id: 2, text: '내일 하루를 미리 그려보며 걷는 건 어떨까요?' },
-    { id: 3, text: '동네 친구를 불러내 함께 걸어보는 건 어떠세요?' },
-    { id: 4, text: '시간을 버리듯이 걷다 보면 오히려 많은 걸 얻게 될지도 몰라요.' },
-  ]
-
-  const createdDate = walkLog && new Date(walkLog.createdAt)
+  // const startTextArr = [
+  //   // { id: -1, text: '잠시 후 산책 기록을 시작합니다!' },
+  //   { id: 0, text: '오늘 하루를 정리하며 걸어보는 건 어떨까요?' },
+  //   { id: 1, text: '요즘 연락이 뜸했던 친구에게 전화를 걸어보는 건 어떨까요?' },
+  //   { id: 2, text: '내일 하루를 미리 그려보며 걷는 건 어떨까요?' },
+  //   { id: 3, text: '동네 친구를 불러내 함께 걸어보는 건 어떠세요?' },
+  //   { id: 4, text: '시간을 버리듯이 걷다 보면 오히려 많은 걸 얻게 될지도 몰라요.' },
+  // ]
 
   const mapRef = useMapRef()
 
-  const [path, setPath] = useState<google.maps.LatLngLiteral[]>([])
+  const clientWS = useRef<CompatClient | null>(null)
+
+  const [path, setPath] = useState<google.maps.LatLngLiteral[]>(walkLog?.coordinates || [])
+
+  const createdDate = walkLog && new Date(walkLog.createdAt)
 
   const stopModalData = {
     title: '걷기를 종료하시겠어요?',
@@ -115,6 +120,7 @@ export default function OnWalk() {
         const lastPosition = path[path.length - 1]
         if (!lastPosition || getDistanceBetweenPosition(lastPosition, watchedPosition) > 2) {
           setPath(prev => [...prev, watchedPosition])
+          clientWS.current?.send('/pub/walk-logs', {}, JSON.stringify(watchedPosition))
         }
       },
       error => console.log(error),
@@ -130,19 +136,38 @@ export default function OnWalk() {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      setTextIndex(-1)
-      setIsLoading(false)
-    }, 5000)
+    // setTimeout(() => {
+    //   setTextIndex(-1)
+    //   setIsLoading(false)
+    // }, 5000)
     getWalkLogData()
     const { clearWatchPosition } = watchCurrentPosition()
+
+    clientWS.current = Stomp.over(() => {
+      const sock = new SockJS('https://was.would-you-walk.com/ws/walk-logs')
+      return sock
+    })
+
+    clientWS.current.connect(
+      { Authorization: getAccessTokenFromLocalStorage() },
+      () => {
+        clientWS.current?.subscribe(`/sub/${walkLogId}`, message => {
+          console.log(message.body)
+        })
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    )
+
     return () => {
       clearWatchPosition()
+      clientWS.current?.disconnect()
     }
   }, [])
 
-  if (isLoading)
-    return <Spinner startTextArr={startTextArr} textIndex={textIndex} setTextIndex={setTextIndex} />
+  // if (isLoading)
+  //   return <Spinner startTextArr={startTextArr} textIndex={textIndex} setTextIndex={setTextIndex} />
   if (!walkLog) return <OnWalkLoading />
 
   return (

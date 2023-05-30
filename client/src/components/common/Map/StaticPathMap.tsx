@@ -30,7 +30,6 @@ const StaticPathMap = forwardRef<HTMLDivElement, StaticPathMapProps>(
 
     const map = useGoogleMap() || null
 
-    map?.setZoom(14)
     middleAt && map?.setCenter(middleAt)
 
     useMarker({ map, position: startAt, icon: stopMarkerIcon })
