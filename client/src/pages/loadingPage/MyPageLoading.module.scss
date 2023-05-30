@@ -10,16 +10,7 @@
   border-radius: 12px;
   background-color: C.$white;
   width: 100%;
-  height: 245px;
   padding: 20px;
-}
-
-.editProfileBtn {
-  text-align: center;
-  background-color: C.$gray200;
-  padding: 5px;
-  font-size: 1.4rem;
-  border-radius: 4px;
 }
 
 .configBox {
@@ -31,22 +22,7 @@
   height: 178px;
 }
 
-.configTitle {
-  @include T.gray900-bold-16;
-}
-
-.configMessage {
-  @include T.gray600-regular-14;
-}
-
-.setLinkWrapper900 {
-  text-align: center;
-  color: C.$gray900;
-  margin-top: 20px;
-}
-
-.setLinkWrapper600 {
-  text-align: center;
-  color: C.$gray600;
-  margin-top: 20px;
+.bottom {
+  display: flex;
+  justify-content: center;
 }

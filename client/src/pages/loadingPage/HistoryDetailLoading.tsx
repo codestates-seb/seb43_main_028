@@ -35,7 +35,6 @@ export default function HistoryDetailLoading() {
       <HeaderBox />
       <ContentLoader
         speed={2}
-        // viewBox='0 0 400 900'
         width='100%'
         height='100%'
         backgroundColor='#e3e3e3'
