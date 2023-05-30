@@ -69,14 +69,10 @@ export default function Home() {
       {showMessage && <StartMessage />}
       <div className={styles.container}>
         <HomeHeader userInfo={userInfo} />
-        {position ? (
-          <LiveMap ref={mapRef} mapSize={MapSize.LARGE} path={[position]} />
-        ) : (
-          <div>현위치 찾는 중</div>
-        )}
+        <LiveMap ref={mapRef} mapSize={MapSize.LARGE} path={position ? [position] : null} />
 
         {!userInfo ? (
-          <button className={styles.nologinBtn} type='button' onClick={handleStartClick}>
+          <button className={styles.nologinBtn} type='button' disabled>
             걷기는 로그인 후 가능합니다.
           </button>
         ) : (
