@@ -1,4 +1,5 @@
 import Spinner from '../../pages/loadingPage/Spinner'
+import styles from './StartMessage.module.scss'
 
 export default function StartMessage() {
   const startMessages = [
@@ -12,5 +13,9 @@ export default function StartMessage() {
   const getRandomMessage = () =>
     startMessages[Math.floor(Math.random() * startMessages.length)].text
 
-  return <Spinner label={getRandomMessage()} />
+  return (
+    <div className={styles.messageContainer}>
+      <Spinner label={getRandomMessage()} hasBg={false} />
+    </div>
+  )
 }

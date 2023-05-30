@@ -1,0 +1,11 @@
+@use '../../styles/color' as C;
+
+.messageContainer {
+  position: fixed;
+  top: 0;
+  max-width: 640px;
+  width: 100%;
+  height: 100dvh;
+  background-color: #fdf3e1;
+  z-index: 6000;
+}
