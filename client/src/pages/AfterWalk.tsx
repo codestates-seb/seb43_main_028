@@ -15,6 +15,7 @@ import { convertImageFromDataURL } from '../utils/imageConvertor'
 import StaticPathMap from '../components/common/Map/StaticPathMap'
 import useMapRef from '../hooks/useMapRef'
 import AfterWalkLoading from './loadingPage/AfterWalkLoading'
+import { deleteHistory } from '../apis/history'
 
 export default function AfterWalk() {
   const { routeTo } = useRouter()
@@ -101,6 +102,14 @@ export default function AfterWalk() {
     }
   }
 
+  const exitWalk = async () => {
+    if (walkLogId === undefined) return
+    const res = await deleteHistory(walkLogId)
+    if (res === 'success') {
+      routeTo('/')
+    }
+  }
+
   useEffect(() => {
     getWalkLogData()
   }, [canvasRef])
@@ -124,9 +133,14 @@ export default function AfterWalk() {
           placeholder='한줄메세지 작성'
           required
         />
-        <button className={styles.stopWalkFormButton} type='submit'>
-          완료
-        </button>
+        <div className={styles.btnWrapper}>
+          <button className={styles.stopWalkFormButton} type='button' onClick={exitWalk}>
+            저장안함
+          </button>
+          <button className={styles.stopWalkFormButton} type='submit'>
+            완료
+          </button>
+        </div>
       </form>
 
       <StaticPathMap ref={mapRef} path={walkLog.coordinates} />
