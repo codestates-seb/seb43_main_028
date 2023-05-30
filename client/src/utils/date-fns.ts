@@ -19,13 +19,17 @@ import differenceInMonths from 'date-fns/differenceInMonths'
 import differenceInYears from 'date-fns/differenceInYears'
 import differenceInHours from 'date-fns/differenceInHours'
 import differenceInMinutes from 'date-fns/differenceInMinutes'
+import addDays from 'date-fns/addDays'
+import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
 
 export {
+  differenceInMilliseconds,
   endOfMonth,
   startOfMonth,
   eachDayOfInterval,
   getWeeksInMonth,
   addMonths,
+  addDays,
   subMonths,
   format,
   getDate,
