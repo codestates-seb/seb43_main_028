@@ -8,7 +8,7 @@ import {
 const instanceOptions = {
   baseURL: import.meta.env.VITE_API_ENDPOINT,
   timeout: 3000,
-  headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '69420' },
+  headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 }
 
