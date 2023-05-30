@@ -42,7 +42,7 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
           <div className={styles.carouselBtnImgBox}>
             {currentIdx > 0 ? (
               <button type='button' onClick={() => setCurrentIdx(prev => prev - 1)}>
-                <Icon name='arrow-left' size={24} />
+                <Icon name='arrow-left' size={48} />
               </button>
             ) : (
               <div className={styles.noBtn} />
@@ -63,7 +63,7 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
 
             {carousel && currentIdx < carousel.length - 1 ? (
               <button type='button' onClick={() => setCurrentIdx(prev => prev + 1)}>
-                <Icon name='arrow-right' size={24} />
+                <Icon name='arrow-right' size={48} />
               </button>
             ) : (
               <div className={styles.noBtn} />
