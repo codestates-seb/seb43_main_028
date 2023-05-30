@@ -9,7 +9,6 @@ import HomeHeader from '../components/header/HomeHeader'
 import { getDistanceBetweenPosition } from '../utils/position'
 import styles from './Home.module.scss'
 import PwaCarousel from '../components/Home/PwaCarousel'
-import { CarouselType } from '../types/Carousel'
 import { differenceInMilliseconds } from '../utils/date-fns'
 import android1 from '../assets/pwa-android-1.png'
 import android2 from '../assets/pwa-android-2.png'
@@ -54,13 +53,37 @@ const AndroidCarousel = [
   },
 ]
 
+const userOs = navigator.userAgent.replace(/ /g, '').toLowerCase()
+
+const getCarousel = () => {
+  if (/android/i.test(userOs)) {
+    return AndroidCarousel
+  }
+  if (/(iphone|ipad)/i.test(userOs)) {
+    return IOSCarousel
+  }
+
+  return null
+}
+
+const isLocalStorageExpired = () => {
+  const expires = localStorage.getItem('pwa-carousel-expires')
+  if (!expires) {
+    return true
+  }
+  if (differenceInMilliseconds(new Date(), new Date(expires)) >= 0) {
+    localStorage.removeItem('pwa-carousel-expires')
+    return true
+  }
+  return false
+}
+
 export default function Home() {
   const userInfo = useAtomValue(userInfoAtom)
   const { routeTo } = useRouter()
   const mapRef = useMapRef()
   const [position, setPosition] = useState<google.maps.LatLngLiteral | null>(null)
-  const [pwaModalOpen, setPwaModalOpen] = useState<boolean>(false)
-  const [carousel, setCarousel] = useState<CarouselType>()
+  const [pwaModalOpen, setPwaModalOpen] = useState<boolean>(isLocalStorageExpired())
 
   const handleStartClick = async () => {
     if (!userInfo) return
@@ -94,30 +117,8 @@ export default function Home() {
     setPwaModalOpen(false)
   }
 
-  const getUserOS = () => {
-    const userOs = navigator.userAgent.replace(/ /g, '').toLowerCase()
-    if (!userInfo) return
-    if (/android/i.test(userOs)) {
-      setCarousel(AndroidCarousel)
-      return setPwaModalOpen(true)
-    }
-    if (/(iphone|ipad)/i.test(userOs)) {
-      setCarousel(IOSCarousel)
-      return setPwaModalOpen(true)
-    }
-
-    return setPwaModalOpen(false)
-  }
-
   useEffect(() => {
     const { clearWatchPosition } = watchCurrentPosition()
-    const expires = localStorage.getItem('pwa-carousel-expires')
-    if (!expires) {
-      getUserOS()
-    } else if (differenceInMilliseconds(new Date(), new Date(expires)) >= 0) {
-      localStorage.removeItem('pwa-carousel-expires')
-      getUserOS()
-    }
     return () => {
       clearWatchPosition()
     }
@@ -125,7 +126,9 @@ export default function Home() {
 
   return (
     <>
-      {pwaModalOpen && <PwaCarousel handleClose={handlePwaModalClose} carousel={carousel} />}
+      {userInfo && getCarousel() && pwaModalOpen && (
+        <PwaCarousel handleClose={handlePwaModalClose} carousel={getCarousel()} />
+      )}
       <div className={styles.container}>
         <HomeHeader userInfo={userInfo} />
         {position ? (

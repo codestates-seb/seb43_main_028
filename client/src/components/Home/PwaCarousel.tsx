@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './PwaCarousel.module.scss'
-import { CarouselType } from '../../types/Carousel'
 import { addDays } from '../../utils/date-fns'
+
+export type CarouselType = {
+  id: number
+  src: string
+  text: string
+}[]
 
 type PwaCarouselProps = {
   handleClose: () => void
-  carousel: CarouselType | undefined
+  carousel: CarouselType | null
 }
 
 export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps) {
