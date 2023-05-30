@@ -46,7 +46,6 @@ export default forwardRef(function FeedItem({ data }: FeedItemProps, ref: Ref<HT
           <div>{nickname}</div>
           <div className={styles.itemInfoBox}>
             <p className={styles.date}>{getTimeAgo(new Date(startedAt))}</p>
-            <div className={styles.region}>서울시 동대문구</div>
           </div>
         </div>
       </div>

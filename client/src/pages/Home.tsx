@@ -87,6 +87,9 @@ export default function Home() {
 
   const handleStartClick = async () => {
     if (!userInfo) return
+    if (userInfo.recordingWalkLogId) {
+      return routeTo(`/onwalk/${userInfo.recordingWalkLogId}`)
+    }
     const { walkLogId } = await startWalkLog(userInfo.memberId)
     if (walkLogId === -1) return
     routeTo(`/onwalk/${walkLogId}`)
@@ -137,9 +140,15 @@ export default function Home() {
           <div>현위치 찾는 중</div>
         )}
 
-        <button className={styles.startBtn} type='button' onClick={handleStartClick}>
-          걷기 시작하기
-        </button>
+        {!userInfo ? (
+          <button className={styles.nologinBtn} type='button' disabled>
+            걷기는 로그인 후 가능합니다.
+          </button>
+        ) : (
+          <button className={styles.startBtn} type='button' onClick={handleStartClick}>
+            {userInfo?.recordingWalkLogId ? '걷기 계속하기(미종료)' : '걷기 시작하기'}
+          </button>
+        )}
       </div>
     </>
   )

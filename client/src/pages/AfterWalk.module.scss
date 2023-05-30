@@ -64,3 +64,22 @@
   top: -9999px;
   visibility: hidden;
 }
+
+.btnWrapper {
+  @include U.flex-c(row, space-between, center);
+  gap: 8px;
+}
+.stopWalkFormButton {
+  @include U.size(calc(50% - 4px), 48px);
+  @include T.gray900-bold-18;
+  background: C.$gray900;
+  border-radius: 12px;
+  color: C.$white;
+}
+
+.closeWalkFormButton {
+  @extend .stopWalkFormButton;
+  background: C.$white;
+  color: C.$gray900;
+  border: 1px solid C.$gray900;
+}
