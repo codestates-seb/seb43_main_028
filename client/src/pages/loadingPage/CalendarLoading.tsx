@@ -4,7 +4,6 @@ export default function CalendarLoading() {
   return (
     <ContentLoader
       speed={2}
-      // viewBox='0 0 400 900'
       width='100%'
       height='250'
       backgroundColor='#e3e3e3'
