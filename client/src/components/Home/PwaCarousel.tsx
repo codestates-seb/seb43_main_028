@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import Icon from '../common/Icon'
 import styles from './PwaCarousel.module.scss'
-import { CarouselType } from '../../types/Carousel'
 import { addDays } from '../../utils/date-fns'
+
+export type CarouselType = {
+  id: number
+  src: string
+  text: string
+}[]
 
 type PwaCarouselProps = {
   handleClose: () => void
-  carousel: CarouselType | undefined
+  carousel: CarouselType | null
 }
 
 export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps) {
@@ -42,7 +47,7 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
           <div className={styles.carouselBtnImgBox}>
             {currentIdx > 0 ? (
               <button type='button' onClick={() => setCurrentIdx(prev => prev - 1)}>
-                <Icon name='arrow-left' size={24} />
+                <Icon name='arrow-left' size={48} />
               </button>
             ) : (
               <div className={styles.noBtn} />
@@ -63,7 +68,7 @@ export default function PwaCarousel({ handleClose, carousel }: PwaCarouselProps)
 
             {carousel && currentIdx < carousel.length - 1 ? (
               <button type='button' onClick={() => setCurrentIdx(prev => prev + 1)}>
-                <Icon name='arrow-right' size={24} />
+                <Icon name='arrow-right' size={48} />
               </button>
             ) : (
               <div className={styles.noBtn} />
