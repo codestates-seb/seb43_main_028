@@ -30,6 +30,8 @@ import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.web.socket.sockjs.client.SockJsClient;
+import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -64,7 +66,7 @@ class CoordinateControllerTest {
 
 
     public CoordinateControllerTest() {
-        this.stompClient = new WebSocketStompClient(new StandardWebSocketClient());
+        this.stompClient = new WebSocketStompClient(new SockJsClient(List.of(new WebSocketTransport( new StandardWebSocketClient()))));
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         ObjectMapper objectMapper = messageConverter.getObjectMapper();
         objectMapper.registerModules(new JavaTimeModule(), new ParameterNamesModule());
