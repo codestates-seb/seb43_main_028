@@ -16,7 +16,7 @@ export default forwardRef(function History({ data }: HistoryItemProps, ref: Ref<
   const { walkLogId, mapImage, startedAt, endAt, message, walkLogContents } = data
   const timeDiff = new Date(endAt).getTime() - new Date(startedAt).getTime()
   const time = passedHourMinuteSecondFormat(timeDiff)
-
+  console.log(mapImage)
   const handleMore = () => {
     setMore(true)
   }
@@ -24,9 +24,9 @@ export default forwardRef(function History({ data }: HistoryItemProps, ref: Ref<
   const body = (
     <li className={styles.container}>
       <div className={styles.mapTimeBox}>
-        <div className={styles.imgWrapper}>
+        {/* <div className={styles.imgWrapper}>
           <img src={mapImage} className={styles.map} alt='지도 이미지' />
-        </div>
+        </div> */}
         <div>
           <p className={styles.date}>{format(new Date(startedAt), 'yyyy년 M월 d일')}</p>
           <div className={styles.timeBox}>
