@@ -14,11 +14,13 @@
 .backBtn {
   @include U.flex-c(row, flex-start, center);
   @include U.size(24px);
+  width: fit-content;
 }
 
 .noBackBtn {
   @include U.flex-c(row, flex-start, center);
   @include U.size(24px);
+  width: fit-content;
 }
 
 .headerTitle {
@@ -30,9 +32,11 @@
   @include U.flex-c(row, flex-end, center);
   @include T.gray900-regular-14;
   @include U.size(24px);
+  width: fit-content;
 }
 
 .noCloseBtn {
   @include U.flex-c(row, flex-end, center);
   @include U.size(24px);
+  width: fit-content;
 }
