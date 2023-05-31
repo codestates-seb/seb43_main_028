@@ -24,7 +24,7 @@
 .textBox {
   padding: 20px;
   @include U.flex-c(column, space-between, flex-start);
-  gap: 8px;
+  gap: 12px;
 }
 
 .text {
@@ -32,6 +32,11 @@
   background-color: C.$white;
   border: none;
   height: 100%;
+}
+
+.contentText {
+  width: 100%;
+  overflow-wrap: break-word;
 }
 
 .iconsBox {
@@ -50,4 +55,5 @@
 .icon {
   @include U.flex-c(row, flex-start, center);
   gap: 2px;
+  font-size: 1.4rem;
 }
