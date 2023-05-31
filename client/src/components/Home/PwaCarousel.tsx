@@ -53,16 +53,14 @@ export default function PwaCarousel() {
 
   const handleWeekCloseCheck = () => {
     setaWeekClose(prev => !prev)
+    if (aWeekClose === false) {
+      const afterAWeek = addDays(new Date(), 7)
+      localStorage.setItem('pwa-carousel-expires', afterAWeek.toString())
+    }
   }
 
   useEffect(() => {
     setStyle({ transform: `translate(-${currentIdx}00%)` })
-    const afterAWeek = addDays(new Date(), 7)
-    if (aWeekClose) {
-      localStorage.setItem('pwa-carousel-expires', afterAWeek.toString())
-    } else {
-      localStorage.removeItem('pwa-carousel-expires')
-    }
   }, [currentIdx, aWeekClose])
 
   if (carousel === null || isShow === false) return null
