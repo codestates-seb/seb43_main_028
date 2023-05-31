@@ -53,4 +53,6 @@
 .bottom {
   @include U.flex-c(row, space-between, center);
   width: 100%;
+  flex-wrap: wrap;
+  gap: 4px;
 }

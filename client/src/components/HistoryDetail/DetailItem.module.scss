@@ -44,6 +44,8 @@
   font-size: 1.4rem;
   @include T.gray600-regular-16;
   @include U.flex-c(row, space-between, center);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .editDeleteBox {
