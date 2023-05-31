@@ -49,6 +49,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/software.amazon.awssdk/s3
 	implementation 'software.amazon.awssdk:s3:2.20.17'
 
+	// https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
+	implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+
 	//mysql-connector
 	runtimeOnly 'com.mysql:mysql-connector-j'
 

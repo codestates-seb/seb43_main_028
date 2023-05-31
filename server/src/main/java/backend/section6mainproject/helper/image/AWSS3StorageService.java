@@ -1,5 +1,11 @@
 package backend.section6mainproject.helper.image;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.exif.ExifIFD0Directory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,11 +29,10 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequ
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
@@ -119,10 +124,21 @@ public class AWSS3StorageService implements StorageService {
 
     private ByteArrayOutputStream resizeImageFile(InputStream inputStream, String imageType){
         try {
-            BufferedImage image = ImageIO.read(inputStream);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            inputStream.transferTo(baos);
             inputStream.close();
-            int srcHeight = image.getHeight();
+
+            InputStream firstClone = new ByteArrayInputStream(baos.toByteArray());
+            BufferedImage image = ImageIO.read(firstClone);
+            firstClone.close();
+
+            image = fixRotation(baos, image);
+
+
             int srcWidth = image.getWidth();
+            int srcHeight = image.getHeight();
+            log.info("width : {}, height : {}", srcWidth, srcHeight);
+
             // Infer scaling factor to avoid stretching image unnaturally
             float scalingFactor = Math.min(
                     MAX_DIMENSION / srcWidth, MAX_DIMENSION / srcHeight);
@@ -147,6 +163,20 @@ public class AWSS3StorageService implements StorageService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private BufferedImage fixRotation(ByteArrayOutputStream baos, BufferedImage image) throws IOException {
+        ByteArrayInputStream secondClone = new ByteArrayInputStream(baos.toByteArray());
+        int orientation = getOrientation(secondClone);
+        secondClone.close();
+
+
+        AffineTransform af = new AffineTransform();
+        af.translate((image.getHeight() - image.getWidth()) / 2, (image.getWidth() - image.getHeight()) / 2);
+        af.rotate(Math.toRadians(getRotation(orientation)), image.getWidth() / 2, image.getHeight() / 2);
+        AffineTransformOp op = new AffineTransformOp(af, AffineTransformOp.TYPE_BILINEAR);
+        image = op.filter(image, null);
+        return image;
     }
 
     @Override
@@ -208,4 +238,53 @@ public class AWSS3StorageService implements StorageService {
         if(image == null) return false;
         return image.isEmpty();
     }
+
+
+    private int getOrientation(ByteArrayInputStream byteIS) {
+
+        int orientation = 1;
+        Directory directory;
+        try {
+            Metadata metadata = null;
+            try {
+                metadata = ImageMetadataReader.readMetadata(byteIS);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+            try {
+                if(directory!=null){
+                    orientation = directory
+                            .getInt(ExifIFD0Directory. TAG_ORIENTATION);
+                }
+
+            } catch (MetadataException me) {
+                System.out.println("Could not get orientation" );
+            }
+        } catch (ImageProcessingException e) {
+            e.printStackTrace();
+        }
+        return orientation;
+    }
+
+    private int getRotation(int orientation) {
+
+        int thumbRotation = 0;
+
+        if (orientation > 1) {
+
+            if (orientation == 8) {
+                thumbRotation = -90;
+            } else if (orientation == 3) {
+                thumbRotation = 180;
+            } else if (orientation == 6) {
+                thumbRotation = 90;
+            }
+        }
+
+        return thumbRotation;
+    }
+
+
 }
