@@ -20,7 +20,7 @@ const LiveMap = forwardRef<HTMLDivElement, LiveMapProps>(
     const [isFullScreenMode, setIsFullScreenMode] = useState<boolean>(false)
 
     const liveMarkerIcon = {
-      path: google.maps.SymbolPath.CIRCLE,
+      path: 0,
       scale: 10,
       fillColor: '#8cff9e',
       fillOpacity: 1,
