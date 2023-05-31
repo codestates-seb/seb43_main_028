@@ -65,7 +65,7 @@ export default function Home() {
 
   return (
     <>
-      <PwaCarousel />
+      {userInfo && <PwaCarousel />}
       {showMessage && <StartMessage />}
       <div className={styles.container}>
         <HomeHeader userInfo={userInfo} />
