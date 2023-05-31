@@ -70,11 +70,11 @@ export default function DetailItem({
         </div>
       )}
       {imageUrl && imgModal && <ImgModal imageUrl={imageUrl} onClose={handlePhotoModal} />}
-      <pre className={styles.textBox}>
-        {text}
+      <div className={styles.textBox}>
+        <div className={styles.contentText}>{text}</div>
         <div className={styles.iconsBox}>
           <div className={styles.icon}>
-            <Icon name='time-gray' size={24} /> {snapTime}
+            <Icon name='time-gray' size={16} /> {snapTime}
           </div>
           {userInfo && userInfo.memberId === memberId && (
             <div className={styles.editDeleteBox}>
@@ -89,7 +89,7 @@ export default function DetailItem({
             </div>
           )}
         </div>
-      </pre>
+      </div>
     </article>
   )
 }
