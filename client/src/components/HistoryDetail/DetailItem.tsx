@@ -71,7 +71,7 @@ export default function DetailItem({
       )}
       {imageUrl && imgModal && <ImgModal imageUrl={imageUrl} onClose={handlePhotoModal} />}
       <div className={styles.textBox}>
-        <div className={styles.contentText}>{text}</div>
+        <pre className={styles.contentText}>{text}</pre>
         <div className={styles.iconsBox}>
           <div className={styles.icon}>
             <Icon name='time-gray' size={16} /> {snapTime}
